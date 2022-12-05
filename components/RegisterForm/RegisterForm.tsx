@@ -1,99 +1,108 @@
-import React, { useState } from "react";
+import React from "react";
+import { Formik, Form, Field } from "formik";
 import {
   Box,
   Center,
-  Flex,
   Heading,
   Button,
   Input,
   FormControl,
   FormLabel,
   FormErrorMessage,
-  FormHelperText,
 } from "@chakra-ui/react";
 
-interface RegisterFormProps {
-  name?: string;
-}
-
-export const RegisterForm = ({}: RegisterFormProps) => {
-  const [inputs, setInputs] = useState({
-    name: "",
-    email: "",
-    password: "",
-    checkPassword: "",
-  });
-
-  const handleChange = ({
-    target: { name, value },
-  }: React.ChangeEvent<HTMLInputElement>) => {
-    setInputs((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-  };
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    alert(inputs.password === inputs.checkPassword);
-  };
+export const RegisterForm = () => {
   return (
-    <Box>
-      <Center>
-        <Heading>Formularz rejestracji</Heading>
+    <Box minW="400px">
+      <Center mb="20px">
+        <Heading>Rejestracja</Heading>
       </Center>
-      <form onSubmit={handleSubmit}>
-        <Flex flexDirection="column" gap={5}>
-          <FormControl isRequired>
-            <FormLabel>Imię i nazwisko</FormLabel>
-            <Input
-              type="text"
-              id="name"
-              name="name"
-              // pattern="[A-Z][a-z]+ [A-Z][a-z]*"
-              // minLength={6}
-              // maxLength={32}
-              onChange={handleChange}
-            />
-            <FormErrorMessage>Wprowadź imię i nazwisko.</FormErrorMessage>
-          </FormControl>
-          <FormControl isRequired>
-            <FormLabel>E-mail</FormLabel>
-            <Input
-              type="email"
-              id="email"
-              name="email"
-              onChange={handleChange}
-            />
-
-            <FormErrorMessage>Wprowadź E-mail.</FormErrorMessage>
-          </FormControl>
-          <FormControl isRequired>
-            <FormLabel>Hasło</FormLabel>
-            <Input
-              type="password"
-              id="password"
-              name="password"
-              // pattern="^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$"
-              // minLength={8}
-              onChange={handleChange}
-            />
-            <FormErrorMessage>Wprowadź hasło.</FormErrorMessage>
-          </FormControl>
-          <FormControl isRequired>
-            <FormLabel>Powtórz hasło</FormLabel>
-            <Input
-              type="password"
-              id="confirmPassword"
-              name="checkPassword"
-              onChange={handleChange}
-            />
-            <FormErrorMessage>Hasła się nie zgadzają.</FormErrorMessage>
-          </FormControl>
-          <Button type="submit" colorScheme="teal" variant="outline">
-            Zarejestruj się!
-          </Button>
-        </Flex>
-      </form>
+      <Formik
+        initialValues={{
+          name: "",
+          email: "",
+          password: "",
+          checkPassword: "",
+        }}
+        onSubmit={(values, actions) => {
+          alert(JSON.stringify(values, null, 2));
+          actions.resetForm();
+        }}
+      >
+        {(formik) => (
+          <Form onSubmit={formik.handleSubmit}>
+            <FormControl
+              isInvalid={formik.errors.name != undefined && formik.touched.name}
+              mb="15px"
+            >
+              <FormLabel htmlFor="name">Imię i nazwisko</FormLabel>
+              <Field
+                as={Input}
+                id="name"
+                name="name"
+                placeholder="Jan Kowalski"
+              />
+              <FormErrorMessage>{formik.errors.name}</FormErrorMessage>
+            </FormControl>
+            <FormControl
+              isInvalid={
+                formik.errors.email != undefined && formik.touched.email
+              }
+              mb="15px"
+            >
+              <FormLabel htmlFor="email">E-mail</FormLabel>
+              <Field
+                as={Input}
+                id="email"
+                type="email"
+                name="email"
+                placeholder="example@fencelane.com"
+              />
+              <FormErrorMessage>{formik.errors.email}</FormErrorMessage>
+            </FormControl>
+            <FormControl
+              isInvalid={
+                formik.errors.password != undefined && formik.touched.password
+              }
+              mb="15px"
+            >
+              <FormLabel htmlFor="password">Hasło</FormLabel>
+              <Field
+                as={Input}
+                id="password"
+                type="password"
+                name="password"
+                placeholder="Wprowadź hasło"
+              />
+              <FormErrorMessage>{formik.errors.password}</FormErrorMessage>
+            </FormControl>
+            <FormControl
+              isInvalid={
+                formik.errors.checkPassword != undefined &&
+                formik.touched.checkPassword
+              }
+            >
+              <FormLabel htmlFor="checkPassword">Powtórz hasło</FormLabel>
+              <Field
+                as={Input}
+                id="checkPassword"
+                type="password"
+                name="checkPassword"
+                placeholder="Powtórz hasło"
+              />
+              <FormErrorMessage>{formik.errors.checkPassword}</FormErrorMessage>
+            </FormControl>
+            <Center>
+              <Button mt="4" type="submit" colorScheme="teal" variant="outline">
+                Zarejestruj się!
+              </Button>
+            </Center>
+          </Form>
+        )}
+      </Formik>
     </Box>
   );
 };
+
+// pattern="^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$"
+// ^ min. 1 wielka, mala, znak, cyfr i min. 8 znakow
