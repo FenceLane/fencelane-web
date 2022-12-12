@@ -1,5 +1,5 @@
 import React from "react";
-import { Formik, Form, Field } from "formik";
+import { Formik, Form, Field, FormikHelpers } from "formik";
 import {
   Box,
   Flex,
@@ -14,11 +14,19 @@ import {
 } from "@chakra-ui/react";
 import Link from "next/link";
 
-interface LoginFormProps {
-  name?: string;
+export interface formTypes {
+  email: string;
+  password: string;
 }
 
-export const LoginForm = ({ name }: LoginFormProps) => {
+export const LoginForm = () => {
+  const handleSubmit = (
+    values: formTypes,
+    actions: FormikHelpers<formTypes>
+  ) => {
+    alert(JSON.stringify(values));
+    actions.resetForm();
+  };
   return (
     <Box minW="400px">
       <Center mb="20px">
@@ -29,19 +37,11 @@ export const LoginForm = ({ name }: LoginFormProps) => {
           email: "",
           password: "",
         }}
-        onSubmit={(values, actions) => {
-          alert(JSON.stringify(values, null, 2));
-          actions.resetForm();
-        }}
+        onSubmit={(values, actions) => handleSubmit(values, actions)}
       >
-        {(formik) => (
-          <Form onSubmit={formik.handleSubmit}>
-            <FormControl
-              isInvalid={
-                formik.errors.email != undefined && formik.touched.email
-              }
-              mb="15px"
-            >
+        {({ errors, touched }) => (
+          <Form>
+            <FormControl isInvalid={!!errors.email && touched.email} mb="15px">
               <FormLabel htmlFor="email">E-mail</FormLabel>
               <Field
                 as={Input}
@@ -50,12 +50,10 @@ export const LoginForm = ({ name }: LoginFormProps) => {
                 name="email"
                 placeholder="example@fencelane.com"
               />
-              <FormErrorMessage>{formik.errors.email}</FormErrorMessage>
+              <FormErrorMessage>{errors.email}</FormErrorMessage>
             </FormControl>
             <FormControl
-              isInvalid={
-                formik.errors.password != undefined && formik.touched.password
-              }
+              isInvalid={!!errors.password && touched.password}
               mb="15px"
             >
               <FormLabel htmlFor="password">Hasło</FormLabel>
@@ -66,7 +64,7 @@ export const LoginForm = ({ name }: LoginFormProps) => {
                 name="password"
                 placeholder="Wprowadź hasło"
               />
-              <FormErrorMessage>{formik.errors.password}</FormErrorMessage>
+              <FormErrorMessage>{errors.password}</FormErrorMessage>
             </FormControl>
             <Flex justifyContent={"flex-end"}>
               <Text as={Link} href="/register" color="blue.500">

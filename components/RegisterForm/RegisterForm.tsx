@@ -1,5 +1,5 @@
 import React from "react";
-import { Formik, Form, Field } from "formik";
+import { Formik, Form, Field, FormikHelpers } from "formik";
 import {
   Box,
   Center,
@@ -11,7 +11,21 @@ import {
   FormErrorMessage,
 } from "@chakra-ui/react";
 
+export interface formTypes {
+  name: string;
+  email: string;
+  password: string;
+  checkPassword: string;
+}
+
 export const RegisterForm = () => {
+  const handleSubmit = (
+    values: formTypes,
+    actions: FormikHelpers<formTypes>
+  ) => {
+    alert(JSON.stringify(values));
+    actions.resetForm();
+  };
   return (
     <Box minW="400px">
       <Center mb="20px">
@@ -24,17 +38,11 @@ export const RegisterForm = () => {
           password: "",
           checkPassword: "",
         }}
-        onSubmit={(values, actions) => {
-          alert(JSON.stringify(values, null, 2));
-          actions.resetForm();
-        }}
+        onSubmit={(values, actions) => handleSubmit(values, actions)}
       >
-        {(formik) => (
-          <Form onSubmit={formik.handleSubmit}>
-            <FormControl
-              isInvalid={formik.errors.name != undefined && formik.touched.name}
-              mb="15px"
-            >
+        {({ errors, touched }) => (
+          <Form>
+            <FormControl isInvalid={!!errors.name && touched.name} mb="15px">
               <FormLabel htmlFor="name">Imię i nazwisko</FormLabel>
               <Field
                 as={Input}
@@ -42,14 +50,9 @@ export const RegisterForm = () => {
                 name="name"
                 placeholder="Jan Kowalski"
               />
-              <FormErrorMessage>{formik.errors.name}</FormErrorMessage>
+              <FormErrorMessage>{errors.name}</FormErrorMessage>
             </FormControl>
-            <FormControl
-              isInvalid={
-                formik.errors.email != undefined && formik.touched.email
-              }
-              mb="15px"
-            >
+            <FormControl isInvalid={!!errors.email && touched.email} mb="15px">
               <FormLabel htmlFor="email">E-mail</FormLabel>
               <Field
                 as={Input}
@@ -58,12 +61,10 @@ export const RegisterForm = () => {
                 name="email"
                 placeholder="example@fencelane.com"
               />
-              <FormErrorMessage>{formik.errors.email}</FormErrorMessage>
+              <FormErrorMessage>{errors.email}</FormErrorMessage>
             </FormControl>
             <FormControl
-              isInvalid={
-                formik.errors.password != undefined && formik.touched.password
-              }
+              isInvalid={!!errors.password && touched.password}
               mb="15px"
             >
               <FormLabel htmlFor="password">Hasło</FormLabel>
@@ -74,13 +75,10 @@ export const RegisterForm = () => {
                 name="password"
                 placeholder="Wprowadź hasło"
               />
-              <FormErrorMessage>{formik.errors.password}</FormErrorMessage>
+              <FormErrorMessage>{errors.password}</FormErrorMessage>
             </FormControl>
             <FormControl
-              isInvalid={
-                formik.errors.checkPassword != undefined &&
-                formik.touched.checkPassword
-              }
+              isInvalid={!!errors.checkPassword && touched.checkPassword}
             >
               <FormLabel htmlFor="checkPassword">Powtórz hasło</FormLabel>
               <Field
@@ -90,7 +88,7 @@ export const RegisterForm = () => {
                 name="checkPassword"
                 placeholder="Powtórz hasło"
               />
-              <FormErrorMessage>{formik.errors.checkPassword}</FormErrorMessage>
+              <FormErrorMessage>{errors.checkPassword}</FormErrorMessage>
             </FormControl>
             <Center>
               <Button mt="4" type="submit" colorScheme="teal" variant="outline">
@@ -103,6 +101,3 @@ export const RegisterForm = () => {
     </Box>
   );
 };
-
-// pattern="^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$"
-// ^ min. 1 wielka, mala, znak, cyfr i min. 8 znakow
