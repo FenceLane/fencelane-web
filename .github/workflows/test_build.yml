@@ -10,10 +10,6 @@ jobs:
   test_build:
     runs-on: ubuntu-latest
 
-    env:
-      COMMIT_URL: ${{github.event.head_commit.url}}
-      COMMITTER: ${{github.event.head_commit.committer.name}}
-
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -24,18 +20,6 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 18.x
-
-      - name: Set environment variables
-        run: |
-          echo "BRANCH_NAME=$(git branch --show-current)" >> $GITHUB_ENV
-          echo "PR_LAST_COMMIT_MESSAGE=$(git log --format=%B -n 1 ${{github.event.after}} | head -n 1)" >> $GITHUB_ENV
-
-      - name: Print environment variables
-        run: |
-          echo -e "BRANCH_NAME = ${BRANCH_NAME}"
-          echo -e "PR_LAST_COMMIT_MESSAGE = ${PR_LAST_COMMIT_MESSAGE}"
-          echo -e "COMMIT_URL = ${COMMIT_URL}"
-          echo -e "COMMITTER = ${COMMITTER}"
 
       - name: Yarn cache
         uses: c-hive/gha-yarn-cache@v2.1.0
