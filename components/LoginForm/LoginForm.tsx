@@ -14,15 +14,15 @@ import {
 } from "@chakra-ui/react";
 import Link from "next/link";
 
-export interface formTypes {
+export interface FormTypes {
   email: string;
   password: string;
 }
 
 export const LoginForm = () => {
   const handleSubmit = (
-    values: formTypes,
-    actions: FormikHelpers<formTypes>
+    values: FormTypes,
+    actions: FormikHelpers<FormTypes>
   ) => {
     alert(JSON.stringify(values));
     actions.resetForm();
@@ -37,7 +37,7 @@ export const LoginForm = () => {
           email: "",
           password: "",
         }}
-        onSubmit={(values, actions) => handleSubmit(values, actions)}
+        onSubmit={handleSubmit}
       >
         {({ errors, touched }) => (
           <Form>

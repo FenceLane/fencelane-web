@@ -11,7 +11,7 @@ import {
   FormErrorMessage,
 } from "@chakra-ui/react";
 
-export interface formTypes {
+export interface FormTypes {
   name: string;
   email: string;
   password: string;
@@ -20,8 +20,8 @@ export interface formTypes {
 
 export const RegisterForm = () => {
   const handleSubmit = (
-    values: formTypes,
-    actions: FormikHelpers<formTypes>
+    values: FormTypes,
+    actions: FormikHelpers<FormTypes>
   ) => {
     alert(JSON.stringify(values));
     actions.resetForm();
@@ -38,7 +38,7 @@ export const RegisterForm = () => {
           password: "",
           checkPassword: "",
         }}
-        onSubmit={(values, actions) => handleSubmit(values, actions)}
+        onSubmit={handleSubmit}
       >
         {({ errors, touched }) => (
           <Form>
