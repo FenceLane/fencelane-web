@@ -4,7 +4,6 @@ import { ChakraProvider } from "@chakra-ui/react";
 import { appWithTranslation } from "next-i18next";
 
 function App({ Component, pageProps }: AppProps) {
-  console.log("App", { ...pageProps });
   return (
     <ChakraProvider>
       <Component {...pageProps} />

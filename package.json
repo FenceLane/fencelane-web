@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "test": "yarn jest",
+    "test": "yarn tsc --noEmit && yarn jest",
     "start": "next start",
     "prettier": "prettier --write --ignore-path .prettierignore \"**/*.{json,md,yml}\"",
     "husky:prepare": "husky install",
