@@ -4,7 +4,7 @@ import styles from "../../styles/Home.module.scss";
 const RegisterPage = () => {
   return (
     <main className={styles.main}>
-      <RegisterForm></RegisterForm>
+      <RegisterForm />
     </main>
   );
 };
