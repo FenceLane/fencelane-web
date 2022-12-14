@@ -1,0 +1,22 @@
+{
+  "pages": {
+    "register": {
+      "form": {
+        "title": "Rejestracja",
+        "fields": {
+          "name": { "label": "Imię i nazwisko", "placeholder": "Jan Kowalski" },
+          "email": {
+            "label": "E-mail",
+            "placeholder": "example@fencelane.com"
+          },
+          "password": { "label": "Hasło", "placeholder": "Wprowadź hasło" },
+          "repeatPassword": {
+            "label": "Powtórz hasło",
+            "placeholder": "Powtórz hasło"
+          }
+        },
+        "submit": "Zarejestruj się!"
+      }
+    }
+  }
+}
