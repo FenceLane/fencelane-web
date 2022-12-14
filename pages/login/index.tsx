@@ -5,7 +5,7 @@ import styles from "../../styles/Home.module.scss";
 const LoginPage = () => {
   return (
     <main className={styles.main}>
-      <LoginForm></LoginForm>
+      <LoginForm />
     </main>
   );
 };
