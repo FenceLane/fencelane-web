@@ -16,7 +16,7 @@ export default RegisterPage;
 
 export async function getStaticProps({ locale }: GetStaticPropsContext) {
   const localeProps = locale
-    ? await serverSideTranslations(locale, ["common", "footer"])
+    ? await serverSideTranslations(locale, ["common"])
     : undefined;
 
   return {
