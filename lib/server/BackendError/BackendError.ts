@@ -13,7 +13,6 @@ export class BackendError extends Error {
 
   constructor(params: { code: number; label: string; message?: string }) {
     super();
-    this.name = this.name;
     this.stack = new Error().stack;
     this.code = params.code;
     this.label = params.label;
