@@ -2,7 +2,7 @@ import React from "react";
 import { RegisterForm } from "../../components/RegisterForm/RegisterForm";
 import styles from "../../styles/Home.module.scss";
 import { InferPagePropsType } from "../../lib/types";
-import { withServerSideTranslations } from "../../lib/server/middlewares/withServerSideTranslations";
+import { withTranslationProps } from "../../lib/server/middlewares/withTranslationProps";
 
 const RegisterPage = (props: InferPagePropsType<typeof getStaticProps>) => {
   return (
@@ -14,7 +14,7 @@ const RegisterPage = (props: InferPagePropsType<typeof getStaticProps>) => {
 
 export default RegisterPage;
 
-export const getStaticProps = withServerSideTranslations(async () => {
+export const getStaticProps = withTranslationProps(async () => {
   return {
     props: {},
   };

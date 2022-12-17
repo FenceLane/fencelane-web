@@ -2,16 +2,18 @@ import {
   GetServerSidePropsContext,
   GetServerSidePropsResult,
   GetStaticPropsContext,
+  GetStaticPropsResult,
 } from "next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 
-export const withServerSideTranslations =
-  <C extends GetServerSidePropsContext, P>(
-    handler: (
-      context: C
-    ) => Promise<GetServerSidePropsResult<P>> | GetServerSidePropsResult<P>
+type PropsContext = GetServerSidePropsContext | GetStaticPropsContext;
+type PropsResult<P> = GetServerSidePropsResult<P> | GetStaticPropsResult<P>;
+
+export const withTranslationProps =
+  <C extends PropsContext, P>(
+    handler: (context: C) => Promise<PropsResult<P>> | PropsResult<P>
   ) =>
-  async (ctx: GetStaticPropsContext) => {
+  async (ctx: PropsContext) => {
     const localeProps = ctx.locale
       ? await serverSideTranslations(ctx.locale, ["common"])
       : undefined;
