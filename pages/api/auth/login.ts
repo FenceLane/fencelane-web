@@ -1,5 +1,5 @@
 import { withValidatedJSONRequestBody } from "../../../lib/server/middlewares/withValidatedJSONRequestBody";
-import { createCookieSession } from "../../../lib/server/cookies";
+import { createCookieSession } from "../../../lib/server/cookieSessionUtils";
 import { prisma } from "../../../lib/prisma/client";
 import {
   BackendErrorLabel,
@@ -35,7 +35,7 @@ export default withApiMethods({
       });
     }
 
-    await createCookieSession(res, existingUser);
+    await createCookieSession(res, { user: existingUser });
 
     const { password: _, ...userResponse } = existingUser;
 

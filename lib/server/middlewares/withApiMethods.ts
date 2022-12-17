@@ -20,12 +20,19 @@ export const withApiMethods =
       Record<HTTPMethods | "default", (req: R, res: NextApiResponse) => unknown>
     >
   ) =>
-  (req: R, res: NextApiResponse) => {
+  async (req: R, res: NextApiResponse) => {
     const method = req.method as HTTPMethods;
     const handler = handlers[method] || handlers.default;
 
     if (handler) {
-      return handler(req, res);
+      try {
+        return await handler(req, res);
+      } catch (error) {
+        sendBackendError(res, {
+          code: BackendResponseStatusCode.BAD_REQUEST,
+          label: BackendErrorLabel.UNEXPECTED_ERROR,
+        });
+      }
     }
 
     return sendBackendError(res, {

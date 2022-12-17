@@ -11,5 +11,8 @@ const getEncryptionSecret = () => {
 export class ServerConfig {
   static ENV = {
     ENCRYPTION_SECRET: getEncryptionSecret(),
+    REQUIRE_HTTPS: process.env.REQUIRE_HTTPS
+      ? process.env.REQUIRE_HTTPS === "true"
+      : true,
   };
 }
