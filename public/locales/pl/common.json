@@ -1,6 +1,10 @@
 {
+  "general": {
+    "title": "FenceLane"
+  },
   "pages": {
     "register": {
+      "title": "Rejestracja",
       "form": {
         "title": "Rejestracja",
         "fields": {
@@ -17,6 +21,9 @@
         },
         "submit": "Zarejestruj się!"
       }
+    },
+    "login": {
+      "title": "Logowanie"
     }
   }
 }
