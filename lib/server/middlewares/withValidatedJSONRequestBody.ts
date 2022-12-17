@@ -2,9 +2,9 @@ import { NextApiRequest, NextApiResponse } from "next";
 import {
   BackendError,
   BackendErrorLabel,
+  BackendResponseStatusCode,
   sendBackendError,
 } from "../BackendError/BackendError";
-import { RESPONSE_STATUS_CODE } from "../responseStatus";
 import { z } from "zod";
 import { ValidationBackendError } from "../BackendError/ValidationBackendError";
 
@@ -33,7 +33,7 @@ export const withValidatedJSONRequestBody =
       return sendBackendError(
         res,
         new BackendError({
-          code: RESPONSE_STATUS_CODE.BAD_REQUEST,
+          code: BackendResponseStatusCode.BAD_REQUEST,
           label: BackendErrorLabel.INVALID_REQUEST_CONTENT_TYPE,
         })
       );
@@ -46,7 +46,7 @@ export const withValidatedJSONRequestBody =
         return sendBackendError(
           res,
           new ValidationBackendError({
-            code: RESPONSE_STATUS_CODE.UNPROCESSABLE_ENTITY,
+            code: BackendResponseStatusCode.UNPROCESSABLE_ENTITY,
             label: BackendErrorLabel.INVALID_REQUEST_BODY,
             fields: error.issues.flatMap((issue) => `${issue.path}`),
             message: error.name,
@@ -56,7 +56,7 @@ export const withValidatedJSONRequestBody =
       return sendBackendError(
         res,
         new BackendError({
-          code: RESPONSE_STATUS_CODE.BAD_REQUEST,
+          code: BackendResponseStatusCode.BAD_REQUEST,
           label: BackendErrorLabel.UNEXPECTED_ERROR,
         })
       );
