@@ -5,6 +5,7 @@ import { prisma } from "../prisma/client";
 export const SET_COOKIE_HEADER = "Set-Cookie";
 
 const EXPIRE_SESSION_AFTER = 1000 * 60 * 60 * 24 * 4; //4 days in ms
+const REFRESH_SESSION_AFTER = 1000 * 60 * 60 * 24; // 1 day in ms
 
 export const getSessionExpirationDate = () => {
   return new Date(Date.now() + EXPIRE_SESSION_AFTER);
@@ -22,6 +23,12 @@ export const getSessionCookie = ({
 export const getDeleteSessionCookie = () =>
   `authorization=; Expires=${new Date(Date.now()).toUTCString()}; Path=/;`;
 
+export const shouldRefreshSession = (refreshedAt: Date) => {
+  return (
+    new Date(Date.now()) >
+    new Date(refreshedAt.getTime() + REFRESH_SESSION_AFTER)
+  );
+};
 export const createCookieSession = async (
   res: NextApiResponse,
   { user }: { user: User }

@@ -1,4 +1,4 @@
-import { deleteCookieSession } from "../../../lib/server/cookies";
+import { deleteCookieSession } from "../../../lib/server/cookieSessionUtils";
 import { BackendResponseStatusCode } from "../../../lib/server/BackendError/BackendError";
 import { withApiMethods } from "../../../lib/server/middlewares/withApiMethods";
 
