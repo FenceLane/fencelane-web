@@ -3,7 +3,11 @@ import React, { useRef, useState } from "react";
 import { TriangleDownIcon } from "@chakra-ui/icons";
 import { useOnClickOutside } from "../../lib/util/hooks/useOnClickOutside";
 
-export default function ProfileInfoDropdown() {
+interface ProfileInfoTypes {
+  name: string;
+}
+
+export default function ProfileInfoDropdown({ name }: ProfileInfoTypes) {
   const [showDropdown, setShowDropdown] = useState(false);
   const ref = useRef<HTMLDivElement | null>(null);
   useOnClickOutside(ref, () => setShowDropdown(false));
@@ -16,7 +20,7 @@ export default function ProfileInfoDropdown() {
       className="userInfo"
       display="flex"
       flexDirection="row"
-      justifyContent="right"
+      justifyContent="center"
       alignItems="center"
       mr="20px"
       position="relative"
@@ -26,9 +30,10 @@ export default function ProfileInfoDropdown() {
         colorScheme="teal"
         variant="outline"
         h="32px"
+        w="calc(100%-30px)"
         onClick={() => toggleShowDropdown()}
       >
-        Szymon
+        {name}
         <TriangleDownIcon w="10px" ml="15px" />
       </Button>
       <Box

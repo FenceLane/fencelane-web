@@ -7,12 +7,14 @@ import {
   Button,
   Wrap,
   WrapItem,
+  Link,
 } from "@chakra-ui/react";
 import { TriangleDownIcon } from "@chakra-ui/icons";
 import Head from "next/head";
 import React, { useEffect, useRef, useState } from "react";
 import MagazynIcon from "../../public/images/navicons/magazyn.svg";
 import ProfileInfoDropdown from "../ProfileInfoDropdown/ProfileInfoDropdown";
+import NextLink from "next/link";
 
 export interface LayoutProps {
   children: any;
@@ -75,7 +77,7 @@ export const Layout = ({ children }: LayoutProps) => {
             <Image width="22px" src={"./images/logo.svg"}></Image>
             <Image width="126px" src={"./images/textlogo.svg"}></Image>
           </Box>
-          <ProfileInfoDropdown />
+          <ProfileInfoDropdown name={"Mokry Maciek"} />
         </GridItem>
         <GridItem
           pl="2"
@@ -88,7 +90,7 @@ export const Layout = ({ children }: LayoutProps) => {
           alignItems="center"
           h="100%"
           p="25px 0"
-          fontSize={16}
+          fontSize="16px"
           fontWeight="medium"
         >
           <Box
@@ -99,8 +101,45 @@ export const Layout = ({ children }: LayoutProps) => {
           >
             <Box>
               {id.menuoptions.map((option) => (
-                <Box
+                <Link
+                  as={NextLink}
                   key={option}
+                  href=""
+                  _hover={{
+                    textDecoration: "none",
+                  }}
+                >
+                  <Box
+                    display="flex"
+                    flexDir="row"
+                    alignItems="center"
+                    gap="16px"
+                    textTransform="capitalize"
+                    color="#C2C2C2"
+                    height="50px"
+                    width="auto"
+                    _hover={{
+                      color: "white",
+                    }}
+                  >
+                    <Image
+                      width="16px"
+                      src={`./images/navicons/${option}.svg`}
+                    ></Image>
+                    <Text>{option}</Text>
+                  </Box>
+                </Link>
+              ))}
+            </Box>
+            <Box>
+              <Link
+                as={NextLink}
+                href=""
+                _hover={{
+                  textDecoration: "none",
+                }}
+              >
+                <Box
                   display="flex"
                   flexDir="row"
                   alignItems="center"
@@ -112,42 +151,47 @@ export const Layout = ({ children }: LayoutProps) => {
                 >
                   <Image
                     width="16px"
-                    src={`./images/navicons/${option}.svg`}
+                    src={`./images/navicons/ustawienia.svg`}
                   ></Image>
-                  <Text>{option}</Text>
+                  <Text
+                    _hover={{
+                      color: "white",
+                    }}
+                  >
+                    Ustawienia
+                  </Text>
                 </Box>
-              ))}
-            </Box>
-            <Box>
-              <Box
-                display="flex"
-                flexDir="row"
-                alignItems="center"
-                gap="16px"
-                textTransform="capitalize"
-                color="#C2C2C2"
-                height="50px"
-                width="auto"
+              </Link>
+              <Link
+                as={NextLink}
+                href=""
+                _hover={{
+                  textDecoration: "none",
+                }}
               >
-                <Image
-                  width="16px"
-                  src={`./images/navicons/ustawienia.svg`}
-                ></Image>
-                <Text>Ustawienia</Text>
-              </Box>
-              <Box
-                display="flex"
-                flexDir="row"
-                alignItems="center"
-                gap="16px"
-                textTransform="capitalize"
-                color="#C2C2C2"
-                height="50px"
-                width="auto"
-              >
-                <Image width="16px" src={`./images/navicons/pomoc.svg`}></Image>
-                <Text>Pomoc</Text>
-              </Box>
+                <Box
+                  display="flex"
+                  flexDir="row"
+                  alignItems="center"
+                  gap="16px"
+                  textTransform="capitalize"
+                  color="#C2C2C2"
+                  height="50px"
+                  width="auto"
+                >
+                  <Image
+                    width="16px"
+                    src={`./images/navicons/pomoc.svg`}
+                  ></Image>
+                  <Text
+                    _hover={{
+                      color: "white",
+                    }}
+                  >
+                    Pomoc
+                  </Text>
+                </Box>
+              </Link>
             </Box>
           </Box>
         </GridItem>
@@ -155,11 +199,25 @@ export const Layout = ({ children }: LayoutProps) => {
           {children}
         </GridItem>
         <GridItem pl="2" bg="#333" area={"footer"}>
-          <Text textAlign="center">
+          <Text textAlign="center" fontWeight="300" color="white">
             Created by{" "}
-            <a href="https://github.com/FenceLane" rel="noreferrer noopener">
+            <Link
+              as={NextLink}
+              href="https://github.com/FenceLane"
+              rel="noreferrer noopener"
+              fontWeight="600"
+            >
               FenceLane
-            </a>
+            </Link>{" "}
+            for{" "}
+            <Link
+              as={NextLink}
+              href="https://github.com/FenceLane"
+              rel="noreferrer noopener"
+              fontWeight="600"
+            >
+              Drebud
+            </Link>
           </Text>
         </GridItem>
       </Grid>
