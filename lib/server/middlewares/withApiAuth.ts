@@ -9,6 +9,7 @@ import { prisma } from "../../prisma/client";
 import {
   getSessionCookie,
   getSessionExpirationDate,
+  SET_COOKIE_HEADER,
   shouldRefreshSession,
 } from "../cookieSessionUtils";
 
@@ -61,7 +62,7 @@ export const withApiAuth =
         },
       });
       res.setHeader(
-        "Set-Cookie",
+        SET_COOKIE_HEADER,
         getSessionCookie({ sessionId, expireAt: sessionExpirationDate })
       );
     }

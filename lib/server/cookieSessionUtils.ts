@@ -1,6 +1,7 @@
 import { User } from "@prisma/client";
 import { NextApiRequest, NextApiResponse } from "next";
 import { prisma } from "../prisma/client";
+import { ServerConfig } from "./ServerConfig";
 
 export const SET_COOKIE_HEADER = "Set-Cookie";
 
@@ -18,7 +19,9 @@ export const getSessionCookie = ({
   sessionId: string;
   expireAt: Date;
 }) =>
-  `authorization=${sessionId}; Expires=${expireAt.toUTCString()}; Secure; HttpOnly; Path=/;`;
+  `authorization=${sessionId}; Expires=${expireAt.toUTCString()}; ${
+    ServerConfig.ENV.REQUIRE_HTTPS ? "Secure; " : ""
+  }HttpOnly; Path=/;`;
 
 export const getDeleteSessionCookie = () =>
   `authorization=; Expires=${new Date(Date.now()).toUTCString()}; Path=/;`;
@@ -77,7 +80,7 @@ export const deleteCookieSession = async (
   res: NextApiResponse
 ) => {
   //delete cookie
-  res.setHeader("Set-Cookie", getDeleteSessionCookie());
+  res.setHeader(SET_COOKIE_HEADER, getDeleteSessionCookie());
 
   //delete session
   await prisma.session.delete({
