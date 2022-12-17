@@ -6,7 +6,6 @@ import {
 } from "../../../lib/server/cookies";
 import { prisma } from "../../../lib/prisma/client";
 import {
-  BackendError,
   BackendErrorLabel,
   BackendResponseStatusCode,
   sendBackendError,
@@ -25,13 +24,10 @@ export default withApiMethods({
       });
 
       if (existingUser) {
-        return sendBackendError(
-          res,
-          new BackendError({
-            code: BackendResponseStatusCode.CONFLICT,
-            label: BackendErrorLabel.USER_ALREADY_EXISTS,
-          })
-        );
+        return sendBackendError(res, {
+          code: BackendResponseStatusCode.CONFLICT,
+          label: BackendErrorLabel.USER_ALREADY_EXISTS,
+        });
       }
 
       const encryptedPassword = encryptPassword(password);
@@ -55,9 +51,11 @@ export default withApiMethods({
 
       res.setHeader(SET_COOKIE_HEADER, sessionCookie);
 
+      const { password: _, ...userResponse } = newUser;
+
       return res
         .status(BackendResponseStatusCode.SUCCESS)
-        .send({ data: newUser });
+        .send({ data: userResponse });
     }
   ),
 });

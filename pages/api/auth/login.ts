@@ -1,0 +1,63 @@
+import { withValidatedJSONRequestBody } from "../../../lib/server/middlewares/withValidatedJSONRequestBody";
+import {
+  getSessionCookie,
+  getSessionExpirationDate,
+  SET_COOKIE_HEADER,
+} from "../../../lib/server/cookies";
+import { prisma } from "../../../lib/prisma/client";
+import {
+  BackendErrorLabel,
+  BackendResponseStatusCode,
+  sendBackendError,
+} from "../../../lib/server/BackendError/BackendError";
+import { decryptPassword } from "../../../lib/server/PasswordCrypto/PasswordCrypto";
+import { withApiMethods } from "../../../lib/server/middlewares/withApiMethods";
+import { LoginFormDataSchema } from "../../../lib/schema/loginFormData";
+
+export default withApiMethods({
+  POST: withValidatedJSONRequestBody(LoginFormDataSchema)(async (req, res) => {
+    const { email, password } = req.parsedBody;
+
+    const existingUser = await prisma.user.findFirst({
+      where: { email },
+    });
+
+    if (!existingUser) {
+      return sendBackendError(res, {
+        code: BackendResponseStatusCode.UNAUTHORIZED,
+        label: BackendErrorLabel.INVALID_CREDENTIALS,
+      });
+    }
+
+    const doesPasswordMatch =
+      password === decryptPassword(existingUser.password);
+
+    if (!doesPasswordMatch) {
+      return sendBackendError(res, {
+        code: BackendResponseStatusCode.UNAUTHORIZED,
+        label: BackendErrorLabel.INVALID_CREDENTIALS,
+      });
+    }
+
+    //create session
+    const sessionExpirationDate = getSessionExpirationDate();
+
+    const newSession = await prisma.session.create({
+      data: { expiresAt: sessionExpirationDate, userId: existingUser.id },
+    });
+
+    //set cookie
+    const sessionCookie = getSessionCookie(
+      newSession.id,
+      sessionExpirationDate
+    );
+
+    res.setHeader(SET_COOKIE_HEADER, sessionCookie);
+
+    const { password: _, ...userResponse } = existingUser;
+
+    return res
+      .status(BackendResponseStatusCode.SUCCESS)
+      .send({ data: userResponse });
+  }),
+});

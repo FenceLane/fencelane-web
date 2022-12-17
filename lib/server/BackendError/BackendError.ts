@@ -6,12 +6,13 @@ export const BackendErrorLabel = {
   INVALID_REQUEST_BODY: "invalid-request-body",
   UNEXPECTED_ERROR: "unexpected-error",
   METHOD_NOT_ALLOWED: "method-not-allowed",
+  INVALID_CREDENTIALS: "invalid-credentials",
 } as const;
 
 export const BackendResponseStatusCode = {
   SUCCESS: 200,
   BAD_REQUEST: 400, //e.g. body was not included or body was of incorrect content type
-  UNAUTHORIZED: 401, //e.g. user is not logged in
+  UNAUTHORIZED: 401, //e.g. user is not logged in / bad credentials
   FORBIDDEN: 403, //e.g. user with given role does not have permission to access a resource
   NOT_FOUND: 404, //e.g. page does not exist
   METHOD_NOT_ALLOWED: 405, //e.g. requested http method is not defined for this endpoint
@@ -36,8 +37,8 @@ export class BackendError extends Error {
 
 export const sendBackendError = (
   response: NextApiResponse,
-  error: BackendError
+  error: { code: number; label: string; message?: string }
 ) => {
   response.status(error.code);
-  return response.send(error);
+  return response.send(new BackendError(error));
 };

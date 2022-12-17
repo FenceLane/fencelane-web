@@ -1,6 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import {
-  BackendError,
   BackendErrorLabel,
   BackendResponseStatusCode,
   sendBackendError,
@@ -29,11 +28,8 @@ export const withApiMethods =
       return handler(req, res);
     }
 
-    return sendBackendError(
-      res,
-      new BackendError({
-        code: BackendResponseStatusCode.METHOD_NOT_ALLOWED,
-        label: BackendErrorLabel.METHOD_NOT_ALLOWED,
-      })
-    );
+    return sendBackendError(res, {
+      code: BackendResponseStatusCode.METHOD_NOT_ALLOWED,
+      label: BackendErrorLabel.METHOD_NOT_ALLOWED,
+    });
   };

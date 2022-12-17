@@ -1,3 +1,4 @@
+import { NextApiResponse } from "next";
 import { BackendError } from "./BackendError";
 
 export class ValidationBackendError extends BackendError {
@@ -12,3 +13,11 @@ export class ValidationBackendError extends BackendError {
     this.fields = params.fields;
   }
 }
+
+export const sendValidationBackendError = (
+  response: NextApiResponse,
+  error: { code: number; label: string; fields: string[]; message?: string }
+) => {
+  response.status(error.code);
+  return response.send(new ValidationBackendError(error));
+};
