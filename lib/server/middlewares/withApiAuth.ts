@@ -15,7 +15,7 @@ import {
 
 type AuthRequestExtend = { session: Session & { user: User } };
 
-const sendUnauthorised = (res: NextApiResponse) => {
+const sendUnauthorized = (res: NextApiResponse) => {
   return sendBackendError(res, {
     code: BackendResponseStatusCode.UNAUTHORIZED,
     label: BackendErrorLabel.UNAUTHORIZED,
@@ -30,7 +30,7 @@ export const withApiAuth =
     const sessionId = req.cookies.authorization;
 
     if (!sessionId) {
-      return sendUnauthorised(res);
+      return sendUnauthorized(res);
     }
 
     const session = await prisma.session.findUnique({
@@ -43,11 +43,11 @@ export const withApiAuth =
     });
 
     if (!session) {
-      return sendUnauthorised(res);
+      return sendUnauthorized(res);
     }
 
     if (session.expiresAt < new Date()) {
-      return sendUnauthorised(res);
+      return sendUnauthorized(res);
     }
 
     if (shouldRefreshSession(session.updatedAt)) {
