@@ -32,7 +32,7 @@ export default withApiMethods({
         data: { email, name, password: encryptedPassword },
       });
 
-      await createCookieSession(res, newUser);
+      await createCookieSession(res, { user: newUser });
 
       const { password: _, ...userResponse } = newUser;
 

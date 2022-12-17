@@ -35,7 +35,7 @@ export default withApiMethods({
       });
     }
 
-    await createCookieSession(res, existingUser);
+    await createCookieSession(res, { user: existingUser });
 
     const { password: _, ...userResponse } = existingUser;
 

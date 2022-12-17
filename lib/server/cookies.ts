@@ -10,13 +10,22 @@ export const getSessionExpirationDate = () => {
   return new Date(Date.now() + EXPIRE_SESSION_AFTER);
 };
 
-export const getSessionCookie = (sessionId: string, expireAt: Date) =>
+export const getSessionCookie = ({
+  sessionId,
+  expireAt,
+}: {
+  sessionId: string;
+  expireAt: Date;
+}) =>
   `authorization=${sessionId}; Expires=${expireAt.toUTCString()}; Secure; HttpOnly; Path=/;`;
 
 export const getDeleteSessionCookie = () =>
   `authorization=; Expires=${new Date(Date.now()).toUTCString()}; Path=/;`;
 
-export const createCookieSession = async (res: NextApiResponse, user: User) => {
+export const createCookieSession = async (
+  res: NextApiResponse,
+  { user }: { user: User }
+) => {
   //create session
   const sessionExpirationDate = getSessionExpirationDate();
 
@@ -25,11 +34,35 @@ export const createCookieSession = async (res: NextApiResponse, user: User) => {
   });
 
   //set cookie
-  const sessionCookie = getSessionCookie(newSession.id, sessionExpirationDate);
+  const sessionCookie = getSessionCookie({
+    sessionId: newSession.id,
+    expireAt: sessionExpirationDate,
+  });
 
   res.setHeader(SET_COOKIE_HEADER, sessionCookie);
 
   return sessionCookie;
+};
+
+export const renewCookieSession = async (
+  res: NextApiResponse,
+  { sessionId }: { sessionId: string }
+) => {
+  //update session in database
+  const sessionExpirationDate = getSessionExpirationDate();
+  const session = await prisma.session.update({
+    where: { id: sessionId },
+    data: { expiresAt: sessionExpirationDate },
+  });
+
+  //set cookie
+  const sessionCookie = getSessionCookie({
+    sessionId: session.id,
+    expireAt: sessionExpirationDate,
+  });
+  res.setHeader(SET_COOKIE_HEADER, sessionCookie);
+
+  return session;
 };
 
 export const deleteCookieSession = async (
