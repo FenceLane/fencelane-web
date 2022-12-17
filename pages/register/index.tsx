@@ -1,14 +1,16 @@
 import React from "react";
 import { RegisterForm } from "../../components/RegisterForm/RegisterForm";
-import styles from "../../styles/Home.module.scss";
 import { InferPagePropsType } from "../../lib/types";
 import { withTranslationProps } from "../../lib/server/middlewares/withTranslationProps";
+import { Layout } from "../../components/Layout/Layout";
+import { useContent } from "../../lib/util/useContent";
 
 const RegisterPage = (props: InferPagePropsType<typeof getStaticProps>) => {
+  const { t } = useContent("pages.register");
   return (
-    <main className={styles.main}>
+    <Layout title={t("title")} showSidebar={false}>
       <RegisterForm />
-    </main>
+    </Layout>
   );
 };
 

@@ -1,5 +1,6 @@
 import Head from "next/head";
 import { Layout } from "../components/Layout/Layout";
+import { withTranslationProps } from "../lib/server/middlewares/withTranslationProps";
 import styles from "../styles/Home.module.scss";
 
 export default function Home() {
@@ -18,3 +19,9 @@ export default function Home() {
     </>
   );
 }
+
+export const getStaticProps = withTranslationProps(async () => {
+  return {
+    props: {},
+  };
+});

@@ -10,10 +10,13 @@ interface ProfileInfoTypes {
 export default function ProfileInfoDropdown({ name }: ProfileInfoTypes) {
   const [showDropdown, setShowDropdown] = useState(false);
   const ref = useRef<HTMLDivElement | null>(null);
+
   useOnClickOutside(ref, () => setShowDropdown(false));
+
   const toggleShowDropdown = () => {
     setShowDropdown((prev) => !prev);
   };
+
   return (
     <Box
       w={200}
@@ -31,7 +34,7 @@ export default function ProfileInfoDropdown({ name }: ProfileInfoTypes) {
         variant="outline"
         h="32px"
         w="calc(100%-30px)"
-        onClick={() => toggleShowDropdown()}
+        onClick={toggleShowDropdown}
       >
         {name}
         <TriangleDownIcon w="10px" ml="15px" />
