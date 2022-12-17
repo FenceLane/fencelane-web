@@ -1,5 +1,5 @@
 import { User } from "@prisma/client";
-import { NextApiResponse } from "next";
+import { NextApiRequest, NextApiResponse } from "next";
 import { prisma } from "../prisma/client";
 
 export const SET_COOKIE_HEADER = "Set-Cookie";
@@ -30,4 +30,19 @@ export const createCookieSession = async (res: NextApiResponse, user: User) => {
   res.setHeader(SET_COOKIE_HEADER, sessionCookie);
 
   return sessionCookie;
+};
+
+export const deleteCookieSession = async (
+  req: NextApiRequest,
+  res: NextApiResponse
+) => {
+  //delete cookie
+  res.setHeader("Set-Cookie", getDeleteSessionCookie());
+
+  //delete session
+  await prisma.session.delete({
+    where: { id: req.cookies.authorization },
+  });
+
+  return true;
 };
