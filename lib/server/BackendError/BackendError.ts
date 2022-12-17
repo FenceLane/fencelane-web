@@ -7,7 +7,7 @@ export const BackendErrorLabel = {
   UNEXPECTED_ERROR: "unexpected-error",
   METHOD_NOT_ALLOWED: "method-not-allowed",
   INVALID_CREDENTIALS: "invalid-credentials",
-  UNAUTHORIZED: "unauthorised",
+  UNAUTHORIZED: "unauthorized",
 } as const;
 
 export const BackendResponseStatusCode = {
