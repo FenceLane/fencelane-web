@@ -1,9 +1,5 @@
 import { withValidatedJSONRequestBody } from "../../../lib/server/middlewares/withValidatedJSONRequestBody";
-import {
-  getSessionCookie,
-  getSessionExpirationDate,
-  SET_COOKIE_HEADER,
-} from "../../../lib/server/cookies";
+import { createCookieSession } from "../../../lib/server/cookies";
 import { prisma } from "../../../lib/prisma/client";
 import {
   BackendErrorLabel,
@@ -39,20 +35,7 @@ export default withApiMethods({
       });
     }
 
-    //create session
-    const sessionExpirationDate = getSessionExpirationDate();
-
-    const newSession = await prisma.session.create({
-      data: { expiresAt: sessionExpirationDate, userId: existingUser.id },
-    });
-
-    //set cookie
-    const sessionCookie = getSessionCookie(
-      newSession.id,
-      sessionExpirationDate
-    );
-
-    res.setHeader(SET_COOKIE_HEADER, sessionCookie);
+    await createCookieSession(res, existingUser);
 
     const { password: _, ...userResponse } = existingUser;
 
