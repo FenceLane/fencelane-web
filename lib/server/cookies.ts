@@ -1,3 +1,7 @@
+import { User } from "@prisma/client";
+import { NextApiResponse } from "next";
+import { prisma } from "../prisma/client";
+
 export const SET_COOKIE_HEADER = "Set-Cookie";
 
 const EXPIRE_SESSION_AFTER = 1000 * 60 * 60 * 24 * 4; //4 days in ms
@@ -11,3 +15,19 @@ export const getSessionCookie = (sessionId: string, expireAt: Date) =>
 
 export const getDeleteSessionCookie = () =>
   `authorization=; Expires=${new Date(Date.now()).toUTCString()}; Path=/;`;
+
+export const createCookieSession = async (res: NextApiResponse, user: User) => {
+  //create session
+  const sessionExpirationDate = getSessionExpirationDate();
+
+  const newSession = await prisma.session.create({
+    data: { expiresAt: sessionExpirationDate, userId: user.id },
+  });
+
+  //set cookie
+  const sessionCookie = getSessionCookie(newSession.id, sessionExpirationDate);
+
+  res.setHeader(SET_COOKIE_HEADER, sessionCookie);
+
+  return sessionCookie;
+};
