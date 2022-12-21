@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Formik, Form, Field, FormikHelpers } from "formik";
 import {
   Box,
@@ -13,20 +13,28 @@ import {
   Text,
 } from "@chakra-ui/react";
 import Link from "next/link";
-
-export interface FormTypes {
-  email: string;
-  password: string;
-}
+import { LoginFormData } from "../../lib/schema/loginFormData";
+import { usePostLogin } from "../../lib/api/hooks/auth";
+import axios from "axios";
+import { useRouter } from "next/router";
 
 export const LoginForm = () => {
+  const { mutate, error, isSuccess, isLoading } = usePostLogin();
+  const router = useRouter();
+
   const handleSubmit = (
-    values: FormTypes,
-    actions: FormikHelpers<FormTypes>
+    values: LoginFormData,
+    actions: FormikHelpers<LoginFormData>
   ) => {
-    alert(JSON.stringify(values));
-    actions.resetForm();
+    mutate(values);
   };
+
+  useEffect(() => {
+    if (isSuccess) {
+      router.push("/");
+    }
+  }, [router, isSuccess]);
+
   return (
     <Box minW="400px">
       <Center mb="20px">
@@ -39,7 +47,7 @@ export const LoginForm = () => {
         }}
         onSubmit={handleSubmit}
       >
-        {({ errors, touched }) => (
+        {({ errors, touched, dirty }) => (
           <Form>
             <FormControl isInvalid={!!errors.email && touched.email} mb="15px">
               <FormLabel htmlFor="email">E-mail</FormLabel>
@@ -49,6 +57,7 @@ export const LoginForm = () => {
                 type="email"
                 name="email"
                 placeholder="example@fencelane.com"
+                required
               />
               <FormErrorMessage>{errors.email}</FormErrorMessage>
             </FormControl>
@@ -63,8 +72,12 @@ export const LoginForm = () => {
                 type="password"
                 name="password"
                 placeholder="Wprowadź hasło"
+                required
               />
               <FormErrorMessage>{errors.password}</FormErrorMessage>
+              {!dirty &&
+                axios.isAxiosError(error) &&
+                error.response?.data.label}
             </FormControl>
             <Flex justifyContent={"flex-end"}>
               <Text as={Link} href="/register" color="blue.500">
@@ -72,7 +85,14 @@ export const LoginForm = () => {
               </Text>
             </Flex>
             <Center>
-              <Button mt="4" type="submit" colorScheme="teal" variant="outline">
+              <Button
+                isLoading={isLoading}
+                isDisabled={isLoading}
+                mt="4"
+                type="submit"
+                colorScheme="teal"
+                variant="outline"
+              >
                 Zaloguj się
               </Button>
             </Center>

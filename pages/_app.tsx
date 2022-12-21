@@ -2,6 +2,8 @@ import "../styles/globals.scss";
 import type { AppProps } from "next/app";
 import { appWithTranslation } from "next-i18next";
 import { ChakraProvider, extendTheme } from "@chakra-ui/react";
+import { QueryClientProvider } from "@tanstack/react-query";
+import { queryClient } from "../lib/api/queryClient";
 
 const theme = extendTheme({
   fonts: {
@@ -12,9 +14,11 @@ const theme = extendTheme({
 
 function App({ Component, pageProps }: AppProps) {
   return (
-    <ChakraProvider theme={theme}>
-      <Component {...pageProps} />
-    </ChakraProvider>
+    <QueryClientProvider client={queryClient}>
+      <ChakraProvider theme={theme}>
+        <Component {...pageProps} />
+      </ChakraProvider>
+    </QueryClientProvider>
   );
 }
 

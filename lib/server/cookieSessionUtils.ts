@@ -1,6 +1,6 @@
 import { User } from "@prisma/client";
 import { NextApiRequest, NextApiResponse } from "next";
-import { prisma } from "../prisma/client";
+import { prismaClient } from "../prisma/prismaClient";
 import { ServerConfig } from "./ServerConfig";
 
 export const SET_COOKIE_HEADER = "Set-Cookie";
@@ -39,7 +39,7 @@ export const createCookieSession = async (
   //create session
   const sessionExpirationDate = getSessionExpirationDate();
 
-  const newSession = await prisma.session.create({
+  const newSession = await prismaClient.session.create({
     data: { expiresAt: sessionExpirationDate, userId: user.id },
   });
 
@@ -60,7 +60,7 @@ export const renewCookieSession = async (
 ) => {
   //update session in database
   const sessionExpirationDate = getSessionExpirationDate();
-  const session = await prisma.session.update({
+  const session = await prismaClient.session.update({
     where: { id: sessionId },
     data: { expiresAt: sessionExpirationDate },
   });
@@ -83,7 +83,7 @@ export const deleteCookieSession = async (
   res.setHeader(SET_COOKIE_HEADER, getDeleteSessionCookie());
 
   //delete session
-  await prisma.session.delete({
+  await prismaClient.session.delete({
     where: { id: req.cookies.authorization },
   });
 

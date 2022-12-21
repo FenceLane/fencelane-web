@@ -1,6 +1,6 @@
 import { Session, User } from "@prisma/client";
 import { GetServerSidePropsContext, GetServerSidePropsResult } from "next";
-import { prisma } from "../../prisma/client";
+import { prismaClient } from "../../prisma/prismaClient";
 import {
   getDeleteSessionCookie,
   getSessionCookie,
@@ -34,7 +34,7 @@ export const withServerSideAuth =
         };
       }
 
-      const session = await prisma.session.findUnique({
+      const session = await prismaClient.session.findUnique({
         include: {
           user: true,
         },
@@ -53,7 +53,7 @@ export const withServerSideAuth =
       if (shouldRefreshSession(session.updatedAt)) {
         const sessionExpirationDate = getSessionExpirationDate();
 
-        await prisma.session.update({
+        await prismaClient.session.update({
           where: {
             id: sessionId,
           },

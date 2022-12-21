@@ -6,8 +6,9 @@ import { useContent } from "../../lib/util/useContent";
 
 const LoginPage = () => {
   const { t } = useContent("pages.login");
+
   return (
-    <Layout title={t("title")} showSidebar={false}>
+    <Layout title={t("title")} hideSidebar>
       <LoginForm />
     </Layout>
   );

@@ -8,13 +8,13 @@ import { useContent } from "../../lib/util/useContent";
 export interface LayoutProps {
   children: ReactNode;
   title?: string;
-  showSidebar?: boolean;
+  hideSidebar?: boolean;
 }
 
 export const Layout = ({
   children,
   title,
-  showSidebar = true,
+  hideSidebar = false,
 }: LayoutProps) => {
   const { t } = useContent("general");
   const id = {
@@ -32,17 +32,17 @@ export const Layout = ({
     ],
   };
 
-  const templateAreas = showSidebar
+  const templateAreas = hideSidebar
     ? `
-  "header header"
-  "nav main"
-  "nav footer"
-  `
+    "header header"
+    "main main"
+    "footer footer"
+    `
     : `
-  "header header"
-  "main main"
-  "footer footer"
-  `;
+    "header header"
+    "nav main"
+    "nav footer"
+    `;
 
   return (
     <>
@@ -81,7 +81,7 @@ export const Layout = ({
           </Box>
           <ProfileInfoDropdown name={"Mokry Maciek"} />
         </GridItem>
-        {showSidebar && (
+        {!hideSidebar && (
           <GridItem
             pl="2"
             bg="#333"
