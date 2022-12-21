@@ -1,5 +1,6 @@
 import Head from "next/head";
 import { Layout } from "../components/Layout/Layout";
+import { withServerSideAuth } from "../lib/server/middlewares/withServerSideAuth";
 import { withTranslationProps } from "../lib/server/middlewares/withTranslationProps";
 import styles from "../styles/Home.module.scss";
 
@@ -20,8 +21,10 @@ export default function Home() {
   );
 }
 
-export const getStaticProps = withTranslationProps(async () => {
-  return {
-    props: {},
-  };
-});
+export const getServerSideProps = withServerSideAuth(
+  withTranslationProps(async () => {
+    return {
+      props: {},
+    };
+  })
+);
