@@ -8,7 +8,7 @@ import { useContent } from "../../lib/util/hooks/useContent";
 const RegisterPage = (props: InferPagePropsType<typeof getStaticProps>) => {
   const { t } = useContent("pages.register");
   return (
-    <Layout title={t("title")} showSidebar={false}>
+    <Layout title={t("title")} hideSidebar>
       <RegisterForm />
     </Layout>
   );

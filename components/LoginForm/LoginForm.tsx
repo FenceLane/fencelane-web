@@ -49,7 +49,7 @@ export const LoginForm = () => {
         initialValues={initialValies}
         onSubmit={(data) => login(data)}
       >
-        {({ errors, touched, setErrors }) => (
+        {({ errors, touched }) => (
           <Form noValidate>
             <FormControl isInvalid={!!errors.email && touched.email} mb="15px">
               <FormLabel htmlFor="email">

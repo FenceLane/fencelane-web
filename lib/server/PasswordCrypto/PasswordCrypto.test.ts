@@ -1,6 +1,6 @@
 import { decryptPassword, encryptPassword } from "./PasswordCrypto";
 
-jest.mock("../ServerConfig", () => ({
+jest.mock("../../AppConfig/ServerConfig", () => ({
   ServerConfig: {
     ENV: { ENCRYPTION_SECRET: "123" },
   },
