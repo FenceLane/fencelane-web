@@ -2,6 +2,20 @@
   "general": {
     "title": "FenceLane"
   },
+  "errors": {
+    "form": {
+      "fieldRequired": "To pole jest wymagane"
+    },
+    "backendErrorLabel": {
+      "invalid-credentials": "Niepoprawne dane!",
+      "user-already-exists": "Użytkownik z tym adresem e-mail już istnieje!",
+      "invalid-request-content-type": "Niepoprawny format danych!",
+      "invalid-request-body": "Niepoprawny format danych!",
+      "unexpected-error": "Wystąpił błąd, spróbuj ponownie później lub skontaktuj się z administratorem.",
+      "method-not-allowed": "Niedozwolona operacja, skontaktuj się z administratorem.",
+      "unauthorized": "Brak uprawnień!"
+    }
+  },
   "pages": {
     "register": {
       "title": "Rejestracja",
@@ -23,7 +37,25 @@
       }
     },
     "login": {
-      "title": "Logowanie"
+      "title": "Logowanie",
+      "noAccount": "Nie masz konta? Zarejestruj się.",
+      "login": "Zaloguj się.",
+      "form": {
+        "title": "Logowanie",
+        "fields": {
+          "email": {
+            "label": "E-mail",
+            "placeholder": "example@fencelane.com",
+            "error": "Nieprawidłowy adres e-mail"
+          },
+          "password": {
+            "label": "Hasło",
+            "placeholder": "Wprowadź hasło",
+            "error": "Nieprawidłowe hasło"
+          }
+        },
+        "submit": { "label": "Zaloguj się!" }
+      }
     }
   }
 }

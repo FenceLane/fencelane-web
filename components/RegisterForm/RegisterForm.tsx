@@ -10,7 +10,7 @@ import {
   FormLabel,
   FormErrorMessage,
 } from "@chakra-ui/react";
-import { useContent } from "../../lib/util/useContent";
+import { useContent } from "../../lib/util/hooks/useContent";
 
 export interface FormTypes {
   name: string;

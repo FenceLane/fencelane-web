@@ -1,7 +1,7 @@
 import { User } from "@prisma/client";
 import { NextApiRequest, NextApiResponse } from "next";
 import { prismaClient } from "../prisma/prismaClient";
-import { ServerConfig } from "./ServerConfig";
+import { ServerConfig } from "../AppConfig/ServerConfig";
 
 export const SET_COOKIE_HEADER = "Set-Cookie";
 

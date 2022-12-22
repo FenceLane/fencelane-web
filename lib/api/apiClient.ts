@@ -1,9 +1,9 @@
 import axios from "axios";
-import { CONTENT_TYPE } from "../server/middlewares/withValidatedJSONRequestBody";
-import { ServerConfig } from "../server/ServerConfig";
+import { ClientConfig } from "../AppConfig/ClientConfig";
 
 const apiPath = (endpoint: string) => {
-  const baseUrl = "http://localhost:3000";
+  const baseUrl = ClientConfig.ENV.NEXT_PUBLIC_BASE_URL;
+
   if (!baseUrl) {
     throw new Error(`NEXT_PUBLIC_BASE_URL env variable was not set!`);
   }

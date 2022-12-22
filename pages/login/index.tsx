@@ -2,7 +2,7 @@ import React from "react";
 import { Layout } from "../../components/Layout/Layout";
 import { LoginForm } from "../../components/LoginForm/LoginForm";
 import { withTranslationProps } from "../../lib/server/middlewares/withTranslationProps";
-import { useContent } from "../../lib/util/useContent";
+import { useContent } from "../../lib/util/hooks/useContent";
 
 const LoginPage = () => {
   const { t } = useContent("pages.login");
