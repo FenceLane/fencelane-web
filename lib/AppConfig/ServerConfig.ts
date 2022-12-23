@@ -1,12 +1,9 @@
 const getEncryptionSecret = () => {
   const secret = process.env.ENCRYPTION_SECRET;
   if (!secret) {
-    if (process.env.NODE_ENV === "production") {
-      throw new Error(
-        "Required ENCRYPTION_SECRET env variable was not provided."
-      );
-    }
-    return "secret";
+    throw new Error(
+      "Required ENCRYPTION_SECRET env variable was not provided."
+    );
   }
   return secret;
 };
