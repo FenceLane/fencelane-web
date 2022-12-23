@@ -15,7 +15,7 @@ describe("PasswordCrypto", () => {
     expect(decrypted).toEqual(password);
   });
 
-  it("encrypts and decryptswhen using special symbols", () => {
+  it("encrypts and decrypts when using special symbols", () => {
     const password = [`!@#$%^&*()_+}{1234567890-=[];'\:"|/.,<>?~`, "`"].join(
       ""
     );
