@@ -3,10 +3,12 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "start": "NODE_ENV=production node server.js",
+    "dev": "node server.js",
+    "start:no-ssl": "next start",
+    "dev:no-ssl": "next dev",
     "build": "next build",
     "test": "yarn tsc --noEmit && yarn jest",
-    "start": "next start",
     "prettier": "prettier --write --ignore-path .prettierignore \"**/*.{json,md,yml}\"",
     "husky:prepare": "husky install",
     "postinstall": "yarn husky:prepare"
