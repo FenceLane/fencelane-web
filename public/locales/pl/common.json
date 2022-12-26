@@ -3,7 +3,7 @@
     "title": "FenceLane",
     "layout": {
       "header": {
-        "dropdown": { "profile": "Mój profile", "logout": "Wyloguj się" }
+        "dropdown": { "profile": "Mój profil", "logout": "Wyloguj się" }
       }
     }
   },

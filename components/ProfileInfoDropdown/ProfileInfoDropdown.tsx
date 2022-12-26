@@ -7,6 +7,7 @@ import { useContent } from "../../lib/util/hooks/useContent";
 import { mapAxiosErrorToLabel } from "../../lib/server/BackendError/BackendError";
 import { toastError, toastInfo } from "../../lib/util/toasts";
 import { useRouter } from "next/router";
+import Link from "next/link";
 
 interface ProfileInfoTypes {
   name: string;
@@ -25,7 +26,7 @@ export default function ProfileInfoDropdown({ name }: ProfileInfoTypes) {
   };
 
   const handleLogout = () => {
-    apiClient
+    apiClient.auth
       .deleteLogout()
       .then(() => toastInfo(t("success.logout")))
       .catch((error) => {
@@ -73,7 +74,13 @@ export default function ProfileInfoDropdown({ name }: ProfileInfoTypes) {
       >
         <Wrap spacing={4} w="100%">
           <WrapItem w="100%">
-            <Button colorScheme="teal" variant="outline" width="100%">
+            <Button
+              href="/profile"
+              as={Link}
+              colorScheme="teal"
+              variant="outline"
+              width="100%"
+            >
               {t("general.layout.header.dropdown.profile")}
             </Button>
           </WrapItem>

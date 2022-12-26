@@ -14,6 +14,14 @@ const postLogin = async (data: { email: string; password: string }) => {
   return axios.post(apiPath("auth/login"), data);
 };
 
+const postRegister = async (data: {
+  name: string;
+  email: string;
+  password: string;
+}) => {
+  return axios.post(apiPath("auth/register"), data);
+};
+
 const deleteLogout = async () => {
   return axios.delete(apiPath("auth/logout"));
 };
@@ -23,7 +31,10 @@ const getMe = async () => {
 };
 
 export const apiClient = {
-  postLogin,
-  deleteLogout,
-  getMe,
+  auth: {
+    postLogin,
+    postRegister,
+    deleteLogout,
+    getMe,
+  },
 };

@@ -1,5 +1,5 @@
-import React from "react";
-import { Formik, Form, Field, FormikHelpers } from "formik";
+import React, { useEffect } from "react";
+import { Formik, Form, Field } from "formik";
 import {
   Box,
   Center,
@@ -13,6 +13,11 @@ import {
 } from "@chakra-ui/react";
 import Link from "next/link";
 import { useContent } from "../../lib/util/hooks/useContent";
+import { useRouter } from "next/router";
+import { usePostRegister } from "../../lib/api/hooks/auth";
+import { RegisterFormDataSchema } from "../../lib/schema/registerFormData";
+import { toFormikValidationSchema } from "zod-formik-adapter";
+import { mapAxiosErrorToLabel } from "../../lib/server/BackendError/BackendError";
 
 export interface FormTypes {
   name: string;
@@ -29,22 +34,29 @@ const registerInitialValues = {
 };
 
 export const RegisterForm = () => {
+  const router = useRouter();
   const { t } = useContent();
 
-  const handleSubmit = (
-    values: FormTypes,
-    actions: FormikHelpers<FormTypes>
-  ) => {
-    alert(JSON.stringify(values));
-    actions.resetForm();
-  };
+  const { mutate: register, error, isSuccess, isLoading } = usePostRegister();
+
+  useEffect(() => {
+    if (isSuccess) {
+      router.push("/");
+    }
+  }, [router, isSuccess]);
 
   return (
     <Box minW="400px">
       <Center mb="20px">
         <Heading>{t("pages.register.form.title")}</Heading>
       </Center>
-      <Formik initialValues={registerInitialValues} onSubmit={handleSubmit}>
+      <Formik
+        validateOnChange={false}
+        validateOnBlur={false}
+        validationSchema={toFormikValidationSchema(RegisterFormDataSchema)}
+        initialValues={registerInitialValues}
+        onSubmit={(data) => register(data)}
+      >
         {({ errors, touched }) => (
           <Form>
             <FormControl isInvalid={!!errors.name && touched.name} mb="15px">
@@ -107,6 +119,13 @@ export const RegisterForm = () => {
               />
               <FormErrorMessage>{errors.checkPassword}</FormErrorMessage>
             </FormControl>
+
+            <FormControl isInvalid={touched && !!error} mb="15px">
+              <FormErrorMessage>
+                {t(`errors.backendErrorLabel.${mapAxiosErrorToLabel(error)}`)}
+              </FormErrorMessage>
+            </FormControl>
+
             <Center>
               <Button mt="4" type="submit" colorScheme="teal" variant="outline">
                 {t("pages.register.form.submit")}
