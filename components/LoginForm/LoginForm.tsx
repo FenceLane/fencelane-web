@@ -103,11 +103,9 @@ export const LoginForm = () => {
           </Form>
         )}
       </Formik>
-      <Flex justifyContent={"flex-end"}>
-        <Text as={Link} href="/register" color="blue.500">
-          {t("pages.login.noAccount")}
-        </Text>
-      </Flex>
+      <Text as={Link} href="/register" color="blue.500">
+        {t("pages.login.noAccount")}
+      </Text>
     </Box>
   );
 };

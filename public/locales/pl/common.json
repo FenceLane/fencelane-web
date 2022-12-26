@@ -25,6 +25,7 @@
   "pages": {
     "register": {
       "title": "Rejestracja",
+      "hasAccount": "Masz już konto? Zaloguj się.",
       "form": {
         "title": "Rejestracja",
         "fields": {

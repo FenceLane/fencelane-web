@@ -16,7 +16,17 @@ const LoginPage = () => {
 
 export default LoginPage;
 
-export const getStaticProps = withTranslationProps(async () => {
+export const getServerSideProps = withTranslationProps(async ({ req }) => {
+  const sessionId = req.cookies.authorization;
+  if (sessionId) {
+    return {
+      redirect: {
+        permanent: true,
+        destination: "/",
+      },
+    };
+  }
+
   return {
     props: {},
   };
