@@ -2,6 +2,14 @@
 
 ## Getting Started
 
+### Add entry to hosts file
+
+On mac it's `/etc/hosts` file:
+
+```
+127.0.0.1 local.fencelane.com
+```
+
 ### Enable SSL cert locally:
 
 1. install [mkcert](https://github.com/FiloSottile/mkcert)
