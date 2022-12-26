@@ -19,31 +19,34 @@ import { RegisterFormDataSchema } from "../../lib/schema/registerFormData";
 import { toFormikValidationSchema } from "zod-formik-adapter";
 import { mapAxiosErrorToLabel } from "../../lib/server/BackendError/BackendError";
 
-export interface FormTypes {
-  name: string;
-  email: string;
-  password: string;
-  checkPassword: string;
-}
-
 const registerInitialValues = {
   name: "",
   email: "",
+  phone: "",
   password: "",
-  checkPassword: "",
+  confirmPassword: "",
 };
 
 export const RegisterForm = () => {
   const router = useRouter();
   const { t } = useContent();
 
-  const { mutate: register, error, isSuccess, isLoading } = usePostRegister();
+  const { mutate: register, error, isSuccess } = usePostRegister();
 
   useEffect(() => {
     if (isSuccess) {
       router.push("/");
     }
   }, [router, isSuccess]);
+
+  const validateConfirmPassword = (
+    password: string,
+    confirmPassword: string
+  ) => {
+    if (password !== confirmPassword) {
+      return t("pages.register.form.fields.confirmPassword.error");
+    }
+  };
 
   return (
     <Box minW="400px">
@@ -57,8 +60,8 @@ export const RegisterForm = () => {
         initialValues={registerInitialValues}
         onSubmit={(data) => register(data)}
       >
-        {({ errors, touched }) => (
-          <Form>
+        {({ errors, touched, values }) => (
+          <Form noValidate>
             <FormControl isInvalid={!!errors.name && touched.name} mb="15px">
               <FormLabel htmlFor="name">
                 {t("pages.register.form.fields.name.label")}
@@ -84,6 +87,19 @@ export const RegisterForm = () => {
               />
               <FormErrorMessage>{errors.email}</FormErrorMessage>
             </FormControl>
+            <FormControl isInvalid={!!errors.phone && touched.phone} mb="15px">
+              <FormLabel htmlFor="phone">
+                {t("pages.register.form.fields.phone.label")}
+              </FormLabel>
+              <Field
+                as={Input}
+                id="phone"
+                type="tel"
+                name="phone"
+                placeholder={t("pages.register.form.fields.phone.placeholder")}
+              />
+              <FormErrorMessage>{errors.phone}</FormErrorMessage>
+            </FormControl>
             <FormControl
               isInvalid={!!errors.password && touched.password}
               mb="15px"
@@ -103,21 +119,24 @@ export const RegisterForm = () => {
               <FormErrorMessage>{errors.password}</FormErrorMessage>
             </FormControl>
             <FormControl
-              isInvalid={!!errors.checkPassword && touched.checkPassword}
+              isInvalid={!!errors.confirmPassword && touched.confirmPassword}
             >
-              <FormLabel htmlFor="checkPassword">
-                {t("pages.register.form.fields.repeatPassword.label")}
+              <FormLabel htmlFor="confirmPassword">
+                {t("pages.register.form.fields.confirmPassword.label")}
               </FormLabel>
               <Field
                 as={Input}
-                id="checkPassword"
+                id="confirmPassword"
                 type="password"
-                name="checkPassword"
+                name="confirmPassword"
                 placeholder={t(
-                  "pages.register.form.fields.repeatPassword.placeholder"
+                  "pages.register.form.fields.confirmPassword.placeholder"
                 )}
+                validate={(value: string) =>
+                  validateConfirmPassword(values.password, value)
+                }
               />
-              <FormErrorMessage>{errors.checkPassword}</FormErrorMessage>
+              <FormErrorMessage>{errors.confirmPassword}</FormErrorMessage>
             </FormControl>
 
             <FormControl isInvalid={touched && !!error} mb="15px">

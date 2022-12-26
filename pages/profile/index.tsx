@@ -61,6 +61,8 @@ export default function Home({
             <p>id: {user.id}</p>
             <p>nazwa: {user.name}</p>
             <p>email: {user.email}</p>
+            <p>telefon: {user.phone}</p>
+            <p>rola: {user.role}</p>
           </pre>
           <h3>Informacje o bieżącej sessji:</h3>
           <pre>

@@ -9,7 +9,8 @@
   },
   "errors": {
     "form": {
-      "fieldRequired": "To pole jest wymagane"
+      "fieldRequired": "To pole jest wymagane",
+      "regex": "Nieprawidłowy format"
     },
     "backendErrorLabel": {
       "invalid-credentials": "Niepoprawne dane!",
@@ -35,12 +36,19 @@
           "name": { "label": "Imię i nazwisko", "placeholder": "Jan Kowalski" },
           "email": {
             "label": "E-mail",
-            "placeholder": "example@fencelane.com"
+            "placeholder": "example@fencelane.com",
+            "error": "Nieprawidłowy adres e-mail"
+          },
+          "phone": {
+            "label": "Nr telefonu",
+            "placeholder": "555 444 333",
+            "error": "Nieprawidłowy number telefonu"
           },
           "password": { "label": "Hasło", "placeholder": "Wprowadź hasło" },
-          "repeatPassword": {
-            "label": "Powtórz hasło",
-            "placeholder": "Powtórz hasło"
+          "confirmPassword": {
+            "label": "Potwierdź hasło",
+            "placeholder": "Powtórz hasło",
+            "error": "Podane hasła nie są takie same"
           }
         },
         "submit": "Zarejestruj się!"

@@ -37,7 +37,15 @@ export const withServerSideAuth =
 
       const session = await prismaClient.session.findUnique({
         include: {
-          user: { select: { email: true, name: true, id: true } },
+          user: {
+            select: {
+              email: true,
+              name: true,
+              phone: true,
+              role: true,
+              id: true,
+            },
+          },
         },
         where: {
           id: sessionId,

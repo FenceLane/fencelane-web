@@ -1,5 +1,6 @@
 import axios from "axios";
 import { ClientConfig } from "../AppConfig/ClientConfig";
+import { USER_ROLE } from "../types";
 
 const apiPath = (endpoint: string) => {
   const baseUrl = ClientConfig.ENV.NEXT_PUBLIC_BASE_URL;
@@ -14,12 +15,26 @@ const postLogin = async (data: { email: string; password: string }) => {
   return axios.post(apiPath("auth/login"), data);
 };
 
-const postRegister = async (data: {
+const postRegister = async ({
+  name,
+  email,
+  phone,
+  role = USER_ROLE.USER,
+  password,
+}: {
   name: string;
   email: string;
+  phone: string;
   password: string;
+  role?: USER_ROLE;
 }) => {
-  return axios.post(apiPath("auth/register"), data);
+  return axios.post(apiPath("auth/register"), {
+    name,
+    email,
+    phone,
+    role,
+    password,
+  });
 };
 
 const deleteLogout = async () => {
