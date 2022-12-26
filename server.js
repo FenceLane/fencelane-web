@@ -17,8 +17,6 @@ const port = 3000;
 const app = next({ dev, hostname, port });
 const handle = app.getRequestHandler();
 
-console.log(process.env);
-
 const httpsOptions = {
   key: fs.readFileSync("./cert/development-key.pem"),
   cert: fs.readFileSync("./cert/development-cert.pem"),
@@ -36,6 +34,6 @@ app.prepare().then(() => {
     }
   }).listen(port, (err) => {
     if (err) throw err;
-    console.log(`> FenceLane ready on https://${hostname}:${port}`);
+    console.log(`> FenceLane ready on ${hostname}`);
   });
 });

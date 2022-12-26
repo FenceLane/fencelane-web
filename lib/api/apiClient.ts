@@ -14,6 +14,11 @@ const postLogin = async (data: { email: string; password: string }) => {
   return axios.post(apiPath("auth/login"), data);
 };
 
+const deleteLogout = async () => {
+  return axios.delete(apiPath("auth/logout"));
+};
+
 export const apiClient = {
   postLogin,
+  deleteLogout,
 };

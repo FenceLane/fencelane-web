@@ -1,6 +1,7 @@
-import { Session, User } from "@prisma/client";
+import { Session } from "@prisma/client";
 import { GetServerSidePropsContext, GetServerSidePropsResult } from "next";
 import { prismaClient } from "../../prisma/prismaClient";
+import { UserInfo } from "../../types";
 import {
   getDeleteSessionCookie,
   getSessionCookie,
@@ -9,7 +10,7 @@ import {
   shouldRefreshSession,
 } from "../cookieSessionUtils";
 
-type AuthContextExtend = { session: Session & { user: User } };
+type AuthContextExtend = { session: Session & { user: UserInfo } };
 
 const loginPageRedirect = {
   permanent: false,
@@ -36,7 +37,7 @@ export const withServerSideAuth =
 
       const session = await prismaClient.session.findUnique({
         include: {
-          user: true,
+          user: { select: { email: true, name: true, id: true } },
         },
         where: {
           id: sessionId,

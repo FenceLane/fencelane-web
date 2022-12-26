@@ -4,19 +4,24 @@ import React, { ReactNode } from "react";
 import ProfileInfoDropdown from "../ProfileInfoDropdown/ProfileInfoDropdown";
 import NextLink from "next/link";
 import { useContent } from "../../lib/util/hooks/useContent";
+import "react-toastify/dist/ReactToastify.css";
+import { UserInfo } from "../../lib/types";
 
 export interface LayoutProps {
   children: ReactNode;
   title?: string;
+  user?: UserInfo;
   hideSidebar?: boolean;
 }
 
 export const Layout = ({
   children,
   title,
+  user,
   hideSidebar = false,
 }: LayoutProps) => {
   const { t } = useContent("general");
+
   const id = {
     name: "",
     photo: "",
@@ -79,7 +84,7 @@ export const Layout = ({
             <Image width="22px" src={"./images/logo.svg"} />
             <Image width="126px" src={"./images/textlogo.svg"} />
           </Box>
-          <ProfileInfoDropdown name={"Mokry Maciek"} />
+          {user && <ProfileInfoDropdown name={user.name || ""} />}
         </GridItem>
         {!hideSidebar && (
           <GridItem

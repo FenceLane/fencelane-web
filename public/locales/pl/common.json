@@ -1,6 +1,11 @@
 {
   "general": {
-    "title": "FenceLane"
+    "title": "FenceLane",
+    "layout": {
+      "header": {
+        "dropdown": { "profile": "Mój profile", "logout": "Wyloguj się" }
+      }
+    }
   },
   "errors": {
     "form": {
@@ -16,6 +21,7 @@
       "unauthorized": "Brak uprawnień!"
     }
   },
+  "success": { "logout": "Pomyślnie wylogowano." },
   "pages": {
     "register": {
       "title": "Rejestracja",
