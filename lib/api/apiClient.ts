@@ -26,6 +26,10 @@ const deleteLogout = async () => {
   return axios.delete(apiPath("auth/logout"));
 };
 
+const deleteSelfUser = async () => {
+  return axios.delete(apiPath("auth/delete"));
+};
+
 const getMe = async () => {
   return axios.get(apiPath("auth/me"));
 };
@@ -35,6 +39,7 @@ export const apiClient = {
     postLogin,
     postRegister,
     deleteLogout,
+    deleteSelfUser,
     getMe,
   },
 };

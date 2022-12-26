@@ -32,7 +32,19 @@ export default function Home({
       });
   };
 
-  const handleDeleteAccount = () => {};
+  const handleDeleteAccount = () => {
+    apiClient.auth
+      .deleteSelfUser()
+      .then(() => toastInfo(t("success.delete")))
+      .catch((error) => {
+        toastError(
+          t(`errors.backendErrorLabel.${mapAxiosErrorToLabel(error)}`)
+        );
+      })
+      .finally(() => {
+        router.push("/login");
+      });
+  };
 
   return (
     <>
@@ -60,7 +72,11 @@ export default function Home({
           <Button onClick={handleLogout} colorScheme="teal" variant="outline">
             wyloguj się
           </Button>
-          <Button colorScheme="red" variant="outline">
+          <Button
+            onClick={handleDeleteAccount}
+            colorScheme="red"
+            variant="outline"
+          >
             usuń konto
           </Button>
         </main>

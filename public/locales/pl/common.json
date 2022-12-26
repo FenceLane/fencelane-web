@@ -21,7 +21,10 @@
       "unauthorized": "Brak uprawnień!"
     }
   },
-  "success": { "logout": "Pomyślnie wylogowano." },
+  "success": {
+    "logout": "Pomyślnie wylogowano.",
+    "delete": "Konto zostało usunięte."
+  },
   "pages": {
     "register": {
       "title": "Rejestracja",
