@@ -2,6 +2,12 @@ import { Box, Button, Wrap, WrapItem } from "@chakra-ui/react";
 import React, { useRef, useState } from "react";
 import { TriangleDownIcon } from "@chakra-ui/icons";
 import { useOnClickOutside } from "../../lib/util/hooks/useOnClickOutside";
+import { apiClient } from "../../lib/api/apiClient";
+import { useContent } from "../../lib/util/hooks/useContent";
+import { mapAxiosErrorToLabel } from "../../lib/server/BackendError/BackendError";
+import { toastError, toastInfo } from "../../lib/util/toasts";
+import { useRouter } from "next/router";
+import Link from "next/link";
 
 interface ProfileInfoTypes {
   name: string;
@@ -10,11 +16,27 @@ interface ProfileInfoTypes {
 export default function ProfileInfoDropdown({ name }: ProfileInfoTypes) {
   const [showDropdown, setShowDropdown] = useState(false);
   const ref = useRef<HTMLDivElement | null>(null);
+  const router = useRouter();
+  const { t } = useContent();
 
   useOnClickOutside(ref, () => setShowDropdown(false));
 
   const toggleShowDropdown = () => {
     setShowDropdown((prev) => !prev);
+  };
+
+  const handleLogout = () => {
+    apiClient.auth
+      .deleteLogout()
+      .then(() => toastInfo(t("success.logout")))
+      .catch((error) => {
+        toastError(
+          t(`errors.backendErrorLabel.${mapAxiosErrorToLabel(error)}`)
+        );
+      })
+      .finally(() => {
+        router.push("/login");
+      });
   };
 
   return (
@@ -52,13 +74,24 @@ export default function ProfileInfoDropdown({ name }: ProfileInfoTypes) {
       >
         <Wrap spacing={4} w="100%">
           <WrapItem w="100%">
-            <Button colorScheme="teal" variant="outline" width="100%">
-              Mój profil
+            <Button
+              href="/profile"
+              as={Link}
+              colorScheme="teal"
+              variant="outline"
+              width="100%"
+            >
+              {t("general.layout.header.dropdown.profile")}
             </Button>
           </WrapItem>
           <WrapItem w="100%">
-            <Button colorScheme="teal" variant="outline" width="100%">
-              Wyloguj się
+            <Button
+              onClick={handleLogout}
+              colorScheme="teal"
+              variant="outline"
+              width="100%"
+            >
+              {t("general.layout.header.dropdown.logout")}
             </Button>
           </WrapItem>
         </Wrap>

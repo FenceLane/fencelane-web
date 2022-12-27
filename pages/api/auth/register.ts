@@ -1,6 +1,6 @@
 import { withValidatedJSONRequestBody } from "../../../lib/server/middlewares/withValidatedJSONRequestBody";
 import { createCookieSession } from "../../../lib/server/cookieSessionUtils";
-import { prisma } from "../../../lib/prisma/client";
+import { prismaClient } from "../../../lib/prisma/prismaClient";
 import {
   BackendErrorLabel,
   BackendResponseStatusCode,
@@ -13,9 +13,9 @@ import { withApiMethods } from "../../../lib/server/middlewares/withApiMethods";
 export default withApiMethods({
   POST: withValidatedJSONRequestBody(RegisterFormDataSchema)(
     async (req, res) => {
-      const { email, password, name } = req.parsedBody;
+      const { email, password, name, phone, role } = req.parsedBody;
 
-      const existingUser = await prisma.user.findFirst({
+      const existingUser = await prismaClient.user.findFirst({
         where: { email },
       });
 
@@ -28,8 +28,8 @@ export default withApiMethods({
 
       const encryptedPassword = encryptPassword(password);
 
-      const newUser = await prisma.user.create({
-        data: { email, name, password: encryptedPassword },
+      const newUser = await prismaClient.user.create({
+        data: { email, name, phone, role, password: encryptedPassword },
       });
 
       await createCookieSession(res, { user: newUser });

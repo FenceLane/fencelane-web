@@ -1,3 +1,4 @@
+import axios from "axios";
 import { NextApiResponse } from "next";
 
 export const BackendErrorLabel = {
@@ -42,4 +43,12 @@ export const sendBackendError = (
 ) => {
   response.status(error.code);
   return response.send(new BackendError(error));
+};
+
+export const mapAxiosErrorToLabel = (error: unknown) => {
+  if (!axios.isAxiosError(error)) {
+    return BackendErrorLabel.UNEXPECTED_ERROR;
+  }
+
+  return error.response?.data.label || BackendErrorLabel.UNEXPECTED_ERROR;
 };

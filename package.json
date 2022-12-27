@@ -3,10 +3,12 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "start": "NODE_ENV=production node server.js",
+    "dev": "node server.js",
+    "start:no-ssl": "next start",
+    "dev:no-ssl": "next dev",
     "build": "next build",
     "test": "yarn tsc --noEmit && yarn jest",
-    "start": "next start",
     "prettier": "prettier --write --ignore-path .prettierignore \"**/*.{json,md,yml}\"",
     "husky:prepare": "husky install",
     "postinstall": "yarn husky:prepare"
@@ -17,9 +19,11 @@
     "@emotion/react": "11.10.5",
     "@emotion/styled": "11.10.5",
     "@prisma/client": "4.7.0",
+    "@tanstack/react-query": "^4.20.4",
     "@types/node": "18.11.9",
     "@types/react": "18.0.25",
     "@types/react-dom": "18.0.9",
+    "axios": "^1.2.1",
     "crypto-js": "4.1.1",
     "eslint": "8.28.0",
     "eslint-config-next": "13.0.5",
@@ -32,9 +36,11 @@
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-i18next": "12.1.1",
+    "react-toastify": "^9.1.1",
     "sass": "1.56.2",
     "typescript": "4.9.3",
-    "zod": "3.19.1"
+    "zod": "3.19.1",
+    "zod-formik-adapter": "^1.1.1"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "5.16.5",

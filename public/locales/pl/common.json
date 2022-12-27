@@ -1,29 +1,79 @@
 {
   "general": {
-    "title": "FenceLane"
+    "title": "FenceLane",
+    "layout": {
+      "header": {
+        "dropdown": { "profile": "Mój profil", "logout": "Wyloguj się" }
+      }
+    }
+  },
+  "errors": {
+    "form": {
+      "fieldRequired": "To pole jest wymagane",
+      "regex": "Nieprawidłowy format"
+    },
+    "backendErrorLabel": {
+      "invalid-credentials": "Niepoprawne dane!",
+      "user-already-exists": "Użytkownik z tym adresem e-mail już istnieje!",
+      "invalid-request-content-type": "Niepoprawny format danych!",
+      "invalid-request-body": "Niepoprawny format danych!",
+      "unexpected-error": "Wystąpił błąd, spróbuj ponownie później lub skontaktuj się z administratorem.",
+      "method-not-allowed": "Niedozwolona operacja, skontaktuj się z administratorem.",
+      "unauthorized": "Brak uprawnień!"
+    }
+  },
+  "success": {
+    "logout": "Pomyślnie wylogowano.",
+    "delete": "Konto zostało usunięte."
   },
   "pages": {
     "register": {
       "title": "Rejestracja",
+      "hasAccount": "Masz już konto? Zaloguj się.",
       "form": {
         "title": "Rejestracja",
         "fields": {
           "name": { "label": "Imię i nazwisko", "placeholder": "Jan Kowalski" },
           "email": {
             "label": "E-mail",
-            "placeholder": "example@fencelane.com"
+            "placeholder": "example@fencelane.com",
+            "error": "Nieprawidłowy adres e-mail"
+          },
+          "phone": {
+            "label": "Nr telefonu",
+            "placeholder": "555 444 333",
+            "error": "Nieprawidłowy number telefonu"
           },
           "password": { "label": "Hasło", "placeholder": "Wprowadź hasło" },
-          "repeatPassword": {
-            "label": "Powtórz hasło",
-            "placeholder": "Powtórz hasło"
+          "confirmPassword": {
+            "label": "Potwierdź hasło",
+            "placeholder": "Powtórz hasło",
+            "error": "Podane hasła nie są takie same"
           }
         },
         "submit": "Zarejestruj się!"
       }
     },
     "login": {
-      "title": "Logowanie"
+      "title": "Logowanie",
+      "noAccount": "Nie masz konta? Zarejestruj się.",
+      "login": "Zaloguj się.",
+      "form": {
+        "title": "Logowanie",
+        "fields": {
+          "email": {
+            "label": "E-mail",
+            "placeholder": "example@fencelane.com",
+            "error": "Nieprawidłowy adres e-mail"
+          },
+          "password": {
+            "label": "Hasło",
+            "placeholder": "Wprowadź hasło",
+            "error": "Nieprawidłowe hasło"
+          }
+        },
+        "submit": { "label": "Zaloguj się!" }
+      }
     }
   }
 }

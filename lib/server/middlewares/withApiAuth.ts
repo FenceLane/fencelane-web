@@ -5,7 +5,7 @@ import {
   BackendResponseStatusCode,
   sendBackendError,
 } from "../BackendError/BackendError";
-import { prisma } from "../../prisma/client";
+import { prismaClient } from "../../prisma/prismaClient";
 import {
   getSessionCookie,
   getSessionExpirationDate,
@@ -29,11 +29,13 @@ export const withApiAuth =
   async (req: R, res: NextApiResponse) => {
     const sessionId = req.cookies.authorization;
 
+    console.log(sessionId);
+
     if (!sessionId) {
       return sendUnauthorized(res);
     }
 
-    const session = await prisma.session.findUnique({
+    const session = await prismaClient.session.findUnique({
       include: {
         user: true,
       },
@@ -53,7 +55,7 @@ export const withApiAuth =
     if (shouldRefreshSession(session.updatedAt)) {
       const sessionExpirationDate = getSessionExpirationDate();
 
-      await prisma.session.update({
+      await prismaClient.session.update({
         where: {
           id: sessionId,
         },

@@ -1,5 +1,5 @@
 import CryptoJS from "crypto-js";
-import { ServerConfig } from "../ServerConfig";
+import { ServerConfig } from "../../AppConfig/ServerConfig";
 
 export const encryptPassword = (value: string) => {
   return CryptoJS.AES.encrypt(

@@ -8,11 +8,11 @@ const getEncryptionSecret = () => {
   return secret;
 };
 
-export class ServerConfig {
-  static ENV = {
+export const ServerConfig = {
+  ENV: {
     ENCRYPTION_SECRET: getEncryptionSecret(),
     REQUIRE_HTTPS: process.env.REQUIRE_HTTPS
       ? process.env.REQUIRE_HTTPS === "true"
       : true,
-  };
-}
+  },
+};

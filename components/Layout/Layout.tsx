@@ -3,20 +3,25 @@ import Head from "next/head";
 import React, { ReactNode } from "react";
 import ProfileInfoDropdown from "../ProfileInfoDropdown/ProfileInfoDropdown";
 import NextLink from "next/link";
-import { useContent } from "../../lib/util/useContent";
+import { useContent } from "../../lib/util/hooks/useContent";
+import "react-toastify/dist/ReactToastify.css";
+import { UserInfo } from "../../lib/types";
 
 export interface LayoutProps {
   children: ReactNode;
   title?: string;
-  showSidebar?: boolean;
+  user?: UserInfo;
+  hideSidebar?: boolean;
 }
 
 export const Layout = ({
   children,
   title,
-  showSidebar = true,
+  user,
+  hideSidebar = false,
 }: LayoutProps) => {
   const { t } = useContent("general");
+
   const id = {
     name: "",
     photo: "",
@@ -32,17 +37,17 @@ export const Layout = ({
     ],
   };
 
-  const templateAreas = showSidebar
+  const templateAreas = hideSidebar
     ? `
-  "header header"
-  "nav main"
-  "nav footer"
-  `
+    "header header"
+    "main main"
+    "footer footer"
+    `
     : `
-  "header header"
-  "main main"
-  "footer footer"
-  `;
+    "header header"
+    "nav main"
+    "nav footer"
+    `;
 
   return (
     <>
@@ -79,9 +84,9 @@ export const Layout = ({
             <Image width="22px" src={"./images/logo.svg"} />
             <Image width="126px" src={"./images/textlogo.svg"} />
           </Box>
-          <ProfileInfoDropdown name={"Mokry Maciek"} />
+          {user && <ProfileInfoDropdown name={user.name || ""} />}
         </GridItem>
-        {showSidebar && (
+        {!hideSidebar && (
           <GridItem
             pl="2"
             bg="#333"

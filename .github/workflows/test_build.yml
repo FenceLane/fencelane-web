@@ -6,6 +6,9 @@ on:
   pull_request:
     branches: [main, dev]
 
+env:
+  ENCRYPTION_SECRET: "secret123"
+
 jobs:
   test_build:
     runs-on: ubuntu-latest

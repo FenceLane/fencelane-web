@@ -1,5 +1,5 @@
-import React from "react";
-import { Formik, Form, Field, FormikHelpers } from "formik";
+import React, { useEffect } from "react";
+import { Formik, Form, Field } from "formik";
 import {
   Box,
   Flex,
@@ -13,36 +13,48 @@ import {
   Text,
 } from "@chakra-ui/react";
 import Link from "next/link";
+import { LoginFormDataSchema } from "../../lib/schema/loginFormData";
+import { usePostLogin } from "../../lib/api/hooks/auth";
+import { useRouter } from "next/router";
+import { toFormikValidationSchema } from "zod-formik-adapter";
+import { useContent } from "../../lib/util/hooks/useContent";
+import { mapAxiosErrorToLabel } from "../../lib/server/BackendError/BackendError";
 
-export interface FormTypes {
-  email: string;
-  password: string;
-}
+const initialValies = {
+  email: "",
+  password: "",
+};
 
 export const LoginForm = () => {
-  const handleSubmit = (
-    values: FormTypes,
-    actions: FormikHelpers<FormTypes>
-  ) => {
-    alert(JSON.stringify(values));
-    actions.resetForm();
-  };
+  const router = useRouter();
+  const { t } = useContent();
+
+  const { mutate: login, error, isSuccess, isLoading } = usePostLogin();
+
+  useEffect(() => {
+    if (isSuccess) {
+      router.push("/");
+    }
+  }, [router, isSuccess]);
+
   return (
-    <Box minW="400px">
+    <Box mr="auto" ml="auto" mt="100px" w="400px">
       <Center mb="20px">
-        <Heading>Logowanie</Heading>
+        <Heading>{t("pages.login.title")}</Heading>
       </Center>
       <Formik
-        initialValues={{
-          email: "",
-          password: "",
-        }}
-        onSubmit={handleSubmit}
+        validateOnChange={false}
+        validateOnBlur={false}
+        validationSchema={toFormikValidationSchema(LoginFormDataSchema)}
+        initialValues={initialValies}
+        onSubmit={(data) => login(data)}
       >
         {({ errors, touched }) => (
-          <Form>
+          <Form noValidate>
             <FormControl isInvalid={!!errors.email && touched.email} mb="15px">
-              <FormLabel htmlFor="email">E-mail</FormLabel>
+              <FormLabel htmlFor="email">
+                {t("pages.login.form.fields.email.label")}
+              </FormLabel>
               <Field
                 as={Input}
                 id="email"
@@ -52,11 +64,14 @@ export const LoginForm = () => {
               />
               <FormErrorMessage>{errors.email}</FormErrorMessage>
             </FormControl>
+
             <FormControl
               isInvalid={!!errors.password && touched.password}
               mb="15px"
             >
-              <FormLabel htmlFor="password">Hasło</FormLabel>
+              <FormLabel htmlFor="password">
+                {t("pages.login.form.fields.password.label")}
+              </FormLabel>
               <Field
                 as={Input}
                 id="password"
@@ -66,19 +81,31 @@ export const LoginForm = () => {
               />
               <FormErrorMessage>{errors.password}</FormErrorMessage>
             </FormControl>
-            <Flex justifyContent={"flex-end"}>
-              <Text as={Link} href="/register" color="blue.500">
-                Nie masz konta? Zarejestruj się.
-              </Text>
-            </Flex>
+
+            <FormControl isInvalid={touched && !!error} mb="15px">
+              <FormErrorMessage>
+                {t(`errors.backendErrorLabel.${mapAxiosErrorToLabel(error)}`)}
+              </FormErrorMessage>
+            </FormControl>
+
             <Center>
-              <Button mt="4" type="submit" colorScheme="teal" variant="outline">
-                Zaloguj się
+              <Button
+                isLoading={isLoading}
+                isDisabled={isLoading}
+                mt="4"
+                type="submit"
+                colorScheme="teal"
+                variant="outline"
+              >
+                {t("pages.login.form.submit.label")}
               </Button>
             </Center>
           </Form>
         )}
       </Formik>
+      <Text as={Link} href="/register" color="blue.500">
+        {t("pages.login.noAccount")}
+      </Text>
     </Box>
   );
 };
