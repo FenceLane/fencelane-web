@@ -14,6 +14,54 @@ export interface LayoutProps {
   hideSidebar?: boolean;
 }
 
+const getTemplateAreas = (hideSidebar: boolean) =>
+  hideSidebar
+    ? `
+"header header"
+"main main"
+"footer footer"
+`
+    : `
+"header header"
+"nav main"
+"nav footer"
+`;
+
+const menuItems = [
+  {
+    name: "stats",
+    icon: "statystyki",
+  },
+  {
+    name: "magazine",
+    icon: "magazyn",
+  },
+  {
+    name: "orders",
+    icon: "zamówienia",
+  },
+  {
+    name: "commissions",
+    icon: "zlecenia",
+  },
+  {
+    name: "schedule",
+    icon: "harmonogram",
+  },
+  {
+    name: "calculations",
+    icon: "kalkulacje",
+  },
+  {
+    name: "chat",
+    icon: "czat",
+  },
+  {
+    name: "employees",
+    icon: "pracownicy",
+  },
+];
+
 export const Layout = ({
   children,
   title,
@@ -22,40 +70,13 @@ export const Layout = ({
 }: LayoutProps) => {
   const { t } = useContent("general");
 
-  const id = {
-    name: "",
-    photo: "",
-    menuoptions: [
-      "statystyki",
-      "magazyn",
-      "zamówienia",
-      "zlecenia",
-      "harmonogram",
-      "kalkulacje",
-      "czat",
-      "pracownicy",
-    ],
-  };
-
-  const templateAreas = hideSidebar
-    ? `
-    "header header"
-    "main main"
-    "footer footer"
-    `
-    : `
-    "header header"
-    "nav main"
-    "nav footer"
-    `;
-
   return (
     <>
       <Head>
         <title>{`${t("title")}${title ? ` | ${title}` : ""}`}</title>
       </Head>
       <Grid
-        templateAreas={templateAreas}
+        templateAreas={getTemplateAreas(hideSidebar)}
         gridTemplateRows={"50px 1fr 30px"}
         gridTemplateColumns={"200px 1fr"}
         h="100vh"
@@ -73,18 +94,21 @@ export const Layout = ({
           position="relative"
           boxShadow="0px 6px 6px -7px rgba(66, 68, 90, 1)"
         >
-          <Box
+          <Link
+            as={NextLink}
+            href="/"
             w={200}
             gap="16px"
             m="11px"
             className="logo"
             display="flex"
             flexDirection="row"
+            aria-label={t("layout.header.logo.label")}
           >
-            <Image width="22px" src={"./images/logo.svg"} />
-            <Image width="126px" src={"./images/textlogo.svg"} />
-          </Box>
-          {user && <ProfileInfoDropdown name={user.name || ""} />}
+            <Image width="22px" src={"./images/logo.svg"} alt="" />
+            <Image width="126px" src={"./images/textlogo.svg"} alt="" />
+          </Link>
+          {user && <ProfileInfoDropdown name={user.name} />}
         </GridItem>
         {!hideSidebar && (
           <GridItem
@@ -108,10 +132,10 @@ export const Layout = ({
               h="100%"
             >
               <Box>
-                {id.menuoptions.map((option) => (
+                {menuItems.map((item) => (
                   <Link
                     as={NextLink}
-                    key={option}
+                    key={item.name}
                     href=""
                     _hover={{
                       textDecoration: "none",
@@ -132,9 +156,10 @@ export const Layout = ({
                     >
                       <Image
                         width="16px"
-                        src={`./images/navicons/${option}.svg`}
+                        src={`./images/navicons/${item.icon}.svg`}
+                        alt=""
                       />
-                      <Text>{option}</Text>
+                      <Text>{t(`layout.sidebar.menu.${item.name}.label`)}</Text>
                     </Box>
                   </Link>
                 ))}
@@ -160,13 +185,14 @@ export const Layout = ({
                     <Image
                       width="16px"
                       src={`./images/navicons/ustawienia.svg`}
+                      alt=""
                     />
                     <Text
                       _hover={{
                         color: "white",
                       }}
                     >
-                      Ustawienia
+                      {t(`layout.sidebar.menu.settings.label`)}
                     </Text>
                   </Box>
                 </Link>
@@ -193,7 +219,7 @@ export const Layout = ({
                         color: "white",
                       }}
                     >
-                      Pomoc
+                      {t(`layout.sidebar.menu.help.label`)}
                     </Text>
                   </Box>
                 </Link>

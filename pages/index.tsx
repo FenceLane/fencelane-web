@@ -3,7 +3,6 @@ import Head from "next/head";
 import { Layout } from "../components/Layout/Layout";
 import { withServerSideAuth } from "../lib/server/middlewares/withServerSideAuth";
 import { withTranslationProps } from "../lib/server/middlewares/withTranslationProps";
-import styles from "../styles/Home.module.scss";
 
 export default function Home({
   user,
@@ -16,8 +15,8 @@ export default function Home({
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Layout user={user}>
-        <div className={styles.container}>
-          <h1 className={styles.title}>FenceLane</h1>
+        <div>
+          <h1>FenceLane</h1>
         </div>
       </Layout>
     </>
