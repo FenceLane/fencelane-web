@@ -89,6 +89,24 @@
         },
         "submit": { "label": "Zaloguj się!" }
       }
+    },
+    "password-reset": {
+      "title": "Zmiana hasła",
+      "form": {
+        "title": "Zmiana hasła",
+        "fields": {
+          "password": {
+            "label": "Nowe hasło",
+            "placeholder": "Wprowadź hasło"
+          },
+          "confirmPassword": {
+            "label": "Potwierdź hasło",
+            "placeholder": "Powtórz hasło",
+            "error": "Podane hasła nie są takie same"
+          }
+        },
+        "submit": { "label": "Zatwierdź" }
+      }
     }
   }
 }

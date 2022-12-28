@@ -37,6 +37,12 @@ const postRegister = async ({
   });
 };
 
+const putPasswordReset = async ({ password }: { password: string }) => {
+  return axios.post(apiPath("auth/password-reset"), {
+    password,
+  });
+};
+
 const deleteLogout = async () => {
   return axios.delete(apiPath("auth/logout"));
 };
@@ -53,6 +59,7 @@ export const apiClient = {
   auth: {
     postLogin,
     postRegister,
+    putPasswordReset,
     deleteLogout,
     deleteSelfUser,
     getMe,
