@@ -29,8 +29,6 @@ export const withApiAuth =
   async (req: R, res: NextApiResponse) => {
     const sessionId = req.cookies.authorization;
 
-    console.log(sessionId);
-
     if (!sessionId) {
       return sendUnauthorized(res);
     }

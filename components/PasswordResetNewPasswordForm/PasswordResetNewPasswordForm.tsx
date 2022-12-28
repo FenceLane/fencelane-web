@@ -35,7 +35,6 @@ export const PasswordResetNewPasswordForm = () => {
     password: string;
     confirmPassword: string;
   }) => {
-    console.log("patrky");
     if (typeof passwordResetToken !== "string") {
       return router.push("/password-reset");
     }
