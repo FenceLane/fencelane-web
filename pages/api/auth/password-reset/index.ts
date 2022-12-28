@@ -13,6 +13,7 @@ import {
   getRandomString,
 } from "../../../../lib/server/CryptographyService/CryptographyService";
 import { getResetPasswordTokenExpirationDate } from "../../../../lib/server/utils/passwordResetUtils";
+import { mailService } from "../../../../lib/server/MailService/MailService";
 
 export default withApiMethods({
   POST: withValidatedJSONRequestBody(PasswordResetFormEmailDataSchema)(
@@ -44,13 +45,14 @@ export default withApiMethods({
         },
       });
 
-      const resetPasswordLink = `${ClientConfig.ENV.NEXT_PUBLIC_BASE_URL}/password-reset?token=${resetPasswordToken}`;
+      const passwordResetUrl = `${ClientConfig.ENV.NEXT_PUBLIC_BASE_URL}/password-reset?token=${resetPasswordToken}`;
 
-      console.log(resetPasswordLink);
+      await mailService.sendPasswordReset({
+        to: existingUser.email,
+        passwordResetUrl,
+      });
 
-      return res
-        .status(BackendResponseStatusCode.SUCCESS)
-        .send({ data: resetPasswordLink });
+      return res.status(BackendResponseStatusCode.SUCCESS).send({ data: true });
     }
   ),
 });

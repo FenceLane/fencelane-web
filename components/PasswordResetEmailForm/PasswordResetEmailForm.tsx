@@ -1,5 +1,5 @@
 import React from "react";
-import { Formik, Form, Field } from "formik";
+import { Formik, Form, Field, FormikHelpers } from "formik";
 import {
   Box,
   Center,
@@ -13,7 +13,10 @@ import {
 } from "@chakra-ui/react";
 import { useContent } from "../../lib/util/hooks/useContent";
 import { toFormikValidationSchema } from "zod-formik-adapter";
-import { PasswordResetFormEmailDataSchema } from "../../lib/schema/passwordResetFormEmailData";
+import {
+  PasswordResetFormEmailData,
+  PasswordResetFormEmailDataSchema,
+} from "../../lib/schema/passwordResetFormEmailData";
 import { apiClient } from "../../lib/api/apiClient";
 import { toastError, toastInfo } from "../../lib/util/toasts";
 import { mapAxiosErrorToLabel } from "../../lib/server/BackendError/BackendError";
@@ -25,10 +28,16 @@ const initialValues = {
 export const PasswordResetEmailForm = () => {
   const { t } = useContent();
 
-  const initialisePasswordResetFlow = (data: { email: string }) => {
+  const initialisePasswordResetFlow = (
+    data: { email: string },
+    actions: FormikHelpers<PasswordResetFormEmailData>
+  ) => {
     apiClient.auth
       .postInitialisePasswordReset(data)
-      .then(() => toastInfo(t("success.password-reset-email-sent")))
+      .then(() => {
+        toastInfo(t("success.password-reset-email-sent"));
+        actions.resetForm();
+      })
       .catch((error) => {
         toastError(
           t(`errors.backendErrorLabel.${mapAxiosErrorToLabel(error)}`)
