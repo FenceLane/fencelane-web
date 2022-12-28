@@ -93,19 +93,34 @@
     "password-reset": {
       "title": "Zmiana hasła",
       "form": {
-        "title": "Zmiana hasła",
-        "fields": {
-          "password": {
-            "label": "Nowe hasło",
-            "placeholder": "Wprowadź hasło"
+        "email": {
+          "title": "Zmiana hasła",
+          "description": "Podaj adres email na który mamy wysłać link do zmiany hasła",
+          "fields": {
+            "email": {
+              "label": "E-mail",
+              "placeholder": "example@fencelane.com",
+              "error": "Nieprawidłowy adres e-mail"
+            }
           },
-          "confirmPassword": {
-            "label": "Potwierdź hasło",
-            "placeholder": "Powtórz hasło",
-            "error": "Podane hasła nie są takie same"
-          }
+          "submit": { "label": "Zatwierdź" }
         },
-        "submit": { "label": "Zatwierdź" }
+        "password": {
+          "title": "Zmiana hasła",
+          "description": "Ustaw nowe hasło.",
+          "fields": {
+            "password": {
+              "label": "Nowe hasło",
+              "placeholder": "Wprowadź hasło"
+            },
+            "confirmPassword": {
+              "label": "Potwierdź hasło",
+              "placeholder": "Powtórz hasło",
+              "error": "Podane hasła nie są takie same"
+            }
+          },
+          "submit": { "label": "Zatwierdź" }
+        }
       }
     }
   }

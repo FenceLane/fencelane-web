@@ -1,15 +1,28 @@
-import React from "react";
+import { useRouter } from "next/router";
+import React, { useEffect } from "react";
 import { Layout } from "../../components/Layout/Layout";
-import { PasswordResetForm } from "../../components/PasswordResetForm/PasswordResetForm";
+import { PasswordResetEmailForm } from "../../components/PasswordResetEmailForm/PasswordResetEmailForm";
+import { PasswordResetNewPasswordForm } from "../../components/PasswordResetNewPasswordForm/PasswordResetNewPasswordForm";
 import { withTranslationProps } from "../../lib/server/middlewares/withTranslationProps";
 import { useContent } from "../../lib/util/hooks/useContent";
 
 const LoginPage = () => {
   const { t } = useContent("pages.password-reset");
+  const router = useRouter();
+
+  const passwordResetToken = router.query.token;
+
+  useEffect(() => {
+    console.log(passwordResetToken);
+  });
 
   return (
     <Layout title={t("title")} hideSidebar>
-      <PasswordResetForm />
+      {passwordResetToken ? (
+        <PasswordResetNewPasswordForm />
+      ) : (
+        <PasswordResetEmailForm />
+      )}
     </Layout>
   );
 };

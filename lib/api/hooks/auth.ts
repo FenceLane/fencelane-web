@@ -19,9 +19,9 @@ export const usePostRegister = () => {
   return mutation;
 };
 
-export const usePutPasswordReset = () => {
+export const usePutCompletePasswordReset = () => {
   const mutation = useMutation({
-    mutationFn: apiClient.auth.putPasswordReset,
+    mutationFn: apiClient.auth.putCompletePasswordReset,
     cacheTime: 0,
   });
 

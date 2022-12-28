@@ -9,22 +9,27 @@ import {
   FormControl,
   FormLabel,
   FormErrorMessage,
+  Text,
 } from "@chakra-ui/react";
 import { useContent } from "../../lib/util/hooks/useContent";
 import { useRouter } from "next/router";
-import { usePutPasswordReset } from "../../lib/api/hooks/auth";
+import { usePutCompletePasswordReset } from "../../lib/api/hooks/auth";
 import { mapAxiosErrorToLabel } from "../../lib/server/BackendError/BackendError";
 
-const passwordResetInitialValues = {
+const initialValues = {
   password: "",
   confirmPassword: "",
 };
 
-export const PasswordResetForm = () => {
+export const PasswordResetNewPasswordForm = () => {
   const router = useRouter();
   const { t } = useContent();
 
-  const { mutate: resetPassword, error, isSuccess } = usePutPasswordReset();
+  const {
+    mutate: resetPassword,
+    error,
+    isSuccess,
+  } = usePutCompletePasswordReset();
 
   useEffect(() => {
     if (isSuccess) {
@@ -37,19 +42,22 @@ export const PasswordResetForm = () => {
     confirmPassword: string
   ) => {
     if (password !== confirmPassword) {
-      return t("pages.password-reset.form.fields.confirmPassword.error");
+      return t(
+        "pages.password-reset.form.password.fields.confirmPassword.error"
+      );
     }
   };
 
   return (
     <Box ml="auto" mr="auto" w="400px">
-      <Center mb="20px">
-        <Heading>{t("pages.password-reset.form.title")}</Heading>
+      <Center flexDirection="column" mb="20px">
+        <Heading>{t("pages.password-reset.form.password.title")}</Heading>
+        <Text>{t("pages.password-reset.form.password.description")}</Text>
       </Center>
       <Formik
         validateOnChange={false}
         validateOnBlur={false}
-        initialValues={passwordResetInitialValues}
+        initialValues={initialValues}
         onSubmit={(data) => resetPassword(data)}
       >
         {({ errors, touched, values }) => (
@@ -59,7 +67,7 @@ export const PasswordResetForm = () => {
               mb="15px"
             >
               <FormLabel htmlFor="password">
-                {t("pages.password-reset.form.fields.password.label")}
+                {t("pages.password-reset.form.password.fields.password.label")}
               </FormLabel>
               <Field
                 as={Input}
@@ -67,7 +75,7 @@ export const PasswordResetForm = () => {
                 type="password"
                 name="password"
                 placeholder={t(
-                  "pages.password-reset.form.fields.password.placeholder"
+                  "pages.password-reset.form.password.fields.password.placeholder"
                 )}
               />
               <FormErrorMessage>{errors.password}</FormErrorMessage>
@@ -76,7 +84,9 @@ export const PasswordResetForm = () => {
               isInvalid={!!errors.confirmPassword && touched.confirmPassword}
             >
               <FormLabel htmlFor="confirmPassword">
-                {t("pages.password-reset.form.fields.confirmPassword.label")}
+                {t(
+                  "pages.password-reset.form.password.fields.confirmPassword.label"
+                )}
               </FormLabel>
               <Field
                 as={Input}
@@ -84,7 +94,7 @@ export const PasswordResetForm = () => {
                 type="password"
                 name="confirmPassword"
                 placeholder={t(
-                  "pages.password-reset.form.fields.confirmPassword.placeholder"
+                  "pages.password-reset.form.password.fields.confirmPassword.placeholder"
                 )}
                 validate={(value: string) =>
                   validateConfirmPassword(values.password, value)
@@ -101,7 +111,7 @@ export const PasswordResetForm = () => {
 
             <Center>
               <Button mt="4" type="submit" colorScheme="teal" variant="outline">
-                {t("pages.password-reset.form.submit.label")}
+                {t("pages.password-reset.form.password.submit.label")}
               </Button>
             </Center>
           </Form>
