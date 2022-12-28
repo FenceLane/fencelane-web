@@ -1,12 +1,12 @@
 import { withValidatedJSONRequestBody } from "../../../lib/server/middlewares/withValidatedJSONRequestBody";
-import { createCookieSession } from "../../../lib/server/cookieSessionUtils";
+import { createCookieSession } from "../../../lib/server/utils/cookieSessionUtils";
 import { prismaClient } from "../../../lib/prisma/prismaClient";
 import {
   BackendErrorLabel,
   BackendResponseStatusCode,
   sendBackendError,
 } from "../../../lib/server/BackendError/BackendError";
-import { decryptPassword } from "../../../lib/server/PasswordCrypto/PasswordCrypto";
+import { decryptStringAES } from "../../../lib/server/CryptographyService/CryptographyService";
 import { withApiMethods } from "../../../lib/server/middlewares/withApiMethods";
 import { LoginFormDataSchema } from "../../../lib/schema/loginFormData";
 
@@ -26,7 +26,7 @@ export default withApiMethods({
     }
 
     const doesPasswordMatch =
-      password === decryptPassword(existingUser.password);
+      password === decryptStringAES(existingUser.password);
 
     if (!doesPasswordMatch) {
       return sendBackendError(res, {

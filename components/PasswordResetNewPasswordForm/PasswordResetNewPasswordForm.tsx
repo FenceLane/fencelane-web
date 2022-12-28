@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Formik, Form, Field } from "formik";
 import {
   Box,
@@ -13,8 +13,10 @@ import {
 } from "@chakra-ui/react";
 import { useContent } from "../../lib/util/hooks/useContent";
 import { useRouter } from "next/router";
-import { usePutCompletePasswordReset } from "../../lib/api/hooks/auth";
 import { mapAxiosErrorToLabel } from "../../lib/server/BackendError/BackendError";
+import { apiClient } from "../../lib/api/apiClient";
+import { toastError, toastInfo } from "../../lib/util/toasts";
+import Link from "next/link";
 
 const initialValues = {
   password: "",
@@ -25,17 +27,30 @@ export const PasswordResetNewPasswordForm = () => {
   const router = useRouter();
   const { t } = useContent();
 
-  const {
-    mutate: resetPassword,
-    error,
-    isSuccess,
-  } = usePutCompletePasswordReset();
+  const passwordResetToken = router.query.token;
 
-  useEffect(() => {
-    if (isSuccess) {
-      router.push("/");
+  const handleSubmit = ({
+    password,
+  }: {
+    password: string;
+    confirmPassword: string;
+  }) => {
+    console.log("patrky");
+    if (typeof passwordResetToken !== "string") {
+      return router.push("/password-reset");
     }
-  }, [router, isSuccess]);
+    apiClient.auth
+      .putCompletePasswordReset({ password, token: passwordResetToken })
+      .then(() => {
+        toastInfo(t("success.password-reset-complete"));
+        router.push("/login");
+      })
+      .catch((error) => {
+        toastError(
+          t(`errors.backendErrorLabel.${mapAxiosErrorToLabel(error)}`)
+        );
+      });
+  };
 
   const validateConfirmPassword = (
     password: string,
@@ -45,6 +60,12 @@ export const PasswordResetNewPasswordForm = () => {
       return t(
         "pages.password-reset.form.password.fields.confirmPassword.error"
       );
+    }
+  };
+
+  const validateRequiredField = (value: string) => {
+    if (!value) {
+      return t("errors.form.fieldRequired");
     }
   };
 
@@ -58,7 +79,7 @@ export const PasswordResetNewPasswordForm = () => {
         validateOnChange={false}
         validateOnBlur={false}
         initialValues={initialValues}
-        onSubmit={(data) => resetPassword(data)}
+        onSubmit={handleSubmit}
       >
         {({ errors, touched, values }) => (
           <Form noValidate>
@@ -77,6 +98,7 @@ export const PasswordResetNewPasswordForm = () => {
                 placeholder={t(
                   "pages.password-reset.form.password.fields.password.placeholder"
                 )}
+                validate={validateRequiredField}
               />
               <FormErrorMessage>{errors.password}</FormErrorMessage>
             </FormControl>
@@ -96,17 +118,12 @@ export const PasswordResetNewPasswordForm = () => {
                 placeholder={t(
                   "pages.password-reset.form.password.fields.confirmPassword.placeholder"
                 )}
+                required
                 validate={(value: string) =>
                   validateConfirmPassword(values.password, value)
                 }
               />
               <FormErrorMessage>{errors.confirmPassword}</FormErrorMessage>
-            </FormControl>
-
-            <FormControl isInvalid={touched && !!error} mb="15px">
-              <FormErrorMessage>
-                {t(`errors.backendErrorLabel.${mapAxiosErrorToLabel(error)}`)}
-              </FormErrorMessage>
             </FormControl>
 
             <Center>
@@ -117,6 +134,9 @@ export const PasswordResetNewPasswordForm = () => {
           </Form>
         )}
       </Formik>
+      <Text as={Link} href="/password-reset" color="blue.500">
+        {t("pages.password-reset.resendMail")}
+      </Text>
     </Box>
   );
 };

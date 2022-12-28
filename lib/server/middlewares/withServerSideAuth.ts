@@ -8,7 +8,7 @@ import {
   getSessionExpirationDate,
   SET_COOKIE_HEADER,
   shouldRefreshSession,
-} from "../cookieSessionUtils";
+} from "../utils/cookieSessionUtils";
 
 type AuthContextExtend = { session: Session & { user: UserInfo } };
 

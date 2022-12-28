@@ -13,7 +13,10 @@ import {
 } from "@chakra-ui/react";
 import { useContent } from "../../lib/util/hooks/useContent";
 import { toFormikValidationSchema } from "zod-formik-adapter";
-import { PasswordResetFormDataSchema } from "../../lib/schema/passwordResetFormData";
+import { PasswordResetFormEmailDataSchema } from "../../lib/schema/passwordResetFormEmailData";
+import { apiClient } from "../../lib/api/apiClient";
+import { toastError, toastInfo } from "../../lib/util/toasts";
+import { mapAxiosErrorToLabel } from "../../lib/server/BackendError/BackendError";
 
 const initialValues = {
   email: "",
@@ -23,7 +26,14 @@ export const PasswordResetEmailForm = () => {
   const { t } = useContent();
 
   const initialisePasswordResetFlow = (data: { email: string }) => {
-    console.log(data);
+    apiClient.auth
+      .postInitialisePasswordReset(data)
+      .then(() => toastInfo(t("success.password-reset-email-sent")))
+      .catch((error) => {
+        toastError(
+          t(`errors.backendErrorLabel.${mapAxiosErrorToLabel(error)}`)
+        );
+      });
   };
 
   return (
@@ -35,7 +45,9 @@ export const PasswordResetEmailForm = () => {
       <Formik
         validateOnChange={false}
         validateOnBlur={false}
-        validationSchema={toFormikValidationSchema(PasswordResetFormDataSchema)}
+        validationSchema={toFormikValidationSchema(
+          PasswordResetFormEmailDataSchema
+        )}
         initialValues={initialValues}
         onSubmit={initialisePasswordResetFlow}
       >

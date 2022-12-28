@@ -12,10 +12,6 @@ const LoginPage = () => {
 
   const passwordResetToken = router.query.token;
 
-  useEffect(() => {
-    console.log(passwordResetToken);
-  });
-
   return (
     <Layout title={t("title")} hideSidebar>
       {passwordResetToken ? (

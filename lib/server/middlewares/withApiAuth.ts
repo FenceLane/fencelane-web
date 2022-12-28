@@ -11,7 +11,7 @@ import {
   getSessionExpirationDate,
   SET_COOKIE_HEADER,
   shouldRefreshSession,
-} from "../cookieSessionUtils";
+} from "../utils/cookieSessionUtils";
 
 type AuthRequestExtend = { session: Session & { user: User } };
 

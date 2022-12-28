@@ -1,5 +1,5 @@
 import { withValidatedJSONRequestBody } from "../../../lib/server/middlewares/withValidatedJSONRequestBody";
-import { createCookieSession } from "../../../lib/server/cookieSessionUtils";
+import { createCookieSession } from "../../../lib/server/utils/cookieSessionUtils";
 import { prismaClient } from "../../../lib/prisma/prismaClient";
 import {
   BackendErrorLabel,
@@ -7,7 +7,7 @@ import {
   sendBackendError,
 } from "../../../lib/server/BackendError/BackendError";
 import { RegisterFormDataSchema } from "../../../lib/schema/registerFormData";
-import { encryptPassword } from "../../../lib/server/PasswordCrypto/PasswordCrypto";
+import { encryptStringAES } from "../../../lib/server/CryptographyService/CryptographyService";
 import { withApiMethods } from "../../../lib/server/middlewares/withApiMethods";
 
 export default withApiMethods({
@@ -26,7 +26,7 @@ export default withApiMethods({
         });
       }
 
-      const encryptedPassword = encryptPassword(password);
+      const encryptedPassword = encryptStringAES(password);
 
       const newUser = await prismaClient.user.create({
         data: { email, name, phone, role, password: encryptedPassword },

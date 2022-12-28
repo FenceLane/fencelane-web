@@ -1,11 +1,13 @@
 import { z } from "zod";
 import { i18n } from "next-i18next";
 
-export const PasswordResetFormDataSchema = z.object({
+export const PasswordResetFormEmailDataSchema = z.object({
   email: z.string().email(),
 });
 
-export type PasswordResetFormData = z.infer<typeof PasswordResetFormDataSchema>;
+export type PasswordResetFormEmailData = z.infer<
+  typeof PasswordResetFormEmailDataSchema
+>;
 
 const customErrorMap: z.ZodErrorMap = (issue, ctx) => {
   if (!i18n) {

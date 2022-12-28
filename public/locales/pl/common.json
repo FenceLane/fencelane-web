@@ -29,16 +29,20 @@
     },
     "backendErrorLabel": {
       "invalid-credentials": "Niepoprawne dane!",
+      "user-does-not-exists": "Użytkownik z tym adresem e-mail nie istnieje!",
       "user-already-exists": "Użytkownik z tym adresem e-mail już istnieje!",
       "invalid-request-content-type": "Niepoprawny format danych!",
       "invalid-request-body": "Niepoprawny format danych!",
       "unexpected-error": "Wystąpił błąd, spróbuj ponownie później lub skontaktuj się z administratorem.",
       "method-not-allowed": "Niedozwolona operacja, skontaktuj się z administratorem.",
+      "invalid-password-reset-token": "Token zmiany hasła nie istnieje lub wygasł, spróbuj ponownie lub skontaktuj się z administratorem.",
       "unauthorized": "Brak uprawnień!"
     }
   },
   "success": {
     "logout": "Pomyślnie wylogowano.",
+    "password-reset-email-sent": "Wiadomość ze zmianą hasła została wysłana na podany adres email.",
+    "password-reset-complete": "Hasło zostało zmienione, zaloguj się uywając nowego hasła!",
     "delete": "Konto zostało usunięte."
   },
   "pages": {
@@ -92,6 +96,7 @@
     },
     "password-reset": {
       "title": "Zmiana hasła",
+      "resendMail": "Nie możesz zmienić hasła? Wyślij adres email ponownie.",
       "form": {
         "email": {
           "title": "Zmiana hasła",

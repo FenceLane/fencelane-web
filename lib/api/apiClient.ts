@@ -37,7 +37,10 @@ const postRegister = async ({
   });
 };
 
-const putCompletePasswordReset = async (data: { password: string }) => {
+const putCompletePasswordReset = async (data: {
+  password: string;
+  token: string;
+}) => {
   return axios.put(apiPath("auth/password-reset/complete"), data);
 };
 
