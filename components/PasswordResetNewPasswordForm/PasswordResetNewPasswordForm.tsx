@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Formik, Form, Field } from "formik";
 import {
   Box,
@@ -24,6 +24,7 @@ const initialValues = {
 };
 
 export const PasswordResetNewPasswordForm = () => {
+  const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
   const { t } = useContent();
 
@@ -38,6 +39,7 @@ export const PasswordResetNewPasswordForm = () => {
     if (typeof passwordResetToken !== "string") {
       return router.push("/password-reset");
     }
+    setIsLoading(true);
     apiClient.auth
       .putCompletePasswordReset({ password, token: passwordResetToken })
       .then(() => {
@@ -48,7 +50,8 @@ export const PasswordResetNewPasswordForm = () => {
         toastError(
           t(`errors.backendErrorLabel.${mapAxiosErrorToLabel(error)}`)
         );
-      });
+      })
+      .finally(() => setIsLoading(false));
   };
 
   const validateConfirmPassword = (
@@ -126,7 +129,14 @@ export const PasswordResetNewPasswordForm = () => {
             </FormControl>
 
             <Center>
-              <Button mt="4" type="submit" colorScheme="teal" variant="outline">
+              <Button
+                isDisabled={isLoading}
+                isLoading={isLoading}
+                mt="4"
+                type="submit"
+                colorScheme="teal"
+                variant="outline"
+              >
                 {t("pages.password-reset.form.password.submit.label")}
               </Button>
             </Center>

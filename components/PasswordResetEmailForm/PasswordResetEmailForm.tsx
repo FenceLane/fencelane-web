@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Formik, Form, Field, FormikHelpers } from "formik";
 import {
   Box,
@@ -26,12 +26,14 @@ const initialValues = {
 };
 
 export const PasswordResetEmailForm = () => {
+  const [isLoading, setIsLoading] = useState(false);
   const { t } = useContent();
 
   const initialisePasswordResetFlow = (
     data: { email: string },
     actions: FormikHelpers<PasswordResetFormEmailData>
   ) => {
+    setIsLoading(true);
     apiClient.auth
       .postInitialisePasswordReset(data)
       .then(() => {
@@ -42,7 +44,8 @@ export const PasswordResetEmailForm = () => {
         toastError(
           t(`errors.backendErrorLabel.${mapAxiosErrorToLabel(error)}`)
         );
-      });
+      })
+      .finally(() => setIsLoading(false));
   };
 
   return (
@@ -78,7 +81,14 @@ export const PasswordResetEmailForm = () => {
               <FormErrorMessage>{errors.email}</FormErrorMessage>
             </FormControl>
             <Center>
-              <Button mt="4" type="submit" colorScheme="teal" variant="outline">
+              <Button
+                disabled={isLoading}
+                isLoading={isLoading}
+                mt="4"
+                type="submit"
+                colorScheme="teal"
+                variant="outline"
+              >
                 {t("pages.password-reset.form.email.submit.label")}
               </Button>
             </Center>
