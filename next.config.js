@@ -5,6 +5,7 @@ const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
   i18n,
+  output: "standalone",
 };
 
 module.exports = nextConfig;
