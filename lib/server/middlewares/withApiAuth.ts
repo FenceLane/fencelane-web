@@ -11,7 +11,7 @@ import {
   getSessionExpirationDate,
   SET_COOKIE_HEADER,
   shouldRefreshSession,
-} from "../cookieSessionUtils";
+} from "../utils/cookieSessionUtils";
 
 type AuthRequestExtend = { session: Session & { user: User } };
 
@@ -28,8 +28,6 @@ export const withApiAuth =
   ) =>
   async (req: R, res: NextApiResponse) => {
     const sessionId = req.cookies.authorization;
-
-    console.log(sessionId);
 
     if (!sessionId) {
       return sendUnauthorized(res);

@@ -31,7 +31,7 @@ export const RegisterForm = () => {
   const router = useRouter();
   const { t } = useContent();
 
-  const { mutate: register, error, isSuccess } = usePostRegister();
+  const { mutate: register, error, isSuccess, isLoading } = usePostRegister();
 
   useEffect(() => {
     if (isSuccess) {
@@ -146,7 +146,14 @@ export const RegisterForm = () => {
             </FormControl>
 
             <Center>
-              <Button mt="4" type="submit" colorScheme="teal" variant="outline">
+              <Button
+                isLoading={isLoading}
+                isDisabled={isLoading}
+                mt="4"
+                type="submit"
+                colorScheme="teal"
+                variant="outline"
+              >
                 {t("pages.register.form.submit")}
               </Button>
             </Center>

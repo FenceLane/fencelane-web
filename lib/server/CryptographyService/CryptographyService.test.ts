@@ -1,4 +1,4 @@
-import { decryptPassword, encryptPassword } from "./PasswordCrypto";
+import { decryptStringAES, encryptStringAES } from "./CryptographyService";
 
 jest.mock("../../AppConfig/ServerConfig", () => ({
   ServerConfig: {
@@ -9,8 +9,8 @@ jest.mock("../../AppConfig/ServerConfig", () => ({
 describe("PasswordCrypto", () => {
   it("encrypts and decrypts password", () => {
     const password = "Patryk123";
-    const encrypted = encryptPassword(password);
-    const decrypted = decryptPassword(encrypted);
+    const encrypted = encryptStringAES(password);
+    const decrypted = decryptStringAES(encrypted);
 
     expect(decrypted).toEqual(password);
   });
@@ -19,8 +19,8 @@ describe("PasswordCrypto", () => {
     const password = [`!@#$%^&*()_+}{1234567890-=[];'\:"|/.,<>?~`, "`"].join(
       ""
     );
-    const encrypted = encryptPassword(password);
-    const decrypted = decryptPassword(encrypted);
+    const encrypted = encryptStringAES(password);
+    const decrypted = decryptStringAES(encrypted);
 
     expect(decrypted).toEqual(password);
   });

@@ -29,16 +29,20 @@
     },
     "backendErrorLabel": {
       "invalid-credentials": "Niepoprawne dane!",
+      "user-does-not-exists": "Użytkownik z tym adresem e-mail nie istnieje!",
       "user-already-exists": "Użytkownik z tym adresem e-mail już istnieje!",
       "invalid-request-content-type": "Niepoprawny format danych!",
       "invalid-request-body": "Niepoprawny format danych!",
       "unexpected-error": "Wystąpił błąd, spróbuj ponownie później lub skontaktuj się z administratorem.",
       "method-not-allowed": "Niedozwolona operacja, skontaktuj się z administratorem.",
+      "invalid-password-reset-token": "Token zmiany hasła nie istnieje lub wygasł, spróbuj ponownie lub skontaktuj się z administratorem.",
       "unauthorized": "Brak uprawnień!"
     }
   },
   "success": {
     "logout": "Pomyślnie wylogowano.",
+    "password-reset-email-sent": "Wiadomość ze zmianą hasła została wysłana na podany adres email.",
+    "password-reset-complete": "Hasło zostało zmienione, zaloguj się uywając nowego hasła!",
     "delete": "Konto zostało usunięte."
   },
   "pages": {
@@ -71,7 +75,8 @@
     },
     "login": {
       "title": "Logowanie",
-      "noAccount": "Nie masz konta? Zarejestruj się.",
+      "noAccount": "Nie masz konta? Zarejestruj się!",
+      "forgotPassword": "Nie pamiętam hasła",
       "login": "Zaloguj się.",
       "form": {
         "title": "Logowanie",
@@ -88,6 +93,40 @@
           }
         },
         "submit": { "label": "Zaloguj się!" }
+      }
+    },
+    "password-reset": {
+      "title": "Zmiana hasła",
+      "resendMail": "Nie możesz zmienić hasła? Wyślij adres email ponownie.",
+      "form": {
+        "email": {
+          "title": "Zmiana hasła",
+          "description": "Podaj adres email na który mamy wysłać link do zmiany hasła",
+          "fields": {
+            "email": {
+              "label": "E-mail",
+              "placeholder": "example@fencelane.com",
+              "error": "Nieprawidłowy adres e-mail"
+            }
+          },
+          "submit": { "label": "Zatwierdź" }
+        },
+        "password": {
+          "title": "Zmiana hasła",
+          "description": "Ustaw nowe hasło.",
+          "fields": {
+            "password": {
+              "label": "Nowe hasło",
+              "placeholder": "Wprowadź hasło"
+            },
+            "confirmPassword": {
+              "label": "Potwierdź hasło",
+              "placeholder": "Powtórz hasło",
+              "error": "Podane hasła nie są takie same"
+            }
+          },
+          "submit": { "label": "Zatwierdź" }
+        }
       }
     }
   }

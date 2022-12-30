@@ -81,6 +81,9 @@ export const LoginForm = () => {
               />
               <FormErrorMessage>{errors.password}</FormErrorMessage>
             </FormControl>
+            <Text as={Link} href="/password-reset" color="blue.500">
+              {t("pages.login.forgotPassword")}
+            </Text>
 
             <FormControl isInvalid={touched && !!error} mb="15px">
               <FormErrorMessage>
