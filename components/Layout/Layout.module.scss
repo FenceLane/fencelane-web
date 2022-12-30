@@ -14,19 +14,19 @@
   z-index: 9;
 }
 .logos {
-  width: 50px;
+  width: 200px;
   display: flex;
   flex-direction: row;
+  gap: 10px;
+  align-items: center;
 }
-.logos:first-child {
+.logo {
   width: 40px;
   height: 40px;
   padding: 0;
 }
-.logos:nth-child(2) {
-  width: 126px;
-  display: none;
-  //   doesnt work :/
+.text-logo {
+  width: 140px;
 }
 .header-right {
   flex-direction: row;
@@ -71,7 +71,14 @@
   color: #333 !important;
 }
 
-@media only screen and (min-width: 600px) {
+@media only screen and (min-width: 768px) {
+  .header {
+    padding: 0 10px;
+  }
+  .logo {
+    width: 25px;
+    height: 25px;
+  }
   .nav {
     display: block !important;
     width: 200px;
@@ -85,11 +92,11 @@
   }
   .content {
     padding: 20px;
-    margin-left: 200px;
+    padding-left: 220px;
     box-sizing: border-box;
   }
   .footer {
-    margin-left: 200px;
+    padding-left: 200px;
     box-sizing: border-box;
   }
 }

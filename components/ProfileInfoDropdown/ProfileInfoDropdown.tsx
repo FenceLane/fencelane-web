@@ -77,7 +77,7 @@ export default function ProfileInfoDropdown({
         borderRadius="5px"
         position="absolute"
         top="45px"
-        right="-50%"
+        right={`${mobile ? "-50%" : 15}`}
         className="profileDropdown"
         boxShadow="0px 6px 6px -7px rgba(66, 68, 90, 1)"
         display={showDropdown ? "block" : "none"}

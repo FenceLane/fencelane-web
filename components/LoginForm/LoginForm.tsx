@@ -37,7 +37,7 @@ export const LoginForm = () => {
   }, [router, isSuccess]);
 
   return (
-    <Box mr="auto" ml="auto" mt="100px" w="100%">
+    <Box mr="auto" ml="auto" mt="100px" w="100%" maxW="400px">
       <Center mb="20px">
         <Heading>{t("pages.login.title")}</Heading>
       </Center>

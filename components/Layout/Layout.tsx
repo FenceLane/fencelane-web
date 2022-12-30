@@ -9,6 +9,7 @@ import { UserInfo } from "../../lib/types";
 import styles from "./Layout.module.scss";
 import cx from "classnames";
 import Div100vh, { use100vh } from "react-div-100vh";
+import useIsMobile from "../../lib/hooks/useIsMobile";
 
 export interface LayoutProps {
   children: ReactNode;
@@ -60,13 +61,10 @@ export const Layout = ({
 }: LayoutProps) => {
   const { t } = useContent("general");
   const [isMenuActive, setMenuActive] = useState(false);
-  const [isMobile, setMobile] = useState(true);
+  const isMobile = useIsMobile();
+
   const height = use100vh();
   const actualHeight = height ? height - 50 : "95vh";
-  window.addEventListener("resize", (e) => {
-    if (window.innerWidth < 600) setMobile(true);
-    else setMobile(false);
-  });
 
   return (
     <>
@@ -80,8 +78,14 @@ export const Layout = ({
           href="/"
           aria-label={t("layout.header.logo.label")}
         >
-          <Image src={"./images/logo.svg"} alt="" />
-          <Image src={"./images/textlogo.svg"} alt="" display="none" />
+          <Image className={styles.logo} src={"./images/logo.svg"} alt="" />
+          {!isMobile && (
+            <Image
+              className={styles["text-logo"]}
+              src={"./images/textlogo.svg"}
+              alt=""
+            />
+          )}
         </Link>
         <Flex className={styles["header-right"]}>
           {user && (
@@ -115,7 +119,7 @@ export const Layout = ({
             alignItems="center"
             h="100%"
           >
-            <Box>
+            <Box display="flex" flexDir="column" justifyContent="center">
               {menuItems.map((item) => (
                 <Link
                   as={NextLink}
@@ -136,7 +140,7 @@ export const Layout = ({
                 </Link>
               ))}
             </Box>
-            <Box>
+            <Box display="flex" flexDir="column" justifyContent="center">
               <Link
                 as={NextLink}
                 href=""
@@ -179,10 +183,14 @@ export const Layout = ({
           </Box>
         </Box>
       )}
-      <Box color="black" className={styles.content}>
+      <Box
+        color="black"
+        className={styles.content}
+        pl={user && !isMobile ? 220 : 2.5}
+      >
         {children}
       </Box>
-      <Box className={styles.footer}>
+      <Box className={styles.footer} pl={user && !isMobile ? 200 : 0}>
         <Text textAlign="center" fontWeight="400">
           Created by{" "}
           <Link
