@@ -1,9 +1,9 @@
 import { Box, Button, Wrap, WrapItem } from "@chakra-ui/react";
 import React, { useRef, useState } from "react";
 import { TriangleDownIcon } from "@chakra-ui/icons";
-import { useOnClickOutside } from "../../lib/util/hooks/useOnClickOutside";
+import { useOnClickOutside } from "../../lib/hooks/useOnClickOutside";
 import { apiClient } from "../../lib/api/apiClient";
-import { useContent } from "../../lib/util/hooks/useContent";
+import { useContent } from "../../lib/hooks/useContent";
 import { mapAxiosErrorToLabel } from "../../lib/server/BackendError/BackendError";
 import { toastError, toastInfo } from "../../lib/util/toasts";
 import { useRouter } from "next/router";

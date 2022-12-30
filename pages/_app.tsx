@@ -5,6 +5,7 @@ import { ChakraProvider, extendTheme } from "@chakra-ui/react";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { queryClient } from "../lib/api/queryClient";
 import { ToastContainer } from "react-toastify";
+import { LoadingProvider } from "../lib/hooks/loadingContext";
 
 const theme = extendTheme({
   fonts: {
@@ -17,8 +18,10 @@ function App({ Component, pageProps }: AppProps) {
   return (
     <QueryClientProvider client={queryClient}>
       <ChakraProvider theme={theme}>
-        <ToastContainer position="bottom-right" />
-        <Component {...pageProps} />
+        <LoadingProvider>
+          <ToastContainer position="bottom-right" />
+          <Component {...pageProps} />
+        </LoadingProvider>
       </ChakraProvider>
     </QueryClientProvider>
   );

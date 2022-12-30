@@ -8,7 +8,7 @@ import { mapAxiosErrorToLabel } from "../../lib/server/BackendError/BackendError
 import { withServerSideAuth } from "../../lib/server/middlewares/withServerSideAuth";
 import { withTranslationProps } from "../../lib/server/middlewares/withTranslationProps";
 import { timeToDate } from "../../lib/util/dates";
-import { useContent } from "../../lib/util/hooks/useContent";
+import { useContent } from "../../lib/hooks/useContent";
 import { toastError, toastInfo } from "../../lib/util/toasts";
 
 export default function Home({

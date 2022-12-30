@@ -4,7 +4,7 @@ import { Layout } from "../../components/Layout/Layout";
 import { PasswordResetEmailForm } from "../../components/PasswordResetEmailForm/PasswordResetEmailForm";
 import { PasswordResetNewPasswordForm } from "../../components/PasswordResetNewPasswordForm/PasswordResetNewPasswordForm";
 import { withTranslationProps } from "../../lib/server/middlewares/withTranslationProps";
-import { useContent } from "../../lib/util/hooks/useContent";
+import { useContent } from "../../lib/hooks/useContent";
 
 const LoginPage = () => {
   const { t } = useContent("pages.password-reset");
