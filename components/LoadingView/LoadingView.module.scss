@@ -9,7 +9,8 @@
   align-items: center;
   display: flex;
   visibility: hidden;
-  background: rgba(255, 255, 255, 0.96);
+  background: rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(3px);
 
   &Loading {
     visibility: visible;
