@@ -49,7 +49,7 @@ export const RegisterForm = () => {
   };
 
   return (
-    <Box minW="400px">
+    <Box mr="auto" ml="auto" mt="20px" w="100%">
       <Center mb="20px">
         <Heading>{t("pages.register.form.title")}</Heading>
       </Center>

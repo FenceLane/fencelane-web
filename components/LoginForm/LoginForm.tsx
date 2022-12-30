@@ -2,7 +2,6 @@ import React, { useEffect } from "react";
 import { Formik, Form, Field } from "formik";
 import {
   Box,
-  Flex,
   Center,
   Heading,
   Button,
@@ -38,7 +37,7 @@ export const LoginForm = () => {
   }, [router, isSuccess]);
 
   return (
-    <Box mr="auto" ml="auto" mt="100px" w="400px">
+    <Box mr="auto" ml="auto" mt="100px" w="100%">
       <Center mb="20px">
         <Heading>{t("pages.login.title")}</Heading>
       </Center>

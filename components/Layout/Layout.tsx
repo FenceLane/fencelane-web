@@ -1,11 +1,14 @@
-import { Box, Grid, GridItem, Text, Image, Link } from "@chakra-ui/react";
+import { Box, Grid, GridItem, Text, Image, Link, Flex } from "@chakra-ui/react";
 import Head from "next/head";
-import React, { ReactNode } from "react";
+import React, { ReactNode, useState } from "react";
 import ProfileInfoDropdown from "../ProfileInfoDropdown/ProfileInfoDropdown";
 import NextLink from "next/link";
 import { useContent } from "../../lib/hooks/useContent";
 import "react-toastify/dist/ReactToastify.css";
 import { UserInfo } from "../../lib/types";
+import styles from "./Layout.module.scss";
+import cx from "classnames";
+import Div100vh, { use100vh } from "react-div-100vh";
 
 export interface LayoutProps {
   children: ReactNode;
@@ -13,19 +16,6 @@ export interface LayoutProps {
   user?: UserInfo;
   hideSidebar?: boolean;
 }
-
-const getTemplateAreas = (hideSidebar: boolean) =>
-  hideSidebar
-    ? `
-"header header"
-"main main"
-"footer footer"
-`
-    : `
-"header header"
-"nav main"
-"nav footer"
-`;
 
 const menuItems = [
   {
@@ -69,190 +59,151 @@ export const Layout = ({
   hideSidebar = false,
 }: LayoutProps) => {
   const { t } = useContent("general");
+  const [isMenuActive, setMenuActive] = useState(false);
+  const [isMobile, setMobile] = useState(true);
+  const height = use100vh();
+  const actualHeight = height ? height - 50 : "95vh";
+  window.addEventListener("resize", (e) => {
+    if (window.innerWidth < 600) setMobile(true);
+    else setMobile(false);
+  });
 
   return (
     <>
       <Head>
         <title>{`${t("title")}${title ? ` | ${title}` : ""}`}</title>
       </Head>
-      <Grid
-        templateAreas={getTemplateAreas(hideSidebar)}
-        gridTemplateRows={"50px 1fr 30px"}
-        gridTemplateColumns={"200px 1fr"}
-        h="100vh"
-        color="blackAlpha.700"
-        fontWeight="normal"
-      >
-        <GridItem
-          pl="2"
-          bg="white"
-          color="white"
-          area={"header"}
-          display="flex"
-          flexDir="row"
-          justifyContent="space-between"
-          position="relative"
-          boxShadow="0px 6px 6px -7px rgba(66, 68, 90, 1)"
+      <Box className={styles.header}>
+        <Link
+          className={styles.logos}
+          as={NextLink}
+          href="/"
+          aria-label={t("layout.header.logo.label")}
         >
-          <Link
-            as={NextLink}
-            href="/"
-            w={200}
-            gap="16px"
-            m="11px"
-            className="logo"
-            display="flex"
-            flexDirection="row"
-            aria-label={t("layout.header.logo.label")}
-          >
-            <Image width="22px" src={"./images/logo.svg"} alt="" />
-            <Image width="126px" src={"./images/textlogo.svg"} alt="" />
-          </Link>
-          {user && <ProfileInfoDropdown name={user.name} />}
-        </GridItem>
-        {!hideSidebar && (
-          <GridItem
-            pl="2"
-            bg="#333"
-            color="white"
-            area={"nav"}
+          <Image src={"./images/logo.svg"} alt="" />
+          <Image src={"./images/textlogo.svg"} alt="" display="none" />
+        </Link>
+        <Flex className={styles["header-right"]}>
+          {user && (
+            <>
+              <ProfileInfoDropdown name={user.name} mobile={isMobile} />
+              {isMobile && (
+                <button
+                  className={
+                    isMenuActive
+                      ? cx(styles.hamburger, styles["is-active"])
+                      : styles.hamburger
+                  }
+                  type="button"
+                  onClick={() => setMenuActive(!isMenuActive)}
+                >
+                  <span className={styles["hamburger-box"]}>
+                    <span className={styles["hamburger-inner"]}></span>
+                  </span>
+                </button>
+              )}
+            </>
+          )}
+        </Flex>
+      </Box>
+      {!hideSidebar && (isMenuActive || !isMobile) && (
+        <Box className={styles.nav} height={actualHeight}>
+          <Box
             display="flex"
             flexDir="column"
             justifyContent="space-between"
             alignItems="center"
             h="100%"
-            p="25px 0"
-            fontSize="16px"
-            fontWeight="medium"
           >
-            <Box
-              display="flex"
-              flexDir="column"
-              justifyContent="space-between"
-              h="100%"
-            >
-              <Box>
-                {menuItems.map((item) => (
-                  <Link
-                    as={NextLink}
-                    key={item.name}
-                    href=""
-                    _hover={{
-                      textDecoration: "none",
-                    }}
-                  >
-                    <Box
-                      display="flex"
-                      flexDir="row"
-                      alignItems="center"
-                      gap="16px"
-                      textTransform="capitalize"
-                      color="#C2C2C2"
-                      height="50px"
-                      width="auto"
-                      _hover={{
-                        color: "white",
-                      }}
-                    >
-                      <Image
-                        width="16px"
-                        src={`./images/navicons/${item.icon}.svg`}
-                        alt=""
-                      />
-                      <Text>{t(`layout.sidebar.menu.${item.name}.label`)}</Text>
-                    </Box>
-                  </Link>
-                ))}
-              </Box>
-              <Box>
+            <Box>
+              {menuItems.map((item) => (
                 <Link
                   as={NextLink}
+                  key={item.name}
                   href=""
                   _hover={{
                     textDecoration: "none",
                   }}
                 >
-                  <Box
-                    display="flex"
-                    flexDir="row"
-                    alignItems="center"
-                    gap="16px"
-                    textTransform="capitalize"
-                    color="#C2C2C2"
-                    height="50px"
-                    width="auto"
-                  >
+                  <Box className={styles["nav-item"]}>
                     <Image
-                      width="16px"
-                      src={`./images/navicons/ustawienia.svg`}
+                      width="20px"
+                      src={`./images/navicons/${item.icon}.svg`}
                       alt=""
                     />
-                    <Text
-                      _hover={{
-                        color: "white",
-                      }}
-                    >
-                      {t(`layout.sidebar.menu.settings.label`)}
-                    </Text>
+                    <Text>{t(`layout.sidebar.menu.${item.name}.label`)}</Text>
                   </Box>
                 </Link>
-                <Link
-                  as={NextLink}
-                  href=""
-                  _hover={{
-                    textDecoration: "none",
-                  }}
-                >
-                  <Box
-                    display="flex"
-                    flexDir="row"
-                    alignItems="center"
-                    gap="16px"
-                    textTransform="capitalize"
-                    color="#C2C2C2"
-                    height="50px"
-                    width="auto"
-                  >
-                    <Image width="16px" src={`./images/navicons/pomoc.svg`} />
-                    <Text
-                      _hover={{
-                        color: "white",
-                      }}
-                    >
-                      {t(`layout.sidebar.menu.help.label`)}
-                    </Text>
-                  </Box>
-                </Link>
-              </Box>
+              ))}
             </Box>
-          </GridItem>
-        )}
-        <GridItem pl="2" bg="#EBEBEB" color="black" area={"main"}>
-          {children}
-        </GridItem>
-        <GridItem pl="2" bg="#333" area={"footer"}>
-          <Text textAlign="center" fontWeight="300" color="white">
-            Created by{" "}
-            <Link
-              as={NextLink}
-              href="https://github.com/FenceLane"
-              rel="noreferrer noopener"
-              fontWeight="600"
-            >
-              FenceLane
-            </Link>{" "}
-            for{" "}
-            <Link
-              as={NextLink}
-              href="https://github.com/FenceLane"
-              rel="noreferrer noopener"
-              fontWeight="600"
-            >
-              Drebud
-            </Link>
-          </Text>
-        </GridItem>
-      </Grid>
+            <Box>
+              <Link
+                as={NextLink}
+                href=""
+                _hover={{
+                  textDecoration: "none",
+                }}
+              >
+                <Box className={styles["nav-item"]}>
+                  <Image
+                    width="20px"
+                    src={`./images/navicons/ustawienia.svg`}
+                    alt=""
+                  />
+                  <Text
+                    _hover={{
+                      color: "white",
+                    }}
+                  >
+                    {t(`layout.sidebar.menu.settings.label`)}
+                  </Text>
+                </Box>
+              </Link>
+              <Link
+                as={NextLink}
+                href=""
+                _hover={{
+                  textDecoration: "none",
+                }}
+              >
+                <Box className={styles["nav-item"]}>
+                  <Image
+                    width="20px"
+                    src={`./images/navicons/pomoc.svg`}
+                    alt="pomoc"
+                  />
+                  <Text>{t(`layout.sidebar.menu.help.label`)}</Text>
+                </Box>
+              </Link>
+            </Box>
+          </Box>
+        </Box>
+      )}
+      <Box color="black" className={styles.content}>
+        {children}
+      </Box>
+      <Box className={styles.footer}>
+        <Text textAlign="center" fontWeight="400">
+          Created by{" "}
+          <Link
+            as={NextLink}
+            href="https://github.com/FenceLane"
+            rel="noreferrer noopener"
+            fontWeight="600"
+          >
+            FenceLane
+          </Link>{" "}
+          for{" "}
+          <Link
+            as={NextLink}
+            href="https://github.com/FenceLane"
+            rel="noreferrer noopener"
+            fontWeight="600"
+          >
+            Drebud
+          </Link>
+        </Text>
+      </Box>
     </>
   );
 };
