@@ -1,0 +1,24 @@
+.wrapper {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 999;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  visibility: hidden;
+  background: rgba(255, 255, 255, 0.96);
+
+  &Loading {
+    visibility: visible;
+  }
+}
+
+.trapButton {
+  width: 0;
+  height: 0;
+  opacity: 0;
+  pointer-events: none;
+}

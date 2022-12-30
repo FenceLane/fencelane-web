@@ -17,7 +17,7 @@ import { LoginFormDataSchema } from "../../lib/schema/loginFormData";
 import { usePostLogin } from "../../lib/api/hooks/auth";
 import { useRouter } from "next/router";
 import { toFormikValidationSchema } from "zod-formik-adapter";
-import { useContent } from "../../lib/util/hooks/useContent";
+import { useContent } from "../../lib/hooks/useContent";
 import { mapAxiosErrorToLabel } from "../../lib/server/BackendError/BackendError";
 
 const initialValies = {

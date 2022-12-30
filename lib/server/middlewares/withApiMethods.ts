@@ -28,6 +28,7 @@ export const withApiMethods =
       try {
         return await handler(req, res);
       } catch (error) {
+        console.error(error);
         sendBackendError(res, {
           code: BackendResponseStatusCode.BAD_REQUEST,
           label: BackendErrorLabel.UNEXPECTED_ERROR,

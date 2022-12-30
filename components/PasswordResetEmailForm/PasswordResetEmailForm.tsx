@@ -11,7 +11,7 @@ import {
   FormErrorMessage,
   Text,
 } from "@chakra-ui/react";
-import { useContent } from "../../lib/util/hooks/useContent";
+import { useContent } from "../../lib/hooks/useContent";
 import { toFormikValidationSchema } from "zod-formik-adapter";
 import {
   PasswordResetFormEmailData,

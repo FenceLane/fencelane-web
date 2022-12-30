@@ -3,7 +3,7 @@ import Head from "next/head";
 import React, { ReactNode } from "react";
 import ProfileInfoDropdown from "../ProfileInfoDropdown/ProfileInfoDropdown";
 import NextLink from "next/link";
-import { useContent } from "../../lib/util/hooks/useContent";
+import { useContent } from "../../lib/hooks/useContent";
 import "react-toastify/dist/ReactToastify.css";
 import { UserInfo } from "../../lib/types";
 

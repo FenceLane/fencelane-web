@@ -12,7 +12,7 @@ import {
   Text,
 } from "@chakra-ui/react";
 import Link from "next/link";
-import { useContent } from "../../lib/util/hooks/useContent";
+import { useContent } from "../../lib/hooks/useContent";
 import { useRouter } from "next/router";
 import { usePostRegister } from "../../lib/api/hooks/auth";
 import { RegisterFormDataSchema } from "../../lib/schema/registerFormData";
