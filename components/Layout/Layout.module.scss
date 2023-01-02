@@ -2,7 +2,7 @@
   min-height: calc(100vh - 80px);
   padding: 10px;
   box-sizing: border-box;
-  background-color: #ebebeb;
+  background-color: var(--light-content);
 }
 
 @media only screen and (min-width: 768px) {

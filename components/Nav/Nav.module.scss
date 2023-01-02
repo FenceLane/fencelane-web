@@ -1,7 +1,7 @@
 .nav {
   position: absolute;
   width: 100%;
-  background-color: #333;
+  background-color: var(--dark);
   color: white;
   display: flex;
   flex-direction: column;
@@ -12,12 +12,12 @@
   z-index: 8;
 }
 .nav-item {
-  display: flex !important;
+  display: flex;
   flex-direction: row;
   align-items: center;
   gap: 22px;
   text-transform: capitalize;
-  color: #c2c2c2;
+  color: var(--unactive);
   height: 50px;
   width: auto;
 }
@@ -30,7 +30,7 @@
 
 @media only screen and (min-width: 768px) {
   .nav {
-    display: block !important;
+    display: flex;
     width: 200px;
     font-size: 1rem;
   }

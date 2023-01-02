@@ -1,7 +1,7 @@
 .footer {
   height: 20px;
-  background-color: #ebebeb;
-  color: #333 !important;
+  background-color: var(--light-content);
+  color: var(--dark);
 }
 
 @media only screen and (min-width: 768px) {
