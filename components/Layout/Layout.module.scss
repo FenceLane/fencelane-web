@@ -1,0 +1,14 @@
+.content {
+  min-height: calc(100vh - 80px);
+  padding: 10px;
+  box-sizing: border-box;
+  background-color: var(--light-content);
+}
+
+@media only screen and (min-width: 768px) {
+  .content {
+    padding: 20px;
+    padding-left: 220px;
+    box-sizing: border-box;
+  }
+}

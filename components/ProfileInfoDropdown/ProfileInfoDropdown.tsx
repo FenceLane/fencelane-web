@@ -1,4 +1,4 @@
-import { Box, Button, Wrap, WrapItem } from "@chakra-ui/react";
+import { Box, Button, Wrap, WrapItem, Image } from "@chakra-ui/react";
 import React, { useRef, useState } from "react";
 import { TriangleDownIcon } from "@chakra-ui/icons";
 import { useOnClickOutside } from "../../lib/hooks/useOnClickOutside";
@@ -11,9 +11,13 @@ import Link from "next/link";
 
 interface ProfileInfoTypes {
   name: string;
+  variant?: "avatar" | "name";
 }
 
-export default function ProfileInfoDropdown({ name }: ProfileInfoTypes) {
+export default function ProfileInfoDropdown({
+  name,
+  variant = "avatar",
+}: ProfileInfoTypes) {
   const [showDropdown, setShowDropdown] = useState(false);
   const ref = useRef<HTMLDivElement | null>(null);
   const router = useRouter();
@@ -41,36 +45,43 @@ export default function ProfileInfoDropdown({ name }: ProfileInfoTypes) {
 
   return (
     <Box
-      w={200}
+      minW={70}
       className="userInfo"
       display="flex"
       flexDirection="row"
       justifyContent="center"
       alignItems="center"
-      mr="20px"
       position="relative"
       ref={ref}
     >
-      <Button
-        colorScheme="teal"
-        variant="outline"
-        h="32px"
-        w="calc(100%-30px)"
-        onClick={toggleShowDropdown}
-      >
-        {name}
-        <TriangleDownIcon w="10px" ml="15px" />
-      </Button>
+      {variant === "name" ? (
+        <Button
+          colorScheme="teal"
+          variant="outline"
+          h="32px"
+          onClick={toggleShowDropdown}
+          mr="20px"
+        >
+          {name}
+          <TriangleDownIcon w="10px" ml="15px" />
+        </Button>
+      ) : (
+        <Button onClick={toggleShowDropdown} bg="none">
+          <Image src={"./images/avatar.svg"} alt="" />
+        </Button>
+      )}
+
       <Box
         bg="white"
-        p="15px"
+        p="10px 15px 15px 15px "
         borderRadius="5px"
         position="absolute"
-        top="50px"
-        right="0"
+        top="45px"
+        right={`${variant === "avatar" ? "calc(-50% - 10px)" : 15}`}
         className="profileDropdown"
         boxShadow="0px 6px 6px -7px rgba(66, 68, 90, 1)"
         display={showDropdown ? "block" : "none"}
+        zIndex="10"
       >
         <Wrap spacing={4} w="100%">
           <WrapItem w="100%">
@@ -80,6 +91,7 @@ export default function ProfileInfoDropdown({ name }: ProfileInfoTypes) {
               colorScheme="teal"
               variant="outline"
               width="100%"
+              h="32px"
             >
               {t("general.layout.header.dropdown.profile")}
             </Button>
@@ -90,6 +102,7 @@ export default function ProfileInfoDropdown({ name }: ProfileInfoTypes) {
               colorScheme="teal"
               variant="outline"
               width="100%"
+              h="32px"
             >
               {t("general.layout.header.dropdown.logout")}
             </Button>
