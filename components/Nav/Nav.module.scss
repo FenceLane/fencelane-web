@@ -1,0 +1,43 @@
+.nav {
+  position: absolute;
+  width: 100%;
+  background-color: #333;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 1.2rem;
+  padding: 20px 0px;
+  z-index: 8;
+}
+.nav-item {
+  display: flex !important;
+  flex-direction: row;
+  align-items: center;
+  gap: 22px;
+  text-transform: capitalize;
+  color: #c2c2c2;
+  height: 50px;
+  width: auto;
+}
+.nav-item:hover {
+  color: white;
+}
+.nav-item:hover img {
+  filter: brightness(0) invert(1);
+}
+
+@media only screen and (min-width: 768px) {
+  .nav {
+    display: block !important;
+    width: 200px;
+    font-size: 1rem;
+  }
+  .nav-item {
+    gap: 16px;
+  }
+  .nav img {
+    width: 16px;
+  }
+}

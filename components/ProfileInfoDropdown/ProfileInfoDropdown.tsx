@@ -11,12 +11,12 @@ import Link from "next/link";
 
 interface ProfileInfoTypes {
   name: string;
-  mobile: boolean;
+  variant?: "avatar" | "name";
 }
 
 export default function ProfileInfoDropdown({
   name,
-  mobile,
+  variant = "avatar",
 }: ProfileInfoTypes) {
   const [showDropdown, setShowDropdown] = useState(false);
   const ref = useRef<HTMLDivElement | null>(null);
@@ -54,7 +54,7 @@ export default function ProfileInfoDropdown({
       position="relative"
       ref={ref}
     >
-      {!mobile ? (
+      {variant === "name" ? (
         <Button
           colorScheme="teal"
           variant="outline"
@@ -77,7 +77,7 @@ export default function ProfileInfoDropdown({
         borderRadius="5px"
         position="absolute"
         top="45px"
-        right={`${mobile ? "-50%" : 15}`}
+        right={`${variant === "avatar" ? "calc(-50% - 10px)" : 15}`}
         className="profileDropdown"
         boxShadow="0px 6px 6px -7px rgba(66, 68, 90, 1)"
         display={showDropdown ? "block" : "none"}
