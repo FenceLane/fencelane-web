@@ -1,5 +1,14 @@
-import { Button } from "@chakra-ui/react";
-import Head from "next/head";
+import {
+  Button,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  ModalOverlay,
+  useDisclosure,
+} from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import React from "react";
 import { apiClient } from "../../lib/api/apiClient";
@@ -7,8 +16,6 @@ import { useContent } from "../../lib/hooks/useContent";
 import { mapAxiosErrorToLabel } from "../../lib/server/BackendError/BackendError";
 import { timeToDate } from "../../lib/util/dates";
 import { toastError, toastInfo } from "../../lib/util/toasts";
-import { Layout } from "../Layout/Layout";
-import { InferGetServerSidePropsType } from "next";
 import { UserInfo } from "../../lib/types";
 
 export interface MyProfileProps {
@@ -24,6 +31,7 @@ export interface MyProfileProps {
 export const MyProfile = ({ user, session }: MyProfileProps) => {
   const { t } = useContent();
   const router = useRouter();
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   const handleLogout = () => {
     apiClient.auth
@@ -72,16 +80,33 @@ export const MyProfile = ({ user, session }: MyProfileProps) => {
           <p>Data odświeżenia: {timeToDate(session.updatedAt)}</p>
           <p>Data wygaśnięcia: {timeToDate(session.expiresAt)}</p>
         </pre>
-        <Button onClick={handleLogout} colorScheme="teal" variant="outline">
-          wyloguj się
-        </Button>
         <Button
-          onClick={handleDeleteAccount}
-          colorScheme="red"
+          onClick={handleLogout}
+          colorScheme="teal"
           variant="outline"
+          mr={3}
         >
-          usuń konto
+          Wyloguj się
         </Button>
+        <Button colorScheme="red" variant="outline" onClick={onOpen}>
+          Usuń konto
+        </Button>
+        <Modal isOpen={isOpen} onClose={onClose}>
+          <ModalOverlay />
+          <ModalContent>
+            <ModalHeader>Usuwanie konta</ModalHeader>
+            <ModalCloseButton />
+            <ModalBody>Czy na pewno chcesz usunąć konto?</ModalBody>
+            <ModalFooter>
+              <Button colorScheme="red" onClick={handleDeleteAccount} mr={3}>
+                Usuń konto
+              </Button>
+              <Button colorScheme="green" onClick={onClose}>
+                Anuluj
+              </Button>
+            </ModalFooter>
+          </ModalContent>
+        </Modal>
       </main>
     </>
   );
