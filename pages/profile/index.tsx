@@ -12,7 +12,7 @@ const MyProfilePage = ({
   const { t } = useContent("pages.profile");
   return (
     <Layout user={user}>
-      <MyProfile user={user} session={session} />
+      <MyProfile user={user} />
     </Layout>
   );
 };

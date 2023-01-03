@@ -20,15 +20,9 @@ import { UserInfo } from "../../lib/types";
 
 export interface MyProfileProps {
   user: UserInfo;
-  session: {
-    id: string;
-    createdAt: number;
-    updatedAt: number;
-    expiresAt: number;
-  };
 }
 
-export const MyProfile = ({ user, session }: MyProfileProps) => {
+export const MyProfile = ({ user }: MyProfileProps) => {
   const { t } = useContent();
   const router = useRouter();
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -72,13 +66,6 @@ export const MyProfile = ({ user, session }: MyProfileProps) => {
           <p>email: {user.email}</p>
           <p>telefon: {user.phone}</p>
           <p>rola: {user.role}</p>
-        </pre>
-        <h3>Informacje o bieżącej sessji:</h3>
-        <pre>
-          <p>id: {session.id}</p>
-          <p>Data utworzenia: {timeToDate(session.createdAt)}</p>
-          <p>Data odświeżenia: {timeToDate(session.updatedAt)}</p>
-          <p>Data wygaśnięcia: {timeToDate(session.expiresAt)}</p>
         </pre>
         <Button
           onClick={handleLogout}
