@@ -9,11 +9,19 @@ import { timeToDate } from "../../lib/util/dates";
 import { toastError, toastInfo } from "../../lib/util/toasts";
 import { Layout } from "../Layout/Layout";
 import { InferGetServerSidePropsType } from "next";
+import { UserInfo } from "../../lib/types";
 
-export const MyProfile = ({
-  user,
-  session,
-}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+export interface MyProfileProps {
+  user: UserInfo;
+  session: {
+    id: string;
+    createdAt: number;
+    updatedAt: number;
+    expiresAt: number;
+  };
+}
+
+export const MyProfile = ({ user, session }: MyProfileProps) => {
   const { t } = useContent();
   const router = useRouter();
 
@@ -47,41 +55,34 @@ export const MyProfile = ({
 
   return (
     <>
-      <Head>
-        <title>FenceLane</title>
-        <meta name="description" content="Managing palisades the good way." />
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-      <Layout user={user}>
-        <main>
-          <h2>Mój profil</h2>
-          <h3>Dane użytkownika:</h3>
-          <pre>
-            <p>id: {user.id}</p>
-            <p>nazwa: {user.name}</p>
-            <p>email: {user.email}</p>
-            <p>telefon: {user.phone}</p>
-            <p>rola: {user.role}</p>
-          </pre>
-          <h3>Informacje o bieżącej sessji:</h3>
-          <pre>
-            <p>id: {session.id}</p>
-            <p>Data utworzenia: {timeToDate(session.createdAt)}</p>
-            <p>Data odświeżenia: {timeToDate(session.updatedAt)}</p>
-            <p>Data wygaśnięcia: {timeToDate(session.expiresAt)}</p>
-          </pre>
-          <Button onClick={handleLogout} colorScheme="teal" variant="outline">
-            wyloguj się
-          </Button>
-          <Button
-            onClick={handleDeleteAccount}
-            colorScheme="red"
-            variant="outline"
-          >
-            usuń konto
-          </Button>
-        </main>
-      </Layout>
+      <main>
+        <h2>Mój profil</h2>
+        <h3>Dane użytkownika:</h3>
+        <pre>
+          <p>id: {user.id}</p>
+          <p>nazwa: {user.name}</p>
+          <p>email: {user.email}</p>
+          <p>telefon: {user.phone}</p>
+          <p>rola: {user.role}</p>
+        </pre>
+        <h3>Informacje o bieżącej sessji:</h3>
+        <pre>
+          <p>id: {session.id}</p>
+          <p>Data utworzenia: {timeToDate(session.createdAt)}</p>
+          <p>Data odświeżenia: {timeToDate(session.updatedAt)}</p>
+          <p>Data wygaśnięcia: {timeToDate(session.expiresAt)}</p>
+        </pre>
+        <Button onClick={handleLogout} colorScheme="teal" variant="outline">
+          wyloguj się
+        </Button>
+        <Button
+          onClick={handleDeleteAccount}
+          colorScheme="red"
+          variant="outline"
+        >
+          usuń konto
+        </Button>
+      </main>
     </>
   );
 };
