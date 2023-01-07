@@ -8,15 +8,17 @@ import {
   ModalHeader,
   ModalOverlay,
   useDisclosure,
+  Heading,
+  Text,
 } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import React from "react";
 import { apiClient } from "../../lib/api/apiClient";
 import { useContent } from "../../lib/hooks/useContent";
 import { mapAxiosErrorToLabel } from "../../lib/server/BackendError/BackendError";
-import { timeToDate } from "../../lib/util/dates";
 import { toastError, toastInfo } from "../../lib/util/toasts";
 import { UserInfo } from "../../lib/types";
+import styles from "./MyProfile.module.scss";
 
 export interface MyProfileProps {
   user: UserInfo;
@@ -58,26 +60,40 @@ export const MyProfile = ({ user }: MyProfileProps) => {
   return (
     <>
       <main>
-        <h2>Mój profil</h2>
-        <h3>Dane użytkownika:</h3>
-        <pre>
-          <p>id: {user.id}</p>
-          <p>nazwa: {user.name}</p>
-          <p>email: {user.email}</p>
-          <p>telefon: {user.phone}</p>
-          <p>rola: {user.role}</p>
-        </pre>
-        <Button
-          onClick={handleLogout}
-          colorScheme="teal"
-          variant="outline"
-          mr={3}
-        >
-          Wyloguj się
-        </Button>
-        <Button colorScheme="red" variant="outline" onClick={onOpen}>
-          Usuń konto
-        </Button>
+        <Heading as="h3" size="lg" mb={5}>
+          Mój profil
+        </Heading>
+        <Text fontSize={18} mb={2}>
+          Dane użytkownika:
+        </Text>
+        <Text className={styles["profile-item"]}>
+          Nazwa użytkownika: <pre>{user.name}</pre>
+        </Text>
+        <Text className={styles["profile-item"]}>
+          E-mail: <pre>{user.email}</pre>
+        </Text>
+        <Text className={styles["profile-item"]}>
+          <span>ID:</span> <pre>{user.id}</pre>
+        </Text>
+        <Text className={styles["profile-item"]}>
+          Telefon: <pre>{user.phone}</pre>
+        </Text>
+        <Text className={styles["profile-item"]}>
+          Rola: <pre>{user.role}</pre>
+        </Text>
+        <div className={styles.buttons}>
+          <Button
+            onClick={handleLogout}
+            colorScheme="teal"
+            variant="outline"
+            mr={3}
+          >
+            Wyloguj się
+          </Button>
+          <Button colorScheme="red" variant="outline" onClick={onOpen}>
+            Usuń konto
+          </Button>
+        </div>
         <Modal isOpen={isOpen} onClose={onClose}>
           <ModalOverlay />
           <ModalContent>
