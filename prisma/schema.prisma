@@ -10,6 +10,7 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+//auth
 model User {
   id  String     @id @default(uuid())
   email String  @unique
@@ -38,4 +39,68 @@ model PasswordResetToken {
   expiresAt DateTime
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId    String
+}
+
+//domain
+model Client {
+  id String  @id @default(uuid())
+  name String 
+  shortName String
+  email String @unique
+  phone String
+  orders Order[]
+}
+
+model Commodity {
+  id  String  @id @default(uuid())
+  name String
+  dimensions String
+  stocks CommodityStock[]
+  orders Order[]
+}
+
+model CommodityStock {
+  id  String  @id @default(uuid())
+  type String // "black" | "white_wet" | "white_dry"
+  singlePackageVolume Decimal
+  packagesAmount Int
+  packageSize Int
+  commodity Commodity @relation(fields: [commodityId], references: [id], onDelete: Cascade)
+  commodityId String
+}
+
+model CommodityAmount {
+  id  String  @id @default(uuid())
+  type String // "black" | "white_wet" | "white_dry"
+  singlePackageVolume Decimal
+  packagesAmount Int
+  packageSize Int
+  order Order @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  orderId String
+}
+
+model Order{
+  id String  @id @default(uuid())
+  client Client @relation(fields: [clientId], references: [id])
+  clientId String
+  destination Destination @relation(fields: [destinationId], references: [id])
+  destinationId String
+  date DateTime @default(now())
+  status String
+  amounts CommodityAmount[]
+  files String[]
+  paidTransport Boolean
+  paidOrder Boolean
+  price Decimal
+  commodity Commodity @relation(fields: [commodityId], references: [id], onDelete: Cascade)
+  commodityId String
+}
+
+model Destination {
+  id String  @id @default(uuid())
+  country String
+  address String
+  postalCode String
+  city String
+  orders Order[]
 }
