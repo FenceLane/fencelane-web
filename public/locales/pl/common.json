@@ -36,6 +36,7 @@
       "unexpected-error": "Wystąpił błąd, spróbuj ponownie później lub skontaktuj się z administratorem.",
       "method-not-allowed": "Niedozwolona operacja, skontaktuj się z administratorem.",
       "invalid-password-reset-token": "Token zmiany hasła nie istnieje lub wygasł, spróbuj ponownie lub skontaktuj się z administratorem.",
+      "commodity-already-exists": "Towar o tej nazwie i wymiarach już istnieje!",
       "unauthorized": "Brak uprawnień!"
     }
   },

@@ -10,7 +10,12 @@ export const BackendErrorLabel = {
   METHOD_NOT_ALLOWED: "method-not-allowed",
   INVALID_CREDENTIALS: "invalid-credentials",
   INVALID_PASSWORD_RESET_TOKEN: "invalid-password-reset-token",
+  COMMODITY_ALREADY_EXISTS: "commodity-already-exists",
   UNAUTHORIZED: "unauthorized",
+} as const;
+
+export const PrismaErrorCode = {
+  UNIQUE_CONSTRAINT_FAILED: "P2002",
 } as const;
 
 export const BackendResponseStatusCode = {
