@@ -11,6 +11,7 @@ export const BackendErrorLabel = {
   INVALID_CREDENTIALS: "invalid-credentials",
   INVALID_PASSWORD_RESET_TOKEN: "invalid-password-reset-token",
   COMMODITY_ALREADY_EXISTS: "commodity-already-exists",
+  STORAGE_DOES_NOT_EXISTS: "storage-does-not-exists",
   UNAUTHORIZED: "unauthorized",
 } as const;
 
