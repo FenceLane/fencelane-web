@@ -67,19 +67,19 @@ export const MyProfile = ({ user }: MyProfileProps) => {
           Dane użytkownika:
         </Text>
         <Text className={styles["profile-item"]}>
-          Nazwa użytkownika: <pre>{user.name}</pre>
+          Nazwa użytkownika: <span>{user.name}</span>
         </Text>
         <Text className={styles["profile-item"]}>
-          E-mail: <pre>{user.email}</pre>
+          E-mail: <span>{user.email}</span>
         </Text>
         <Text className={styles["profile-item"]}>
-          <span>ID:</span> <pre>{user.id}</pre>
+          <span>ID:</span> <span>{user.id}</span>
         </Text>
         <Text className={styles["profile-item"]}>
-          Telefon: <pre>{user.phone}</pre>
+          Telefon: <span>{user.phone}</span>
         </Text>
         <Text className={styles["profile-item"]}>
-          Rola: <pre>{user.role}</pre>
+          Rola: <span>{user.role}</span>
         </Text>
         <div className={styles.buttons}>
           <Button
