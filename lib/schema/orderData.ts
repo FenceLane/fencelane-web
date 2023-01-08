@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { ORDER_STATUS } from "../types";
-import { CommodityStockDataSchema } from "./commodityStockData";
+import { CommodityStockOrderDataSchema } from "./commodityStockData";
 
 export const OrderDataSchema = z.object({
   clientId: z.string().min(1),
@@ -11,7 +11,7 @@ export const OrderDataSchema = z.object({
   paidTransport: z.boolean(),
   paidOrder: z.boolean(),
   price: z.number(),
-  stocks: z.array(CommodityStockDataSchema),
+  stocks: z.array(CommodityStockOrderDataSchema),
 });
 
 export type OrderData = z.infer<typeof OrderDataSchema>;
