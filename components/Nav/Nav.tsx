@@ -24,7 +24,7 @@ export const Nav = ({
   return (
     <>
       {!hideSidebar && (isMenuActive || !isMobile) && (
-        <Box className={styles.nav} height="100%">
+        <Box className={styles.nav}>
           <Box
             display="flex"
             flexDir="column"

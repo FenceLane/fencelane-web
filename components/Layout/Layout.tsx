@@ -69,14 +69,14 @@ export const Layout = ({
         <title>{`${t("title")}${title ? ` | ${title}` : ""}`}</title>
       </Head>
       <ReactDiv100>
-        <Flex flexDir="column">
+        <Flex flexDir="column" h="100%">
           <Header
             isMobile={isMobile}
             user={user}
             isMenuActive={isMenuActive}
             setMenuActive={setMenuActive}
           ></Header>
-          <Flex flex="1" alignItems="stretch">
+          <Flex h="100%" flex="1" overflow="hidden">
             <Nav
               hideSidebar={hideSidebar}
               isMenuActive={isMenuActive}

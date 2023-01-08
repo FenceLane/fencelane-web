@@ -12,6 +12,7 @@
   height: 50px;
   box-sizing: border-box !important;
   z-index: 9;
+  flex-shrink: 0;
 }
 .logos {
   width: 200px;
@@ -35,6 +36,7 @@
 @media only screen and (min-width: 768px) {
   .header {
     padding: 0 10px;
+    position: relative;
   }
   .logo {
     width: 25px;
