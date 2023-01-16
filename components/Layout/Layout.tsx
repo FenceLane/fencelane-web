@@ -5,10 +5,11 @@ import { useContent } from "../../lib/hooks/useContent";
 import "react-toastify/dist/ReactToastify.css";
 import { UserInfo } from "../../lib/types";
 import styles from "./Layout.module.scss";
-import useIsMobile from "../../lib/hooks/useIsMobile";
+import { useIsMobile } from "../../lib/hooks/useIsMobile";
 import { Header } from "../Header/Header";
 import { Nav } from "../Nav/Nav";
 import { Footer } from "../Footer/Footer";
+import ReactDiv100 from "react-div-100vh";
 
 export interface LayoutProps {
   children: ReactNode;
@@ -67,26 +68,32 @@ export const Layout = ({
       <Head>
         <title>{`${t("title")}${title ? ` | ${title}` : ""}`}</title>
       </Head>
-      <Header
-        isMobile={isMobile}
-        user={user}
-        isMenuActive={isMenuActive}
-        setMenuActive={setMenuActive}
-      ></Header>
-      <Nav
-        hideSidebar={hideSidebar}
-        isMenuActive={isMenuActive}
-        isMobile={isMobile}
-        menuItems={menuItems}
-      ></Nav>
-      <Box
-        color="black"
-        className={styles.content}
-        pl={user && !isMobile ? 220 : 2.5}
-      >
-        {children}
-      </Box>
-      <Footer user={user} isMobile={isMobile}></Footer>
+      <ReactDiv100>
+        <Flex flexDir="column" h="100%" overflow="hidden">
+          <Header
+            isMobile={isMobile}
+            user={user}
+            isMenuActive={isMenuActive}
+            setMenuActive={setMenuActive}
+          ></Header>
+          <Flex h="100%" flex="1" overflow="hidden">
+            <Nav
+              hideSidebar={hideSidebar}
+              isMenuActive={isMenuActive}
+              isMobile={isMobile}
+              menuItems={menuItems}
+            ></Nav>
+            <Box
+              color="black"
+              className={styles.content}
+              pl={user && !isMobile ? 220 : 2.5}
+            >
+              {children}
+            </Box>
+          </Flex>
+          <Footer user={user} isMobile={isMobile}></Footer>
+        </Flex>
+      </ReactDiv100>
     </>
   );
 };

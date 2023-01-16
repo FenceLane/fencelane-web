@@ -1,6 +1,5 @@
 import { Box, Link, Image, Text } from "@chakra-ui/react";
 import React from "react";
-import { use100vh } from "react-div-100vh";
 import styles from "./Nav.module.scss";
 import NextLink from "next/link";
 import { useContent } from "../../lib/hooks/useContent";
@@ -22,12 +21,10 @@ export const Nav = ({
   menuItems,
 }: NavProps) => {
   const { t } = useContent("general");
-  const height = use100vh();
-  const actualHeight = height ? height - 50 : "calc(100vh - 50px)";
   return (
     <>
       {!hideSidebar && (isMenuActive || !isMobile) && (
-        <Box className={styles.nav} height={actualHeight}>
+        <Box className={styles.nav}>
           <Box
             display="flex"
             flexDir="column"
