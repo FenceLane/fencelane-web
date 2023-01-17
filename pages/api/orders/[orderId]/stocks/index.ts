@@ -1,17 +1,17 @@
 import { prismaClient } from "../../../../../lib/prisma/prismaClient";
 import { z } from "zod";
-import { CommodityStockStorageDataSchema } from "../../../../../lib/schema/commodityStockData";
 import { BackendResponseStatusCode } from "../../../../../lib/server/BackendError/BackendError";
 import { withApiAuth } from "../../../../../lib/server/middlewares/withApiAuth";
 import { withApiMethods } from "../../../../../lib/server/middlewares/withApiMethods";
 import { withValidatedJSONRequestBody } from "../../../../../lib/server/middlewares/withValidatedJSONRequestBody";
+import { CommodityStockOrderDataSchema } from "../../../../../lib/schema/commodityStockData";
 
 export default withApiMethods({
   POST: withApiAuth(
     withValidatedJSONRequestBody(
       z.union([
-        CommodityStockStorageDataSchema,
-        z.array(CommodityStockStorageDataSchema),
+        CommodityStockOrderDataSchema,
+        z.array(CommodityStockOrderDataSchema),
       ])
     )(async (req, res) => {
       const stock = req.parsedBody;
@@ -37,13 +37,13 @@ export default withApiMethods({
   ),
 
   GET: withApiAuth(async (req, res) => {
-    const { storageId } = req.query;
-    if (typeof storageId !== "string") {
-      throw Error('"storageId" was not passed in dynamic api path.');
+    const { orderId } = req.query;
+    if (typeof orderId !== "string") {
+      throw Error('"orderId" was not passed in dynamic api path.');
     }
 
     const stocks = await prismaClient.commodityStock.findMany({
-      where: { storageId },
+      where: { orderId },
     });
 
     return res.status(BackendResponseStatusCode.SUCCESS).send({ data: stocks });
