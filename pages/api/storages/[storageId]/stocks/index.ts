@@ -1,9 +1,7 @@
 import { prismaClient } from "../../../../../lib/prisma/prismaClient";
 import { z } from "zod";
 import { CommodityStockStorageDataSchema } from "../../../../../lib/schema/commodityStockData";
-import {
-  BackendResponseStatusCode,
-} from "../../../../../lib/server/BackendError/BackendError";
+import { BackendResponseStatusCode } from "../../../../../lib/server/BackendError/BackendError";
 import { withApiAuth } from "../../../../../lib/server/middlewares/withApiAuth";
 import { withApiMethods } from "../../../../../lib/server/middlewares/withApiMethods";
 import { withValidatedJSONRequestBody } from "../../../../../lib/server/middlewares/withValidatedJSONRequestBody";
@@ -50,4 +48,6 @@ export default withApiMethods({
 
     return res.status(BackendResponseStatusCode.SUCCESS).send({ data: stocks });
   }),
+
+  //TODO: add PUT and DELETE endpoints
 });

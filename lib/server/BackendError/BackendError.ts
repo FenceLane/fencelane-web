@@ -13,9 +13,11 @@ export const BackendErrorLabel = {
   COMMODITY_ALREADY_EXISTS: "commodity-already-exists",
   STORAGE_DOES_NOT_EXISTS: "storage-does-not-exists",
   UNAUTHORIZED: "unauthorized",
+  ORDER_DOES_NOT_EXISTS: "order-does-not-exists",
 } as const;
 
 export const PrismaErrorCode = {
+  SEARCHED_RECORD_NOT_FOUND: "P2001",
   UNIQUE_CONSTRAINT_FAILED: "P2002",
 } as const;
 
