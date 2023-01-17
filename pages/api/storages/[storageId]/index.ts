@@ -37,7 +37,7 @@ export default withApiMethods({
     if (!storage) {
       return sendBackendError(res, {
         code: BackendResponseStatusCode.NOT_FOUND,
-        label: BackendErrorLabel.STORAGE_DOES_NOT_EXISTS,
+        label: BackendErrorLabel.STORAGE_DOES_NOT_EXIST,
       });
     }
 

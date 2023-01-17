@@ -25,7 +25,7 @@ export default withApiMethods({
     if (!stock) {
       return sendBackendError(res, {
         code: BackendResponseStatusCode.NOT_FOUND,
-        label: BackendErrorLabel.STOCK_DOES_NOT_EXISTS,
+        label: BackendErrorLabel.STOCK_DOES_NOT_EXIST,
       });
     }
 
@@ -55,7 +55,7 @@ export default withApiMethods({
           if (error.code === PrismaErrorCode.SEARCHED_RECORD_NOT_FOUND) {
             sendBackendError(res, {
               code: BackendResponseStatusCode.NOT_FOUND,
-              label: BackendErrorLabel.STOCK_DOES_NOT_EXISTS,
+              label: BackendErrorLabel.STOCK_DOES_NOT_EXIST,
               message: error.message,
             });
           }
@@ -84,7 +84,7 @@ export default withApiMethods({
         if (error.code === PrismaErrorCode.SEARCHED_RECORD_NOT_FOUND) {
           sendBackendError(res, {
             code: BackendResponseStatusCode.NOT_FOUND,
-            label: BackendErrorLabel.STOCK_DOES_NOT_EXISTS,
+            label: BackendErrorLabel.STOCK_DOES_NOT_EXIST,
             message: error.message,
           });
         }

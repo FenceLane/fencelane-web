@@ -2,7 +2,7 @@ import axios from "axios";
 import { NextApiResponse } from "next";
 
 export const BackendErrorLabel = {
-  USER_DOES_NOT_EXISTS: "user-does-not-exists",
+  USER_DOES_NOT_EXIST: "user-does-not-exist",
   USER_ALREADY_EXISTS: "user-already-exists",
   INVALID_REQUEST_CONTENT_TYPE: "invalid-request-content-type",
   INVALID_REQUEST_BODY: "invalid-request-body",
@@ -11,10 +11,10 @@ export const BackendErrorLabel = {
   INVALID_CREDENTIALS: "invalid-credentials",
   INVALID_PASSWORD_RESET_TOKEN: "invalid-password-reset-token",
   COMMODITY_ALREADY_EXISTS: "commodity-already-exists",
-  STORAGE_DOES_NOT_EXISTS: "storage-does-not-exists",
+  STORAGE_DOES_NOT_EXIST: "storage-does-not-exist",
   UNAUTHORIZED: "unauthorized",
-  ORDER_DOES_NOT_EXISTS: "order-does-not-exists",
-  STOCK_DOES_NOT_EXISTS: "stock-does-not-exists",
+  ORDER_DOES_NOT_EXIST: "order-does-not-exist",
+  STOCK_DOES_NOT_EXIST: "stock-does-not-exist",
 } as const;
 
 export const PrismaErrorCode = {
