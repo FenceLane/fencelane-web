@@ -20,25 +20,11 @@ export default withApiMethods({
     })
   ),
 
-  // GET: withApiAuth(async (req, res) => {
-  //   const { storageId } = req.query;
-  //   if (typeof storageId !== "string") {
-  //     throw Error('"storageId" was not passed in dynamic api path.');
-  //   }
+  GET: withApiAuth(async (_req, res) => {
+    const orders = await prismaClient.order.findMany({
+      select: { client: true, destination: true },
+    });
 
-  //   const storage = await prismaClient.storage.findUnique({
-  //     where: { id: storageId },
-  //   });
-
-  //   if (!storage) {
-  //     return sendBackendError(res, {
-  //       code: BackendResponseStatusCode.NOT_FOUND,
-  //       label: BackendErrorLabel.STORAGE_DOES_NOT_EXISTS,
-  //     });
-  //   }
-
-  //   return res
-  //     .status(BackendResponseStatusCode.SUCCESS)
-  //     .send({ data: storage });
-  // }),
+    return res.status(BackendResponseStatusCode.SUCCESS).send({ data: orders });
+  }),
 });
