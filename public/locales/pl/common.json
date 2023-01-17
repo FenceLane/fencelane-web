@@ -39,6 +39,7 @@
       "commodity-already-exists": "Towar o tej nazwie i wymiarach już istnieje!",
       "order-does-not-exists": "Zamówienie o podanym id nie istnieje!",
       "storage-does-not-exists": "Wystąpił błąd - magazyn o danym id nie znajduje się w bazie danych!",
+      "stock-does-not-exists": "Wystąpił błąd - stock o danym id nie istnieje!",
       "unauthorized": "Brak uprawnień!"
     }
   },

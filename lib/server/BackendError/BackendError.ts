@@ -14,6 +14,7 @@ export const BackendErrorLabel = {
   STORAGE_DOES_NOT_EXISTS: "storage-does-not-exists",
   UNAUTHORIZED: "unauthorized",
   ORDER_DOES_NOT_EXISTS: "order-does-not-exists",
+  STOCK_DOES_NOT_EXISTS: "stock-does-not-exists",
 } as const;
 
 export const PrismaErrorCode = {
