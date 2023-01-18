@@ -6,9 +6,9 @@ import {
   Tr,
   Th,
   Td,
-  TableCaption,
   TableContainer,
 } from "@chakra-ui/react";
+import { useContent } from "../../lib/hooks/useContent";
 
 interface CSTypes {
   id: React.Key;
@@ -17,11 +17,12 @@ interface CSTypes {
   m3Quantity: Number;
   black: Number;
   white: Number;
-  packaged: Number;
+  package: Number;
   piecesQuantity: Number;
   packagesQuantity: Number;
 }
 export const Storage = () => {
+  const { t } = useContent();
   const commodityStock: CSTypes[] = [
     {
       id: 1,
@@ -30,7 +31,7 @@ export const Storage = () => {
       m3Quantity: 21.714,
       black: 21.714,
       white: 0,
-      packaged: 105,
+      package: 105,
       piecesQuantity: 2310,
       packagesQuantity: 22,
     },
@@ -41,7 +42,7 @@ export const Storage = () => {
       m3Quantity: 21.714,
       black: 21.714,
       white: 0,
-      packaged: 105,
+      package: 105,
       piecesQuantity: 2310,
       packagesQuantity: 22,
     },
@@ -52,7 +53,7 @@ export const Storage = () => {
       m3Quantity: 21.714,
       black: 21.714,
       white: 0,
-      packaged: 105,
+      package: 105,
       piecesQuantity: 2310,
       packagesQuantity: 22,
     },
@@ -63,7 +64,7 @@ export const Storage = () => {
       m3Quantity: 21.714,
       black: 21.714,
       white: 0,
-      packaged: 105,
+      package: 105,
       piecesQuantity: 2310,
       packagesQuantity: 22,
     },
@@ -74,7 +75,7 @@ export const Storage = () => {
       m3Quantity: 21.714,
       black: 21.714,
       white: 0,
-      packaged: 105,
+      package: 105,
       piecesQuantity: 2310,
       packagesQuantity: 22,
     },
@@ -85,24 +86,24 @@ export const Storage = () => {
       m3Quantity: 21.714,
       black: 21.714,
       white: 0,
-      packaged: 105,
+      package: 105,
       piecesQuantity: 2310,
       packagesQuantity: 22,
     },
   ];
   return (
     <TableContainer>
-      <Table variant="simple">
+      <Table variant="simple" colorScheme="teal" bg="white">
         <Thead>
           <Tr>
-            <Th></Th>
-            <Th></Th>
-            <Th></Th>
-            <Th></Th>
-            <Th></Th>
-            <Th></Th>
-            <Th></Th>
-            <Th></Th>
+            <Th>{t("pages.storage.table.headings.commodity")}</Th>
+            <Th>{t("pages.storage.table.headings.dimensions")}</Th>
+            <Th>{t("pages.storage.table.headings.m3Quantity")}</Th>
+            <Th>{t("pages.storage.table.headings.black")}</Th>
+            <Th>{t("pages.storage.table.headings.white")}</Th>
+            <Th>{t("pages.storage.table.headings.package")}</Th>
+            <Th>{t("pages.storage.table.headings.piecesQuantity")}</Th>
+            <Th>{t("pages.storage.table.headings.packagesQuantity")}</Th>
           </Tr>
         </Thead>
         <Tbody>
@@ -113,7 +114,7 @@ export const Storage = () => {
               <Td>{String(row.m3Quantity)}</Td>
               <Td>{String(row.black)}</Td>
               <Td>{String(row.white)}</Td>
-              <Td>{String(row.packaged)}</Td>
+              <Td>{String(row.package)}</Td>
               <Td>{String(row.piecesQuantity)}</Td>
               <Td>{String(row.packagesQuantity)}</Td>
             </Tr>
