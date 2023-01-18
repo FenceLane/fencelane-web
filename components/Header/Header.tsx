@@ -28,6 +28,7 @@ export const Header = ({
         as={NextLink}
         href="/"
         aria-label={t("layout.header.logo.label")}
+        ml="10px"
       >
         <Image className={styles.logo} src={"./images/logo.svg"} alt="" />
         {!isMobile && (
@@ -38,6 +39,13 @@ export const Header = ({
           />
         )}
       </Link>
+      {isMobile && (
+        <Image
+          className={styles["text-logo"]}
+          src={"./images/textlogo.svg"}
+          alt=""
+        />
+      )}
       <Flex className={styles["header-right"]}>
         {user && (
           <>

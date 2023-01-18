@@ -9,6 +9,7 @@ import {
   TableContainer,
 } from "@chakra-ui/react";
 import { useContent } from "../../lib/hooks/useContent";
+import styles from "./Storage.module.scss";
 
 interface CSTypes {
   id: React.Key;
@@ -21,80 +22,18 @@ interface CSTypes {
   piecesQuantity: Number;
   packagesQuantity: Number;
 }
-export const Storage = () => {
+export const Storage = (props: any) => {
+  const commodityStock: CSTypes[] = props.commodityStock;
   const { t } = useContent();
-  const commodityStock: CSTypes[] = [
-    {
-      id: 1,
-      commodity: "Palisada okorowana",
-      dimensions: "75 - 100 x 1650",
-      m3Quantity: 21.714,
-      black: 21.714,
-      white: 0,
-      package: 105,
-      piecesQuantity: 2310,
-      packagesQuantity: 22,
-    },
-    {
-      id: 2,
-      commodity: "Palisada cylindryczna",
-      dimensions: "75 - 100 x 1650",
-      m3Quantity: 21.714,
-      black: 21.714,
-      white: 0,
-      package: 105,
-      piecesQuantity: 2310,
-      packagesQuantity: 22,
-    },
-    {
-      id: 3,
-      commodity: "Palisada prostokątna",
-      dimensions: "75 - 100 x 1650",
-      m3Quantity: 21.714,
-      black: 21.714,
-      white: 0,
-      package: 105,
-      piecesQuantity: 2310,
-      packagesQuantity: 22,
-    },
-    {
-      id: 4,
-      commodity: "Słupek bramowy",
-      dimensions: "75 - 100 x 1650",
-      m3Quantity: 21.714,
-      black: 21.714,
-      white: 0,
-      package: 105,
-      piecesQuantity: 2310,
-      packagesQuantity: 22,
-    },
-    {
-      id: 5,
-      commodity: "Palisada okorowana",
-      dimensions: "75 - 100 x 1650",
-      m3Quantity: 21.714,
-      black: 21.714,
-      white: 0,
-      package: 105,
-      piecesQuantity: 2310,
-      packagesQuantity: 22,
-    },
-    {
-      id: 7,
-      commodity: "Palisada okorowana",
-      dimensions: "75 - 100 x 1650",
-      m3Quantity: 21.714,
-      black: 21.714,
-      white: 0,
-      package: 105,
-      piecesQuantity: 2310,
-      packagesQuantity: 22,
-    },
-  ];
   return (
-    <TableContainer>
-      <Table variant="simple" colorScheme="teal" bg="white">
-        <Thead>
+    <TableContainer className={styles.container}>
+      <Table
+        variant="simple"
+        colorScheme="teal"
+        bg="white"
+        className={styles["commodity-table"]}
+      >
+        <Thead className={styles["commodity-table-thead"]}>
           <Tr>
             <Th>{t("pages.storage.table.headings.commodity")}</Th>
             <Th>{t("pages.storage.table.headings.dimensions")}</Th>
@@ -108,7 +47,7 @@ export const Storage = () => {
         </Thead>
         <Tbody>
           {commodityStock.map((row) => (
-            <Tr key={row.id}>
+            <Tr className={styles["commodity-table-row"]} key={row.id}>
               <Td>{row.commodity}</Td>
               <Td>{row.dimensions}</Td>
               <Td>{String(row.m3Quantity)}</Td>

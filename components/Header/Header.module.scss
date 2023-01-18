@@ -15,7 +15,7 @@
   flex-shrink: 0;
 }
 .logos {
-  width: 200px;
+  width: 100px;
   display: flex;
   flex-direction: row;
   gap: 10px;
@@ -42,6 +42,9 @@
     width: 25px;
     height: 25px;
   }
+  .logos {
+    width: 130px;
+  }
 }
 
 .hamburger {
@@ -67,7 +70,7 @@
 .hamburger.is-active .hamburger-inner,
 .hamburger.is-active .hamburger-inner::before,
 .hamburger.is-active .hamburger-inner::after {
-  background-color: #000;
+  background-color: #909697;
 }
 
 .hamburger-box {
@@ -87,7 +90,7 @@
 .hamburger-inner::after {
   width: 40px;
   height: 4px;
-  background-color: #000;
+  background-color: #909697;
   border-radius: 4px;
   position: absolute;
   transition-property: transform;

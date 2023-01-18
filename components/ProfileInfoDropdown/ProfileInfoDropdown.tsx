@@ -44,71 +44,92 @@ export default function ProfileInfoDropdown({
   };
 
   return (
-    <Box
-      minW={70}
-      className="userInfo"
-      display="flex"
-      flexDirection="row"
-      justifyContent="center"
-      alignItems="center"
-      position="relative"
-      ref={ref}
-    >
+    <>
       {variant === "name" ? (
         <Button
-          colorScheme="teal"
-          variant="outline"
-          h="32px"
-          onClick={toggleShowDropdown}
-          mr="20px"
+          mt="6px"
+          bg="white"
+          cursor="default"
+          _hover={{
+            background: "white",
+          }}
+          _active={{
+            background: "white",
+          }}
         >
-          {name}
-          <TriangleDownIcon w="10px" ml="15px" />
-        </Button>
-      ) : (
-        <Button onClick={toggleShowDropdown} bg="none">
           <Image src={"./images/avatar.svg"} alt="" />
         </Button>
+      ) : (
+        <></>
       )}
-
       <Box
-        bg="white"
-        p="10px 15px 15px 15px "
-        borderRadius="5px"
-        position="absolute"
-        top="45px"
-        right={`${variant === "avatar" ? "calc(-50% - 10px)" : 15}`}
-        className="profileDropdown"
-        boxShadow="0px 6px 6px -7px rgba(66, 68, 90, 1)"
-        display={showDropdown ? "block" : "none"}
-        zIndex="10"
+        minW={70}
+        className="userInfo"
+        display="flex"
+        flexDirection="row"
+        justifyContent="center"
+        alignItems="center"
+        position="relative"
+        ref={ref}
       >
-        <Wrap spacing={4} w="100%">
-          <WrapItem w="100%">
+        {variant === "name" ? (
+          <>
             <Button
-              href="/profile"
-              as={Link}
               colorScheme="teal"
               variant="outline"
-              width="100%"
               h="32px"
+              onClick={toggleShowDropdown}
+              mr="20px"
             >
-              {t("general.layout.header.dropdown.profile")}
+              {name}
+              <TriangleDownIcon w="10px" ml="15px" />
             </Button>
-          </WrapItem>
-          <WrapItem w="100%">
-            <Button
-              onClick={handleLogout}
-              colorScheme="teal"
-              variant="outline"
-              width="100%"
-              h="32px"
-            >
-              {t("general.layout.header.dropdown.logout")}
-            </Button>
-          </WrapItem>
-        </Wrap>
+          </>
+        ) : (
+          <Button onClick={toggleShowDropdown} bg="none" mt="5px">
+            <Image src={"./images/avatar.svg"} alt="" />
+          </Button>
+        )}
+
+        <Box
+          bg="white"
+          p="10px 15px 15px 15px "
+          borderRadius="5px"
+          position="absolute"
+          top="45px"
+          right={`${variant === "avatar" ? "calc(-50% - 10px)" : 15}`}
+          className="profileDropdown"
+          boxShadow="0px 6px 6px -7px rgba(66, 68, 90, 1)"
+          display={showDropdown ? "block" : "none"}
+          zIndex="10"
+        >
+          <Wrap spacing={4} w="100%">
+            <WrapItem w="100%">
+              <Button
+                href="/profile"
+                as={Link}
+                colorScheme="teal"
+                variant="outline"
+                width="100%"
+                h="32px"
+              >
+                {t("general.layout.header.dropdown.profile")}
+              </Button>
+            </WrapItem>
+            <WrapItem w="100%">
+              <Button
+                onClick={handleLogout}
+                colorScheme="teal"
+                variant="outline"
+                width="100%"
+                h="32px"
+              >
+                {t("general.layout.header.dropdown.logout")}
+              </Button>
+            </WrapItem>
+          </Wrap>
+        </Box>
       </Box>
-    </Box>
+    </>
   );
 }
