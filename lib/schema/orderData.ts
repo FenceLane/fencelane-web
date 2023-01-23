@@ -30,4 +30,9 @@ export const OrderUpdateSchema = z.object({
   // stocks: z.array(CommodityStockOrderDataSchema),
 });
 
+export const OrderCreateSchema = OrderDataSchema.extend({
+  //id of the storage we want to get stocks from
+  storageId: z.string().min(1),
+});
+
 export type OrderData = z.infer<typeof OrderDataSchema>;
