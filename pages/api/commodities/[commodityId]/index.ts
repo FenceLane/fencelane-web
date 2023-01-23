@@ -1,6 +1,6 @@
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime";
 import { prismaClient } from "../../../../lib/prisma/prismaClient";
-import { CommodityStockDataSchema } from "../../../../lib/schema/commodityStockData";
+import { CommodityDataBaseSchema } from "../../../../lib/schema/commodityData";
 import {
   BackendErrorLabel,
   BackendResponseStatusCode,
@@ -13,49 +13,52 @@ import { withValidatedJSONRequestBody } from "../../../../lib/server/middlewares
 
 export default withApiMethods({
   GET: withApiAuth(async (req, res) => {
-    const { stockId } = req.query;
-    if (typeof stockId !== "string") {
-      throw Error('"stockId" was not passed in dynamic api path.');
+    const { commodityId } = req.query;
+    if (typeof commodityId !== "string") {
+      throw Error('"commodityId" was not passed in dynamic api path.');
     }
 
-    const stock = await prismaClient.commodityStock.findUnique({
-      where: { id: stockId },
+    const commodity = await prismaClient.commodity.findUnique({
+      where: { id: commodityId },
+      include: { stocks: false },
     });
 
-    if (!stock) {
+    if (!commodity) {
       return sendBackendError(res, {
         code: BackendResponseStatusCode.NOT_FOUND,
-        label: BackendErrorLabel.STOCK_DOES_NOT_EXIST,
+        label: BackendErrorLabel.COMMODITY_DOES_NOT_EXIST,
       });
     }
 
-    return res.status(BackendResponseStatusCode.SUCCESS).send({ data: stock });
+    return res
+      .status(BackendResponseStatusCode.SUCCESS)
+      .send({ data: commodity });
   }),
 
   PUT: withApiAuth(
-    withValidatedJSONRequestBody(CommodityStockDataSchema)(async (req, res) => {
-      const { stockId } = req.query;
-      if (typeof stockId !== "string") {
-        throw Error('"stockId" was not passed in dynamic api path.');
+    withValidatedJSONRequestBody(CommodityDataBaseSchema)(async (req, res) => {
+      const { commodityId } = req.query;
+      if (typeof commodityId !== "string") {
+        throw Error('"commodityId" was not passed in dynamic api path.');
       }
 
-      const stockData = req.parsedBody;
+      const commodityData = req.parsedBody;
 
       try {
-        const updatedStock = await prismaClient.commodityStock.update({
-          where: { id: stockId },
-          data: stockData,
+        const commodityOrder = await prismaClient.commodity.update({
+          where: { id: commodityId },
+          data: commodityData,
         });
 
         return res
           .status(BackendResponseStatusCode.SUCCESS)
-          .send({ data: updatedStock });
+          .send({ data: commodityOrder });
       } catch (error) {
         if (error instanceof PrismaClientKnownRequestError) {
           if (error.code === PrismaErrorCode.RECORD_NOT_FOUND) {
             sendBackendError(res, {
               code: BackendResponseStatusCode.NOT_FOUND,
-              label: BackendErrorLabel.STOCK_DOES_NOT_EXIST,
+              label: BackendErrorLabel.COMMODITY_DOES_NOT_EXIST,
               message: error.message,
             });
           }
@@ -66,25 +69,25 @@ export default withApiMethods({
   ),
 
   DELETE: withApiAuth(async (req, res) => {
-    const { stockId } = req.query;
-    if (typeof stockId !== "string") {
-      throw Error('"stockId" was not passed in dynamic api path.');
+    const { commodityId } = req.query;
+    if (typeof commodityId !== "string") {
+      throw Error('"commodityId" was not passed in dynamic api path.');
     }
 
     try {
-      const deletedStock = await prismaClient.commodityStock.delete({
-        where: { id: stockId },
+      const deletedCommodity = await prismaClient.commodity.delete({
+        where: { id: commodityId },
       });
 
       return res
         .status(BackendResponseStatusCode.SUCCESS)
-        .send({ data: deletedStock });
+        .send({ data: deletedCommodity });
     } catch (error) {
       if (error instanceof PrismaClientKnownRequestError) {
         if (error.code === PrismaErrorCode.RECORD_NOT_FOUND) {
           sendBackendError(res, {
             code: BackendResponseStatusCode.NOT_FOUND,
-            label: BackendErrorLabel.STOCK_DOES_NOT_EXIST,
+            label: BackendErrorLabel.COMMODITY_DOES_NOT_EXIST,
             message: error.message,
           });
         }
