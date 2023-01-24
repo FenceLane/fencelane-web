@@ -1,5 +1,4 @@
 import { prismaClient } from "../../../../lib/prisma/prismaClient";
-import { StorageDataSchema } from "../../../../lib/schema/storageData";
 import {
   BackendErrorLabel,
   BackendResponseStatusCode,
@@ -7,23 +6,8 @@ import {
 } from "../../../../lib/server/BackendError/BackendError";
 import { withApiAuth } from "../../../../lib/server/middlewares/withApiAuth";
 import { withApiMethods } from "../../../../lib/server/middlewares/withApiMethods";
-import { withValidatedJSONRequestBody } from "../../../../lib/server/middlewares/withValidatedJSONRequestBody";
 
 export default withApiMethods({
-  POST: withApiAuth(
-    withValidatedJSONRequestBody(StorageDataSchema)(async (req, res) => {
-      const { stocks } = req.parsedBody;
-
-      const createdCommodity = await prismaClient.storage.create({
-        data: { stocks: { createMany: { data: stocks } } },
-      });
-
-      return res
-        .status(BackendResponseStatusCode.SUCCESS)
-        .send({ data: createdCommodity });
-    })
-  ),
-
   GET: withApiAuth(async (req, res) => {
     const { storageId } = req.query;
     if (typeof storageId !== "string") {
