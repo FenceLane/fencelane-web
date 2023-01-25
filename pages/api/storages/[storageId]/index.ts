@@ -16,6 +16,7 @@ export default withApiMethods({
 
     const storage = await prismaClient.storage.findUnique({
       where: { id: storageId },
+      include: { stocks: true },
     });
 
     if (!storage) {

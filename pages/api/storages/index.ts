@@ -7,9 +7,7 @@ import { withValidatedJSONRequestBody } from "../../../lib/server/middlewares/wi
 
 export default withApiMethods({
   GET: withApiAuth(async (_req, res) => {
-    const storages = await prismaClient.storage.findMany({
-      include: { stocks: true },
-    });
+    const storages = await prismaClient.storage.findMany({});
 
     return res
       .status(BackendResponseStatusCode.SUCCESS)
