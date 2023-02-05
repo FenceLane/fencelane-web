@@ -8,8 +8,6 @@ export const OrderDataSchema = z.object({
   date: z.date(),
   status: z.nativeEnum(ORDER_STATUS),
   files: z.array(z.string()),
-  paidTransport: z.boolean(),
-  paidOrder: z.boolean(),
   price: z.number(),
   orders: z.array(ProductOrderDataSchema),
 });

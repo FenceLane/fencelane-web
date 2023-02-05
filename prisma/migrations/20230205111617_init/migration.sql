@@ -82,8 +82,6 @@ CREATE TABLE "Order" (
     "date" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "status" TEXT NOT NULL,
     "files" TEXT[],
-    "paidTransport" BOOLEAN NOT NULL,
-    "paidOrder" BOOLEAN NOT NULL,
     "price" DECIMAL(65,30) NOT NULL,
 
     CONSTRAINT "Order_pkey" PRIMARY KEY ("id")

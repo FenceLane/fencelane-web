@@ -89,8 +89,6 @@ model Order{
   status String
   files String[]
   orders ProductOrder[]
-  paidTransport Boolean
-  paidOrder Boolean
   price Decimal
 }
 
