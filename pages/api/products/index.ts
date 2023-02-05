@@ -1,6 +1,6 @@
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime";
 import { prismaClient } from "../../../lib/prisma/prismaClient";
-import { ProductDataSchema } from "../../../lib/schema/productData";
+import { ProductDataCreateSchema } from "../../../lib/schema/productData";
 import {
   BackendErrorLabel,
   BackendResponseStatusCode,
@@ -13,8 +13,8 @@ import { withValidatedJSONRequestBody } from "../../../lib/server/middlewares/wi
 
 export default withApiMethods({
   POST: withApiAuth(
-    withValidatedJSONRequestBody(ProductDataSchema)(async (req, res) => {
-      const { orders, ...newProductData } = req.parsedBody;
+    withValidatedJSONRequestBody(ProductDataCreateSchema)(async (req, res) => {
+      const { ...newProductData } = req.parsedBody;
 
       try {
         const createdProduct = await prismaClient.product.create({
@@ -27,9 +27,17 @@ export default withApiMethods({
       } catch (error) {
         if (error instanceof PrismaClientKnownRequestError) {
           if (error.code === PrismaErrorCode.UNIQUE_CONSTRAINT_FAILED) {
-            sendBackendError(res, {
+            return sendBackendError(res, {
               code: BackendResponseStatusCode.CONFLICT,
               label: BackendErrorLabel.PRODUCT_ALREADY_EXISTS,
+              message: error.message,
+            });
+          }
+
+          if (error.code === PrismaErrorCode.FOREIGN_KEY_NOT_FOUND) {
+            return sendBackendError(res, {
+              code: BackendResponseStatusCode.CONFLICT,
+              label: BackendErrorLabel.PRODUCT_CATEGORY_DOES_NOT_EXIST,
               message: error.message,
             });
           }

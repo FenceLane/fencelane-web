@@ -18,14 +18,14 @@ export default withApiMethods({
       throw Error('"categoryId" was not passed in dynamic api path.');
     }
 
-    const productCategory = await prismaClient.product.findUnique({
+    const productCategory = await prismaClient.productCategory.findUnique({
       where: { id: categoryId },
     });
 
     if (!productCategory) {
       return sendBackendError(res, {
         code: BackendResponseStatusCode.NOT_FOUND,
-        label: BackendErrorLabel.PRODUCT_DOES_NOT_EXIST,
+        label: BackendErrorLabel.PRODUCT_CATEGORY_DOES_NOT_EXIST,
       });
     }
 

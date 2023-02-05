@@ -1,6 +1,6 @@
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime";
 import { prismaClient } from "../../../../lib/prisma/prismaClient";
-import { ProductDataCreateSchema } from "../../../../lib/schema/productData";
+import { ProductDataUpdateSchema } from "../../../../lib/schema/productData";
 import {
   BackendErrorLabel,
   BackendResponseStatusCode,
@@ -35,7 +35,7 @@ export default withApiMethods({
   }),
 
   PUT: withApiAuth(
-    withValidatedJSONRequestBody(ProductDataCreateSchema)(async (req, res) => {
+    withValidatedJSONRequestBody(ProductDataUpdateSchema)(async (req, res) => {
       const { productId } = req.query;
       if (typeof productId !== "string") {
         throw Error('"productId" was not passed in dynamic api path.');
@@ -55,9 +55,25 @@ export default withApiMethods({
       } catch (error) {
         if (error instanceof PrismaClientKnownRequestError) {
           if (error.code === PrismaErrorCode.RECORD_NOT_FOUND) {
-            sendBackendError(res, {
+            return sendBackendError(res, {
               code: BackendResponseStatusCode.NOT_FOUND,
               label: BackendErrorLabel.PRODUCT_DOES_NOT_EXIST,
+              message: error.message,
+            });
+          }
+
+          if (error.code === PrismaErrorCode.UNIQUE_CONSTRAINT_FAILED) {
+            return sendBackendError(res, {
+              code: BackendResponseStatusCode.NOT_FOUND,
+              label: BackendErrorLabel.PRODUCT_CATEGORY_ALREADY_EXISTS,
+              message: error.message,
+            });
+          }
+
+          if (error.code === PrismaErrorCode.FOREIGN_KEY_NOT_FOUND) {
+            return sendBackendError(res, {
+              code: BackendResponseStatusCode.NOT_FOUND,
+              label: BackendErrorLabel.PRODUCT_CATEGORY_DOES_NOT_EXIST,
               message: error.message,
             });
           }
@@ -84,7 +100,7 @@ export default withApiMethods({
     } catch (error) {
       if (error instanceof PrismaClientKnownRequestError) {
         if (error.code === PrismaErrorCode.RECORD_NOT_FOUND) {
-          sendBackendError(res, {
+          return sendBackendError(res, {
             code: BackendResponseStatusCode.NOT_FOUND,
             label: BackendErrorLabel.PRODUCT_DOES_NOT_EXIST,
             message: error.message,

@@ -11,5 +11,7 @@ export const ProductDataSchema = z.object({
 
 export const ProductDataCreateSchema = ProductDataSchema.omit({ orders: true });
 
+export const ProductDataUpdateSchema = ProductDataCreateSchema.partial();
+
 export type ProductData = z.infer<typeof ProductDataSchema>;
 export type ProductDataCreate = z.infer<typeof ProductDataCreateSchema>;

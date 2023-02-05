@@ -77,6 +77,8 @@ model Product {
   stock Int
   orders ProductOrder[]
   variant String //variant of product (black, white_(wet|dry))
+
+  @@unique([categoryId, variant])
 }
 
 model Order{
