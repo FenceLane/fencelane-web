@@ -54,7 +54,7 @@ export default withApiMethods({
           .send({ data: updatedProduct });
       } catch (error) {
         if (error instanceof PrismaClientKnownRequestError) {
-          if (error.code === PrismaErrorCode.RECORD_NOT_FOUND) {
+          if (error.code === PrismaErrorCode.RECORD_NOT_FOUND_OR_RESTRICTED) {
             return sendBackendError(res, {
               code: BackendResponseStatusCode.NOT_FOUND,
               label: BackendErrorLabel.PRODUCT_DOES_NOT_EXIST,
@@ -99,7 +99,7 @@ export default withApiMethods({
         .send({ data: deletedProduct });
     } catch (error) {
       if (error instanceof PrismaClientKnownRequestError) {
-        if (error.code === PrismaErrorCode.RECORD_NOT_FOUND) {
+        if (error.code === PrismaErrorCode.RECORD_NOT_FOUND_OR_RESTRICTED) {
           return sendBackendError(res, {
             code: BackendResponseStatusCode.NOT_FOUND,
             label: BackendErrorLabel.PRODUCT_DOES_NOT_EXIST,

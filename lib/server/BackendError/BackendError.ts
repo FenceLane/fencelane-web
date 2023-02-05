@@ -23,7 +23,7 @@ export const BackendErrorLabel = {
 export const PrismaErrorCode = {
   UNIQUE_CONSTRAINT_FAILED: "P2002",
   FOREIGN_KEY_NOT_FOUND: "P2003",
-  RECORD_NOT_FOUND: "P2025",
+  RECORD_NOT_FOUND_OR_RESTRICTED: "P2025",
 } as const;
 
 export const BackendResponseStatusCode = {

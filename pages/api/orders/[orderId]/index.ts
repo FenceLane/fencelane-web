@@ -61,8 +61,8 @@ export default withApiMethods({
           .send({ data: updatedOrder });
       } catch (error) {
         if (error instanceof PrismaClientKnownRequestError) {
-          if (error.code === PrismaErrorCode.RECORD_NOT_FOUND) {
-            sendBackendError(res, {
+          if (error.code === PrismaErrorCode.RECORD_NOT_FOUND_OR_RESTRICTED) {
+            return sendBackendError(res, {
               code: BackendResponseStatusCode.NOT_FOUND,
               label: BackendErrorLabel.ORDER_DOES_NOT_EXIST,
               message: error.message,
@@ -90,8 +90,8 @@ export default withApiMethods({
         .send({ data: deletedOrder });
     } catch (error) {
       if (error instanceof PrismaClientKnownRequestError) {
-        if (error.code === PrismaErrorCode.RECORD_NOT_FOUND) {
-          sendBackendError(res, {
+        if (error.code === PrismaErrorCode.RECORD_NOT_FOUND_OR_RESTRICTED) {
+          return sendBackendError(res, {
             code: BackendResponseStatusCode.NOT_FOUND,
             label: BackendErrorLabel.ORDER_DOES_NOT_EXIST,
             message: error.message,

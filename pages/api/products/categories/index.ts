@@ -29,7 +29,7 @@ export default withApiMethods({
         } catch (error) {
           if (error instanceof PrismaClientKnownRequestError) {
             if (error.code === PrismaErrorCode.UNIQUE_CONSTRAINT_FAILED) {
-              sendBackendError(res, {
+              return sendBackendError(res, {
                 code: BackendResponseStatusCode.CONFLICT,
                 label: BackendErrorLabel.PRODUCT_CATEGORY_ALREADY_EXISTS,
                 message: error.message,
