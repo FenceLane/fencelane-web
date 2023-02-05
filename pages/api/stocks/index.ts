@@ -20,7 +20,7 @@ const getErrorLabelFromMeta = (meta: Record<string, unknown> | undefined) => {
     const fieldName = meta["field_name"];
     if (typeof fieldName === "string") {
       if (fieldName.includes("commodityId")) {
-        return BackendErrorLabel.COMMODITY_DOES_NOT_EXIST;
+        return BackendErrorLabel.PRODUCT_DOES_NOT_EXIST;
       }
       if (fieldName.includes("storageId")) {
         return BackendErrorLabel.STORAGE_DOES_NOT_EXIST;

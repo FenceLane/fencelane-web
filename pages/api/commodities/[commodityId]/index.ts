@@ -26,7 +26,7 @@ export default withApiMethods({
     if (!commodity) {
       return sendBackendError(res, {
         code: BackendResponseStatusCode.NOT_FOUND,
-        label: BackendErrorLabel.COMMODITY_DOES_NOT_EXIST,
+        label: BackendErrorLabel.PRODUCT_DOES_NOT_EXIST,
       });
     }
 
@@ -58,7 +58,7 @@ export default withApiMethods({
           if (error.code === PrismaErrorCode.RECORD_NOT_FOUND) {
             sendBackendError(res, {
               code: BackendResponseStatusCode.NOT_FOUND,
-              label: BackendErrorLabel.COMMODITY_DOES_NOT_EXIST,
+              label: BackendErrorLabel.PRODUCT_DOES_NOT_EXIST,
               message: error.message,
             });
           }
@@ -87,7 +87,7 @@ export default withApiMethods({
         if (error.code === PrismaErrorCode.RECORD_NOT_FOUND) {
           sendBackendError(res, {
             code: BackendResponseStatusCode.NOT_FOUND,
-            label: BackendErrorLabel.COMMODITY_DOES_NOT_EXIST,
+            label: BackendErrorLabel.PRODUCT_DOES_NOT_EXIST,
             message: error.message,
           });
         }

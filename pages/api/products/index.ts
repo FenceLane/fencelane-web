@@ -1,6 +1,6 @@
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime";
 import { prismaClient } from "../../../lib/prisma/prismaClient";
-import { CommodityDataSchema } from "../../../lib/schema/commodityData";
+import { ProductDataSchema } from "../../../lib/schema/productData";
 import {
   BackendErrorLabel,
   BackendResponseStatusCode,
@@ -13,17 +13,17 @@ import { withValidatedJSONRequestBody } from "../../../lib/server/middlewares/wi
 
 export default withApiMethods({
   POST: withApiAuth(
-    withValidatedJSONRequestBody(CommodityDataSchema)(async (req, res) => {
-      const { name, dimensions, stocks } = req.parsedBody;
+    withValidatedJSONRequestBody(ProductDataSchema)(async (req, res) => {
+      const { orders, ...newProductData } = req.parsedBody;
 
       try {
-        const createdCommodity = await prismaClient.commodity.create({
-          data: { name, dimensions, stocks: { createMany: { data: stocks } } },
+        const createdProduct = await prismaClient.product.create({
+          data: newProductData,
         });
 
         return res
           .status(BackendResponseStatusCode.SUCCESS)
-          .send({ data: createdCommodity });
+          .send({ data: createdProduct });
       } catch (error) {
         if (error instanceof PrismaClientKnownRequestError) {
           if (error.code === PrismaErrorCode.UNIQUE_CONSTRAINT_FAILED) {
@@ -40,14 +40,10 @@ export default withApiMethods({
   ),
 
   GET: withApiAuth(async (_req, res) => {
-    const commodities = await prismaClient.commodity.findMany({
-      include: {
-        stocks: false,
-      },
-    });
+    const products = await prismaClient.product.findMany({});
 
     return res
       .status(BackendResponseStatusCode.SUCCESS)
-      .send({ data: commodities });
+      .send({ data: products });
   }),
 });

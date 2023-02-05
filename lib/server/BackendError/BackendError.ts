@@ -10,11 +10,11 @@ export const BackendErrorLabel = {
   METHOD_NOT_ALLOWED: "method-not-allowed",
   INVALID_CREDENTIALS: "invalid-credentials",
   INVALID_PASSWORD_RESET_TOKEN: "invalid-password-reset-token",
-  COMMODITY_ALREADY_EXISTS: "commodity-already-exists",
+  PRODUCT_ALREADY_EXISTS: "product-already-exists",
   STORAGE_DOES_NOT_EXIST: "storage-does-not-exist",
   UNAUTHORIZED: "unauthorized",
   ORDER_DOES_NOT_EXIST: "order-does-not-exist",
-  COMMODITY_DOES_NOT_EXIST: "commodity-does-not-exist",
+  PRODUCT_DOES_NOT_EXIST: "product-does-not-exist",
   STOCK_DOES_NOT_EXIST: "stock-does-not-exist",
 } as const;
 
