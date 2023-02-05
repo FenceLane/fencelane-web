@@ -16,6 +16,7 @@ export const BackendErrorLabel = {
   UNAUTHORIZED: "unauthorized",
   ORDER_DOES_NOT_EXIST: "order-does-not-exist",
   PRODUCT_DOES_NOT_EXIST: "product-does-not-exist",
+  PRODUCT_CATEGORY_DOES_NOT_EXIST: "product-category-does-not-exist",
   STOCK_DOES_NOT_EXIST: "stock-does-not-exist",
 } as const;
 

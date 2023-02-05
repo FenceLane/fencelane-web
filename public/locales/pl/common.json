@@ -41,6 +41,7 @@
       "storage-does-not-exist": "Magazyn o danym id nie znajduje się w bazie danych!",
       "stock-does-not-exist": "Stock o danym id nie istnieje!",
       "commodity-does-not-exist": "Towar o danym id nie istnieje!",
+      "product-category-does-not-exist": "Kategoria produktu o danym id nie istnieje!",
       "unauthorized": "Brak uprawnień!"
     }
   },
