@@ -45,11 +45,31 @@ CREATE TABLE "Client" (
 );
 
 -- CreateTable
-CREATE TABLE "Product" (
+CREATE TABLE "Destination" (
+    "id" TEXT NOT NULL,
+    "country" TEXT NOT NULL,
+    "address" TEXT NOT NULL,
+    "postalCode" TEXT NOT NULL,
+    "city" TEXT NOT NULL,
+
+    CONSTRAINT "Destination_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "ProductCategory" (
     "id" TEXT NOT NULL,
     "name" TEXT NOT NULL,
     "dimensions" TEXT NOT NULL,
+
+    CONSTRAINT "ProductCategory_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "Product" (
+    "id" TEXT NOT NULL,
+    "categoryId" TEXT NOT NULL,
     "stock" INTEGER NOT NULL,
+    "variant" TEXT NOT NULL,
 
     CONSTRAINT "Product_pkey" PRIMARY KEY ("id")
 );
@@ -80,17 +100,6 @@ CREATE TABLE "ProductOrder" (
     CONSTRAINT "ProductOrder_pkey" PRIMARY KEY ("id")
 );
 
--- CreateTable
-CREATE TABLE "Destination" (
-    "id" TEXT NOT NULL,
-    "country" TEXT NOT NULL,
-    "address" TEXT NOT NULL,
-    "postalCode" TEXT NOT NULL,
-    "city" TEXT NOT NULL,
-
-    CONSTRAINT "Destination_pkey" PRIMARY KEY ("id")
-);
-
 -- CreateIndex
 CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
 
@@ -101,13 +110,16 @@ CREATE UNIQUE INDEX "PasswordResetToken_token_key" ON "PasswordResetToken"("toke
 CREATE UNIQUE INDEX "Client_email_key" ON "Client"("email");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "Product_name_dimensions_key" ON "Product"("name", "dimensions");
+CREATE UNIQUE INDEX "ProductCategory_name_dimensions_key" ON "ProductCategory"("name", "dimensions");
 
 -- AddForeignKey
 ALTER TABLE "Session" ADD CONSTRAINT "Session_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "PasswordResetToken" ADD CONSTRAINT "PasswordResetToken_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Product" ADD CONSTRAINT "Product_categoryId_fkey" FOREIGN KEY ("categoryId") REFERENCES "ProductCategory"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Order" ADD CONSTRAINT "Order_clientId_fkey" FOREIGN KEY ("clientId") REFERENCES "Client"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

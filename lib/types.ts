@@ -11,7 +11,7 @@ export enum USER_ROLE {
   USER = 1,
 }
 
-export enum COMMODITY_TYPE {
+export enum PRODUCT_ORDER_TYPE {
   BLACK = "black",
   WHITE_WET = "white_wet",
   WHITE_DRY = "white_dry",

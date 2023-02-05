@@ -51,14 +51,32 @@ model Client {
   orders Order[]
 }
 
-model Product {
-  id  String  @id @default(uuid())
+
+model Destination {
+  id String  @id @default(uuid())
+  country String
+  address String
+  postalCode String
+  city String
+  orders Order[]
+}
+
+model ProductCategory {
+  id String  @id @default(uuid())
   name String
   dimensions String
-  stock Int
-  orders ProductOrder[]
+  products Product[]
 
   @@unique([name, dimensions])
+}
+
+model Product {
+  id  String  @id @default(uuid())
+  category ProductCategory @relation(fields: [categoryId], references: [id])
+  categoryId String
+  stock Int
+  orders ProductOrder[]
+  variant String //variant of product (black, white_(wet|dry))
 }
 
 model Order{
@@ -75,6 +93,7 @@ model Order{
   paidOrder Boolean
   price Decimal
 }
+
 model ProductOrder {
   id String  @id @default(uuid())
   order Order @relation(fields: [orderId], references: [id])
@@ -83,13 +102,4 @@ model ProductOrder {
   productId String
   quantity Int
   price Decimal
-}
-
-model Destination {
-  id String  @id @default(uuid())
-  country String
-  address String
-  postalCode String
-  city String
-  orders Order[]
 }
