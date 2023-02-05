@@ -1,6 +1,6 @@
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime";
 import { prismaClient } from "../../../../lib/prisma/prismaClient";
-import { OrderUpdateSchema } from "../../../../lib/schema/orderData";
+import { OrderDataUpdateSchema } from "../../../../lib/schema/orderData";
 import {
   BackendErrorLabel,
   BackendResponseStatusCode,
@@ -20,6 +20,7 @@ export default withApiMethods({
 
     const order = await prismaClient.order.findUnique({
       where: { id: orderId },
+      include: { client: true, destination: true, products: true },
     });
 
     if (!order) {
@@ -33,18 +34,26 @@ export default withApiMethods({
   }),
 
   PUT: withApiAuth(
-    withValidatedJSONRequestBody(OrderUpdateSchema)(async (req, res) => {
+    withValidatedJSONRequestBody(OrderDataUpdateSchema)(async (req, res) => {
       const { orderId } = req.query;
       if (typeof orderId !== "string") {
         throw Error('"orderId" was not passed in dynamic api path.');
       }
 
-      const orderData = req.parsedBody;
+      const { products, ...orderData } = req.parsedBody;
 
       try {
         const updatedOrder = await prismaClient.order.update({
           where: { id: orderId },
-          data: orderData,
+          data: {
+            ...orderData,
+            products: {
+              connectOrCreate: products?.map((p) => ({
+                where: { id: p.productId },
+                create: p,
+              })),
+            },
+          },
         });
 
         return res

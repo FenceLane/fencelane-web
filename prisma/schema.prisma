@@ -88,7 +88,7 @@ model Order{
   date DateTime @default(now())
   status String
   files String[]
-  orders ProductOrder[]
+  products ProductOrder[]
   price Decimal
 }
 

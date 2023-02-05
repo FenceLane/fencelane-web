@@ -9,7 +9,9 @@ export const OrderDataSchema = z.object({
   status: z.nativeEnum(ORDER_STATUS),
   files: z.array(z.string()),
   price: z.number(),
-  orders: z.array(ProductOrderDataSchema),
+  products: z.array(ProductOrderDataSchema),
 });
+
+export const OrderDataUpdateSchema = OrderDataSchema.partial();
 
 export type OrderData = z.infer<typeof OrderDataSchema>;
