@@ -1,6 +1,6 @@
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime";
 import { prismaClient } from "../../../../../lib/prisma/prismaClient";
-import { ProductCategoryDataCreateSchema } from "../../../../../lib/schema/productCategory";
+import { ProductCategoryDataUpdateSchema } from "../../../../../lib/schema/productCategory";
 import {
   BackendErrorLabel,
   BackendResponseStatusCode,
@@ -35,7 +35,7 @@ export default withApiMethods({
   }),
 
   PUT: withApiAuth(
-    withValidatedJSONRequestBody(ProductCategoryDataCreateSchema)(
+    withValidatedJSONRequestBody(ProductCategoryDataUpdateSchema)(
       async (req, res) => {
         const { categoryId } = req.query;
         if (typeof categoryId !== "string") {

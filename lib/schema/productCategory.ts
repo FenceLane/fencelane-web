@@ -10,4 +10,8 @@ export const ProductCategoryDataSchema = z.object({
 export const ProductCategoryDataCreateSchema = ProductCategoryDataSchema.omit({
   products: true,
 });
+
+export const ProductCategoryDataUpdateSchema =
+  ProductCategoryDataCreateSchema.partial();
+
 export type ProductCategoryData = z.infer<typeof ProductCategoryDataSchema>;
