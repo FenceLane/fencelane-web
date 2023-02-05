@@ -1,15 +1,15 @@
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime";
-import { prismaClient } from "../../../lib/prisma/prismaClient";
-import { ProductCategoryDataCreateSchema } from "../../../lib/schema/productCategory";
+import { prismaClient } from "../../../../lib/prisma/prismaClient";
+import { ProductCategoryDataCreateSchema } from "../../../../lib/schema/productCategory";
 import {
   BackendErrorLabel,
   BackendResponseStatusCode,
   PrismaErrorCode,
   sendBackendError,
-} from "../../../lib/server/BackendError/BackendError";
-import { withApiAuth } from "../../../lib/server/middlewares/withApiAuth";
-import { withApiMethods } from "../../../lib/server/middlewares/withApiMethods";
-import { withValidatedJSONRequestBody } from "../../../lib/server/middlewares/withValidatedJSONRequestBody";
+} from "../../../../lib/server/BackendError/BackendError";
+import { withApiAuth } from "../../../../lib/server/middlewares/withApiAuth";
+import { withApiMethods } from "../../../../lib/server/middlewares/withApiMethods";
+import { withValidatedJSONRequestBody } from "../../../../lib/server/middlewares/withValidatedJSONRequestBody";
 
 export default withApiMethods({
   POST: withApiAuth(
