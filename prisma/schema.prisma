@@ -51,33 +51,14 @@ model Client {
   orders Order[]
 }
 
-model Commodity {
+model Product {
   id  String  @id @default(uuid())
   name String
   dimensions String
-  stocks CommodityStock[]
+  stock Int
+  orders ProductOrder[]
 
   @@unique([name, dimensions])
-}
-
-model CommodityStock {
-  id  String  @id @default(uuid())
-  type String // "black" | "white_wet" | "white_dry"
-  singlePackageVolume Decimal
-  packagesAmount Int
-  packageSize Int
-
-  //we know what product it is
-  commodity Commodity @relation(fields: [commodityId], references: [id], onDelete: Cascade)
-  commodityId String
-
-  //we know if this stock was ordered
-  order Order? @relation(fields: [orderId], references: [id], onDelete: Cascade)
-  orderId String?
-
-  //we know if this stock is a part of magazine
-  storage Storage? @relation(fields: [storageId], references: [id], onDelete: Cascade)
-  storageId String?
 }
 
 model Order{
@@ -88,16 +69,20 @@ model Order{
   destinationId String
   date DateTime @default(now())
   status String
-  stocks CommodityStock[]
   files String[]
+  orders ProductOrder[]
   paidTransport Boolean
   paidOrder Boolean
   price Decimal
 }
-
-model Storage{
+model ProductOrder {
   id String  @id @default(uuid())
-  stocks CommodityStock[]
+  order Order @relation(fields: [orderId], references: [id])
+  orderId String
+  product Product @relation(fields: [productId], references: [id])
+  productId String
+  quantity Int
+  price Decimal
 }
 
 model Destination {
