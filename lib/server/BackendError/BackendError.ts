@@ -12,12 +12,10 @@ export const BackendErrorLabel = {
   INVALID_PASSWORD_RESET_TOKEN: "invalid-password-reset-token",
   PRODUCT_ALREADY_EXISTS: "product-already-exists",
   PRODUCT_CATEGORY_ALREADY_EXISTS: "product-category-already-exists",
-  STORAGE_DOES_NOT_EXIST: "storage-does-not-exist",
   UNAUTHORIZED: "unauthorized",
   ORDER_DOES_NOT_EXIST: "order-does-not-exist",
   PRODUCT_DOES_NOT_EXIST: "product-does-not-exist",
   PRODUCT_CATEGORY_DOES_NOT_EXIST: "product-category-does-not-exist",
-  STOCK_DOES_NOT_EXIST: "stock-does-not-exist",
 } as const;
 
 export const PrismaErrorCode = {
