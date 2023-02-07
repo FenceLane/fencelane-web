@@ -70,6 +70,8 @@ CREATE TABLE "Product" (
     "categoryId" TEXT NOT NULL,
     "stock" INTEGER NOT NULL,
     "variant" TEXT NOT NULL,
+    "itemsPerPackage" INTEGER NOT NULL,
+    "volumePerPackage" DECIMAL(65,30) NOT NULL,
 
     CONSTRAINT "Product_pkey" PRIMARY KEY ("id")
 );
@@ -111,7 +113,7 @@ CREATE UNIQUE INDEX "Client_email_key" ON "Client"("email");
 CREATE UNIQUE INDEX "ProductCategory_name_dimensions_key" ON "ProductCategory"("name", "dimensions");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "Product_categoryId_variant_key" ON "Product"("categoryId", "variant");
+CREATE UNIQUE INDEX "Product_categoryId_variant_itemsPerPackage_key" ON "Product"("categoryId", "variant", "itemsPerPackage");
 
 -- AddForeignKey
 ALTER TABLE "Session" ADD CONSTRAINT "Session_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;

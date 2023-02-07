@@ -77,8 +77,10 @@ model Product {
   stock Int
   orders ProductOrder[]
   variant String //variant of product (black, white_(wet|dry))
+  itemsPerPackage Int //number of items per package
+  volumePerPackage Decimal //m^3 per package
 
-  @@unique([categoryId, variant])
+  @@unique([categoryId, variant, itemsPerPackage])
 }
 
 model Order{
