@@ -1,6 +1,7 @@
 .nav {
-  position: absolute;
   width: 100%;
+  position: absolute;
+  height: calc(100vh - 50px);
   background-color: var(--dark);
   color: white;
   display: flex;
