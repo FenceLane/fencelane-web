@@ -1,5 +1,4 @@
 import { useRouter } from "next/router";
-import React, { useEffect } from "react";
 import { Layout } from "../../components/Layout/Layout";
 import { PasswordResetEmailForm } from "../../components/PasswordResetEmailForm/PasswordResetEmailForm";
 import { PasswordResetNewPasswordForm } from "../../components/PasswordResetNewPasswordForm/PasswordResetNewPasswordForm";
