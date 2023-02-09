@@ -1,4 +1,4 @@
-import { Box, Grid, GridItem, Text, Image, Link, Flex } from "@chakra-ui/react";
+import { Box, Flex } from "@chakra-ui/react";
 import Head from "next/head";
 import React, { ReactNode, useState } from "react";
 import { useContent } from "../../lib/hooks/useContent";
