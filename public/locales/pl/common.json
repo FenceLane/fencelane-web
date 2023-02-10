@@ -29,13 +29,16 @@
     },
     "backendErrorLabel": {
       "invalid-credentials": "Niepoprawne dane!",
-      "user-does-not-exists": "Użytkownik z tym adresem e-mail nie istnieje!",
+      "user-does-not-exist": "Użytkownik z tym adresem e-mail nie istnieje!",
       "user-already-exists": "Użytkownik z tym adresem e-mail już istnieje!",
       "invalid-request-content-type": "Niepoprawny format danych!",
       "invalid-request-body": "Niepoprawny format danych!",
       "unexpected-error": "Wystąpił błąd, spróbuj ponownie później lub skontaktuj się z administratorem.",
       "method-not-allowed": "Niedozwolona operacja, skontaktuj się z administratorem.",
       "invalid-password-reset-token": "Token zmiany hasła nie istnieje lub wygasł, spróbuj ponownie lub skontaktuj się z administratorem.",
+      "product-category-already-exists": "Kategoria produktu o tej nazwie i wymiarach już istnieje!",
+      "order-does-not-exist": "Zamówienie o podanym id nie istnieje!",
+      "product-category-does-not-exist": "Kategoria produktu o danym id nie istnieje!",
       "unauthorized": "Brak uprawnień!"
     }
   },

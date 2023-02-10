@@ -4,7 +4,6 @@ import {
   BackendError,
   BackendErrorLabel,
   BackendResponseStatusCode,
-  sendBackendError,
 } from "../../../../lib/server/BackendError/BackendError";
 import { withApiMethods } from "../../../../lib/server/middlewares/withApiMethods";
 import {
@@ -20,58 +19,50 @@ export default withApiMethods({
 
       const encryptedToken = encryptStringSHA256(token);
 
-      try {
-        await prismaClient.$transaction(async (tx) => {
-          const foundToken = await tx.passwordResetToken.findFirst({
-            where: { token: encryptedToken },
-            include: { user: true },
-          });
-
-          //we check if token does exist and is valid (not-expired)
-          if (!foundToken) {
-            throw new BackendError({
-              code: BackendResponseStatusCode.UNAUTHORIZED,
-              label: BackendErrorLabel.INVALID_PASSWORD_RESET_TOKEN,
-            });
-          }
-
-          if (foundToken.expiresAt < new Date()) {
-            //when token is expired, we can delete it
-            await tx.passwordResetToken.delete({
-              where: { id: foundToken.id },
-            });
-
-            throw new BackendError({
-              code: BackendResponseStatusCode.UNAUTHORIZED,
-              label: BackendErrorLabel.INVALID_PASSWORD_RESET_TOKEN,
-            });
-          }
-
-          //token is valid, we can change the password
-          const { user } = foundToken;
-
-          const newEncryptedPassword = encryptStringAES(newPassword);
-          await tx.user.update({
-            where: { id: user.id },
-            data: { password: newEncryptedPassword },
-          });
-
-          //after user has updated their password, we can remove all their tokens from the db
-          await tx.passwordResetToken.deleteMany({
-            where: { userId: user.id },
-          });
-
-          return res
-            .status(BackendResponseStatusCode.SUCCESS)
-            .send({ data: true });
+      return await prismaClient.$transaction(async (tx) => {
+        const foundToken = await tx.passwordResetToken.findFirst({
+          where: { token: encryptedToken },
+          include: { user: true },
         });
-      } catch (error) {
-        if (error instanceof BackendError) {
-          return sendBackendError(res, error);
-        } else {
-          throw error;
+
+        //we check if token does exist and is valid (not-expired)
+        if (!foundToken) {
+          throw new BackendError({
+            code: BackendResponseStatusCode.UNAUTHORIZED,
+            label: BackendErrorLabel.INVALID_PASSWORD_RESET_TOKEN,
+          });
         }
-      }
+
+        if (foundToken.expiresAt < new Date()) {
+          //when token is expired, we can delete it
+          await tx.passwordResetToken.delete({
+            where: { id: foundToken.id },
+          });
+
+          throw new BackendError({
+            code: BackendResponseStatusCode.UNAUTHORIZED,
+            label: BackendErrorLabel.INVALID_PASSWORD_RESET_TOKEN,
+          });
+        }
+
+        //token is valid, we can change the password
+        const { user } = foundToken;
+
+        const newEncryptedPassword = encryptStringAES(newPassword);
+        await tx.user.update({
+          where: { id: user.id },
+          data: { password: newEncryptedPassword },
+        });
+
+        //after user has updated their password, we can remove all their tokens from the db
+        await tx.passwordResetToken.deleteMany({
+          where: { userId: user.id },
+        });
+
+        return res
+          .status(BackendResponseStatusCode.SUCCESS)
+          .send({ data: true });
+      });
     }
   ),
 });

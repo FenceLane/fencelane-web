@@ -3,7 +3,7 @@ import { BackendResponseStatusCode } from "../../../../lib/server/BackendError/B
 import { withApiMethods } from "../../../../lib/server/middlewares/withApiMethods";
 
 export default withApiMethods({
-  DELETE: async (req, res) => {
+  DELETE: async (_req, res) => {
     const now = new Date();
 
     const deleted = await prismaClient.session.deleteMany({

@@ -10,6 +10,7 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+//auth
 model User {
   id  String     @id @default(uuid())
   email String  @unique
@@ -38,4 +39,69 @@ model PasswordResetToken {
   expiresAt DateTime
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId    String
+}
+
+//domain
+model Client {
+  id String  @id @default(uuid())
+  name String 
+  shortName String
+  email String @unique
+  phone String
+  orders Order[]
+}
+
+
+model Destination {
+  id String  @id @default(uuid())
+  country String
+  address String
+  postalCode String
+  city String
+  orders Order[]
+}
+
+model ProductCategory {
+  id String  @id @default(uuid())
+  name String
+  dimensions String
+  products Product[]
+
+  @@unique([name, dimensions])
+}
+
+model Product {
+  id  String  @id @default(uuid())
+  category ProductCategory @relation(fields: [categoryId], references: [id])
+  categoryId String
+  stock Int
+  orders ProductOrder[]
+  variant String //variant of product (black, white_(wet|dry))
+  itemsPerPackage Int //number of items per package
+  volumePerPackage Decimal //m^3 per package
+
+  @@unique([categoryId, variant, itemsPerPackage])
+}
+
+model Order{
+  id String  @id @default(uuid())
+  client Client @relation(fields: [clientId], references: [id])
+  clientId String
+  destination Destination @relation(fields: [destinationId], references: [id])
+  destinationId String
+  date DateTime @default(now())
+  status String
+  files String[]
+  products ProductOrder[]
+  price Decimal
+}
+
+model ProductOrder {
+  id String  @id @default(uuid())
+  order Order @relation(fields: [orderId], references: [id])
+  orderId String
+  product Product @relation(fields: [productId], references: [id])
+  productId String
+  quantity Int
+  price Decimal
 }

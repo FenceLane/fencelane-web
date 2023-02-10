@@ -1,5 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import {
+  BackendError,
   BackendErrorLabel,
   BackendResponseStatusCode,
   sendBackendError,
@@ -29,7 +30,12 @@ export const withApiMethods =
         return await handler(req, res);
       } catch (error) {
         console.error(error);
-        sendBackendError(res, {
+
+        if (error instanceof BackendError) {
+          return sendBackendError(res, error);
+        }
+
+        return sendBackendError(res, {
           code: BackendResponseStatusCode.BAD_REQUEST,
           label: BackendErrorLabel.UNEXPECTED_ERROR,
         });

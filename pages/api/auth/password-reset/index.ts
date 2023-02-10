@@ -27,7 +27,7 @@ export default withApiMethods({
       if (!existingUser) {
         return sendBackendError(res, {
           code: BackendResponseStatusCode.NOT_FOUND,
-          label: BackendErrorLabel.USER_DOES_NOT_EXISTS,
+          label: BackendErrorLabel.USER_DOES_NOT_EXIST,
         });
       }
 
