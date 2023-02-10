@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Text, Tr, Td, Button, Flex } from "@chakra-ui/react";
+import { Text, Tr, Td, Button, Flex, ScaleFade } from "@chakra-ui/react";
 import { useContent } from "../../lib/hooks/useContent";
 import styles from "./Row.module.scss";
 import { PlusSquareIcon } from "@chakra-ui/icons";
@@ -61,13 +61,18 @@ export const Row = (props: any) => {
           </Button>
         </Td>
       </Tr>
-      <Tr display={isDisplayed ? "table-row" : "none"}>
+      <Tr
+        display={isDisplayed ? "table-row" : "none"}
+        className={styles["bottom-row"]}
+      >
         <Td colSpan={9}>
-          <Flex justifyContent="right" gap="20px">
-            <Button colorScheme="green">Dodaj coś tam</Button>
-            <Button colorScheme="red">Usuń coś tam</Button>
-            <Button colorScheme="blue">Modyfikuj coś tam</Button>
-          </Flex>
+          <ScaleFade initialScale={1.5} in={isDisplayed}>
+            <Flex justifyContent="right" gap="20px">
+              <Button colorScheme="green">Dodaj coś tam</Button>
+              <Button colorScheme="red">Usuń coś tam</Button>
+              <Button colorScheme="blue">Modyfikuj coś tam</Button>
+            </Flex>
+          </ScaleFade>
         </Td>
       </Tr>
     </>
