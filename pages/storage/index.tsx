@@ -1,7 +1,6 @@
 import { Layout } from "../../components/Layout/Layout";
 import { withServerSideAuth } from "../../lib/server/middlewares/withServerSideAuth";
 import { withTranslationProps } from "../../lib/server/middlewares/withTranslationProps";
-import { useContent } from "../../lib/hooks/useContent";
 import { InferGetServerSidePropsType } from "next";
 import { Storage } from "../../components/Storage/Storage";
 

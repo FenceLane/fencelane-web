@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { Text, Tr, Td, Button, Flex, ScaleFade } from "@chakra-ui/react";
-import { useContent } from "../../lib/hooks/useContent";
 import styles from "./Row.module.scss";
 import { PlusSquareIcon } from "@chakra-ui/icons";
 

@@ -1,15 +1,5 @@
 import React from "react";
-import {
-  Text,
-  Table,
-  Thead,
-  Tbody,
-  Tr,
-  Th,
-  Td,
-  TableContainer,
-  Button,
-} from "@chakra-ui/react";
+import { Table, Thead, Tbody, Tr, Th, TableContainer } from "@chakra-ui/react";
 import { useContent } from "../../lib/hooks/useContent";
 import styles from "./Storage.module.scss";
 import { Row } from "../Row/Row";
