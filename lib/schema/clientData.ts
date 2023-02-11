@@ -10,6 +10,8 @@ export const ClientDataSchema = z.object({
 });
 
 export const ClientDataCreateSchema = ClientDataSchema.omit({ orders: true });
-export const ClientDataUpdateSchema = ClientDataSchema.omit({ orders: true });
+export const ClientDataUpdateSchema = ClientDataSchema.omit({
+  orders: true,
+}).partial();
 
 export type ClientData = z.infer<typeof ClientDataSchema>;
