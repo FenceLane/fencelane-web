@@ -9,4 +9,7 @@ export const ClientDataSchema = z.object({
   orders: z.array(OrderDataSchema),
 });
 
+export const ClientDataCreateSchema = ClientDataSchema.omit({ orders: true });
+export const ClientDataUpdateSchema = ClientDataSchema.omit({ orders: true });
+
 export type ClientData = z.infer<typeof ClientDataSchema>;

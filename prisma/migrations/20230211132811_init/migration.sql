@@ -110,6 +110,12 @@ CREATE UNIQUE INDEX "PasswordResetToken_token_key" ON "PasswordResetToken"("toke
 CREATE UNIQUE INDEX "Client_email_key" ON "Client"("email");
 
 -- CreateIndex
+CREATE UNIQUE INDEX "Client_phone_key" ON "Client"("phone");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Destination_country_city_postalCode_address_key" ON "Destination"("country", "city", "postalCode", "address");
+
+-- CreateIndex
 CREATE UNIQUE INDEX "ProductCategory_name_dimensions_key" ON "ProductCategory"("name", "dimensions");
 
 -- CreateIndex
