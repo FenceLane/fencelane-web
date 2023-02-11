@@ -26,6 +26,7 @@ export default withApiMethods({
                   create: products,
                 },
               },
+              include: { products: true },
             });
 
           return res
