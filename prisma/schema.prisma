@@ -92,10 +92,9 @@ model Order{
   destination Destination @relation(fields: [destinationId], references: [id])
   destinationId String
   date DateTime @default(now())
-  status String
-  files String[]
+  status String @default("created")
+  files String[] @default([])
   products ProductOrder[]
-  price Decimal
 }
 
 model ProductOrder {

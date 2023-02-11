@@ -82,9 +82,8 @@ CREATE TABLE "Order" (
     "clientId" TEXT NOT NULL,
     "destinationId" TEXT NOT NULL,
     "date" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "status" TEXT NOT NULL,
-    "files" TEXT[],
-    "price" DECIMAL(65,30) NOT NULL,
+    "status" TEXT NOT NULL DEFAULT 'created',
+    "files" TEXT[] DEFAULT ARRAY[]::TEXT[],
 
     CONSTRAINT "Order_pkey" PRIMARY KEY ("id")
 );

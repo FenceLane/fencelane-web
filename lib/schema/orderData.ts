@@ -5,11 +5,10 @@ import { ProductOrderDataSchema } from "./productOrderData";
 export const OrderDataSchema = z.object({
   clientId: z.string().min(1),
   destinationId: z.string().min(1),
-  date: z.date(),
-  status: z.nativeEnum(ORDER_STATUS),
-  files: z.array(z.string()),
-  price: z.number(),
-  products: z.array(ProductOrderDataSchema),
+  date: z.date().optional(),
+  status: z.nativeEnum(ORDER_STATUS).optional(),
+  files: z.array(z.string()).optional(),
+  products: z.array(ProductOrderDataSchema.omit({ orderId: true })),
 });
 
 export const OrderDataUpdateSchema = OrderDataSchema.partial();
