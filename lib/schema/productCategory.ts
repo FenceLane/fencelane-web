@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { ProductDataSchema } from "./productData";
+import { ProductDataCreateSchema, ProductDataSchema } from "./productData";
 
 export const ProductCategoryDataSchema = z.object({
   name: z.string().min(1),
@@ -7,11 +7,12 @@ export const ProductCategoryDataSchema = z.object({
   products: z.array(ProductDataSchema),
 });
 
-export const ProductCategoryDataCreateSchema = ProductCategoryDataSchema.omit({
-  products: true,
-});
+export const ProductCategoryDataCreateSchema = ProductCategoryDataSchema.extend(
+  { products: ProductDataCreateSchema.omit({ categoryId: true }) }
+).partial({ products: true });
 
-export const ProductCategoryDataUpdateSchema =
-  ProductCategoryDataCreateSchema.partial();
+export const ProductCategoryDataUpdateSchema = ProductCategoryDataSchema.omit({
+  products: true,
+}).partial();
 
 export type ProductCategoryData = z.infer<typeof ProductCategoryDataSchema>;

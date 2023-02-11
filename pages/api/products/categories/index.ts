@@ -15,12 +15,17 @@ export default withApiMethods({
   POST: withApiAuth(
     withValidatedJSONRequestBody(ProductCategoryDataCreateSchema)(
       async (req, res) => {
-        const newProductCategoryData = req.parsedBody;
+        const { products, ...newProductCategoryData } = req.parsedBody;
 
         try {
           const createdProductCategory =
             await prismaClient.productCategory.create({
-              data: newProductCategoryData,
+              data: {
+                ...newProductCategoryData,
+                products: {
+                  create: products,
+                },
+              },
             });
 
           return res
