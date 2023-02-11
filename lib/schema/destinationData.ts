@@ -9,4 +9,11 @@ export const DestinationDataSchema = z.object({
   orders: z.array(OrderDataSchema),
 });
 
+export const DestinationDataCreateSchema = DestinationDataSchema.omit({
+  orders: true,
+});
+export const DestinationDataUpdateSchema = DestinationDataSchema.omit({
+  orders: true,
+}).partial();
+
 export type DestinationData = z.infer<typeof DestinationDataSchema>;

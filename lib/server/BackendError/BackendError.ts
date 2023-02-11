@@ -12,6 +12,8 @@ export const BackendErrorLabel = {
   INVALID_PASSWORD_RESET_TOKEN: "invalid-password-reset-token",
   PRODUCT_ALREADY_EXISTS: "product-already-exists",
   CLIENT_ALREADY_EXISTS: "client-already-exists",
+  DESTINATION_ALREADY_EXISTS: "destination-already-exists",
+  DESTINATION_DOES_NOT_EXIST: "destination-does-not-exist",
   PRODUCT_CATEGORY_ALREADY_EXISTS: "product-category-already-exists",
   UNAUTHORIZED: "unauthorized",
   ORDER_DOES_NOT_EXIST: "order-does-not-exist",

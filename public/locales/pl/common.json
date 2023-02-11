@@ -40,6 +40,8 @@
       "client-already-exists": "Ten klient już istnieje!",
       "client-does-not-exist": "Klient o danym id nie istnieje!",
       "order-does-not-exist": "Zamówienie o podanym id nie istnieje!",
+      "destination-already-exists": "Ta destynacja już istnieje!",
+      "destination-does-not-exist": "Destynacja o podanym id nie istnieje!",
       "product-category-does-not-exist": "Kategoria produktu o danym id nie istnieje!",
       "unauthorized": "Brak uprawnień!"
     }
