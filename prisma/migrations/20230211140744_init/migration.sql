@@ -82,9 +82,8 @@ CREATE TABLE "Order" (
     "clientId" TEXT NOT NULL,
     "destinationId" TEXT NOT NULL,
     "date" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "status" TEXT NOT NULL,
-    "files" TEXT[],
-    "price" DECIMAL(65,30) NOT NULL,
+    "status" TEXT NOT NULL DEFAULT 'created',
+    "files" TEXT[] DEFAULT ARRAY[]::TEXT[],
 
     CONSTRAINT "Order_pkey" PRIMARY KEY ("id")
 );
@@ -108,6 +107,12 @@ CREATE UNIQUE INDEX "PasswordResetToken_token_key" ON "PasswordResetToken"("toke
 
 -- CreateIndex
 CREATE UNIQUE INDEX "Client_email_key" ON "Client"("email");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Client_phone_key" ON "Client"("phone");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Destination_country_city_postalCode_address_key" ON "Destination"("country", "city", "postalCode", "address");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "ProductCategory_name_dimensions_key" ON "ProductCategory"("name", "dimensions");

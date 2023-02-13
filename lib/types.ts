@@ -18,6 +18,7 @@ export enum PRODUCT_VARIANT {
 }
 
 export enum ORDER_STATUS {
+  CREATED = "created",
   PREPARING = "preparing",
   PACKED = "packed",
   DELIVERY = "delivery",

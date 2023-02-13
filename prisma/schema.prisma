@@ -44,10 +44,10 @@ model PasswordResetToken {
 //domain
 model Client {
   id String  @id @default(uuid())
-  name String 
+  name String
   shortName String
   email String @unique
-  phone String
+  phone String @unique
   orders Order[]
 }
 
@@ -59,6 +59,8 @@ model Destination {
   postalCode String
   city String
   orders Order[]
+
+  @@unique([country, city, postalCode, address])
 }
 
 model ProductCategory {
@@ -90,10 +92,9 @@ model Order{
   destination Destination @relation(fields: [destinationId], references: [id])
   destinationId String
   date DateTime @default(now())
-  status String
-  files String[]
+  status String @default("created")
+  files String[] @default([])
   products ProductOrder[]
-  price Decimal
 }
 
 model ProductOrder {
