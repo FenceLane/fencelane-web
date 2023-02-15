@@ -60,6 +60,10 @@ const getMe = async () => {
   return axios.get(apiPath("auth/me"));
 };
 
+const getProducts = async () => {
+  return axios.get(apiPath("products"));
+};
+
 export const apiClient = {
   auth: {
     postLogin,
@@ -69,5 +73,6 @@ export const apiClient = {
     deleteLogout,
     deleteSelfUser,
     getMe,
+    getProducts,
   },
 };
