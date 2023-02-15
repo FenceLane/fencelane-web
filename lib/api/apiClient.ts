@@ -68,7 +68,7 @@ const getMe = async () => {
 };
 
 const getProducts = async ({ authCookie }: { authCookie: string }) => {
-  const { data } = await axiosInstance.get(apiPath("products"), {
+  const { data } = await axiosInstance.get(apiPath("products/all"), {
     headers: { cookie: authCookie },
   });
 
