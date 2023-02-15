@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Table, Thead, Tbody, Tr, Th, TableContainer } from "@chakra-ui/react";
 import { useContent } from "../../lib/hooks/useContent";
 import styles from "./Storage.module.scss";
@@ -21,25 +21,6 @@ export const Storage = (props: any) => {
   const { t } = useContent();
 
   const [data, setData] = useState([]);
-
-  useEffect(() => {
-    fetch("https://local.fencelane.com:3000/api/products")
-      .then((response) => {
-        if (response.ok) {
-          return response.json();
-        }
-        throw response;
-      })
-      .then((datas) => {
-        setData(datas);
-      })
-      .catch((error) => {
-        console.error("Fetching error: ", error);
-      })
-      .finally(() => {
-        console.log(data);
-      });
-  }, []);
 
   return (
     <TableContainer className={styles.container}>
