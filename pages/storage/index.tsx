@@ -46,8 +46,11 @@ export default StoragePage;
 
 export const getServerSideProps = withTranslationProps(
   withServerSideAuth(async (ctx) => {
+    const authCookie = ctx.req.headers.cookie as string;
+
     const { user } = ctx.session;
-    const products = await apiClient.auth.getProducts();
+    const { data: products } = await apiClient.auth.getProducts({ authCookie });
+
     return {
       props: {
         user,

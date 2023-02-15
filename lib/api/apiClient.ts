@@ -1,6 +1,13 @@
 import axios from "axios";
 import { ClientConfig } from "../AppConfig/ClientConfig";
 import { USER_ROLE } from "../types";
+import https from "https";
+
+const axiosInstance = axios.create({
+  httpsAgent: new https.Agent({
+    rejectUnauthorized: false,
+  }),
+});
 
 const apiPath = (endpoint: string) => {
   const baseUrl = ClientConfig.ENV.NEXT_PUBLIC_BASE_URL;
@@ -12,7 +19,7 @@ const apiPath = (endpoint: string) => {
 };
 
 const postLogin = async (data: { email: string; password: string }) => {
-  return axios.post(apiPath("auth/login"), data);
+  return axiosInstance.post(apiPath("auth/login"), data);
 };
 
 const postRegister = async ({
@@ -28,7 +35,7 @@ const postRegister = async ({
   password: string;
   role?: USER_ROLE;
 }) => {
-  return axios.post(apiPath("auth/register"), {
+  return axiosInstance.post(apiPath("auth/register"), {
     name,
     email,
     phone,
@@ -41,27 +48,31 @@ const putCompletePasswordReset = async (data: {
   password: string;
   token: string;
 }) => {
-  return axios.put(apiPath("auth/password-reset/complete"), data);
+  return axiosInstance.put(apiPath("auth/password-reset/complete"), data);
 };
 
 const postInitialisePasswordReset = async (data: { email: string }) => {
-  return axios.post(apiPath("auth/password-reset"), data);
+  return axiosInstance.post(apiPath("auth/password-reset"), data);
 };
 
 const deleteLogout = async () => {
-  return axios.delete(apiPath("auth/logout"));
+  return axiosInstance.delete(apiPath("auth/logout"));
 };
 
 const deleteSelfUser = async () => {
-  return axios.delete(apiPath("auth/delete"));
+  return axiosInstance.delete(apiPath("auth/delete"));
 };
 
 const getMe = async () => {
-  return axios.get(apiPath("auth/me"));
+  return axiosInstance.get(apiPath("auth/me"));
 };
 
-const getProducts = async () => {
-  return axios.get(apiPath("products"));
+const getProducts = async ({ authCookie }: { authCookie: string }) => {
+  const { data } = await axiosInstance.get(apiPath("products"), {
+    headers: { cookie: authCookie },
+  });
+
+  return data;
 };
 
 export const apiClient = {
