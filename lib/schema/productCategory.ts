@@ -1,17 +1,22 @@
 import { z } from "zod";
-import { ProductDataSchema } from "./productData";
+import { ProductDataCreateSchema, ProductDataSchema } from "./productData";
 
-export const ProductCategoryDataSchema = z.object({
+export const ProductCategoryDataBaseSchema = z.object({
   name: z.string().min(1),
   dimensions: z.string().min(1),
+});
+
+export const ProductCategoryDataSchema = ProductCategoryDataBaseSchema.extend({
   products: z.array(ProductDataSchema),
 });
 
-export const ProductCategoryDataCreateSchema = ProductCategoryDataSchema.omit({
-  products: true,
-});
+export const ProductCategoryDataCreateSchema =
+  ProductCategoryDataBaseSchema.extend({
+    products: z.array(ProductDataCreateSchema.omit({ categoryId: true })),
+  }).partial({ products: true });
 
-export const ProductCategoryDataUpdateSchema =
-  ProductCategoryDataCreateSchema.partial();
+export const ProductCategoryDataUpdateSchema = ProductCategoryDataSchema.omit({
+  products: true,
+}).partial();
 
 export type ProductCategoryData = z.infer<typeof ProductCategoryDataSchema>;

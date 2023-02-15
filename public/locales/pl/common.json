@@ -37,7 +37,11 @@
       "method-not-allowed": "Niedozwolona operacja, skontaktuj się z administratorem.",
       "invalid-password-reset-token": "Token zmiany hasła nie istnieje lub wygasł, spróbuj ponownie lub skontaktuj się z administratorem.",
       "product-category-already-exists": "Kategoria produktu o tej nazwie i wymiarach już istnieje!",
+      "client-already-exists": "Ten klient już istnieje!",
+      "client-does-not-exist": "Klient o danym id nie istnieje!",
       "order-does-not-exist": "Zamówienie o podanym id nie istnieje!",
+      "destination-already-exists": "Ta destynacja już istnieje!",
+      "destination-does-not-exist": "Destynacja o podanym id nie istnieje!",
       "product-category-does-not-exist": "Kategoria produktu o danym id nie istnieje!",
       "unauthorized": "Brak uprawnień!"
     }
