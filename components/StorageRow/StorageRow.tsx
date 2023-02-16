@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Text, Tr, Td, Button, Flex, ScaleFade } from "@chakra-ui/react";
-import styles from "./Row.module.scss";
+import styles from "./StorageRow.module.scss";
 import { PlusSquareIcon } from "@chakra-ui/icons";
 
 const commodityColor = (commodity: String) => {
@@ -22,7 +22,7 @@ interface CSTypes {
   stock: Number;
 }
 
-export const Row = (props: any) => {
+export const StorageRow = (props: any) => {
   const row: CSTypes = props.row;
   const [isDisplayed, setIsDisplayed] = useState(false);
   return (

@@ -10,7 +10,7 @@ import {
 } from "@chakra-ui/react";
 import { useContent } from "../../lib/hooks/useContent";
 import styles from "./Storage.module.scss";
-import { Row } from "../Row/Row";
+import { StorageRow } from "../StorageRow/StorageRow";
 import { AddIcon } from "@chakra-ui/icons";
 
 interface CSTypes {
@@ -65,7 +65,7 @@ export const Storage = (props: any) => {
           </Thead>
           <Tbody>
             {commodityStock.map((row) => (
-              <Row key={row.id} row={row}></Row>
+              <StorageRow key={row.id} row={row}></StorageRow>
             ))}
           </Tbody>
         </Table>
