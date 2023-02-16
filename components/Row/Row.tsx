@@ -6,20 +6,22 @@ import { PlusSquareIcon } from "@chakra-ui/icons";
 const commodityColor = (commodity: String) => {
   if (commodity === "Palisada okorowana") return "#805AD5";
   if (commodity === "Palisada cylindryczna") return "#D53F8C";
+  if (commodity === "Palisada nieokorowana") return "#DBC234";
   if (commodity === "Palisada prostokątna") return "#38A169";
   if (commodity === "Słupek bramowy") return "#EF7F18";
 };
 interface CSTypes {
   id: React.Key;
-  commodity: String;
+  name: String;
   dimensions: String;
-  m3Quantity: Number;
+  volumePerPackage: Number;
   black: Number;
   white: Number;
-  package: Number;
-  piecesQuantity: Number;
-  packagesQuantity: Number;
+  itemsPerPackage: Number;
+  pieces: Number;
+  stock: Number;
 }
+
 export const Row = (props: any) => {
   const row: CSTypes = props.row;
   const [isDisplayed, setIsDisplayed] = useState(false);
@@ -29,22 +31,22 @@ export const Row = (props: any) => {
         <Td>
           <Text
             as="span"
-            bg={commodityColor(row.commodity)}
+            bg={commodityColor(row.name)}
             color="white"
             p="3px 6px"
             borderRadius="6px"
-            textAlign="left"
+            textAlign="center"
           >
-            {row.commodity}
+            {row.name}
           </Text>
         </Td>
         <Td>{row.dimensions}</Td>
-        <Td>{String(row.m3Quantity)}</Td>
+        <Td>{String(row.volumePerPackage)}</Td>
         <Td>{String(row.black)}</Td>
         <Td>{String(row.white)}</Td>
-        <Td>{String(row.package)}</Td>
-        <Td>{String(row.piecesQuantity)}</Td>
-        <Td>{String(row.packagesQuantity)}</Td>
+        <Td>{String(row.itemsPerPackage)}</Td>
+        <Td>{String(row.pieces)}</Td>
+        <Td>{String(row.stock)}</Td>
         <Td>
           <Button
             w={8}
@@ -55,7 +57,7 @@ export const Row = (props: any) => {
             <PlusSquareIcon
               w={8}
               h={8}
-              color={commodityColor(row.commodity)}
+              color={commodityColor(row.name)}
             ></PlusSquareIcon>
           </Button>
         </Td>

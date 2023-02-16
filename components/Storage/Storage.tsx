@@ -1,8 +1,17 @@
 import React, { useState } from "react";
-import { Table, Thead, Tbody, Tr, Th, TableContainer } from "@chakra-ui/react";
+import {
+  Table,
+  Thead,
+  Tbody,
+  Tr,
+  Th,
+  TableContainer,
+  Button,
+} from "@chakra-ui/react";
 import { useContent } from "../../lib/hooks/useContent";
 import styles from "./Storage.module.scss";
 import { Row } from "../Row/Row";
+import { AddIcon } from "@chakra-ui/icons";
 
 interface CSTypes {
   id: React.Key;
@@ -23,32 +32,44 @@ export const Storage = (props: any) => {
   const [data, setData] = useState([]);
 
   return (
-    <TableContainer className={styles.container}>
-      <Table
-        variant="simple"
+    <>
+      <Button
+        className={styles["add-button"]}
+        rightIcon={<AddIcon />}
         colorScheme="teal"
-        bg="white"
-        className={styles["commodity-table"]}
+        variant="solid"
+        mb="20px"
+        bg="var(--dark)"
       >
-        <Thead className={styles["commodity-table-thead"]}>
-          <Tr>
-            <Th>{t("pages.storage.table.headings.commodity")}</Th>
-            <Th>{t("pages.storage.table.headings.dimensions")}</Th>
-            <Th>{t("pages.storage.table.headings.m3Quantity")}</Th>
-            <Th>{t("pages.storage.table.headings.black")}</Th>
-            <Th>{t("pages.storage.table.headings.white")}</Th>
-            <Th>{t("pages.storage.table.headings.package")}</Th>
-            <Th>{t("pages.storage.table.headings.piecesQuantity")}</Th>
-            <Th>{t("pages.storage.table.headings.packagesQuantity")}</Th>
-            <Th></Th>
-          </Tr>
-        </Thead>
-        <Tbody>
-          {commodityStock.map((row) => (
-            <Row key={row.id} row={row}></Row>
-          ))}
-        </Tbody>
-      </Table>
-    </TableContainer>
+        Dodaj towar
+      </Button>
+      <TableContainer className={styles.container}>
+        <Table
+          variant="simple"
+          colorScheme="teal"
+          bg="white"
+          className={styles["commodity-table"]}
+        >
+          <Thead className={styles["commodity-table-thead"]}>
+            <Tr>
+              <Th>{t("pages.storage.table.headings.commodity")}</Th>
+              <Th>{t("pages.storage.table.headings.dimensions")}</Th>
+              <Th>{t("pages.storage.table.headings.m3Quantity")}</Th>
+              <Th>{t("pages.storage.table.headings.black")}</Th>
+              <Th>{t("pages.storage.table.headings.white")}</Th>
+              <Th>{t("pages.storage.table.headings.package")}</Th>
+              <Th>{t("pages.storage.table.headings.piecesQuantity")}</Th>
+              <Th>{t("pages.storage.table.headings.packagesQuantity")}</Th>
+              <Th></Th>
+            </Tr>
+          </Thead>
+          <Tbody>
+            {commodityStock.map((row) => (
+              <Row key={row.id} row={row}></Row>
+            ))}
+          </Tbody>
+        </Table>
+      </TableContainer>
+    </>
   );
 };

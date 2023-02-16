@@ -7,37 +7,39 @@ import { apiClient } from "../../lib/api/apiClient";
 
 interface CSTypes {
   id: React.Key;
-  commodity: String;
+  name: String;
   dimensions: String;
-  m3Quantity: Number;
+  volumePerPackage: Number;
   black: Number;
   white: Number;
-  package: Number;
-  piecesQuantity: Number;
-  packagesQuantity: Number;
+  itemsPerPackage: Number;
+  pieces: Number;
+  stock: Number;
 }
 const StoragePage = ({
   user,
   products,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
-  console.log(products);
-  const commodityStock: CSTypes[] = [
-    {
-      id: 1,
-      commodity: "Palisada okorowana",
-      dimensions: "75 - 100 x 1650",
-      m3Quantity: 21.714,
-      black: 21.714,
-      white: 0,
-      package: 105,
-      piecesQuantity: 2310,
-      packagesQuantity: 22,
-    },
-  ];
+  let commodityStock: CSTypes[] = [];
+  products.forEach((raw: any) => {
+    raw.products.forEach((product: any) => {
+      commodityStock.push({
+        id: product.id,
+        name: raw.name,
+        dimensions: raw.dimensions,
+        volumePerPackage: product.volumePerPackage,
+        black: product.variant == "black" ? product.volumePerPackage : 0,
+        white: product.variant == "white_wet" ? product.volumePerPackage : 0,
+        itemsPerPackage: product.itemsPerPackage,
+        pieces: product.itemsPerPackage * product.stock,
+        stock: product.stock,
+      });
+    });
+  });
+  console.log(commodityStock);
   return (
     <Layout user={user}>
       <Storage commodityStock={commodityStock} />
-      {/* console.log(stock) */}
     </Layout>
   );
 };
