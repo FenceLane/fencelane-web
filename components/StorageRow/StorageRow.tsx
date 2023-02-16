@@ -155,7 +155,9 @@ export const StorageRow = (props: any) => {
               onChange={(event) =>
                 setEditedValues({
                   ...editedValues,
-                  volumePerPackage: Number(event.target.value),
+                  volumePerPackage: !Number.isNaN(Number(event.target.value))
+                    ? Number(event.target.value)
+                    : 0,
                 })
               }
             />
@@ -179,7 +181,9 @@ export const StorageRow = (props: any) => {
               onChange={(event) =>
                 setEditedValues({
                   ...editedValues,
-                  itemsPerPackage: Number(event.target.value),
+                  itemsPerPackage: !Number.isNaN(Number(event.target.value))
+                    ? Number(event.target.value)
+                    : 0,
                 })
               }
             />
@@ -189,7 +193,9 @@ export const StorageRow = (props: any) => {
               onChange={(event) =>
                 setEditedValues({
                   ...editedValues,
-                  stock: Number(event.target.value),
+                  stock: !Number.isNaN(Number(event.target.value))
+                    ? Number(event.target.value)
+                    : 0,
                 })
               }
             />

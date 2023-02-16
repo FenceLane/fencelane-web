@@ -38,7 +38,7 @@ interface CSTypes {
 export const Storage = (props: any) => {
   const commodityStock: CSTypes[] = props.commodityStock;
   const { t } = useContent();
-  const [addedValues, setAddedValues] = useState({
+  const emptyValues = {
     id: null,
     name: "",
     dimensions: "",
@@ -48,7 +48,8 @@ export const Storage = (props: any) => {
     itemsPerPackage: 0,
     pieces: 0,
     stock: 0,
-  });
+  };
+  const [addedValues, setAddedValues] = useState(emptyValues);
 
   const {
     isOpen: isAddingOpen,
@@ -98,7 +99,12 @@ export const Storage = (props: any) => {
           </Tbody>
         </Table>
       </TableContainer>
-      <Modal isOpen={isAddingOpen} onClose={onAddingClose}>
+      <Modal
+        isOpen={isAddingOpen}
+        onClose={() => {
+          onAddingClose(), setAddedValues(emptyValues);
+        }}
+      >
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>Dodaj towar</ModalHeader>
@@ -127,7 +133,9 @@ export const Storage = (props: any) => {
               onChange={(event) =>
                 setAddedValues({
                   ...addedValues,
-                  volumePerPackage: Number(event.target.value),
+                  volumePerPackage: !Number.isNaN(Number(event.target.value))
+                    ? Number(event.target.value)
+                    : 0,
                 })
               }
             />
@@ -151,7 +159,9 @@ export const Storage = (props: any) => {
               onChange={(event) =>
                 setAddedValues({
                   ...addedValues,
-                  itemsPerPackage: Number(event.target.value),
+                  itemsPerPackage: !Number.isNaN(Number(event.target.value))
+                    ? Number(event.target.value)
+                    : 0,
                 })
               }
             />
@@ -161,7 +171,9 @@ export const Storage = (props: any) => {
               onChange={(event) =>
                 setAddedValues({
                   ...addedValues,
-                  stock: Number(event.target.value),
+                  stock: !Number.isNaN(Number(event.target.value))
+                    ? Number(event.target.value)
+                    : 0,
                 })
               }
             />
@@ -174,7 +186,12 @@ export const Storage = (props: any) => {
             >
               Dodaj
             </Button>
-            <Button colorScheme="red" onClick={onAddingClose}>
+            <Button
+              colorScheme="red"
+              onClick={() => {
+                onAddingClose(), setAddedValues(emptyValues);
+              }}
+            >
               Anuluj
             </Button>
           </ModalFooter>
