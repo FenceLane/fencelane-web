@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import {
   Table,
   Thead,
@@ -7,6 +7,16 @@ import {
   Th,
   TableContainer,
   Button,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalCloseButton,
+  ModalBody,
+  ModalFooter,
+  useDisclosure,
+  Input,
+  Select,
 } from "@chakra-ui/react";
 import { useContent } from "../../lib/hooks/useContent";
 import styles from "./Storage.module.scss";
@@ -29,7 +39,16 @@ export const Storage = (props: any) => {
   const commodityStock: CSTypes[] = props.commodityStock;
   const { t } = useContent();
 
-  const [data, setData] = useState([]);
+  const {
+    isOpen: isAddingOpen,
+    onOpen: onAddingOpen,
+    onClose: onAddingClose,
+  } = useDisclosure();
+  const {
+    isOpen: isEditOpen,
+    onOpen: onEditOpen,
+    onClose: onEditClose,
+  } = useDisclosure();
 
   return (
     <>
@@ -40,6 +59,7 @@ export const Storage = (props: any) => {
         variant="solid"
         mb="20px"
         bg="var(--dark)"
+        onClick={onAddingOpen}
       >
         Dodaj towar
       </Button>
@@ -70,6 +90,36 @@ export const Storage = (props: any) => {
           </Tbody>
         </Table>
       </TableContainer>
+      <Modal isOpen={isAddingOpen} onClose={onAddingClose}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>Dodaj towar</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody className={styles["modal-inputs"]}>
+            <Input placeholder="Nazwa towaru" />
+            <Input placeholder="Wymiary" />
+            <Input placeholder="Ilość w M3" />
+            <Select placeholder="Rodzaj">
+              <option value="white_wet">Biały mokry</option>
+              <option value="czarny">Czarny</option>
+            </Select>
+            <Input placeholder="Pakowanie" />
+            <Input placeholder="Ilość pakietów" />
+          </ModalBody>
+          <ModalFooter>
+            <Button
+              colorScheme="green"
+              onClick={() => console.log("add")}
+              mr={3}
+            >
+              Dodaj
+            </Button>
+            <Button colorScheme="red" onClick={onAddingClose}>
+              Anuluj
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
     </>
   );
 };
