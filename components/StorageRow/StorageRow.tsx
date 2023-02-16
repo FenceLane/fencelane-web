@@ -1,7 +1,24 @@
 import React, { useState } from "react";
-import { Text, Tr, Td, Button, Flex, ScaleFade } from "@chakra-ui/react";
+import {
+  Text,
+  Tr,
+  Td,
+  Button,
+  Flex,
+  Box,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalCloseButton,
+  ModalBody,
+  ModalFooter,
+  useDisclosure,
+  Input,
+  Select,
+} from "@chakra-ui/react";
 import styles from "./StorageRow.module.scss";
-import { PlusSquareIcon } from "@chakra-ui/icons";
+import { EditIcon } from "@chakra-ui/icons";
 
 const commodityColor = (commodity: String) => {
   if (commodity === "Palisada okorowana") return "#805AD5";
@@ -25,6 +42,17 @@ interface CSTypes {
 export const StorageRow = (props: any) => {
   const row: CSTypes = props.row;
   const [isDisplayed, setIsDisplayed] = useState(false);
+  const [editedValues, setEditedValues] = useState(row);
+  const {
+    isOpen: isDeletingOpen,
+    onOpen: onDeletingOpen,
+    onClose: onDeletingClose,
+  } = useDisclosure();
+  const {
+    isOpen: isEditOpen,
+    onOpen: onEditOpen,
+    onClose: onEditClose,
+  } = useDisclosure();
   return (
     <>
       <Tr className={styles["commodity-table-row"]} key={row.id}>
@@ -54,28 +82,158 @@ export const StorageRow = (props: any) => {
             bg="white"
             onClick={() => setIsDisplayed(!isDisplayed)}
           >
-            <PlusSquareIcon
-              w={8}
-              h={8}
+            <EditIcon
+              w="28px"
+              h="28px"
               color={commodityColor(row.name)}
-            ></PlusSquareIcon>
+            ></EditIcon>
           </Button>
         </Td>
+        <Box
+          display={isDisplayed ? "block" : "none"}
+          position="absolute"
+          top="0"
+          right="70px"
+          className={styles["bottom-row"]}
+          zIndex="10"
+          bg="white"
+        >
+          <Flex justifyContent="right" gap="5px" flexDir="column">
+            <Button
+              variant="outline"
+              colorScheme="blue"
+              height="30px"
+              fontSize="13px"
+              onClick={onEditOpen}
+            >
+              Modyfikuj
+            </Button>
+            <Button
+              variant="outline"
+              colorScheme="red"
+              height="30px"
+              fontSize="13px"
+              onClick={onDeletingOpen}
+            >
+              Usuń
+            </Button>
+          </Flex>
+        </Box>
       </Tr>
-      <Tr
-        display={isDisplayed ? "table-row" : "none"}
-        className={styles["bottom-row"]}
+
+      <Modal
+        isOpen={isEditOpen}
+        onClose={() => {
+          onEditClose(), setEditedValues(row);
+        }}
       >
-        <Td colSpan={9}>
-          <ScaleFade initialScale={1.5} in={isDisplayed}>
-            <Flex justifyContent="right" gap="20px">
-              <Button colorScheme="green">Dodaj coś tam</Button>
-              <Button colorScheme="red">Usuń coś tam</Button>
-              <Button colorScheme="blue">Modyfikuj coś tam</Button>
-            </Flex>
-          </ScaleFade>
-        </Td>
-      </Tr>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>Modyfikowanie towaru</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody className={styles["modal-inputs"]}>
+            <Input
+              placeholder="Nazwa towaru"
+              value={String(editedValues.name)}
+              onChange={(event) =>
+                setEditedValues({ ...editedValues, name: event.target.value })
+              }
+            />
+            <Input
+              placeholder="Wymiary"
+              value={String(editedValues.dimensions)}
+              onChange={(event) =>
+                setEditedValues({
+                  ...editedValues,
+                  dimensions: event.target.value,
+                })
+              }
+            />
+            <Input
+              placeholder="Ilość w M3"
+              value={String(editedValues.volumePerPackage)}
+              onChange={(event) =>
+                setEditedValues({
+                  ...editedValues,
+                  volumePerPackage: Number(event.target.value),
+                })
+              }
+            />
+            <Select placeholder="Rodzaj">
+              <option
+                value="white_wet"
+                selected={editedValues.white != 0 ? true : false}
+              >
+                Biały mokry
+              </option>
+              <option
+                value="czarny"
+                selected={editedValues.black != 0 ? true : false}
+              >
+                Czarny
+              </option>
+            </Select>
+            <Input
+              placeholder="Pakowanie"
+              value={String(editedValues.itemsPerPackage)}
+              onChange={(event) =>
+                setEditedValues({
+                  ...editedValues,
+                  itemsPerPackage: Number(event.target.value),
+                })
+              }
+            />
+            <Input
+              placeholder="Ilość pakietów"
+              value={String(editedValues.stock)}
+              onChange={(event) =>
+                setEditedValues({
+                  ...editedValues,
+                  stock: Number(event.target.value),
+                })
+              }
+            />
+          </ModalBody>
+          <ModalFooter>
+            <Button
+              colorScheme="blue"
+              onClick={() => console.log(editedValues)}
+              mr={3}
+            >
+              Modyfikuj
+            </Button>
+            <Button
+              colorScheme="red"
+              onClick={() => {
+                onEditClose(), setEditedValues(row);
+              }}
+            >
+              Anuluj
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
+
+      <Modal isOpen={isDeletingOpen} onClose={onDeletingClose}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>Usuwanie towaru</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>Czy na pewno chcesz usunąć ten towar?</ModalBody>
+          <ModalFooter>
+            <Button
+              colorScheme="red"
+              onClick={() => console.log("delete")}
+              mr={3}
+            >
+              Usuń
+            </Button>
+            <Button colorScheme="green" onClick={onDeletingClose}>
+              Anuluj
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
     </>
   );
 };

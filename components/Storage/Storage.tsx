@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Table,
   Thead,
@@ -25,29 +25,35 @@ import { AddIcon } from "@chakra-ui/icons";
 
 interface CSTypes {
   id: React.Key;
-  commodity: String;
+  name: String;
   dimensions: String;
-  m3Quantity: Number;
+  volumePerPackage: Number;
   black: Number;
   white: Number;
-  package: Number;
-  piecesQuantity: Number;
-  packagesQuantity: Number;
+  itemsPerPackage: Number;
+  pieces: Number;
+  stock: Number;
 }
 
 export const Storage = (props: any) => {
   const commodityStock: CSTypes[] = props.commodityStock;
   const { t } = useContent();
+  const [addedValues, setAddedValues] = useState({
+    id: null,
+    name: "",
+    dimensions: "",
+    volumePerPackage: 0,
+    black: 0,
+    white: 0,
+    itemsPerPackage: 0,
+    pieces: 0,
+    stock: 0,
+  });
 
   const {
     isOpen: isAddingOpen,
     onOpen: onAddingOpen,
     onClose: onAddingClose,
-  } = useDisclosure();
-  const {
-    isOpen: isEditOpen,
-    onOpen: onEditOpen,
-    onClose: onEditClose,
   } = useDisclosure();
 
   return (
@@ -59,6 +65,8 @@ export const Storage = (props: any) => {
         variant="solid"
         mb="20px"
         bg="var(--dark)"
+        fontSize="15px"
+        fontWeight={500}
         onClick={onAddingOpen}
       >
         Dodaj towar
@@ -84,7 +92,7 @@ export const Storage = (props: any) => {
             </Tr>
           </Thead>
           <Tbody>
-            {commodityStock.map((row) => (
+            {commodityStock.map((row: any) => (
               <StorageRow key={row.id} row={row}></StorageRow>
             ))}
           </Tbody>
@@ -96,20 +104,72 @@ export const Storage = (props: any) => {
           <ModalHeader>Dodaj towar</ModalHeader>
           <ModalCloseButton />
           <ModalBody className={styles["modal-inputs"]}>
-            <Input placeholder="Nazwa towaru" />
-            <Input placeholder="Wymiary" />
-            <Input placeholder="Ilość w M3" />
+            <Input
+              placeholder="Nazwa towaru"
+              value={String(addedValues.name)}
+              onChange={(event) =>
+                setAddedValues({ ...addedValues, name: event.target.value })
+              }
+            />
+            <Input
+              placeholder="Wymiary"
+              value={String(addedValues.dimensions)}
+              onChange={(event) =>
+                setAddedValues({
+                  ...addedValues,
+                  dimensions: event.target.value,
+                })
+              }
+            />
+            <Input
+              placeholder="Ilość w M3"
+              value={String(addedValues.volumePerPackage)}
+              onChange={(event) =>
+                setAddedValues({
+                  ...addedValues,
+                  volumePerPackage: Number(event.target.value),
+                })
+              }
+            />
             <Select placeholder="Rodzaj">
-              <option value="white_wet">Biały mokry</option>
-              <option value="czarny">Czarny</option>
+              <option
+                value="white_wet"
+                selected={addedValues.white != 0 ? true : false}
+              >
+                Biały mokry
+              </option>
+              <option
+                value="czarny"
+                selected={addedValues.black != 0 ? true : false}
+              >
+                Czarny
+              </option>
             </Select>
-            <Input placeholder="Pakowanie" />
-            <Input placeholder="Ilość pakietów" />
+            <Input
+              placeholder="Pakowanie"
+              value={String(addedValues.itemsPerPackage)}
+              onChange={(event) =>
+                setAddedValues({
+                  ...addedValues,
+                  itemsPerPackage: Number(event.target.value),
+                })
+              }
+            />
+            <Input
+              placeholder="Ilość pakietów"
+              value={String(addedValues.stock)}
+              onChange={(event) =>
+                setAddedValues({
+                  ...addedValues,
+                  stock: Number(event.target.value),
+                })
+              }
+            />
           </ModalBody>
           <ModalFooter>
             <Button
               colorScheme="green"
-              onClick={() => console.log("add")}
+              onClick={() => console.log(addedValues)}
               mr={3}
             >
               Dodaj

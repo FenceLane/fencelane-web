@@ -6,3 +6,10 @@
   left: 0;
   z-index: 2;
 }
+.commodity-table-row {
+  position: relative;
+}
+.modal-inputs input,
+.modal-inputs select {
+  margin-bottom: 10px;
+}

@@ -36,7 +36,6 @@ const StoragePage = ({
       });
     });
   });
-  console.log(commodityStock);
   return (
     <Layout user={user}>
       <Storage commodityStock={commodityStock} />
