@@ -24,7 +24,7 @@ const menuItems = [
     icon: "statystyki",
   },
   {
-    name: "magazine",
+    name: "storage",
     icon: "magazyn",
   },
   {

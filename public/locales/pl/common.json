@@ -9,7 +9,7 @@
       "sidebar": {
         "menu": {
           "stats": { "label": "Statystyki" },
-          "magazine": { "label": "Magazyn" },
+          "storage": { "label": "Magazyn" },
           "orders": { "label": "Zamówienia" },
           "commissions": { "label": "Zlecenia" },
           "schedule": { "label": "Harmonogram" },
@@ -139,14 +139,14 @@
     "storage": {
       "table": {
         "headings": {
-          "commodity": "Towar",
+          "name": "Towar",
           "dimensions": "Wymiary",
-          "m3Quantity": "M3",
+          "volumePerPackage": "M3",
           "black": "Czarne",
           "white": "Białe",
-          "package": "Pakowanie",
-          "piecesQuantity": "Ilość sztuk",
-          "packagesQuantity": "Ilość pakietów"
+          "itemsPerPackage": "Pakowanie",
+          "pieces": "Ilość sztuk",
+          "stock": "Ilość pakietów"
         }
       }
     }

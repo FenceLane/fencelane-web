@@ -81,14 +81,14 @@ export const Storage = (props: any) => {
         >
           <Thead className={styles["commodity-table-thead"]}>
             <Tr>
-              <Th>{t("pages.storage.table.headings.commodity")}</Th>
+              <Th>{t("pages.storage.table.headings.name")}</Th>
               <Th>{t("pages.storage.table.headings.dimensions")}</Th>
-              <Th>{t("pages.storage.table.headings.m3Quantity")}</Th>
+              <Th>{t("pages.storage.table.headings.volumePerPackage")}</Th>
               <Th>{t("pages.storage.table.headings.black")}</Th>
               <Th>{t("pages.storage.table.headings.white")}</Th>
-              <Th>{t("pages.storage.table.headings.package")}</Th>
-              <Th>{t("pages.storage.table.headings.piecesQuantity")}</Th>
-              <Th>{t("pages.storage.table.headings.packagesQuantity")}</Th>
+              <Th>{t("pages.storage.table.headings.itemsPerPackage")}</Th>
+              <Th>{t("pages.storage.table.headings.pieces")}</Th>
+              <Th>{t("pages.storage.table.headings.stock")}</Th>
               <Th></Th>
             </Tr>
           </Thead>
