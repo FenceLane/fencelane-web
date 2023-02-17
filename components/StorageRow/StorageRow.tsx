@@ -20,6 +20,7 @@ import {
 import { useOnClickOutside } from "../../lib/hooks/useOnClickOutside";
 import styles from "./StorageRow.module.scss";
 import { EditIcon } from "@chakra-ui/icons";
+import { apiClient } from "../../lib/api/apiClient";
 
 const commodityColor = (commodity: String) => {
   if (commodity === "Palisada okorowana") return "#805AD5";
@@ -27,6 +28,7 @@ const commodityColor = (commodity: String) => {
   if (commodity === "Palisada nieokorowana") return "#DBC234";
   if (commodity === "Palisada prostokątna") return "#38A169";
   if (commodity === "Słupek bramowy") return "#EF7F18";
+  return "#777777";
 };
 interface CSTypes {
   id: React.Key;
@@ -39,6 +41,11 @@ interface CSTypes {
   pieces: Number;
   stock: Number;
 }
+
+const handleDelete = (id: React.Key) => {
+  apiClient.auth.deleteProduct(id);
+  window.location.reload();
+};
 
 export const StorageRow = (props: any) => {
   const row: CSTypes = props.row;
@@ -96,7 +103,7 @@ export const StorageRow = (props: any) => {
           display={showOptions ? "block" : "none"}
           position="absolute"
           top="0"
-          right="70px"
+          right="10px"
           className={styles["bottom-row"]}
           zIndex="10"
           bg="white"
@@ -192,14 +199,13 @@ export const StorageRow = (props: any) => {
               }
             />
             <Input
+              type="number"
               placeholder="Ilość pakietów"
               value={String(editedValues.stock)}
               onChange={(event) =>
                 setEditedValues({
                   ...editedValues,
-                  stock: !Number.isNaN(Number(event.target.value))
-                    ? Number(event.target.value)
-                    : 0,
+                  stock: Number(event.target.value),
                 })
               }
             />
@@ -233,7 +239,7 @@ export const StorageRow = (props: any) => {
           <ModalFooter>
             <Button
               colorScheme="red"
-              onClick={() => console.log("delete")}
+              onClick={() => handleDelete(row.id)}
               mr={3}
             >
               Usuń

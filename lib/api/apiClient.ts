@@ -75,6 +75,14 @@ const getProducts = async ({ authCookie }: { authCookie: string }) => {
   return data;
 };
 
+const deleteProduct = async (id: React.Key) => {
+  return axiosInstance.delete(apiPath(`products/${id}`));
+};
+
+const postProduct = async (data: any) => {
+  return axiosInstance.post(apiPath("products/categories"), data);
+};
+
 export const apiClient = {
   auth: {
     postLogin,
@@ -85,5 +93,7 @@ export const apiClient = {
     deleteSelfUser,
     getMe,
     getProducts,
+    deleteProduct,
+    postProduct,
   },
 };

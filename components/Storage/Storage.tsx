@@ -22,6 +22,7 @@ import { useContent } from "../../lib/hooks/useContent";
 import styles from "./Storage.module.scss";
 import { StorageRow } from "../StorageRow/StorageRow";
 import { AddIcon } from "@chakra-ui/icons";
+import { apiClient } from "../../lib/api/apiClient";
 
 interface CSTypes {
   id: React.Key;
@@ -35,6 +36,24 @@ interface CSTypes {
   stock: Number;
 }
 
+const handlePost = (data: any) => {
+  const postData = {
+    name: data.name,
+    dimensions: data.dimensions,
+    products: [
+      {
+        stock: data.stock,
+        variant: data.variant_white ? "white_wet" : "black",
+        itemsPerPackage: data.itemsPerPackage,
+        volumePerPackage: data.volumePerPackage,
+      },
+    ],
+  };
+  console.log(postData);
+  apiClient.auth.postProduct(postData);
+  window.location.reload();
+};
+
 export const Storage = (props: any) => {
   const commodityStock: CSTypes[] = props.commodityStock;
   const { t } = useContent();
@@ -43,8 +62,7 @@ export const Storage = (props: any) => {
     name: "",
     dimensions: "",
     volumePerPackage: 0,
-    black: 0,
-    white: 0,
+    variant_white: true,
     itemsPerPackage: 0,
     pieces: 0,
     stock: 0,
@@ -139,17 +157,19 @@ export const Storage = (props: any) => {
                 })
               }
             />
-            <Select placeholder="Rodzaj">
-              <option
-                value="white_wet"
-                selected={addedValues.white != 0 ? true : false}
-              >
+            <Select
+              placeholder="Rodzaj"
+              onChange={(e) =>
+                setAddedValues({
+                  ...addedValues,
+                  variant_white: e.target.value === "white_wet" ? true : false,
+                })
+              }
+            >
+              <option value="white_wet" selected={addedValues.variant_white}>
                 Biały mokry
               </option>
-              <option
-                value="czarny"
-                selected={addedValues.black != 0 ? true : false}
-              >
+              <option value="black" selected={!addedValues.variant_white}>
                 Czarny
               </option>
             </Select>
@@ -181,7 +201,7 @@ export const Storage = (props: any) => {
           <ModalFooter>
             <Button
               colorScheme="green"
-              onClick={() => console.log(addedValues)}
+              onClick={() => handlePost(addedValues)}
               mr={3}
             >
               Dodaj
