@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import {
   Text,
   Tr,
@@ -17,6 +17,7 @@ import {
   Input,
   Select,
 } from "@chakra-ui/react";
+import { useOnClickOutside } from "../../lib/hooks/useOnClickOutside";
 import styles from "./StorageRow.module.scss";
 import { EditIcon } from "@chakra-ui/icons";
 
@@ -41,8 +42,10 @@ interface CSTypes {
 
 export const StorageRow = (props: any) => {
   const row: CSTypes = props.row;
-  const [isDisplayed, setIsDisplayed] = useState(false);
   const [editedValues, setEditedValues] = useState(row);
+  const [showOptions, setShowOptions] = useState(false);
+  const ref = useRef<HTMLDivElement | null>(null);
+  useOnClickOutside(ref, () => setShowOptions(false));
   const {
     isOpen: isDeletingOpen,
     onOpen: onDeletingOpen,
@@ -80,7 +83,7 @@ export const StorageRow = (props: any) => {
             w={8}
             h={8}
             bg="white"
-            onClick={() => setIsDisplayed(!isDisplayed)}
+            onClick={() => setShowOptions(!showOptions)}
           >
             <EditIcon
               w="28px"
@@ -90,13 +93,14 @@ export const StorageRow = (props: any) => {
           </Button>
         </Td>
         <Box
-          display={isDisplayed ? "block" : "none"}
+          display={showOptions ? "block" : "none"}
           position="absolute"
           top="0"
           right="70px"
           className={styles["bottom-row"]}
           zIndex="10"
           bg="white"
+          ref={ref}
         >
           <Flex justifyContent="right" gap="5px" flexDir="column">
             <Button
