@@ -4,8 +4,6 @@ import {
   Tr,
   Td,
   Button,
-  Flex,
-  Box,
   Modal,
   ModalOverlay,
   ModalContent,
@@ -15,12 +13,12 @@ import {
   ModalFooter,
   useDisclosure,
   Input,
-  Select,
 } from "@chakra-ui/react";
 import { useOnClickOutside } from "../../lib/hooks/useOnClickOutside";
 import styles from "./StorageRow.module.scss";
 import { EditIcon } from "@chakra-ui/icons";
 import { apiClient } from "../../lib/api/apiClient";
+import { ProductInfo } from "../../lib/types";
 
 const commodityColor = (commodity: String) => {
   if (commodity === "Palisada okorowana") return "#805AD5";
@@ -30,26 +28,18 @@ const commodityColor = (commodity: String) => {
   if (commodity === "Słupek bramowy") return "#EF7F18";
   return "#777777";
 };
-interface CSTypes {
-  id: React.Key;
-  name: String;
-  dimensions: String;
-  volumePerPackage: Number;
-  black: Number;
-  white: Number;
-  itemsPerPackage: Number;
-  pieces: Number;
-  stock: Number;
-}
 
 const handleDelete = (id: React.Key) => {
-  apiClient.auth.deleteProduct(id);
+  apiClient.products.deleteProduct(id);
   window.location.reload();
 };
 
-export const StorageRow = (props: any) => {
-  const row: CSTypes = props.row;
-  const [editedValues, setEditedValues] = useState(row);
+interface StorageRowProps {
+  product: ProductInfo;
+}
+
+export const StorageRow = ({ product }: StorageRowProps) => {
+  const [editedValues, setEditedValues] = useState(product);
   const [showOptions, setShowOptions] = useState(false);
   const ref = useRef<HTMLDivElement | null>(null);
   useOnClickOutside(ref, () => setShowOptions(false));
@@ -65,26 +55,26 @@ export const StorageRow = (props: any) => {
   } = useDisclosure();
   return (
     <>
-      <Tr className={styles["commodity-table-row"]} key={row.id}>
+      <Tr className={styles["commodity-table-row"]} key={product.id}>
         <Td>
           <Text
             as="span"
-            bg={commodityColor(row.name)}
+            bg={commodityColor(product.name)}
             color="white"
             p="3px 6px"
             borderRadius="6px"
             textAlign="center"
           >
-            {row.name}
+            {product.name}
           </Text>
         </Td>
-        <Td>{row.dimensions}</Td>
-        <Td>{String(row.volumePerPackage)}</Td>
-        <Td>{String(row.black)}</Td>
-        <Td>{String(row.white)}</Td>
-        <Td>{String(row.itemsPerPackage)}</Td>
-        <Td>{String(row.pieces)}</Td>
-        <Td>{String(row.stock)}</Td>
+        <Td>{product.dimensions}</Td>
+        <Td>{String(product.volumePerPackage)}</Td>
+        <Td>{String(product.variant)}</Td>
+        <Td>{String(product.variant)}</Td>
+        <Td>{String(product.itemsPerPackage)}</Td>
+        <Td>{String(product.variant)}</Td>
+        <Td>{String(product.stock)}</Td>
         <Td>
           <Button
             w={8}
@@ -95,11 +85,11 @@ export const StorageRow = (props: any) => {
             <EditIcon
               w="28px"
               h="28px"
-              color={commodityColor(row.name)}
+              color={commodityColor(product.name)}
             ></EditIcon>
           </Button>
         </Td>
-        <Box
+        {/* <Box
           display={showOptions ? "block" : "none"}
           position="absolute"
           top="0"
@@ -129,13 +119,13 @@ export const StorageRow = (props: any) => {
               Usuń
             </Button>
           </Flex>
-        </Box>
+        </Box> */}
       </Tr>
 
       <Modal
         isOpen={isEditOpen}
         onClose={() => {
-          onEditClose(), setEditedValues(row);
+          onEditClose(), setEditedValues(product);
         }}
       >
         <ModalOverlay />
@@ -162,39 +152,22 @@ export const StorageRow = (props: any) => {
             />
             <Input
               placeholder="Ilość w M3"
-              value={String(editedValues.volumePerPackage)}
+              type="number"
+              value={editedValues.volumePerPackage}
               onChange={(event) =>
                 setEditedValues({
                   ...editedValues,
-                  volumePerPackage: !Number.isNaN(Number(event.target.value))
-                    ? Number(event.target.value)
-                    : 0,
+                  volumePerPackage: +event.target.value,
                 })
               }
             />
-            <Select placeholder="Rodzaj">
-              <option
-                value="white_wet"
-                selected={editedValues.white != 0 ? true : false}
-              >
-                Biały mokry
-              </option>
-              <option
-                value="czarny"
-                selected={editedValues.black != 0 ? true : false}
-              >
-                Czarny
-              </option>
-            </Select>
             <Input
               placeholder="Pakowanie"
-              value={String(editedValues.itemsPerPackage)}
+              value={editedValues.itemsPerPackage}
               onChange={(event) =>
                 setEditedValues({
                   ...editedValues,
-                  itemsPerPackage: !Number.isNaN(Number(event.target.value))
-                    ? Number(event.target.value)
-                    : 0,
+                  itemsPerPackage: +event.target.value,
                 })
               }
             />
@@ -221,7 +194,7 @@ export const StorageRow = (props: any) => {
             <Button
               colorScheme="red"
               onClick={() => {
-                onEditClose(), setEditedValues(row);
+                onEditClose(), setEditedValues(product);
               }}
             >
               Anuluj
@@ -239,7 +212,7 @@ export const StorageRow = (props: any) => {
           <ModalFooter>
             <Button
               colorScheme="red"
-              onClick={() => handleDelete(row.id)}
+              onClick={() => handleDelete(product.id)}
               mr={3}
             >
               Usuń

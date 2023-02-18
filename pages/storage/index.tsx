@@ -20,25 +20,9 @@ const StoragePage = ({
   user,
   products,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
-  let commodityStock: CSTypes[] = [];
-  products.forEach((raw: any) => {
-    raw.products.forEach((product: any) => {
-      commodityStock.push({
-        id: product.id,
-        name: raw.name,
-        dimensions: raw.dimensions,
-        volumePerPackage: product.volumePerPackage,
-        black: product.variant == "black" ? product.volumePerPackage : 0,
-        white: product.variant == "white_wet" ? product.volumePerPackage : 0,
-        itemsPerPackage: product.itemsPerPackage,
-        pieces: product.itemsPerPackage * product.stock,
-        stock: product.stock,
-      });
-    });
-  });
   return (
     <Layout user={user}>
-      <Storage commodityStock={commodityStock} />
+      <Storage products={products} />
     </Layout>
   );
 };
@@ -50,7 +34,9 @@ export const getServerSideProps = withTranslationProps(
     const authCookie = ctx.req.headers.cookie as string;
 
     const { user } = ctx.session;
-    const { data: products } = await apiClient.auth.getProducts({ authCookie });
+    const products = await apiClient.products.getProducts({
+      authCookie,
+    });
 
     return {
       props: {

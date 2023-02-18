@@ -23,6 +23,7 @@ import styles from "./Storage.module.scss";
 import { StorageRow } from "../StorageRow/StorageRow";
 import { AddIcon } from "@chakra-ui/icons";
 import { apiClient } from "../../lib/api/apiClient";
+import { ProductInfo } from "../../lib/types";
 
 interface CSTypes {
   id: React.Key;
@@ -50,12 +51,15 @@ const handlePost = (data: any) => {
     ],
   };
   console.log(postData);
-  apiClient.auth.postProduct(postData);
+  apiClient.products.postProduct(postData);
   window.location.reload();
 };
 
-export const Storage = (props: any) => {
-  const commodityStock: CSTypes[] = props.commodityStock;
+interface StorageProps {
+  products: ProductInfo[];
+}
+
+export const Storage = ({ products }: StorageProps) => {
   const { t } = useContent();
   const emptyValues = {
     id: null,
@@ -111,8 +115,8 @@ export const Storage = (props: any) => {
             </Tr>
           </Thead>
           <Tbody>
-            {commodityStock.map((row: any) => (
-              <StorageRow key={row.id} row={row}></StorageRow>
+            {products.map((product: any) => (
+              <StorageRow key={product.id} product={product}></StorageRow>
             ))}
           </Tbody>
         </Table>

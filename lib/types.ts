@@ -6,6 +6,18 @@ export interface UserInfo {
   id: string;
 }
 
+export interface ProductInfo {
+  id: string;
+  name: string;
+  dimensions: string;
+  variant: string;
+  itemsPerPackage: number;
+  volumePerPackage: number;
+  stock: number;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
 export enum USER_ROLE {
   ADMIN = 0,
   USER = 1,

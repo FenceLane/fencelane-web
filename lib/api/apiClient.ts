@@ -1,6 +1,6 @@
 import axios from "axios";
 import { ClientConfig } from "../AppConfig/ClientConfig";
-import { USER_ROLE } from "../types";
+import { ProductInfo, USER_ROLE } from "../types";
 import https from "https";
 
 const axiosInstance = axios.create({
@@ -67,8 +67,14 @@ const getMe = async () => {
   return axiosInstance.get(apiPath("auth/me"));
 };
 
-const getProducts = async ({ authCookie }: { authCookie: string }) => {
-  const { data } = await axiosInstance.get(apiPath("products/all"), {
+const getProducts = async ({
+  authCookie,
+}: {
+  authCookie: string;
+}): Promise<ProductInfo[]> => {
+  const {
+    data: { data },
+  } = await axiosInstance.get(apiPath("products"), {
     headers: { cookie: authCookie },
   });
 
@@ -100,9 +106,13 @@ export const apiClient = {
     deleteLogout,
     deleteSelfUser,
     getMe,
+  },
+  products: {
     getProducts,
-    deleteProduct,
     postProduct,
+    deleteProduct,
+  },
+  orders: {
     getOrders,
   },
 };
