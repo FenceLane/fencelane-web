@@ -83,6 +83,14 @@ const postProduct = async (data: any) => {
   return axiosInstance.post(apiPath("products/categories"), data);
 };
 
+const getOrders = async ({ authCookie }: { authCookie: string }) => {
+  const { data } = await axiosInstance.get(apiPath("orders"), {
+    headers: { cookie: authCookie },
+  });
+
+  return data;
+};
+
 export const apiClient = {
   auth: {
     postLogin,
@@ -95,5 +103,6 @@ export const apiClient = {
     getProducts,
     deleteProduct,
     postProduct,
+    getOrders,
   },
 };
