@@ -56,22 +56,16 @@ CREATE TABLE "Destination" (
 );
 
 -- CreateTable
-CREATE TABLE "ProductCategory" (
+CREATE TABLE "Product" (
     "id" TEXT NOT NULL,
     "name" TEXT NOT NULL,
     "dimensions" TEXT NOT NULL,
-
-    CONSTRAINT "ProductCategory_pkey" PRIMARY KEY ("id")
-);
-
--- CreateTable
-CREATE TABLE "Product" (
-    "id" TEXT NOT NULL,
-    "categoryId" TEXT NOT NULL,
-    "stock" INTEGER NOT NULL,
     "variant" TEXT NOT NULL,
     "itemsPerPackage" INTEGER NOT NULL,
     "volumePerPackage" DECIMAL(65,30) NOT NULL,
+    "stock" INTEGER NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
 
     CONSTRAINT "Product_pkey" PRIMARY KEY ("id")
 );
@@ -84,6 +78,8 @@ CREATE TABLE "Order" (
     "date" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "status" TEXT NOT NULL DEFAULT 'created',
     "files" TEXT[] DEFAULT ARRAY[]::TEXT[],
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
 
     CONSTRAINT "Order_pkey" PRIMARY KEY ("id")
 );
@@ -95,6 +91,8 @@ CREATE TABLE "ProductOrder" (
     "productId" TEXT NOT NULL,
     "quantity" INTEGER NOT NULL,
     "price" DECIMAL(65,30) NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
 
     CONSTRAINT "ProductOrder_pkey" PRIMARY KEY ("id")
 );
@@ -115,19 +113,13 @@ CREATE UNIQUE INDEX "Client_phone_key" ON "Client"("phone");
 CREATE UNIQUE INDEX "Destination_country_city_postalCode_address_key" ON "Destination"("country", "city", "postalCode", "address");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "ProductCategory_name_dimensions_key" ON "ProductCategory"("name", "dimensions");
-
--- CreateIndex
-CREATE UNIQUE INDEX "Product_categoryId_variant_itemsPerPackage_key" ON "Product"("categoryId", "variant", "itemsPerPackage");
+CREATE UNIQUE INDEX "Product_name_dimensions_variant_itemsPerPackage_key" ON "Product"("name", "dimensions", "variant", "itemsPerPackage");
 
 -- AddForeignKey
 ALTER TABLE "Session" ADD CONSTRAINT "Session_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "PasswordResetToken" ADD CONSTRAINT "PasswordResetToken_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "Product" ADD CONSTRAINT "Product_categoryId_fkey" FOREIGN KEY ("categoryId") REFERENCES "ProductCategory"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Order" ADD CONSTRAINT "Order_clientId_fkey" FOREIGN KEY ("clientId") REFERENCES "Client"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

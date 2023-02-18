@@ -35,14 +35,13 @@
       "invalid-request-body": "Niepoprawny format danych!",
       "unexpected-error": "Wystąpił błąd, spróbuj ponownie później lub skontaktuj się z administratorem.",
       "method-not-allowed": "Niedozwolona operacja, skontaktuj się z administratorem.",
-      "invalid-password-reset-token": "Token zmiany hasła nie istnieje lub wygasł, spróbuj ponownie lub skontaktuj się z administratorem.",
-      "product-category-already-exists": "Kategoria produktu o tej nazwie i wymiarach już istnieje!",
+      "invalid-password-reset-token": "Token zmiany hasła nie istnieje lub wygasł, spróbuj ponownie lub skontaktuj się z administratorem",
       "client-already-exists": "Ten klient już istnieje!",
       "client-does-not-exist": "Klient o danym id nie istnieje!",
       "order-does-not-exist": "Zamówienie o podanym id nie istnieje!",
       "destination-already-exists": "Ta destynacja już istnieje!",
       "destination-does-not-exist": "Destynacja o podanym id nie istnieje!",
-      "product-category-does-not-exist": "Kategoria produktu o danym id nie istnieje!",
+      "cannot-delete-product-with-orders": "Nie można usunąć produktu, który ma istniejące zamówienia!",
       "unauthorized": "Brak uprawnień!"
     }
   },
