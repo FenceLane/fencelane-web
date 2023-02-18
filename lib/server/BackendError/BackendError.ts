@@ -17,6 +17,7 @@ export const BackendErrorLabel = {
   UNAUTHORIZED: "unauthorized",
   ORDER_DOES_NOT_EXIST: "order-does-not-exist",
   PRODUCT_DOES_NOT_EXIST: "product-does-not-exist",
+  CANNOT_DELETE_PRODUCT_WITH_ORDERS: "cannot-delete-product-with-orders",
   CLIENT_DOES_NOT_EXIST: "client-does-not-exist",
 } as const;
 
