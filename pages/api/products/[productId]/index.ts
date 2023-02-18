@@ -61,22 +61,6 @@ export default withApiMethods({
               message: error.message,
             });
           }
-
-          if (error.code === PrismaErrorCode.UNIQUE_CONSTRAINT_FAILED) {
-            return sendBackendError(res, {
-              code: BackendResponseStatusCode.NOT_FOUND,
-              label: BackendErrorLabel.PRODUCT_CATEGORY_ALREADY_EXISTS,
-              message: error.message,
-            });
-          }
-
-          if (error.code === PrismaErrorCode.FOREIGN_KEY_NOT_FOUND) {
-            return sendBackendError(res, {
-              code: BackendResponseStatusCode.NOT_FOUND,
-              label: BackendErrorLabel.PRODUCT_CATEGORY_DOES_NOT_EXIST,
-              message: error.message,
-            });
-          }
         }
         throw error;
       }

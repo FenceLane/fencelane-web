@@ -14,12 +14,10 @@ export const BackendErrorLabel = {
   CLIENT_ALREADY_EXISTS: "client-already-exists",
   DESTINATION_ALREADY_EXISTS: "destination-already-exists",
   DESTINATION_DOES_NOT_EXIST: "destination-does-not-exist",
-  PRODUCT_CATEGORY_ALREADY_EXISTS: "product-category-already-exists",
   UNAUTHORIZED: "unauthorized",
   ORDER_DOES_NOT_EXIST: "order-does-not-exist",
   PRODUCT_DOES_NOT_EXIST: "product-does-not-exist",
   CLIENT_DOES_NOT_EXIST: "client-does-not-exist",
-  PRODUCT_CATEGORY_DOES_NOT_EXIST: "product-category-does-not-exist",
 } as const;
 
 export const PrismaErrorCode = {
