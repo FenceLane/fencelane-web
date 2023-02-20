@@ -29,10 +29,9 @@ interface CSTypes {
   id: React.Key;
   name: String;
   dimensions: String;
-  volumePerPackage: Number;
-  black: Number;
-  white: Number;
+  variant: String;
   itemsPerPackage: Number;
+  volumePerPackage: Number;
   pieces: Number;
   stock: Number;
 }
@@ -41,14 +40,10 @@ const handlePost = (data: any) => {
   const postData = {
     name: data.name,
     dimensions: data.dimensions,
-    products: [
-      {
-        stock: data.stock,
-        variant: data.variant_white ? "white_wet" : "black",
-        itemsPerPackage: data.itemsPerPackage,
-        volumePerPackage: data.volumePerPackage,
-      },
-    ],
+    variant: data.variant,
+    itemsPerPackage: data.itemsPerPackage,
+    volumePerPackage: data.volumePerPackage,
+    stock: data.stock,
   };
   console.log(postData);
   apiClient.products.postProduct(postData);
@@ -65,10 +60,9 @@ export const Storage = ({ products }: StorageProps) => {
     id: null,
     name: "",
     dimensions: "",
-    volumePerPackage: 0,
-    variant_white: true,
+    variant: "white_wet",
     itemsPerPackage: 0,
-    pieces: 0,
+    volumePerPackage: 0,
     stock: 0,
   };
   const [addedValues, setAddedValues] = useState(emptyValues);
@@ -105,10 +99,9 @@ export const Storage = ({ products }: StorageProps) => {
             <Tr>
               <Th>{t("pages.storage.table.headings.name")}</Th>
               <Th>{t("pages.storage.table.headings.dimensions")}</Th>
-              <Th>{t("pages.storage.table.headings.volumePerPackage")}</Th>
-              <Th>{t("pages.storage.table.headings.black")}</Th>
-              <Th>{t("pages.storage.table.headings.white")}</Th>
+              <Th>{t("pages.storage.table.headings.variant")}</Th>
               <Th>{t("pages.storage.table.headings.itemsPerPackage")}</Th>
+              <Th>{t("pages.storage.table.headings.volumePerPackage")}</Th>
               <Th>{t("pages.storage.table.headings.pieces")}</Th>
               <Th>{t("pages.storage.table.headings.stock")}</Th>
               <Th></Th>
@@ -133,14 +126,14 @@ export const Storage = ({ products }: StorageProps) => {
           <ModalCloseButton />
           <ModalBody className={styles["modal-inputs"]}>
             <Input
-              placeholder="Nazwa towaru"
+              placeholder={t("pages.storage.table.headings.name")}
               value={String(addedValues.name)}
               onChange={(event) =>
                 setAddedValues({ ...addedValues, name: event.target.value })
               }
             />
             <Input
-              placeholder="Wymiary"
+              placeholder={t("pages.storage.table.headings.dimensions")}
               value={String(addedValues.dimensions)}
               onChange={(event) =>
                 setAddedValues({
@@ -149,36 +142,25 @@ export const Storage = ({ products }: StorageProps) => {
                 })
               }
             />
-            <Input
-              placeholder="Ilość w M3"
-              value={String(addedValues.volumePerPackage)}
-              onChange={(event) =>
-                setAddedValues({
-                  ...addedValues,
-                  volumePerPackage: !Number.isNaN(Number(event.target.value))
-                    ? Number(event.target.value)
-                    : 0,
-                })
-              }
-            />
             <Select
-              placeholder="Rodzaj"
+              placeholder={t("pages.storage.table.headings.variant")}
               onChange={(e) =>
                 setAddedValues({
                   ...addedValues,
-                  variant_white: e.target.value === "white_wet" ? true : false,
+                  variant: e.target.value,
                 })
               }
             >
-              <option value="white_wet" selected={addedValues.variant_white}>
-                Biały mokry
+              <option value="white_wet">
+                {t("pages.storage.variants.white_wet")}
               </option>
-              <option value="black" selected={!addedValues.variant_white}>
-                Czarny
+              <option value="white_dry">
+                {t("pages.storage.variants.white_dry")}
               </option>
+              <option value="black">{t("pages.storage.variants.black")}</option>
             </Select>
             <Input
-              placeholder="Pakowanie"
+              placeholder={t("pages.storage.table.headings.itemsPerPackage")}
               value={String(addedValues.itemsPerPackage)}
               onChange={(event) =>
                 setAddedValues({
@@ -190,7 +172,19 @@ export const Storage = ({ products }: StorageProps) => {
               }
             />
             <Input
-              placeholder="Ilość pakietów"
+              placeholder={t("pages.storage.table.headings.volumePerPackage")}
+              value={String(addedValues.volumePerPackage)}
+              onChange={(event) =>
+                setAddedValues({
+                  ...addedValues,
+                  volumePerPackage: !Number.isNaN(Number(event.target.value))
+                    ? Number(event.target.value)
+                    : 0,
+                })
+              }
+            />
+            <Input
+              placeholder={t("pages.storage.table.headings.stock")}
               value={String(addedValues.stock)}
               onChange={(event) =>
                 setAddedValues({

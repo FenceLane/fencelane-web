@@ -140,13 +140,17 @@
         "headings": {
           "name": "Towar",
           "dimensions": "Wymiary",
-          "volumePerPackage": "M3",
-          "black": "Czarne",
-          "white": "Białe",
+          "variant": "Wariant",
           "itemsPerPackage": "Pakowanie",
-          "pieces": "Ilość sztuk",
-          "stock": "Ilość pakietów"
+          "volumePerPackage": "M3",
+          "stock": "Ilość pakietów",
+          "pieces": "Ilość sztuk"
         }
+      },
+      "variants": {
+        "white_wet": "Biały mokry",
+        "white_dry": "Biały suchy",
+        "black": "Czarny"
       }
     }
   }

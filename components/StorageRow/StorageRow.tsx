@@ -19,6 +19,7 @@ import styles from "./StorageRow.module.scss";
 import { EditIcon } from "@chakra-ui/icons";
 import { apiClient } from "../../lib/api/apiClient";
 import { ProductInfo } from "../../lib/types";
+import { useContent } from "../../lib/hooks/useContent";
 
 const commodityColor = (commodity: String) => {
   if (commodity === "Palisada okorowana") return "#805AD5";
@@ -39,6 +40,7 @@ interface StorageRowProps {
 }
 
 export const StorageRow = ({ product }: StorageRowProps) => {
+  const { t } = useContent();
   const [editedValues, setEditedValues] = useState(product);
   const [showOptions, setShowOptions] = useState(false);
   const ref = useRef<HTMLDivElement | null>(null);
@@ -69,11 +71,10 @@ export const StorageRow = ({ product }: StorageRowProps) => {
           </Text>
         </Td>
         <Td>{product.dimensions}</Td>
-        <Td>{String(product.volumePerPackage)}</Td>
-        <Td>{String(product.variant)}</Td>
-        <Td>{String(product.variant)}</Td>
+        <Td>{t(`pages.storage.variants.${String(product.variant)}`)}</Td>
         <Td>{String(product.itemsPerPackage)}</Td>
-        <Td>{String(product.variant)}</Td>
+        <Td>{String(product.volumePerPackage)}</Td>
+        <Td>{String(product.itemsPerPackage * product.stock)}</Td>
         <Td>{String(product.stock)}</Td>
         <Td>
           <Button
