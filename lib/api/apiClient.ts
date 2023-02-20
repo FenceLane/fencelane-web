@@ -86,7 +86,7 @@ const deleteProduct = async (id: React.Key) => {
 };
 
 const postProduct = async (data: any) => {
-  return axiosInstance.post(apiPath("products/categories"), data);
+  return axiosInstance.post(apiPath("products"), data);
 };
 
 const getOrders = async ({ authCookie }: { authCookie: string }) => {
