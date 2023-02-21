@@ -28,6 +28,24 @@ export interface StringedProductInfo {
   createdAt: Date;
   updatedAt: Date;
 }
+export interface ShortStringedProduct {
+  id?: string;
+  name: string;
+  dimensions: string;
+  variant: string;
+  itemsPerPackage: string;
+  volumePerPackage: string;
+  stock: string;
+}
+export interface ShortProduct {
+  id?: string;
+  name: string;
+  dimensions: string;
+  variant: string;
+  itemsPerPackage: number;
+  volumePerPackage: number;
+  stock: number;
+}
 
 export enum USER_ROLE {
   ADMIN = 0,

@@ -32,7 +32,7 @@ const commodityColor = (commodity: String) => {
   return "#777777";
 };
 
-const handleDelete = (id: React.Key) => {
+const handleDelete = (id: String) => {
   apiClient.products.deleteProduct(id);
   window.location.reload();
 };

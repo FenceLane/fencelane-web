@@ -1,6 +1,6 @@
 import axios from "axios";
 import { ClientConfig } from "../AppConfig/ClientConfig";
-import { ProductInfo, USER_ROLE } from "../types";
+import { ProductInfo, ShortProduct, USER_ROLE } from "../types";
 import https from "https";
 
 const axiosInstance = axios.create({
@@ -81,15 +81,15 @@ const getProducts = async ({
   return data;
 };
 
-const deleteProduct = async (id: React.Key) => {
+const deleteProduct = async (id: String) => {
   return axiosInstance.delete(apiPath(`products/${id}`));
 };
 
-const postProduct = async (data: any) => {
+const postProduct = async (data: ShortProduct) => {
   return axiosInstance.post(apiPath("products"), data);
 };
 
-const updateProduct = async (id: String, data: any) => {
+const updateProduct = async (id: String, data: ShortProduct) => {
   return axiosInstance.put(apiPath(`products/${id}`), data);
 };
 

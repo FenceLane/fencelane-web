@@ -24,22 +24,15 @@ import styles from "./Storage.module.scss";
 import { StorageRow } from "../StorageRow/StorageRow";
 import { AddIcon } from "@chakra-ui/icons";
 import { apiClient } from "../../lib/api/apiClient";
-import { ProductInfo } from "../../lib/types";
+import {
+  ShortProduct,
+  ShortStringedProduct,
+  ProductInfo,
+} from "../../lib/types";
 import { useIsMobile } from "../../lib/hooks/useIsMobile";
 
-interface CSTypes {
-  id: React.Key;
-  name: String;
-  dimensions: String;
-  variant: String;
-  itemsPerPackage: Number;
-  volumePerPackage: Number;
-  pieces: Number;
-  stock: Number;
-}
-
-const handlePost = (data: any) => {
-  const postData = {
+const handlePost = (data: ShortStringedProduct) => {
+  const postData: ShortProduct = {
     name: data.name,
     dimensions: data.dimensions,
     variant: data.variant,
@@ -60,7 +53,6 @@ export const Storage = ({ products }: StorageProps) => {
   const { t } = useContent();
   const isMobile = useIsMobile();
   const emptyValues = {
-    id: null,
     name: "",
     dimensions: "",
     variant: "white_wet",
@@ -120,7 +112,7 @@ export const Storage = ({ products }: StorageProps) => {
             </Tr>
           </Thead>
           <Tbody>
-            {products.map((product: any) => (
+            {products.map((product: ProductInfo) => (
               <StorageRow key={product.id} product={product}></StorageRow>
             ))}
           </Tbody>
