@@ -97,7 +97,7 @@ export default function ProfileInfoDropdown({
           borderRadius="5px"
           position="absolute"
           top="45px"
-          right={`${variant === "avatar" ? "calc(-50% - 10px)" : 15}`}
+          right={`${variant === "avatar" ? "calc(-50% + 10)" : 15}`}
           className="profileDropdown"
           boxShadow="0px 6px 6px -7px rgba(66, 68, 90, 1)"
           display={showDropdown ? "block" : "none"}

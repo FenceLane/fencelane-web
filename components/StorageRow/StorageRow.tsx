@@ -219,6 +219,7 @@ export const StorageRow = ({ product }: StorageRowProps) => {
             />
             <label>{t("pages.storage.table.headings.volumePerPackage")}</label>
             <Input
+              type="number"
               value={editedValues.volumePerPackage}
               onChange={(event) =>
                 setEditedValues({
