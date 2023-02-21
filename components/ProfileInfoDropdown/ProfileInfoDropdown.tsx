@@ -93,7 +93,7 @@ export default function ProfileInfoDropdown({
 
         <Box
           bg="white"
-          p="10px 15px 15px 15px "
+          p="10px 0 0 0 "
           borderRadius="5px"
           position="absolute"
           top="45px"
