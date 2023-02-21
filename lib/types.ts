@@ -17,6 +17,17 @@ export interface ProductInfo {
   createdAt: Date;
   updatedAt: Date;
 }
+export interface StringedProductInfo {
+  id: string;
+  name: string;
+  dimensions: string;
+  variant: string;
+  itemsPerPackage: string;
+  volumePerPackage: string;
+  stock: string;
+  createdAt: Date;
+  updatedAt: Date;
+}
 
 export enum USER_ROLE {
   ADMIN = 0,
