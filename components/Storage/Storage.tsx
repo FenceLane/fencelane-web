@@ -5,6 +5,7 @@ import {
   Tbody,
   Tr,
   Th,
+  Text,
   TableContainer,
   Button,
   Modal,
@@ -24,6 +25,7 @@ import { StorageRow } from "../StorageRow/StorageRow";
 import { AddIcon } from "@chakra-ui/icons";
 import { apiClient } from "../../lib/api/apiClient";
 import { ProductInfo } from "../../lib/types";
+import { useIsMobile } from "../../lib/hooks/useIsMobile";
 
 interface CSTypes {
   id: React.Key;
@@ -41,9 +43,9 @@ const handlePost = (data: any) => {
     name: data.name,
     dimensions: data.dimensions,
     variant: data.variant,
-    itemsPerPackage: data.itemsPerPackage,
-    volumePerPackage: data.volumePerPackage,
-    stock: data.stock,
+    itemsPerPackage: Number(data.itemsPerPackage),
+    volumePerPackage: Number(data.volumePerPackage),
+    stock: Number(data.stock),
   };
   console.log(postData);
   apiClient.products.postProduct(postData);
@@ -56,14 +58,15 @@ interface StorageProps {
 
 export const Storage = ({ products }: StorageProps) => {
   const { t } = useContent();
+  const isMobile = useIsMobile();
   const emptyValues = {
     id: null,
     name: "",
     dimensions: "",
     variant: "white_wet",
-    itemsPerPackage: 0,
-    volumePerPackage: 0,
-    stock: 0,
+    itemsPerPackage: "",
+    volumePerPackage: "",
+    stock: "",
   };
   const [addedValues, setAddedValues] = useState(emptyValues);
 
@@ -97,8 +100,17 @@ export const Storage = ({ products }: StorageProps) => {
         >
           <Thead className={styles["commodity-table-thead"]}>
             <Tr>
-              <Th>{t("pages.storage.table.headings.name")}</Th>
-              <Th>{t("pages.storage.table.headings.dimensions")}</Th>
+              <Th>
+                <Text display="block">
+                  {t("pages.storage.table.headings.name")}
+                </Text>
+                <Text display={isMobile ? "block" : "none"} mt="5px">
+                  {t("pages.storage.table.headings.dimensions")}
+                </Text>
+              </Th>
+              {!isMobile && (
+                <Th>{t("pages.storage.table.headings.dimensions")}</Th>
+              )}
               <Th>{t("pages.storage.table.headings.variant")}</Th>
               <Th>{t("pages.storage.table.headings.itemsPerPackage")}</Th>
               <Th>{t("pages.storage.table.headings.volumePerPackage")}</Th>
@@ -161,37 +173,34 @@ export const Storage = ({ products }: StorageProps) => {
             </Select>
             <Input
               placeholder={t("pages.storage.table.headings.itemsPerPackage")}
+              type="number"
               value={String(addedValues.itemsPerPackage)}
               onChange={(event) =>
                 setAddedValues({
                   ...addedValues,
-                  itemsPerPackage: !Number.isNaN(Number(event.target.value))
-                    ? Number(event.target.value)
-                    : 0,
+                  itemsPerPackage: event.target.value,
                 })
               }
             />
             <Input
               placeholder={t("pages.storage.table.headings.volumePerPackage")}
+              type="number"
               value={String(addedValues.volumePerPackage)}
               onChange={(event) =>
                 setAddedValues({
                   ...addedValues,
-                  volumePerPackage: !Number.isNaN(Number(event.target.value))
-                    ? Number(event.target.value)
-                    : 0,
+                  volumePerPackage: event.target.value,
                 })
               }
             />
             <Input
               placeholder={t("pages.storage.table.headings.stock")}
+              type="number"
               value={String(addedValues.stock)}
               onChange={(event) =>
                 setAddedValues({
                   ...addedValues,
-                  stock: !Number.isNaN(Number(event.target.value))
-                    ? Number(event.target.value)
-                    : 0,
+                  stock: event.target.value,
                 })
               }
             />

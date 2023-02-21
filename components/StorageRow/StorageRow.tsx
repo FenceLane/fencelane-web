@@ -13,13 +13,15 @@ import {
   ModalFooter,
   useDisclosure,
   Input,
+  Select,
 } from "@chakra-ui/react";
 import { useOnClickOutside } from "../../lib/hooks/useOnClickOutside";
 import styles from "./StorageRow.module.scss";
-import { EditIcon } from "@chakra-ui/icons";
+import { EditIcon, CloseIcon } from "@chakra-ui/icons";
 import { apiClient } from "../../lib/api/apiClient";
-import { ProductInfo } from "../../lib/types";
+import { ProductInfo, StringedProductInfo } from "../../lib/types";
 import { useContent } from "../../lib/hooks/useContent";
+import { useIsMobile } from "../../lib/hooks/useIsMobile";
 
 const commodityColor = (commodity: String) => {
   if (commodity === "Palisada okorowana") return "#805AD5";
@@ -35,13 +37,33 @@ const handleDelete = (id: React.Key) => {
   window.location.reload();
 };
 
+const handleEdit = (editedValues: StringedProductInfo) => {
+  const editData = {
+    name: editedValues.name,
+    dimensions: editedValues.dimensions,
+    stock: Number(editedValues.stock),
+    variant: editedValues.variant,
+    itemsPerPackage: Number(editedValues.itemsPerPackage),
+    volumePerPackage: Number(editedValues.volumePerPackage),
+  };
+  console.log(editData);
+  apiClient.products.updateProduct(editedValues.id, editData);
+  window.location.reload();
+};
+
 interface StorageRowProps {
   product: ProductInfo;
 }
 
 export const StorageRow = ({ product }: StorageRowProps) => {
   const { t } = useContent();
-  const [editedValues, setEditedValues] = useState(product);
+  const isMobile = useIsMobile();
+  const [editedValues, setEditedValues] = useState({
+    ...product,
+    stock: String(product.stock),
+    itemsPerPackage: String(product.itemsPerPackage),
+    volumePerPackage: String(product.volumePerPackage),
+  });
   const [showOptions, setShowOptions] = useState(false);
   const ref = useRef<HTMLDivElement | null>(null);
   useOnClickOutside(ref, () => setShowOptions(false));
@@ -60,6 +82,7 @@ export const StorageRow = ({ product }: StorageRowProps) => {
       <Tr className={styles["commodity-table-row"]} key={product.id}>
         <Td>
           <Text
+            mt="5px"
             as="span"
             bg={commodityColor(product.name)}
             color="white"
@@ -69,8 +92,11 @@ export const StorageRow = ({ product }: StorageRowProps) => {
           >
             {product.name}
           </Text>
+          <Text display={isMobile ? "block" : "none"} mt="5px">
+            {product.dimensions}
+          </Text>
         </Td>
-        <Td>{product.dimensions}</Td>
+        {!isMobile && <Td>{product.dimensions}</Td>}
         <Td>{t(`pages.storage.variants.${String(product.variant)}`)}</Td>
         <Td>{String(product.itemsPerPackage)}</Td>
         <Td>{String(product.volumePerPackage)}</Td>
@@ -84,49 +110,53 @@ export const StorageRow = ({ product }: StorageRowProps) => {
             onClick={() => setShowOptions(!showOptions)}
           >
             <EditIcon
+              display={showOptions ? "none" : "block"}
               w="28px"
               h="28px"
               color={commodityColor(product.name)}
             ></EditIcon>
+            <CloseIcon
+              display={showOptions ? "block" : "none"}
+              w="23px"
+              h="23px"
+              color="red"
+            ></CloseIcon>
+          </Button>
+
+          <Button
+            display={showOptions ? "inline-block" : "none"}
+            variant="outline"
+            colorScheme="blue"
+            height="30px"
+            width="100px"
+            fontSize="13px"
+            onClick={onEditOpen}
+          >
+            Modyfikuj
+          </Button>
+          <Button
+            display={showOptions ? "inline-block" : "none"}
+            variant="outline"
+            colorScheme="red"
+            height="30px"
+            width="100px"
+            fontSize="13px"
+            onClick={onDeletingOpen}
+          >
+            Usuń
           </Button>
         </Td>
-        {/* <Box
-          display={showOptions ? "block" : "none"}
-          position="absolute"
-          top="0"
-          right="10px"
-          className={styles["bottom-row"]}
-          zIndex="10"
-          bg="white"
-          ref={ref}
-        >
-          <Flex justifyContent="right" gap="5px" flexDir="column">
-            <Button
-              variant="outline"
-              colorScheme="blue"
-              height="30px"
-              fontSize="13px"
-              onClick={onEditOpen}
-            >
-              Modyfikuj
-            </Button>
-            <Button
-              variant="outline"
-              colorScheme="red"
-              height="30px"
-              fontSize="13px"
-              onClick={onDeletingOpen}
-            >
-              Usuń
-            </Button>
-          </Flex>
-        </Box> */}
       </Tr>
-
       <Modal
         isOpen={isEditOpen}
         onClose={() => {
-          onEditClose(), setEditedValues(product);
+          onEditClose(),
+            setEditedValues({
+              ...product,
+              stock: String(product.stock),
+              itemsPerPackage: String(product.itemsPerPackage),
+              volumePerPackage: String(product.volumePerPackage),
+            });
         }}
       >
         <ModalOverlay />
@@ -134,15 +164,15 @@ export const StorageRow = ({ product }: StorageRowProps) => {
           <ModalHeader>Modyfikowanie towaru</ModalHeader>
           <ModalCloseButton />
           <ModalBody className={styles["modal-inputs"]}>
+            <label>{t("pages.storage.table.headings.name")}</label>
             <Input
-              placeholder="Nazwa towaru"
               value={String(editedValues.name)}
               onChange={(event) =>
                 setEditedValues({ ...editedValues, name: event.target.value })
               }
             />
+            <label>{t("pages.storage.table.headings.dimensions")}</label>
             <Input
-              placeholder="Wymiary"
               value={String(editedValues.dimensions)}
               onChange={(event) =>
                 setEditedValues({
@@ -151,35 +181,60 @@ export const StorageRow = ({ product }: StorageRowProps) => {
                 })
               }
             />
-            <Input
-              placeholder="Ilość w M3"
-              type="number"
-              value={editedValues.volumePerPackage}
-              onChange={(event) =>
+            <label>{t("pages.storage.table.headings.variant")}</label>
+            <Select
+              onChange={(e) =>
                 setEditedValues({
                   ...editedValues,
-                  volumePerPackage: +event.target.value,
+                  variant: e.target.value,
                 })
               }
-            />
+            >
+              <option
+                value="white_wet"
+                selected={editedValues.variant == "white_wet"}
+              >
+                {t("pages.storage.variants.white_wet")}
+              </option>
+              <option
+                value="white_dry"
+                selected={editedValues.variant == "dry"}
+              >
+                {t("pages.storage.variants.white_dry")}
+              </option>
+              <option value="black" selected={editedValues.variant == "black"}>
+                {t("pages.storage.variants.black")}
+              </option>
+            </Select>
+            <label>{t("pages.storage.table.headings.itemsPerPackage")}</label>
             <Input
-              placeholder="Pakowanie"
+              type="number"
               value={editedValues.itemsPerPackage}
               onChange={(event) =>
                 setEditedValues({
                   ...editedValues,
-                  itemsPerPackage: +event.target.value,
+                  itemsPerPackage: event.target.value,
                 })
               }
             />
+            <label>{t("pages.storage.table.headings.volumePerPackage")}</label>
             <Input
-              type="number"
-              placeholder="Ilość pakietów"
-              value={String(editedValues.stock)}
+              value={editedValues.volumePerPackage}
               onChange={(event) =>
                 setEditedValues({
                   ...editedValues,
-                  stock: Number(event.target.value),
+                  volumePerPackage: event.target.value,
+                })
+              }
+            />
+            <label>{t("pages.storage.table.headings.stock")}</label>
+            <Input
+              type="number"
+              value={editedValues.stock}
+              onChange={(event) =>
+                setEditedValues({
+                  ...editedValues,
+                  stock: event.target.value,
                 })
               }
             />
@@ -187,7 +242,7 @@ export const StorageRow = ({ product }: StorageRowProps) => {
           <ModalFooter>
             <Button
               colorScheme="blue"
-              onClick={() => console.log(editedValues)}
+              onClick={() => handleEdit(editedValues)}
               mr={3}
             >
               Modyfikuj
@@ -195,7 +250,13 @@ export const StorageRow = ({ product }: StorageRowProps) => {
             <Button
               colorScheme="red"
               onClick={() => {
-                onEditClose(), setEditedValues(product);
+                onEditClose(),
+                  setEditedValues({
+                    ...product,
+                    stock: String(product.stock),
+                    itemsPerPackage: String(product.itemsPerPackage),
+                    volumePerPackage: String(product.volumePerPackage),
+                  });
               }}
             >
               Anuluj
