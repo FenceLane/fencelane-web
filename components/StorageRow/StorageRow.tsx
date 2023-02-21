@@ -132,7 +132,7 @@ export const StorageRow = ({ product }: StorageRowProps) => {
             fontSize="13px"
             onClick={onEditOpen}
           >
-            Modyfikuj
+            {t("pages.storage.buttons.modify")}
           </Button>
           <Button
             display={showOptions ? "inline-block" : "none"}
@@ -143,7 +143,7 @@ export const StorageRow = ({ product }: StorageRowProps) => {
             fontSize="13px"
             onClick={onDeletingOpen}
           >
-            Usuń
+            {t("pages.storage.buttons.delete")}
           </Button>
         </Td>
       </Tr>
@@ -161,7 +161,9 @@ export const StorageRow = ({ product }: StorageRowProps) => {
       >
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>Modyfikowanie towaru</ModalHeader>
+          <ModalHeader>
+            {t("pages.storage.modals.commodity_modifying")}
+          </ModalHeader>
           <ModalCloseButton />
           <ModalBody className={styles["modal-inputs"]}>
             <label>{t("pages.storage.table.headings.name")}</label>
@@ -246,7 +248,7 @@ export const StorageRow = ({ product }: StorageRowProps) => {
               onClick={() => handleEdit(editedValues)}
               mr={3}
             >
-              Modyfikuj
+              {t("pages.storage.buttons.modify")}
             </Button>
             <Button
               colorScheme="red"
@@ -269,19 +271,21 @@ export const StorageRow = ({ product }: StorageRowProps) => {
       <Modal isOpen={isDeletingOpen} onClose={onDeletingClose}>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>Usuwanie towaru</ModalHeader>
+          <ModalHeader>
+            {t("pages.storage.modals.commodity_deleting")}
+          </ModalHeader>
           <ModalCloseButton />
-          <ModalBody>Czy na pewno chcesz usunąć ten towar?</ModalBody>
+          <ModalBody>{t("pages.storage.modals.are_you_sure")}</ModalBody>
           <ModalFooter>
             <Button
               colorScheme="red"
               onClick={() => handleDelete(product.id)}
               mr={3}
             >
-              Usuń
+              {t("pages.storage.buttons.delete")}
             </Button>
             <Button colorScheme="green" onClick={onDeletingClose}>
-              Anuluj
+              {t("pages.storage.buttons.cancel")}
             </Button>
           </ModalFooter>
         </ModalContent>

@@ -81,7 +81,7 @@ export const Storage = ({ products }: StorageProps) => {
         fontWeight={500}
         onClick={onAddingOpen}
       >
-        Dodaj towar
+        {t("pages.storage.buttons.add_commodity")}
       </Button>
       <TableContainer className={styles.container}>
         <Table
@@ -126,7 +126,9 @@ export const Storage = ({ products }: StorageProps) => {
       >
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>Dodaj towar</ModalHeader>
+          <ModalHeader>
+            {t("pages.storage.modals.commodity_adding")}
+          </ModalHeader>
           <ModalCloseButton />
           <ModalBody className={styles["modal-inputs"]}>
             <Input
@@ -203,7 +205,7 @@ export const Storage = ({ products }: StorageProps) => {
               onClick={() => handlePost(addedValues)}
               mr={3}
             >
-              Dodaj
+              {t("pages.storage.buttons.add")}
             </Button>
             <Button
               colorScheme="red"
@@ -211,7 +213,7 @@ export const Storage = ({ products }: StorageProps) => {
                 onAddingClose(), setAddedValues(emptyValues);
               }}
             >
-              Anuluj
+              {t("pages.storage.buttons.cancel")}
             </Button>
           </ModalFooter>
         </ModalContent>

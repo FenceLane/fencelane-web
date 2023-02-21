@@ -151,6 +151,20 @@
         "white_wet": "Biały mokry",
         "white_dry": "Biały suchy",
         "black": "Czarny"
+      },
+      "modals": {
+        "commodity_modifying": "Modyfikowanie towaru",
+        "commodity_deleting": "Usuwanie towaru",
+        "commodity_adding": "Dodawanie towaru",
+        "are_you_sure": "Czy na pewno chcesz usunąć ten towar?"
+      },
+      "buttons": {
+        "add": "Dodaj",
+        "add_commodity": "Dodaj towar",
+        "modify": "Modyfikuj",
+        "modify_commodity": "Modyfikuj towar",
+        "delete": "Usuń",
+        "cancel": "Anuluj"
       }
     }
   }
