@@ -19,54 +19,80 @@ import {
   Input,
   Select,
 } from "@chakra-ui/react";
-import { useContent } from "../../lib/hooks/useContent";
+import { useContent } from "../../../lib/hooks/useContent";
 import styles from "./Storage.module.scss";
-import { StorageRow } from "../StorageRow/StorageRow";
+import { StorageRow } from "../../StorageRow/StorageRow";
 import { AddIcon } from "@chakra-ui/icons";
-import { apiClient } from "../../lib/api/apiClient";
-import {
-  ShortProduct,
-  ShortStringedProduct,
-  ProductInfo,
-} from "../../lib/types";
-import { useIsMobile } from "../../lib/hooks/useIsMobile";
-
-const handlePost = (data: ShortStringedProduct) => {
-  const postData: ShortProduct = {
-    name: data.name,
-    dimensions: data.dimensions,
-    variant: data.variant,
-    itemsPerPackage: Number(data.itemsPerPackage),
-    volumePerPackage: Number(data.volumePerPackage),
-    stock: Number(data.stock),
-  };
-  console.log(postData);
-  apiClient.products.postProduct(postData);
-  window.location.reload();
-};
+import { ProductInfo, PRODUCT_VARIANT } from "../../../lib/types";
+import { useIsMobile } from "../../../lib/hooks/useIsMobile";
+import { usePostProduct } from "../../../lib/api/hooks/products";
 
 interface StorageProps {
   products: ProductInfo[];
 }
 
+const initialProductState = {
+  name: "",
+  dimensions: "",
+  variant: PRODUCT_VARIANT.WHITE_WET,
+  itemsPerPackage: "",
+  volumePerPackage: "",
+  stock: "",
+};
+
 export const Storage = ({ products }: StorageProps) => {
   const { t } = useContent();
   const isMobile = useIsMobile();
-  const emptyValues = {
-    name: "",
-    dimensions: "",
-    variant: "white_wet",
-    itemsPerPackage: "",
-    volumePerPackage: "",
-    stock: "",
-  };
-  const [addedValues, setAddedValues] = useState(emptyValues);
+  const [productData, setProductData] = useState(initialProductState);
 
   const {
     isOpen: isAddingOpen,
     onOpen: onAddingOpen,
     onClose: onAddingClose,
   } = useDisclosure();
+
+  //TODO: handle loading and error states
+  const { mutate: postProduct, error, isSuccess, isLoading } = usePostProduct();
+
+  const handlePostProduct = () => {
+    const {
+      dimensions,
+      itemsPerPackage,
+      name,
+      stock,
+      variant,
+      volumePerPackage,
+    } = productData;
+
+    postProduct({
+      dimensions,
+      itemsPerPackage: Number(itemsPerPackage),
+      name,
+      stock: Number(stock),
+      variant: variant,
+      volumePerPackage: Number(volumePerPackage),
+    });
+  };
+
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = event.target;
+    setProductData((productData) => ({
+      ...productData,
+      [name]: value,
+    }));
+  };
+
+  const handleVarianChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setProductData((productData) => ({
+      ...productData,
+      variant: event.target.value as PRODUCT_VARIANT,
+    }));
+  };
+
+  const handleModalClose = () => {
+    onAddingClose();
+    setProductData(initialProductState);
+  };
 
   return (
     <>
@@ -118,12 +144,7 @@ export const Storage = ({ products }: StorageProps) => {
           </Tbody>
         </Table>
       </TableContainer>
-      <Modal
-        isOpen={isAddingOpen}
-        onClose={() => {
-          onAddingClose(), setAddedValues(emptyValues);
-        }}
-      >
+      <Modal isOpen={isAddingOpen} onClose={handleModalClose}>
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>
@@ -132,87 +153,58 @@ export const Storage = ({ products }: StorageProps) => {
           <ModalCloseButton />
           <ModalBody className={styles["modal-inputs"]}>
             <Input
+              name="name"
               placeholder={t("pages.storage.table.headings.name")}
-              value={String(addedValues.name)}
-              onChange={(event) =>
-                setAddedValues({ ...addedValues, name: event.target.value })
-              }
+              value={String(productData.name)}
+              onChange={handleChange}
             />
             <Input
+              name="dimensions"
               placeholder={t("pages.storage.table.headings.dimensions")}
-              value={String(addedValues.dimensions)}
-              onChange={(event) =>
-                setAddedValues({
-                  ...addedValues,
-                  dimensions: event.target.value,
-                })
-              }
+              value={String(productData.dimensions)}
+              onChange={handleChange}
             />
             <Select
               placeholder={t("pages.storage.table.headings.variant")}
-              onChange={(e) =>
-                setAddedValues({
-                  ...addedValues,
-                  variant: e.target.value,
-                })
-              }
+              onChange={handleVarianChange}
             >
-              <option value="white_wet">
+              <option value={PRODUCT_VARIANT.WHITE_WET}>
                 {t("pages.storage.variants.white_wet")}
               </option>
-              <option value="white_dry">
+              <option value={PRODUCT_VARIANT.WHITE_DRY}>
                 {t("pages.storage.variants.white_dry")}
               </option>
-              <option value="black">{t("pages.storage.variants.black")}</option>
+              <option value={PRODUCT_VARIANT.BLACK}>
+                {t("pages.storage.variants.black")}
+              </option>
             </Select>
             <Input
               placeholder={t("pages.storage.table.headings.itemsPerPackage")}
               type="number"
-              value={String(addedValues.itemsPerPackage)}
-              onChange={(event) =>
-                setAddedValues({
-                  ...addedValues,
-                  itemsPerPackage: event.target.value,
-                })
-              }
+              value={String(productData.itemsPerPackage)}
+              name="itemsPerPackage"
+              onChange={handleChange}
             />
             <Input
               placeholder={t("pages.storage.table.headings.volumePerPackage")}
               type="number"
-              value={String(addedValues.volumePerPackage)}
-              onChange={(event) =>
-                setAddedValues({
-                  ...addedValues,
-                  volumePerPackage: event.target.value,
-                })
-              }
+              value={String(productData.volumePerPackage)}
+              name="volumePerPackage"
+              onChange={handleChange}
             />
             <Input
               placeholder={t("pages.storage.table.headings.stock")}
               type="number"
-              value={String(addedValues.stock)}
-              onChange={(event) =>
-                setAddedValues({
-                  ...addedValues,
-                  stock: event.target.value,
-                })
-              }
+              value={String(productData.stock)}
+              name="stock"
+              onChange={handleChange}
             />
           </ModalBody>
           <ModalFooter>
-            <Button
-              colorScheme="green"
-              onClick={() => handlePost(addedValues)}
-              mr={3}
-            >
+            <Button colorScheme="green" onClick={handlePostProduct} mr={3}>
               {t("pages.storage.buttons.add")}
             </Button>
-            <Button
-              colorScheme="red"
-              onClick={() => {
-                onAddingClose(), setAddedValues(emptyValues);
-              }}
-            >
+            <Button colorScheme="red" onClick={handleModalClose}>
               {t("pages.storage.buttons.cancel")}
             </Button>
           </ModalFooter>

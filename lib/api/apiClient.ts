@@ -2,6 +2,7 @@ import axios from "axios";
 import { ClientConfig } from "../AppConfig/ClientConfig";
 import { ProductInfo, ShortProduct, USER_ROLE } from "../types";
 import https from "https";
+import { ProductDataCreate } from "../schema/productData";
 
 const axiosInstance = axios.create({
   httpsAgent: new https.Agent({
@@ -67,15 +68,13 @@ const getMe = async () => {
   return axiosInstance.get(apiPath("auth/me"));
 };
 
-const getProducts = async ({
-  authCookie,
-}: {
+const getProducts = async (options?: {
   authCookie: string;
 }): Promise<ProductInfo[]> => {
   const {
     data: { data },
   } = await axiosInstance.get(apiPath("products"), {
-    headers: { cookie: authCookie },
+    headers: { cookie: options?.authCookie },
   });
 
   return data;
@@ -85,17 +84,23 @@ const deleteProduct = async (id: String) => {
   return axiosInstance.delete(apiPath(`products/${id}`));
 };
 
-const postProduct = async (data: ShortProduct) => {
+const postProduct = async (data: ProductDataCreate) => {
   return axiosInstance.post(apiPath("products"), data);
 };
 
-const updateProduct = async (id: String, data: ShortProduct) => {
+const updateProduct = async ({
+  id,
+  data,
+}: {
+  id: String;
+  data: ShortProduct;
+}) => {
   return axiosInstance.put(apiPath(`products/${id}`), data);
 };
 
-const getOrders = async ({ authCookie }: { authCookie: string }) => {
+const getOrders = async (options?: { authCookie: string }) => {
   const { data } = await axiosInstance.get(apiPath("orders"), {
-    headers: { cookie: authCookie },
+    headers: { cookie: options?.authCookie },
   });
 
   return data;
