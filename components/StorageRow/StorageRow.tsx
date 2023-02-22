@@ -47,7 +47,7 @@ const handleEdit = (editedValues: StringedProductInfo) => {
     volumePerPackage: Number(editedValues.volumePerPackage),
   };
   console.log(editData);
-  apiClient.products.updateProduct(editedValues.id, editData);
+  apiClient.products.updateProduct({ id: editedValues.id, data: editData });
   window.location.reload();
 };
 
