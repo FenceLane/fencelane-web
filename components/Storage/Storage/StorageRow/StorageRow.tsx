@@ -5,8 +5,8 @@ import { EditIcon } from "@chakra-ui/icons";
 import { ProductInfo } from "../../../../lib/types";
 import { useContent } from "../../../../lib/hooks/useContent";
 import { useIsMobile } from "../../../../lib/hooks/useIsMobile";
-import { EditModal } from "./EditModal/EditModal";
-import { DeleteModal } from "./DeleteModal/DeleteModal";
+import { ProductEditModal } from "./ProductEditModal/ProductEditModal";
+import { ProductDeleteModal } from "./ProductDeleteModal/ProductDeleteModal";
 
 interface StorageRowProps {
   product: ProductInfo;
@@ -24,9 +24,9 @@ export const StorageRow = ({ product }: StorageRowProps) => {
   const ref = useRef<HTMLDivElement | null>(null);
 
   const {
-    isOpen: isDeletingOpen,
-    onOpen: onDeletingOpen,
-    onClose: onDeletingClose,
+    isOpen: isDeleteOpen,
+    onOpen: onDeleteOpen,
+    onClose: onDeleteClose,
   } = useDisclosure();
 
   const {
@@ -71,15 +71,15 @@ export const StorageRow = ({ product }: StorageRowProps) => {
           </Button>
         </Td>
       </Tr>
-      <EditModal
+      <ProductEditModal
         isEditOpen={isEditOpen}
         onEditClose={onEditClose}
-        onDeletingOpen={onDeletingOpen}
+        onDeletingOpen={onDeleteOpen}
         product={product}
       />
-      <DeleteModal
-        isDeletingOpen={isDeletingOpen}
-        onDeletingClose={onDeletingClose}
+      <ProductDeleteModal
+        isDeleteOpen={isDeleteOpen}
+        onDeleteClose={onDeleteClose}
         product={product}
       />
     </>

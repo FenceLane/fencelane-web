@@ -16,7 +16,7 @@ import { usePostProduct } from "../../../../lib/api/hooks/products";
 import React, { useState } from "react";
 import { useContent } from "../../../../lib/hooks/useContent";
 import { PRODUCT_VARIANT } from "../../../../lib/types";
-import styles from "./AddingModal.module.scss";
+import styles from "./ProductAddModal.module.scss";
 
 const initialProductState = {
   name: "",
@@ -27,21 +27,21 @@ const initialProductState = {
   stock: "",
 };
 
-interface AddingModalProps {
-  onAddingClose: Function;
-  isAddingOpen: boolean;
+interface ProductAddModalProps {
+  onAddClose: Function;
+  isAddOpen: boolean;
 }
 
-export const AddingModal = ({
-  onAddingClose,
-  isAddingOpen,
-}: AddingModalProps) => {
+export const ProductAddModal = ({
+  onAddClose,
+  isAddOpen,
+}: ProductAddModalProps) => {
   const { t } = useContent();
 
   const [productData, setProductData] = useState(initialProductState);
 
   const handleModalClose = () => {
-    onAddingClose();
+    onAddClose();
     setProductData(initialProductState);
   };
 
@@ -88,7 +88,7 @@ export const AddingModal = ({
   };
 
   return (
-    <Modal isOpen={isAddingOpen} onClose={handleModalClose}>
+    <Modal isOpen={isAddOpen} onClose={handleModalClose}>
       <ModalOverlay />
       <ModalContent>
         <ModalHeader>{t("pages.storage.modals.commodity_adding")}</ModalHeader>

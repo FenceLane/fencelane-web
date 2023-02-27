@@ -12,25 +12,26 @@ import {
   ModalFooter,
   Input,
   Select,
+  Box,
 } from "@chakra-ui/react";
 import { useEditProduct } from "../../../../../lib/api/hooks/products";
 import { ProductInfo, PRODUCT_VARIANT } from "../../../../../lib/types";
 import { useContent } from "../../../../../lib/hooks/useContent";
-import styles from "./EditModal.module.scss";
+import styles from "./ProductEditModal.module.scss";
 
-interface EditModalProps {
+interface ProductEditModalProps {
   isEditOpen: boolean;
   onEditClose: Function;
   onDeletingOpen: Function;
   product: ProductInfo;
 }
 
-export const EditModal = ({
+export const ProductEditModal = ({
   isEditOpen,
   onEditClose,
   onDeletingOpen,
   product,
-}: EditModalProps) => {
+}: ProductEditModalProps) => {
   const { t } = useContent();
 
   const [productData, setProductData] = useState({
@@ -40,7 +41,7 @@ export const EditModal = ({
     volumePerPackage: String(product.volumePerPackage),
   });
 
-  const handleEditModalClose = () => {
+  const handleProductEditModalClose = () => {
     onEditClose(),
       setProductData({
         ...product,
@@ -55,7 +56,7 @@ export const EditModal = ({
     error: editError,
     isSuccess: isEditSuccess,
     isLoading: isEditLoading,
-  } = useEditProduct(handleEditModalClose);
+  } = useEditProduct(handleProductEditModalClose);
 
   const handleEditProduct = async () => {
     const {
@@ -95,7 +96,7 @@ export const EditModal = ({
   };
 
   return (
-    <Modal isOpen={isEditOpen} onClose={handleEditModalClose}>
+    <Modal isOpen={isEditOpen} onClose={handleProductEditModalClose}>
       <ModalOverlay />
       <ModalContent>
         <ModalHeader>
@@ -157,27 +158,28 @@ export const EditModal = ({
             </Text>
           )}
         </ModalBody>
-        <ModalFooter>
+        <ModalFooter justifyContent="space-between">
           <Button
             colorScheme="red"
-            mr={20}
             onClick={() => {
-              onDeletingOpen(), handleEditModalClose();
+              onDeletingOpen(), handleProductEditModalClose();
             }}
           >
             {t("pages.storage.buttons.delete")}
           </Button>
-          <Button
-            colorScheme="blue"
-            onClick={handleEditProduct}
-            mr={3}
-            isLoading={isEditLoading}
-          >
-            {t("pages.storage.buttons.modify")}
-          </Button>
-          <Button colorScheme="gray" onClick={handleEditModalClose}>
-            {t("pages.storage.buttons.cancel")}
-          </Button>
+          <Box>
+            <Button
+              colorScheme="blue"
+              onClick={handleEditProduct}
+              mr={3}
+              isLoading={isEditLoading}
+            >
+              {t("pages.storage.buttons.modify")}
+            </Button>
+            <Button colorScheme="gray" onClick={handleProductEditModalClose}>
+              {t("pages.storage.buttons.cancel")}
+            </Button>
+          </Box>
         </ModalFooter>
       </ModalContent>
     </Modal>

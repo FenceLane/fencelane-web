@@ -16,7 +16,7 @@ import { StorageRow } from "./StorageRow/StorageRow";
 import { AddIcon } from "@chakra-ui/icons";
 import { ProductInfo } from "../../../lib/types";
 import { useIsMobile } from "../../../lib/hooks/useIsMobile";
-import { AddingModal } from "./AddingModal/AddingModal";
+import { ProductAddModal } from "./ProductAddModal/ProductAddModal";
 
 interface StorageProps {
   products: ProductInfo[];
@@ -27,9 +27,9 @@ export const Storage = ({ products }: StorageProps) => {
   const isMobile = useIsMobile();
 
   const {
-    isOpen: isAddingOpen,
-    onOpen: onAddingOpen,
-    onClose: onAddingClose,
+    isOpen: isAddOpen,
+    onOpen: onAddOpen,
+    onClose: onAddClose,
   } = useDisclosure();
 
   return (
@@ -43,7 +43,7 @@ export const Storage = ({ products }: StorageProps) => {
         bg="var(--dark)"
         fontSize="15px"
         fontWeight={500}
-        onClick={onAddingOpen}
+        onClick={onAddOpen}
       >
         {t("pages.storage.buttons.add_commodity")}
       </Button>
@@ -82,7 +82,7 @@ export const Storage = ({ products }: StorageProps) => {
           </Tbody>
         </Table>
       </TableContainer>
-      <AddingModal onAddingClose={onAddingClose} isAddingOpen={isAddingOpen} />
+      <ProductAddModal onAddClose={onAddClose} isAddOpen={isAddOpen} />
     </>
   );
 };

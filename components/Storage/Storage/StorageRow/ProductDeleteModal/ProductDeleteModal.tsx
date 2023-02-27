@@ -15,17 +15,17 @@ import { useContent } from "../../../../../lib/hooks/useContent";
 import { useDeleteProduct } from "../../../../../lib/api/hooks/products";
 import { mapAxiosErrorToLabel } from "../../../../../lib/server/BackendError/BackendError";
 
-interface DeleteModalProps {
-  isDeletingOpen: boolean;
-  onDeletingClose: () => void;
+interface ProductDeleteModalProps {
+  isDeleteOpen: boolean;
+  onDeleteClose: () => void;
   product: ProductInfo;
 }
 
-export const DeleteModal = ({
-  isDeletingOpen,
-  onDeletingClose,
+export const ProductDeleteModal = ({
+  isDeleteOpen,
+  onDeleteClose,
   product,
-}: DeleteModalProps) => {
+}: ProductDeleteModalProps) => {
   const { t } = useContent();
 
   const handleDelete = (id: String) => {
@@ -37,10 +37,10 @@ export const DeleteModal = ({
     error: deleteError,
     isSuccess: isDeleteSuccess,
     isLoading: isDeleteLoading,
-  } = useDeleteProduct(onDeletingClose);
+  } = useDeleteProduct(onDeleteClose);
 
   return (
-    <Modal isOpen={isDeletingOpen} onClose={onDeletingClose}>
+    <Modal isOpen={isDeleteOpen} onClose={onDeleteClose}>
       <ModalOverlay />
       <ModalContent>
         <ModalHeader>
@@ -64,7 +64,7 @@ export const DeleteModal = ({
           >
             {t("pages.storage.buttons.delete")}
           </Button>
-          <Button colorScheme="green" onClick={onDeletingClose}>
+          <Button colorScheme="green" onClick={onDeleteClose}>
             {t("pages.storage.buttons.cancel")}
           </Button>
         </ModalFooter>
