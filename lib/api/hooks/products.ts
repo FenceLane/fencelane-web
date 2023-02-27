@@ -34,3 +34,14 @@ export const useEditProduct = (onSuccess: () => void) => {
 
   return mutation;
 };
+
+export const useDeleteProduct = (onSuccess: () => void) => {
+  const mutation = useMutation({
+    mutationFn: apiClient.products.deleteProduct,
+    onSuccess: () => {
+      onSuccess();
+      queryClient.invalidateQueries({ queryKey: [QUERY_KEY.PRODUCTS] });
+    },
+  });
+  return mutation;
+};

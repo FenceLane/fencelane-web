@@ -77,14 +77,6 @@ export const EditModal = ({
         volumePerPackage: Number(volumePerPackage),
       },
     });
-    if (editError) {
-      console.log(editError);
-      console.log("error");
-    }
-    if (isEditSuccess) {
-      console.log("ok");
-      handleEditModalClose();
-    }
   };
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -159,9 +151,11 @@ export const EditModal = ({
             value={productData.stock}
             onChange={handleChange}
           />
-          <Text color="red">
-            {!!editError && t(mapAxiosErrorToLabel(editError))}
-          </Text>
+          {!!editError && (
+            <Text color="red">
+              {t(`errors.backendErrorLabel.${mapAxiosErrorToLabel(editError)}`)}
+            </Text>
+          )}
         </ModalBody>
         <ModalFooter>
           <Button
