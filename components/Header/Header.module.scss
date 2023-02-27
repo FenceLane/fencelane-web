@@ -15,11 +15,12 @@
   flex-shrink: 0;
 }
 .logos {
-  width: 200px;
+  width: 40px;
   display: flex;
   flex-direction: row;
   gap: 10px;
   align-items: center;
+  margin-right: 40px;
 }
 .logo {
   width: 40px;
@@ -42,10 +43,13 @@
     width: 25px;
     height: 25px;
   }
+  .logos {
+    width: 130px;
+  }
 }
 
 .hamburger {
-  padding: 8px 8px 0px 0px;
+  padding: 8px 8px 0px 8px;
   display: inline-block;
   cursor: pointer;
   transition-property: opacity, filter;
@@ -67,11 +71,11 @@
 .hamburger.is-active .hamburger-inner,
 .hamburger.is-active .hamburger-inner::before,
 .hamburger.is-active .hamburger-inner::after {
-  background-color: #000;
+  background-color: var(--grey);
 }
 
 .hamburger-box {
-  width: 40px;
+  width: 30px;
   height: 24px;
   display: inline-block;
   position: relative;
@@ -85,9 +89,9 @@
 .hamburger-inner,
 .hamburger-inner::before,
 .hamburger-inner::after {
-  width: 40px;
+  width: 30px;
   height: 4px;
-  background-color: #000;
+  background-color: var(--grey);
   border-radius: 4px;
   position: absolute;
   transition-property: transform;

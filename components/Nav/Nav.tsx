@@ -36,7 +36,7 @@ export const Nav = ({
                 <Link
                   as={NextLink}
                   key={item.name}
-                  href=""
+                  href={`/${item.name}`}
                   _hover={{
                     textDecoration: "none",
                   }}

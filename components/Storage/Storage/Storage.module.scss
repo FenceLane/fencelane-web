@@ -1,0 +1,38 @@
+.commodity-table {
+  overflow-x: hidden;
+}
+
+.commodity-table th,
+.commodity-table td {
+  text-align: center;
+}
+.commodity-table-thead tr {
+  position: relative;
+}
+.commodity-table-thead th {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+.commodity-table-thead th:first-child {
+  background-color: white;
+  position: sticky;
+  left: 0;
+  z-index: 2;
+}
+.commodity-table-row td:first-child {
+  text-align: left;
+  padding: 10px;
+  background-color: white;
+  position: sticky;
+  left: 0;
+  z-index: 2;
+}
+@media only screen and (min-width: 768px) {
+  .container {
+    margin: 0px 30px 30px 30px;
+  }
+  .add-button {
+    margin-left: 30px;
+  }
+}

@@ -24,7 +24,7 @@ const menuItems = [
     icon: "statystyki",
   },
   {
-    name: "magazine",
+    name: "storage",
     icon: "magazyn",
   },
   {
@@ -70,12 +70,15 @@ export const Layout = ({
       </Head>
       <ReactDiv100>
         <Flex flexDir="column" h="100%" overflow="hidden">
-          <Header
-            isMobile={isMobile}
-            user={user}
-            isMenuActive={isMenuActive}
-            setMenuActive={setMenuActive}
-          ></Header>
+          {!hideSidebar && (
+            <Header
+              isMobile={isMobile}
+              user={user}
+              isMenuActive={isMenuActive}
+              setMenuActive={setMenuActive}
+            ></Header>
+          )}
+
           <Flex h="100%" flex="1" overflow="hidden">
             <Nav
               hideSidebar={hideSidebar}
@@ -87,6 +90,7 @@ export const Layout = ({
               color="black"
               className={styles.content}
               pl={user && !isMobile ? 220 : 2.5}
+              bg={hideSidebar ? "white" : "--light-content"}
             >
               {children}
             </Box>

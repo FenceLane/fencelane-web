@@ -9,7 +9,7 @@
       "sidebar": {
         "menu": {
           "stats": { "label": "Statystyki" },
-          "magazine": { "label": "Magazyn" },
+          "storage": { "label": "Magazyn" },
           "orders": { "label": "Zamówienia" },
           "commissions": { "label": "Zlecenia" },
           "schedule": { "label": "Harmonogram" },
@@ -42,7 +42,8 @@
       "destination-already-exists": "Ta destynacja już istnieje!",
       "destination-does-not-exist": "Destynacja o podanym id nie istnieje!",
       "cannot-delete-product-with-orders": "Nie można usunąć produktu, który ma istniejące zamówienia!",
-      "unauthorized": "Brak uprawnień!"
+      "unauthorized": "Brak uprawnień!",
+      "product-already-exists": "Podany produkt istnieje!"
     }
   },
   "success": {
@@ -133,6 +134,38 @@
           },
           "submit": { "label": "Zatwierdź" }
         }
+      }
+    },
+    "storage": {
+      "table": {
+        "headings": {
+          "name": "Towar",
+          "dimensions": "Wymiary",
+          "variant": "Wariant",
+          "itemsPerPackage": "Pakowanie",
+          "volumePerPackage": "M3",
+          "stock": "Ilość pakietów",
+          "pieces": "Ilość sztuk"
+        }
+      },
+      "variants": {
+        "white_wet": "Biały mokry",
+        "white_dry": "Biały suchy",
+        "black": "Czarny"
+      },
+      "modals": {
+        "commodity_modifying": "Modyfikowanie towaru",
+        "commodity_deleting": "Usuwanie towaru",
+        "commodity_adding": "Dodawanie towaru",
+        "are_you_sure": "Czy na pewno chcesz usunąć ten towar?"
+      },
+      "buttons": {
+        "add": "Dodaj",
+        "add_commodity": "Dodaj towar",
+        "modify": "Modyfikuj",
+        "modify_commodity": "Modyfikuj towar",
+        "delete": "Usuń",
+        "cancel": "Anuluj"
       }
     }
   }
