@@ -106,6 +106,10 @@ const getOrders = async (options?: { authCookie: string }) => {
   return data;
 };
 
+const postOrder = async (data: any) => {
+  return axiosInstance.post(apiPath("orders"), data);
+};
+
 export const apiClient = {
   auth: {
     postLogin,
@@ -124,5 +128,6 @@ export const apiClient = {
   },
   orders: {
     getOrders,
+    postOrder,
   },
 };

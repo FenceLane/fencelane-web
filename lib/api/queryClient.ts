@@ -16,4 +16,5 @@ export { queryClient };
 
 export const QUERY_KEY = {
   PRODUCTS: "products",
+  ORDERS: "orders",
 };
