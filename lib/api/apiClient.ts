@@ -88,11 +88,11 @@ const postProduct = async (data: ProductDataCreate) => {
   return axiosInstance.post(apiPath("products"), data);
 };
 
-const updateProduct = async ({
+const editProduct = async ({
   id,
   data,
 }: {
-  id: String;
+  id: string;
   data: ShortProduct;
 }) => {
   return axiosInstance.put(apiPath(`products/${id}`), data);
@@ -120,7 +120,7 @@ export const apiClient = {
     getProducts,
     postProduct,
     deleteProduct,
-    updateProduct,
+    editProduct,
   },
   orders: {
     getOrders,

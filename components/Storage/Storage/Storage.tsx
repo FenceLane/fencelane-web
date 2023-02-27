@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import {
   Table,
   Thead,
@@ -8,91 +8,29 @@ import {
   Text,
   TableContainer,
   Button,
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalCloseButton,
-  ModalBody,
-  ModalFooter,
   useDisclosure,
-  Input,
-  Select,
 } from "@chakra-ui/react";
 import { useContent } from "../../../lib/hooks/useContent";
 import styles from "./Storage.module.scss";
 import { StorageRow } from "../../StorageRow/StorageRow";
 import { AddIcon } from "@chakra-ui/icons";
-import { ProductInfo, PRODUCT_VARIANT } from "../../../lib/types";
+import { ProductInfo } from "../../../lib/types";
 import { useIsMobile } from "../../../lib/hooks/useIsMobile";
-import { usePostProduct } from "../../../lib/api/hooks/products";
+import { AddingModal } from "./AddingModal/AddingModal";
 
 interface StorageProps {
   products: ProductInfo[];
 }
 
-const initialProductState = {
-  name: "",
-  dimensions: "",
-  variant: PRODUCT_VARIANT.WHITE_WET,
-  itemsPerPackage: "",
-  volumePerPackage: "",
-  stock: "",
-};
-
 export const Storage = ({ products }: StorageProps) => {
   const { t } = useContent();
   const isMobile = useIsMobile();
-  const [productData, setProductData] = useState(initialProductState);
 
   const {
     isOpen: isAddingOpen,
     onOpen: onAddingOpen,
     onClose: onAddingClose,
   } = useDisclosure();
-
-  //TODO: handle loading and error states
-  const { mutate: postProduct, error, isSuccess, isLoading } = usePostProduct();
-
-  const handlePostProduct = () => {
-    const {
-      dimensions,
-      itemsPerPackage,
-      name,
-      stock,
-      variant,
-      volumePerPackage,
-    } = productData;
-
-    postProduct({
-      dimensions,
-      itemsPerPackage: Number(itemsPerPackage),
-      name,
-      stock: Number(stock),
-      variant: variant,
-      volumePerPackage: Number(volumePerPackage),
-    });
-  };
-
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = event.target;
-    setProductData((productData) => ({
-      ...productData,
-      [name]: value,
-    }));
-  };
-
-  const handleVarianChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setProductData((productData) => ({
-      ...productData,
-      variant: event.target.value as PRODUCT_VARIANT,
-    }));
-  };
-
-  const handleModalClose = () => {
-    onAddingClose();
-    setProductData(initialProductState);
-  };
 
   return (
     <>
@@ -144,72 +82,7 @@ export const Storage = ({ products }: StorageProps) => {
           </Tbody>
         </Table>
       </TableContainer>
-      <Modal isOpen={isAddingOpen} onClose={handleModalClose}>
-        <ModalOverlay />
-        <ModalContent>
-          <ModalHeader>
-            {t("pages.storage.modals.commodity_adding")}
-          </ModalHeader>
-          <ModalCloseButton />
-          <ModalBody className={styles["modal-inputs"]}>
-            <Input
-              name="name"
-              placeholder={t("pages.storage.table.headings.name")}
-              value={String(productData.name)}
-              onChange={handleChange}
-            />
-            <Input
-              name="dimensions"
-              placeholder={t("pages.storage.table.headings.dimensions")}
-              value={String(productData.dimensions)}
-              onChange={handleChange}
-            />
-            <Select
-              placeholder={t("pages.storage.table.headings.variant")}
-              onChange={handleVarianChange}
-            >
-              <option value={PRODUCT_VARIANT.WHITE_WET}>
-                {t("pages.storage.variants.white_wet")}
-              </option>
-              <option value={PRODUCT_VARIANT.WHITE_DRY}>
-                {t("pages.storage.variants.white_dry")}
-              </option>
-              <option value={PRODUCT_VARIANT.BLACK}>
-                {t("pages.storage.variants.black")}
-              </option>
-            </Select>
-            <Input
-              placeholder={t("pages.storage.table.headings.itemsPerPackage")}
-              type="number"
-              value={String(productData.itemsPerPackage)}
-              name="itemsPerPackage"
-              onChange={handleChange}
-            />
-            <Input
-              placeholder={t("pages.storage.table.headings.volumePerPackage")}
-              type="number"
-              value={String(productData.volumePerPackage)}
-              name="volumePerPackage"
-              onChange={handleChange}
-            />
-            <Input
-              placeholder={t("pages.storage.table.headings.stock")}
-              type="number"
-              value={String(productData.stock)}
-              name="stock"
-              onChange={handleChange}
-            />
-          </ModalBody>
-          <ModalFooter>
-            <Button colorScheme="green" onClick={handlePostProduct} mr={3}>
-              {t("pages.storage.buttons.add")}
-            </Button>
-            <Button colorScheme="red" onClick={handleModalClose}>
-              {t("pages.storage.buttons.cancel")}
-            </Button>
-          </ModalFooter>
-        </ModalContent>
-      </Modal>
+      <AddingModal onAddingClose={onAddingClose} isAddingOpen={isAddingOpen} />
     </>
   );
 };

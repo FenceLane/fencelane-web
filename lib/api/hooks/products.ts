@@ -11,11 +11,25 @@ export const useGetProducts = () => {
   return mutation;
 };
 
-export const usePostProduct = () => {
+export const usePostProduct = (onSuccess: () => void) => {
   const mutation = useMutation({
     mutationFn: apiClient.products.postProduct,
-    onSuccess: () =>
-      queryClient.invalidateQueries({ queryKey: [QUERY_KEY.PRODUCTS] }),
+    onSuccess: () => {
+      onSuccess();
+      queryClient.invalidateQueries({ queryKey: [QUERY_KEY.PRODUCTS] });
+    },
+  });
+
+  return mutation;
+};
+
+export const useEditProduct = (onSuccess: () => void) => {
+  const mutation = useMutation({
+    mutationFn: apiClient.products.editProduct,
+    onSuccess: () => {
+      onSuccess();
+      queryClient.invalidateQueries({ queryKey: [QUERY_KEY.PRODUCTS] });
+    },
   });
 
   return mutation;

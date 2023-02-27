@@ -42,7 +42,8 @@
       "destination-already-exists": "Ta destynacja już istnieje!",
       "destination-does-not-exist": "Destynacja o podanym id nie istnieje!",
       "cannot-delete-product-with-orders": "Nie można usunąć produktu, który ma istniejące zamówienia!",
-      "unauthorized": "Brak uprawnień!"
+      "unauthorized": "Brak uprawnień!",
+      "product-already-exists": "Podany produkt istnieje!"
     }
   },
   "success": {

@@ -45,7 +45,7 @@ export default function ProfileInfoDropdown({
 
   return (
     <>
-      {variant === "name" ? (
+      {variant === "name" && (
         <Button
           mt="6px"
           bg="white"
@@ -59,8 +59,6 @@ export default function ProfileInfoDropdown({
         >
           <Image src={"./images/avatar.svg"} alt="" />
         </Button>
-      ) : (
-        <></>
       )}
       <Box
         minW={70}

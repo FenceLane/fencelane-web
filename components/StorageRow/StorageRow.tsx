@@ -17,37 +17,16 @@ import {
 } from "@chakra-ui/react";
 import { useOnClickOutside } from "../../lib/hooks/useOnClickOutside";
 import styles from "./StorageRow.module.scss";
-import { EditIcon, CloseIcon } from "@chakra-ui/icons";
+import { EditIcon } from "@chakra-ui/icons";
 import { apiClient } from "../../lib/api/apiClient";
-import { ProductInfo, StringedProductInfo } from "../../lib/types";
+import { ProductInfo, PRODUCT_VARIANT } from "../../lib/types";
 import { useContent } from "../../lib/hooks/useContent";
 import { useIsMobile } from "../../lib/hooks/useIsMobile";
-
-const commodityColor = (commodity: String) => {
-  if (commodity === "Palisada okorowana") return "#805AD5";
-  if (commodity === "Palisada cylindryczna") return "#D53F8C";
-  if (commodity === "Palisada nieokorowana") return "#DBC234";
-  if (commodity === "Palisada prostokątna") return "#38A169";
-  if (commodity === "Słupek bramowy") return "#EF7F18";
-  return "#777777";
-};
+import { useEditProduct } from "../../lib/api/hooks/products";
+import { mapAxiosErrorToLabel } from "../../lib/server/BackendError/BackendError";
 
 const handleDelete = (id: String) => {
   apiClient.products.deleteProduct(id);
-  window.location.reload();
-};
-
-const handleEdit = (editedValues: StringedProductInfo) => {
-  const editData = {
-    name: editedValues.name,
-    dimensions: editedValues.dimensions,
-    stock: Number(editedValues.stock),
-    variant: editedValues.variant,
-    itemsPerPackage: Number(editedValues.itemsPerPackage),
-    volumePerPackage: Number(editedValues.volumePerPackage),
-  };
-  console.log(editData);
-  apiClient.products.updateProduct({ id: editedValues.id, data: editData });
   window.location.reload();
 };
 
@@ -56,27 +35,101 @@ interface StorageRowProps {
 }
 
 export const StorageRow = ({ product }: StorageRowProps) => {
+  const color = `#${product.id.substring(0, 6)}`;
+
+  const pieces = product.itemsPerPackage * product.stock;
+
   const { t } = useContent();
+
   const isMobile = useIsMobile();
-  const [editedValues, setEditedValues] = useState({
+
+  const [productData, setProductData] = useState({
     ...product,
     stock: String(product.stock),
     itemsPerPackage: String(product.itemsPerPackage),
     volumePerPackage: String(product.volumePerPackage),
   });
+
   const [showOptions, setShowOptions] = useState(false);
+
   const ref = useRef<HTMLDivElement | null>(null);
+
   useOnClickOutside(ref, () => setShowOptions(false));
+
   const {
     isOpen: isDeletingOpen,
     onOpen: onDeletingOpen,
     onClose: onDeletingClose,
   } = useDisclosure();
+
   const {
     isOpen: isEditOpen,
     onOpen: onEditOpen,
     onClose: onEditClose,
   } = useDisclosure();
+
+  const handleEditModalClose = () => {
+    onEditClose(),
+      setProductData({
+        ...product,
+        stock: String(product.stock),
+        itemsPerPackage: String(product.itemsPerPackage),
+        volumePerPackage: String(product.volumePerPackage),
+      });
+  };
+
+  const {
+    mutate: editProduct,
+    error: editError,
+    isSuccess: isEditSuccess,
+    isLoading: isEditLoading,
+  } = useEditProduct(handleEditModalClose);
+
+  const handleEditProduct = async () => {
+    const {
+      dimensions,
+      itemsPerPackage,
+      name,
+      stock,
+      variant,
+      volumePerPackage,
+    } = productData;
+    editProduct({
+      id: productData.id,
+      data: {
+        dimensions,
+        itemsPerPackage: Number(itemsPerPackage),
+        name,
+        stock: Number(stock),
+        variant: variant,
+        volumePerPackage: Number(volumePerPackage),
+      },
+    });
+    if (editError) {
+      console.log(editError);
+      console.log("error");
+    }
+    if (isEditSuccess) {
+      console.log("ok");
+      handleEditModalClose();
+    }
+  };
+
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = event.target;
+    setProductData((productData) => ({
+      ...productData,
+      [name]: value,
+    }));
+  };
+
+  const handleVariantChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setProductData((productData) => ({
+      ...productData,
+      variant: event.target.value as PRODUCT_VARIANT,
+    }));
+  };
+
   return (
     <>
       <Tr className={styles["commodity-table-row"]} key={product.id}>
@@ -84,7 +137,7 @@ export const StorageRow = ({ product }: StorageRowProps) => {
           <Text
             mt="5px"
             as="span"
-            bg={commodityColor(product.name)}
+            bg={color}
             color="white"
             p="3px 6px"
             borderRadius="6px"
@@ -100,65 +153,25 @@ export const StorageRow = ({ product }: StorageRowProps) => {
         <Td>{t(`pages.storage.variants.${String(product.variant)}`)}</Td>
         <Td>{String(product.itemsPerPackage)}</Td>
         <Td>{String(product.volumePerPackage)}</Td>
-        <Td>{String(product.itemsPerPackage * product.stock)}</Td>
+        <Td>{String(pieces)}</Td>
         <Td>{String(product.stock)}</Td>
         <Td>
           <Button
             w={8}
             h={8}
             bg="white"
-            onClick={() => setShowOptions(!showOptions)}
+            onClick={() => setShowOptions((prev) => !prev)}
           >
             <EditIcon
-              display={showOptions ? "none" : "block"}
+              onClick={onEditOpen}
               w="28px"
               h="28px"
-              color={commodityColor(product.name)}
+              color={color}
             ></EditIcon>
-            <CloseIcon
-              display={showOptions ? "block" : "none"}
-              w="23px"
-              h="23px"
-              color="red"
-            ></CloseIcon>
-          </Button>
-
-          <Button
-            display={showOptions ? "inline-block" : "none"}
-            variant="outline"
-            colorScheme="blue"
-            height="30px"
-            width="100px"
-            fontSize="13px"
-            onClick={onEditOpen}
-          >
-            {t("pages.storage.buttons.modify")}
-          </Button>
-          <Button
-            display={showOptions ? "inline-block" : "none"}
-            variant="outline"
-            colorScheme="red"
-            height="30px"
-            width="100px"
-            fontSize="13px"
-            onClick={onDeletingOpen}
-          >
-            {t("pages.storage.buttons.delete")}
           </Button>
         </Td>
       </Tr>
-      <Modal
-        isOpen={isEditOpen}
-        onClose={() => {
-          onEditClose(),
-            setEditedValues({
-              ...product,
-              stock: String(product.stock),
-              itemsPerPackage: String(product.itemsPerPackage),
-              volumePerPackage: String(product.volumePerPackage),
-            });
-        }}
-      >
+      <Modal isOpen={isEditOpen} onClose={handleEditModalClose}>
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>
@@ -168,101 +181,76 @@ export const StorageRow = ({ product }: StorageRowProps) => {
           <ModalBody className={styles["modal-inputs"]}>
             <label>{t("pages.storage.table.headings.name")}</label>
             <Input
-              value={String(editedValues.name)}
-              onChange={(event) =>
-                setEditedValues({ ...editedValues, name: event.target.value })
-              }
+              name="name"
+              value={String(productData.name)}
+              onChange={handleChange}
             />
             <label>{t("pages.storage.table.headings.dimensions")}</label>
             <Input
-              value={String(editedValues.dimensions)}
-              onChange={(event) =>
-                setEditedValues({
-                  ...editedValues,
-                  dimensions: event.target.value,
-                })
-              }
+              name="dimensions"
+              value={String(productData.dimensions)}
+              onChange={handleChange}
             />
             <label>{t("pages.storage.table.headings.variant")}</label>
             <Select
-              onChange={(e) =>
-                setEditedValues({
-                  ...editedValues,
-                  variant: e.target.value,
-                })
-              }
+              onChange={handleVariantChange}
+              defaultValue={productData.variant}
             >
-              <option
-                value="white_wet"
-                selected={editedValues.variant == "white_wet"}
-              >
+              <option value={PRODUCT_VARIANT.WHITE_WET}>
                 {t("pages.storage.variants.white_wet")}
               </option>
-              <option
-                value="white_dry"
-                selected={editedValues.variant == "dry"}
-              >
+              <option value={PRODUCT_VARIANT.WHITE_DRY}>
                 {t("pages.storage.variants.white_dry")}
               </option>
-              <option value="black" selected={editedValues.variant == "black"}>
+              <option value={PRODUCT_VARIANT.BLACK}>
                 {t("pages.storage.variants.black")}
               </option>
             </Select>
             <label>{t("pages.storage.table.headings.itemsPerPackage")}</label>
             <Input
+              name="itemsPerPackage"
               type="number"
-              value={editedValues.itemsPerPackage}
-              onChange={(event) =>
-                setEditedValues({
-                  ...editedValues,
-                  itemsPerPackage: event.target.value,
-                })
-              }
+              value={productData.itemsPerPackage}
+              onChange={handleChange}
             />
             <label>{t("pages.storage.table.headings.volumePerPackage")}</label>
             <Input
+              name="volumePerPackage"
               type="number"
-              value={editedValues.volumePerPackage}
-              onChange={(event) =>
-                setEditedValues({
-                  ...editedValues,
-                  volumePerPackage: event.target.value,
-                })
-              }
+              value={productData.volumePerPackage}
+              onChange={handleChange}
             />
             <label>{t("pages.storage.table.headings.stock")}</label>
             <Input
+              name="stock"
               type="number"
-              value={editedValues.stock}
-              onChange={(event) =>
-                setEditedValues({
-                  ...editedValues,
-                  stock: event.target.value,
-                })
-              }
+              value={productData.stock}
+              onChange={handleChange}
             />
+            <Text color="red">
+              {!!editError && t(mapAxiosErrorToLabel(editError))}
+            </Text>
           </ModalBody>
           <ModalFooter>
             <Button
+              colorScheme="red"
+              mr={20}
+              onClick={() => {
+                onDeletingOpen(), handleEditModalClose();
+              }}
+            >
+              {t("pages.storage.buttons.delete")}
+            </Button>
+            <Button
               colorScheme="blue"
-              onClick={() => handleEdit(editedValues)}
+              onClick={handleEditProduct}
               mr={3}
+              isLoading={isEditLoading}
             >
               {t("pages.storage.buttons.modify")}
             </Button>
-            <Button
-              colorScheme="red"
-              onClick={() => {
-                onEditClose(),
-                  setEditedValues({
-                    ...product,
-                    stock: String(product.stock),
-                    itemsPerPackage: String(product.itemsPerPackage),
-                    volumePerPackage: String(product.volumePerPackage),
-                  });
-              }}
-            >
-              Anuluj
+            <Button colorScheme="gray" onClick={handleEditModalClose}>
+              {t("pages.storage.buttons.cancel")}
             </Button>
           </ModalFooter>
         </ModalContent>
