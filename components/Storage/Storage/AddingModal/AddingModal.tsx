@@ -109,6 +109,7 @@ export const AddingModal = ({
           <Select
             placeholder={t("pages.storage.table.headings.variant")}
             onChange={handleVariantChange}
+            defaultValue={PRODUCT_VARIANT.WHITE_WET}
           >
             <option value={PRODUCT_VARIANT.WHITE_WET}>
               {t("pages.storage.variants.white_wet")}
