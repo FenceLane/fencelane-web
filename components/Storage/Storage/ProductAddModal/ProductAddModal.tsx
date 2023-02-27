@@ -148,7 +148,7 @@ export const ProductAddModal = ({
             </Text>
           )}
         </ModalBody>
-        <ModalFooter>
+        <ModalFooter alignItems="flex-end">
           <Button
             colorScheme="green"
             isLoading={isLoading}

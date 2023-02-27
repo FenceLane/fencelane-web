@@ -9,6 +9,7 @@ import {
   ModalBody,
   ModalFooter,
   Text,
+  Flex,
 } from "@chakra-ui/react";
 import { ProductInfo } from "../../../../../lib/types";
 import { useContent } from "../../../../../lib/hooks/useContent";
@@ -48,7 +49,7 @@ export const ProductDeleteModal = ({
         </ModalHeader>
         <ModalCloseButton />
         <ModalBody>{t("pages.storage.modals.are_you_sure")}</ModalBody>
-        <ModalFooter>
+        <ModalFooter flexDir="column">
           {!!deleteError && (
             <Text color="red">
               {t(
@@ -56,17 +57,19 @@ export const ProductDeleteModal = ({
               )}
             </Text>
           )}
-          <Button
-            colorScheme="red"
-            onClick={() => handleDelete(product.id)}
-            mr={3}
-            isLoading={isDeleteLoading}
-          >
-            {t("pages.storage.buttons.delete")}
-          </Button>
-          <Button colorScheme="green" onClick={onDeleteClose}>
-            {t("pages.storage.buttons.cancel")}
-          </Button>
+          <Flex justifyContent="flex-end" width="100%">
+            <Button
+              colorScheme="red"
+              onClick={() => handleDelete(product.id)}
+              mr={3}
+              isLoading={isDeleteLoading}
+            >
+              {t("pages.storage.buttons.delete")}
+            </Button>
+            <Button colorScheme="green" onClick={onDeleteClose}>
+              {t("pages.storage.buttons.cancel")}
+            </Button>
+          </Flex>
         </ModalFooter>
       </ModalContent>
     </Modal>
