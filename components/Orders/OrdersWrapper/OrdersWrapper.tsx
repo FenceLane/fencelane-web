@@ -5,7 +5,7 @@ import { mapAxiosErrorToLabel } from "../../../lib/server/BackendError/BackendEr
 import { LoadingAnimation } from "../../LoadingAnimation/LoadingAnimation";
 import { Orders } from "../Orders";
 
-export const StorageWrapper = () => {
+export const OrdersWrapper = () => {
   const { t } = useContent("errors.backendErrorLabel");
 
   const { isError, error, isLoading, data } = useGetOrders();

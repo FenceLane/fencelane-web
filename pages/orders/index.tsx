@@ -2,7 +2,7 @@ import { Layout } from "../../components/Layout/Layout";
 import { withServerSideAuth } from "../../lib/server/middlewares/withServerSideAuth";
 import { withTranslationProps } from "../../lib/server/middlewares/withTranslationProps";
 import { InferGetServerSidePropsType } from "next";
-import { Orders } from "../../components/Orders/Orders";
+import { OrdersWrapper } from "../../components/Orders/OrdersWrapper/OrdersWrapper";
 
 const StoragePage = ({
   user,
@@ -10,7 +10,7 @@ const StoragePage = ({
 }: InferGetServerSidePropsType<typeof getServerSideProps> & any) => {
   return (
     <Layout user={user}>
-      <Orders />
+      <OrdersWrapper />
     </Layout>
   );
 };
