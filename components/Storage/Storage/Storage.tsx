@@ -12,7 +12,7 @@ import {
 } from "@chakra-ui/react";
 import { useContent } from "../../../lib/hooks/useContent";
 import styles from "./Storage.module.scss";
-import { StorageRow } from "../../StorageRow/StorageRow";
+import { StorageRow } from "./StorageRow/StorageRow";
 import { AddIcon } from "@chakra-ui/icons";
 import { ProductInfo } from "../../../lib/types";
 import { useIsMobile } from "../../../lib/hooks/useIsMobile";

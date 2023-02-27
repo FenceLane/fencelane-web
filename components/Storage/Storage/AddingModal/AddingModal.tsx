@@ -16,6 +16,7 @@ import { usePostProduct } from "../../../../lib/api/hooks/products";
 import React, { useState } from "react";
 import { useContent } from "../../../../lib/hooks/useContent";
 import { PRODUCT_VARIANT } from "../../../../lib/types";
+import styles from "./AddingModal.module.scss";
 
 const initialProductState = {
   name: "",
@@ -38,8 +39,6 @@ export const AddingModal = ({
   const { t } = useContent();
 
   const [productData, setProductData] = useState(initialProductState);
-
-  //TODO: handle loading and error states
 
   const handleModalClose = () => {
     onAddingClose();
@@ -94,8 +93,7 @@ export const AddingModal = ({
       <ModalContent>
         <ModalHeader>{t("pages.storage.modals.commodity_adding")}</ModalHeader>
         <ModalCloseButton />
-        {/* <ModalBody className={styles["modal-inputs"]}> */}
-        <ModalBody>
+        <ModalBody className={styles["modal-inputs"]}>
           <Input
             name="name"
             placeholder={t("pages.storage.table.headings.name")}

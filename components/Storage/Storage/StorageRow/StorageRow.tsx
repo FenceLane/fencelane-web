@@ -15,15 +15,15 @@ import {
   Input,
   Select,
 } from "@chakra-ui/react";
-import { useOnClickOutside } from "../../lib/hooks/useOnClickOutside";
+import { useOnClickOutside } from "../../../../lib/hooks/useOnClickOutside";
 import styles from "./StorageRow.module.scss";
 import { EditIcon } from "@chakra-ui/icons";
-import { apiClient } from "../../lib/api/apiClient";
-import { ProductInfo, PRODUCT_VARIANT } from "../../lib/types";
-import { useContent } from "../../lib/hooks/useContent";
-import { useIsMobile } from "../../lib/hooks/useIsMobile";
-import { useEditProduct } from "../../lib/api/hooks/products";
-import { mapAxiosErrorToLabel } from "../../lib/server/BackendError/BackendError";
+import { apiClient } from "../../../../lib/api/apiClient";
+import { ProductInfo, PRODUCT_VARIANT } from "../../../../lib/types";
+import { useContent } from "../../../../lib/hooks/useContent";
+import { useIsMobile } from "../../../../lib/hooks/useIsMobile";
+import { useEditProduct } from "../../../../lib/api/hooks/products";
+import { mapAxiosErrorToLabel } from "../../../../lib/server/BackendError/BackendError";
 
 const handleDelete = (id: String) => {
   apiClient.products.deleteProduct(id);
