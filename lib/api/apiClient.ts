@@ -1,8 +1,8 @@
 import axios from "axios";
 import { ClientConfig } from "../AppConfig/ClientConfig";
-import { ProductInfo, ShortProduct, USER_ROLE } from "../types";
+import { ProductInfo, USER_ROLE } from "../types";
 import https from "https";
-import { ProductDataCreate } from "../schema/productData";
+import { ProductDataCreate, ProductDataUpdate } from "../schema/productData";
 
 const axiosInstance = axios.create({
   httpsAgent: new https.Agent({
@@ -93,7 +93,7 @@ const editProduct = async ({
   data,
 }: {
   id: string;
-  data: ShortProduct;
+  data: ProductDataUpdate;
 }) => {
   return axiosInstance.put(apiPath(`products/${id}`), data);
 };

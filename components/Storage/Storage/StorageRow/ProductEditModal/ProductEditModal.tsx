@@ -54,7 +54,6 @@ export const ProductEditModal = ({
   const {
     mutate: editProduct,
     error: editError,
-    isSuccess: isEditSuccess,
     isLoading: isEditLoading,
   } = useEditProduct(handleProductEditModalClose);
 
@@ -67,6 +66,7 @@ export const ProductEditModal = ({
       variant,
       volumePerPackage,
     } = productData;
+
     editProduct({
       id: productData.id,
       data: {

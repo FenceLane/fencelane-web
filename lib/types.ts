@@ -10,41 +10,12 @@ export interface ProductInfo {
   id: string;
   name: string;
   dimensions: string;
-  variant: string;
+  variant: PRODUCT_VARIANT;
   itemsPerPackage: number;
   volumePerPackage: number;
   stock: number;
   createdAt: Date;
   updatedAt: Date;
-}
-export interface StringedProductInfo {
-  id: string;
-  name: string;
-  dimensions: string;
-  variant: string;
-  itemsPerPackage: string;
-  volumePerPackage: string;
-  stock: string;
-  createdAt: Date;
-  updatedAt: Date;
-}
-export interface ShortStringedProduct {
-  id?: string;
-  name: string;
-  dimensions: string;
-  variant: string;
-  itemsPerPackage: string;
-  volumePerPackage: string;
-  stock: string;
-}
-export interface ShortProduct {
-  id?: string;
-  name: string;
-  dimensions: string;
-  variant: string;
-  itemsPerPackage: number;
-  volumePerPackage: number;
-  stock: number;
 }
 
 export enum USER_ROLE {
