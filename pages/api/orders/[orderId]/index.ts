@@ -19,7 +19,7 @@ export default withApiMethods({
     }
 
     const order = await prismaClient.order.findUnique({
-      where: { id: orderId },
+      where: { id: Number(orderId) },
       include: { client: true, destination: true, products: true },
     });
 
@@ -44,7 +44,7 @@ export default withApiMethods({
 
       try {
         const updatedOrder = await prismaClient.order.update({
-          where: { id: orderId },
+          where: { id: Number(orderId) },
           data: {
             ...orderData,
             products: {
@@ -82,7 +82,7 @@ export default withApiMethods({
 
     try {
       const deletedOrder = await prismaClient.order.delete({
-        where: { id: orderId },
+        where: { id: Number(orderId) },
       });
 
       return res
