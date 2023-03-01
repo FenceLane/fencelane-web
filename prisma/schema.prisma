@@ -20,7 +20,7 @@ model User {
   phone String
   sessions  Session[]
   passwordResetTokens  PasswordResetToken[]
-  orders Order[]
+  // orders Order[]
 }
 
 model Session {
@@ -91,8 +91,8 @@ model Order{
   status String @default("created")
   files String[] @default([])
   products ProductOrder[]
-  creator User @relation(fields: [creatorId], references: [id])
-  creatorId String
+  // creator User @relation(fields: [creatorId], references: [id])
+  // creatorId String
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
