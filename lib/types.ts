@@ -20,28 +20,36 @@ export interface ProductInfo {
 
 export interface OrderInfo {
   data: {
+    id: number;
+    clientId: string;
+    destinationId: string;
+    date: Date;
+    status: ORDER_STATUS;
+    files: string[];
+    createdAt: Date;
+    updatedAt: Date;
     client: {
-      email: string;
       id: string;
       name: string;
-      phone: string;
       shortName: string;
+      email: string;
+      phone: string;
     };
     destination: {
-      address: string;
-      city: string;
-      country: string;
       id: string;
+      country: string;
+      address: string;
       postalCode: string;
+      city: string;
     };
     products: [
       {
-        createdAt: Date;
         id: string;
         orderId: number;
-        price: string;
         productId: string;
         quantity: number;
+        price: string;
+        createdAt: Date;
         updatedAt: Date;
       }
     ];

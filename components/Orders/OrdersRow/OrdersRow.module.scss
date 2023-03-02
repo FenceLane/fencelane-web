@@ -1,0 +1,49 @@
+.order-container {
+  width: 100%;
+  background-color: white;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+  line-height: 1.2;
+  font-size: 15px;
+  flex-direction: row;
+  gap: 20px;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.15);
+  position: relative;
+}
+.left,
+.right {
+  flex-direction: column;
+  width: 50%;
+}
+.left {
+  padding: 20px 0 20px 40px;
+}
+.right {
+  padding: 20px 40px 20px 0;
+}
+.text-box {
+  margin-bottom: 10px;
+}
+.order-header {
+  color: var(--font-gray);
+}
+.order-text {
+  font-weight: 500;
+}
+.right-bottom {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+}
+.price {
+  color: var(--dark);
+  font-weight: 700;
+  font-size: 16px;
+}
+.price::before {
+  content: "+ ";
+}
+.details-link {
+  font-size: 13px;
+  color: var(--font-gray);
+}
