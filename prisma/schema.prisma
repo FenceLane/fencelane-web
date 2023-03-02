@@ -20,6 +20,7 @@ model User {
   phone String
   sessions  Session[]
   passwordResetTokens  PasswordResetToken[]
+  // orders Order[]
 }
 
 model Session {
@@ -81,7 +82,7 @@ model Product {
 }
 
 model Order{
-  id String  @id @default(uuid())
+  id Int  @id @default(autoincrement())
   client Client @relation(fields: [clientId], references: [id])
   clientId String
   destination Destination @relation(fields: [destinationId], references: [id])
@@ -90,6 +91,8 @@ model Order{
   status String @default("created")
   files String[] @default([])
   products ProductOrder[]
+  // creator User @relation(fields: [creatorId], references: [id])
+  // creatorId String
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -98,7 +101,7 @@ model Order{
 model ProductOrder {
   id String  @id @default(uuid())
   order Order @relation(fields: [orderId], references: [id])
-  orderId String
+  orderId Int
   product Product @relation(fields: [productId], references: [id])
   productId String
   quantity Int

@@ -72,7 +72,7 @@ CREATE TABLE "Product" (
 
 -- CreateTable
 CREATE TABLE "Order" (
-    "id" TEXT NOT NULL,
+    "id" SERIAL NOT NULL,
     "clientId" TEXT NOT NULL,
     "destinationId" TEXT NOT NULL,
     "date" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -87,7 +87,7 @@ CREATE TABLE "Order" (
 -- CreateTable
 CREATE TABLE "ProductOrder" (
     "id" TEXT NOT NULL,
-    "orderId" TEXT NOT NULL,
+    "orderId" INTEGER NOT NULL,
     "productId" TEXT NOT NULL,
     "quantity" INTEGER NOT NULL,
     "price" DECIMAL(65,30) NOT NULL,
