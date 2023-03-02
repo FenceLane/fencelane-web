@@ -66,7 +66,7 @@ export default withApiMethods({
 
   GET: withApiAuth(async (_req, res) => {
     const orders = await prismaClient.order.findMany({
-      select: { client: true, destination: true, products: true },
+      include: { client: true, destination: true, products: true },
     });
 
     return res.status(BackendResponseStatusCode.SUCCESS).send({ data: orders });
