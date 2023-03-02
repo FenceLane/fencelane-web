@@ -18,6 +18,36 @@ export interface ProductInfo {
   updatedAt: Date;
 }
 
+export interface OrderInfo {
+  data: {
+    client: {
+      email: string;
+      id: string;
+      name: string;
+      phone: string;
+      shortName: string;
+    };
+    destination: {
+      address: string;
+      city: string;
+      country: string;
+      id: string;
+      postalCode: string;
+    };
+    products: [
+      {
+        createdAt: Date;
+        id: string;
+        orderId: number;
+        price: string;
+        productId: string;
+        quantity: number;
+        updatedAt: Date;
+      }
+    ];
+  };
+}
+
 export enum USER_ROLE {
   ADMIN = 0,
   USER = 1,
