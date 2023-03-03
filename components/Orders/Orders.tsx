@@ -3,6 +3,7 @@ import { Button, Flex, Text } from "@chakra-ui/react";
 import { OrderInfo } from "../../lib/types";
 import { OrdersRow } from "./OrdersRow/OrdersRow";
 import { AddIcon } from "@chakra-ui/icons";
+import { useContent } from "../../lib/hooks/useContent";
 // import styles from "./Orders.module.scss";
 
 interface OrderProps {
@@ -10,6 +11,7 @@ interface OrderProps {
 }
 
 export const Orders = ({ orders }: OrderProps) => {
+  const { t } = useContent();
   return (
     <>
       <Text color="var(--dark)" fontSize="20px" fontWeight="500" m="10px">
@@ -23,7 +25,7 @@ export const Orders = ({ orders }: OrderProps) => {
           h="32px"
           m="0 10px 10px 0"
         >
-          Nowe
+          {t("pages.orders.buttons.new")}
           <AddIcon ml="10px" />
         </Button>
       </Flex>

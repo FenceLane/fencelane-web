@@ -167,6 +167,37 @@
         "delete": "Usuń",
         "cancel": "Anuluj"
       }
+    },
+    "orders": {
+      "order_history": "Historia zamówień",
+      "order": {
+        "order_id": "Nr zamówienia",
+        "status": "Status",
+        "client": "Klient",
+        "date": "Data",
+        "destination": "Destynacja",
+        "details": "Szczegóły"
+      },
+      "buttons": {
+        "new": "Nowe"
+      },
+      "status": {
+        "created": "Utworzono zamówienie",
+        "preparing": "W przygotowaniu",
+        "packed": "Zapakowane",
+        "delivery": "W drodze",
+        "finished": "Dostarczono"
+      }
     }
+  },
+
+  "days": {
+    "monday": "Poniedziałek",
+    "tuesday": "Wtorek",
+    "wednesday": "Środa",
+    "thursday": "Czwartek",
+    "friday": "Piątek",
+    "saturday": "Sobota",
+    "sunday": "Niedziela"
   }
 }
