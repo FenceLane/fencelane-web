@@ -1,3 +1,4 @@
+import { User } from "@prisma/client";
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime";
 import { prismaClient } from "../../../lib/prisma/prismaClient";
 import { OrderDataSchema } from "../../../lib/schema/orderData";
@@ -14,6 +15,9 @@ import { withValidatedJSONRequestBody } from "../../../lib/server/middlewares/wi
 export default withApiMethods({
   POST: withApiAuth(
     withValidatedJSONRequestBody(OrderDataSchema)(async (req, res) => {
+      //FIXME: impreve types for req.session.user
+      const creator = (req as typeof req & { session: { user: User } }).session
+        .user;
       const { products: requestedProducts, ...orderData } = req.parsedBody;
 
       try {
@@ -32,8 +36,14 @@ export default withApiMethods({
             data: {
               ...orderData,
               products: { createMany: { data: requestedProducts } },
+              creatorId: creator.id,
             },
-            include: { products: true, client: true, destination: true },
+            include: {
+              products: true,
+              client: true,
+              destination: true,
+              creator: true,
+            },
           });
 
           return res
