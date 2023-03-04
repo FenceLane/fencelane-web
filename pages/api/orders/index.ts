@@ -15,7 +15,7 @@ import { withValidatedJSONRequestBody } from "../../../lib/server/middlewares/wi
 export default withApiMethods({
   POST: withApiAuth(
     withValidatedJSONRequestBody(OrderDataSchema)(async (req, res) => {
-      //FIXME: impreve types for req.session.user
+      //FIXME: improve types for req.session.user
       const creator = (req as typeof req & { session: { user: User } }).session
         .user;
       const { products: requestedProducts, ...orderData } = req.parsedBody;
@@ -76,7 +76,12 @@ export default withApiMethods({
 
   GET: withApiAuth(async (_req, res) => {
     const orders = await prismaClient.order.findMany({
-      include: { client: true, destination: true, products: true },
+      include: {
+        client: true,
+        destination: true,
+        statusHistory: true,
+        products: { select: { productId: true, quantity: true, price: true } },
+      },
     });
 
     return res.status(BackendResponseStatusCode.SUCCESS).send({ data: orders });
