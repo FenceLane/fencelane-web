@@ -11,6 +11,7 @@ import {
 import { withApiAuth } from "../../../lib/server/middlewares/withApiAuth";
 import { withApiMethods } from "../../../lib/server/middlewares/withApiMethods";
 import { withValidatedJSONRequestBody } from "../../../lib/server/middlewares/withValidatedJSONRequestBody";
+import { ORDER_STATUS } from "../../../lib/types";
 
 export default withApiMethods({
   POST: withApiAuth(
@@ -32,10 +33,13 @@ export default withApiMethods({
             )
           );
 
-          const createdOrder = await prismaClient.order.create({
+          const createdOrder = await tx.order.create({
             data: {
               ...orderData,
               products: { createMany: { data: requestedProducts } },
+              statusHistory: {
+                create: { status: ORDER_STATUS.CREATED, creatorId: creator.id },
+              },
               creatorId: creator.id,
             },
             include: {
@@ -43,6 +47,7 @@ export default withApiMethods({
               client: true,
               destination: true,
               creator: true,
+              statusHistory: true,
             },
           });
 
