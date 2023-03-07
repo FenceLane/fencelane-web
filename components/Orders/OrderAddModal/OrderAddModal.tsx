@@ -11,7 +11,11 @@ import {
 import React, { useState } from "react";
 import { useContent } from "../../../lib/hooks/useContent";
 import styles from "./OrderAddModal.module.scss";
-import { usePostOrder } from "../../../lib/api/hooks/orders";
+import {
+  useGetClients,
+  useGetDestinations,
+  usePostOrder,
+} from "../../../lib/api/hooks/orders";
 
 const initialOrderState = {};
 
@@ -27,6 +31,20 @@ export const OrderAddModal = ({
   const { t } = useContent();
 
   const [orderData, setOrderData] = useState(initialOrderState);
+
+  const {
+    isError: isClientsError,
+    error: clientsError,
+    isLoading: isClientsLoading,
+    data: clients,
+  } = useGetClients();
+
+  const {
+    isError: isDestinationsError,
+    error: destinationsError,
+    isLoading: isDestinationsLoading,
+    data: destinations,
+  } = useGetDestinations();
 
   const handleModalClose = () => {
     onAddClose();

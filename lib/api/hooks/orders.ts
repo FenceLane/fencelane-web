@@ -22,3 +22,21 @@ export const usePostOrder = (onSuccess: () => void) => {
 
   return mutation;
 };
+
+export const useGetClients = () => {
+  const mutation = useQuery({
+    queryFn: () => apiClient.orders.getClients(),
+    queryKey: [QUERY_KEY.CLIENTS],
+  });
+
+  return mutation;
+};
+
+export const useGetDestinations = () => {
+  const mutation = useQuery({
+    queryFn: () => apiClient.orders.getDestinations(),
+    queryKey: [QUERY_KEY.DESTINATIONS],
+  });
+
+  return mutation;
+};

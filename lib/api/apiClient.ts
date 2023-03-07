@@ -110,6 +110,22 @@ const postOrder = async (data: any) => {
   return axiosInstance.post(apiPath("orders"), data);
 };
 
+const getClients = async (options?: { authCookie: string }) => {
+  const { data } = await axiosInstance.get(apiPath("clients"), {
+    headers: { cookie: options?.authCookie },
+  });
+
+  return data;
+};
+
+const getDestinations = async (options?: { authCookie: string }) => {
+  const { data } = await axiosInstance.get(apiPath("destinations"), {
+    headers: { cookie: options?.authCookie },
+  });
+
+  return data;
+};
+
 export const apiClient = {
   auth: {
     postLogin,
@@ -129,5 +145,7 @@ export const apiClient = {
   orders: {
     getOrders,
     postOrder,
+    getClients,
+    getDestinations,
   },
 };
