@@ -26,9 +26,14 @@ const statusColor = (status: string) => {
   }
 };
 
-export const OrdersRow = ({ orderData }: OrderDataProps) => {
+export const OrdersRow = ({ orderData }: any) => {
   const { t } = useContent();
   const date = new Date(orderData.createdAt);
+  const id = orderData.id
+    .toString()
+    .padStart(5 - orderData.id.toString().length, "0");
+  const status =
+    orderData.statusHistory[orderData.statusHistory.length - 1].status;
   const days = [
     t("days.monday"),
     t("days.tuesday"),
@@ -55,9 +60,7 @@ export const OrdersRow = ({ orderData }: OrderDataProps) => {
           <Text className={styles["order-header"]}>
             {t("pages.orders.order.order_id")}
           </Text>
-          <Text className={styles["order-text"]}>
-            {orderData.products[0].orderId}
-          </Text>
+          <Text className={styles["order-text"]}>{id}</Text>
         </Box>
         <Box className={styles["text-box"]}>
           <Text className={styles["order-header"]}>
@@ -66,9 +69,9 @@ export const OrdersRow = ({ orderData }: OrderDataProps) => {
           <Text
             className={styles["order-text"]}
             fontWeight="600"
-            color={statusColor(orderData.status)}
+            color={statusColor(status)}
           >
-            {t(`pages.orders.status.${orderData.status}`)}
+            {t(`pages.orders.status.${status}`)}
           </Text>
         </Box>
         <Box className={styles["text-box"]}>
