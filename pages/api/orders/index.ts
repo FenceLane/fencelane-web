@@ -11,11 +11,12 @@ import {
 import { withApiAuth } from "../../../lib/server/middlewares/withApiAuth";
 import { withApiMethods } from "../../../lib/server/middlewares/withApiMethods";
 import { withValidatedJSONRequestBody } from "../../../lib/server/middlewares/withValidatedJSONRequestBody";
+import { ORDER_STATUS } from "../../../lib/types";
 
 export default withApiMethods({
   POST: withApiAuth(
     withValidatedJSONRequestBody(OrderDataSchema)(async (req, res) => {
-      //FIXME: impreve types for req.session.user
+      //FIXME: improve types for req.session.user
       const creator = (req as typeof req & { session: { user: User } }).session
         .user;
       const { products: requestedProducts, ...orderData } = req.parsedBody;
@@ -32,10 +33,13 @@ export default withApiMethods({
             )
           );
 
-          const createdOrder = await prismaClient.order.create({
+          const createdOrder = await tx.order.create({
             data: {
               ...orderData,
               products: { createMany: { data: requestedProducts } },
+              statusHistory: {
+                create: { status: ORDER_STATUS.CREATED, creatorId: creator.id },
+              },
               creatorId: creator.id,
             },
             include: {
@@ -43,6 +47,7 @@ export default withApiMethods({
               client: true,
               destination: true,
               creator: true,
+              statusHistory: true,
             },
           });
 
@@ -76,7 +81,12 @@ export default withApiMethods({
 
   GET: withApiAuth(async (_req, res) => {
     const orders = await prismaClient.order.findMany({
-      include: { client: true, destination: true, products: true },
+      include: {
+        client: true,
+        destination: true,
+        statusHistory: true,
+        products: { select: { productId: true, quantity: true, price: true } },
+      },
     });
 
     return res.status(BackendResponseStatusCode.SUCCESS).send({ data: orders });
