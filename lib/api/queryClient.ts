@@ -6,6 +6,7 @@ const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
       retry: 3,
+      staleTime: Infinity,
       refetchOnWindowFocus: false,
       retryDelay: (attemptIndex) =>
         Math.min(1000 * 2 ** attemptIndex, MINUTE_IN_MS), //double retry time every attempt (but <= 2 mins)

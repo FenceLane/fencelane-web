@@ -1,3 +1,4 @@
+import { User } from "@prisma/client";
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime";
 import { prismaClient } from "../../../lib/prisma/prismaClient";
 import { OrderDataSchema } from "../../../lib/schema/orderData";
@@ -10,10 +11,14 @@ import {
 import { withApiAuth } from "../../../lib/server/middlewares/withApiAuth";
 import { withApiMethods } from "../../../lib/server/middlewares/withApiMethods";
 import { withValidatedJSONRequestBody } from "../../../lib/server/middlewares/withValidatedJSONRequestBody";
+import { ORDER_STATUS } from "../../../lib/types";
 
 export default withApiMethods({
   POST: withApiAuth(
     withValidatedJSONRequestBody(OrderDataSchema)(async (req, res) => {
+      //FIXME: improve types for req.session.user
+      const creator = (req as typeof req & { session: { user: User } }).session
+        .user;
       const { products: requestedProducts, ...orderData } = req.parsedBody;
 
       try {
@@ -28,12 +33,22 @@ export default withApiMethods({
             )
           );
 
-          const createdOrder = await prismaClient.order.create({
+          const createdOrder = await tx.order.create({
             data: {
               ...orderData,
               products: { createMany: { data: requestedProducts } },
+              statusHistory: {
+                create: { status: ORDER_STATUS.CREATED, creatorId: creator.id },
+              },
+              creatorId: creator.id,
             },
-            include: { products: true, client: true, destination: true },
+            include: {
+              products: true,
+              client: true,
+              destination: true,
+              creator: true,
+              statusHistory: true,
+            },
           });
 
           return res
@@ -66,7 +81,12 @@ export default withApiMethods({
 
   GET: withApiAuth(async (_req, res) => {
     const orders = await prismaClient.order.findMany({
-      include: { client: true, destination: true, products: true },
+      include: {
+        client: true,
+        destination: true,
+        statusHistory: true,
+        products: { select: { productId: true, quantity: true, price: true } },
+      },
     });
 
     return res.status(BackendResponseStatusCode.SUCCESS).send({ data: orders });
