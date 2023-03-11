@@ -57,7 +57,7 @@ export default function ProfileInfoDropdown({
             background: "white",
           }}
         >
-          <Image src={"./images/avatar.svg"} alt="" />
+          <Image src={"/images/avatar.svg"} alt="" />
         </Button>
       )}
       <Box
@@ -85,7 +85,7 @@ export default function ProfileInfoDropdown({
           </>
         ) : (
           <Button onClick={toggleShowDropdown} bg="none" mt="5px">
-            <Image src={"./images/avatar.svg"} alt="" />
+            <Image src={"/images/avatar.svg"} alt="" />
           </Button>
         )}
 

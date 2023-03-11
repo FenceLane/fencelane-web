@@ -44,7 +44,7 @@ export const Nav = ({
                   <Box className={styles["nav-item"]}>
                     <Image
                       width="20px"
-                      src={`./images/navicons/${item.icon}.svg`}
+                      src={`/images/navicons/${item.icon}.svg`}
                       alt=""
                     />
                     <Text>{t(`layout.sidebar.menu.${item.name}.label`)}</Text>

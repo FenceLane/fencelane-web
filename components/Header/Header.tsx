@@ -30,11 +30,11 @@ export const Header = ({
         aria-label={t("layout.header.logo.label")}
         ml="10px"
       >
-        <Image className={styles.logo} src={"./images/logo.svg"} alt="" />
+        <Image className={styles.logo} src={"/images/logo.svg"} alt="" />
         {!isMobile && (
           <Image
             className={styles["text-logo"]}
-            src={"./images/textlogo.svg"}
+            src={"/images/textlogo.svg"}
             alt=""
           />
         )}
@@ -42,7 +42,7 @@ export const Header = ({
       {isMobile && (
         <Image
           className={styles["text-logo"]}
-          src={"./images/textlogo.svg"}
+          src={"/images/textlogo.svg"}
           alt=""
         />
       )}

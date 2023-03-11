@@ -5,6 +5,7 @@ import { OrdersRow } from "./OrdersRow/OrdersRow";
 import { AddIcon } from "@chakra-ui/icons";
 import { useContent } from "../../lib/hooks/useContent";
 import { OrderAddModal } from "./OrderAddModal/OrderAddModal";
+import Link from "next/link";
 // import styles from "./Orders.module.scss";
 
 interface OrderProps {
@@ -32,16 +33,21 @@ export const Orders = ({ orders }: OrderProps) => {
           fontWeight="400"
           h="32px"
           m="0 10px 10px 0"
-          onClick={onAddOpen}
         >
-          {t("pages.orders.buttons.new")}
-          <AddIcon ml="10px" />
+          <Link href="/orders/create">
+            {t("pages.orders.buttons.new")}
+            <AddIcon ml="10px" />
+          </Link>
         </Button>
       </Flex>
       {Object.values(orders)[0].map((order: any) => (
-        <OrdersRow key={order.products[0].orderId} orderData={order} />
+        <OrdersRow key={order.id} orderData={order} />
       ))}
-      <OrderAddModal onAddClose={onAddClose} isAddOpen={isAddOpen} />
+      <OrderAddModal
+        onAddClose={onAddClose}
+        onAddOpen={onAddOpen}
+        isAddOpen={isAddOpen}
+      />
     </>
   );
 };
