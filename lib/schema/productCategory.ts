@@ -11,5 +11,5 @@ export const ProductCategoryDataCreateSchema = ProductCategoryDataSchema.omit({
   products: true,
 });
 
-export const ProductDataUpdateSchema =
+export const ProductCategoryDataUpdateSchema =
   ProductCategoryDataCreateSchema.partial();

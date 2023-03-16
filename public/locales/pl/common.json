@@ -44,7 +44,9 @@
       "cannot-delete-product-with-orders": "Nie można usunąć produktu, który ma istniejące zamówienia!",
       "unauthorized": "Brak uprawnień!",
       "product-already-exists": "Podany produkt istnieje!",
-      "product-category-already-exists": "Podana kategoria produktu już istnieje!"
+      "product-category-already-exists": "Podana kategoria produktu już istnieje!",
+      "product-category-does-not-exist": "Kategoria produktu o podanym id nie istnieje!",
+      "product-does-not-exist": "Produkt o podanym id nie istnieje!"
     }
   },
   "success": {
