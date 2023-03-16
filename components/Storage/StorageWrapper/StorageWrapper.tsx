@@ -9,7 +9,6 @@ export const StorageWrapper = () => {
   const { t } = useContent("errors.backendErrorLabel");
 
   const { isError, error, isLoading, data } = useGetProducts();
-  console.log(data);
 
   if (isLoading)
     return (
