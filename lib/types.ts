@@ -8,7 +8,6 @@ export interface UserInfo {
 
 export interface ProductInfo {
   id: string;
-  name: string;
   dimensions: string;
   variant: PRODUCT_VARIANT;
   itemsPerPackage: number;
@@ -16,6 +15,13 @@ export interface ProductInfo {
   stock: number;
   createdAt: Date;
   updatedAt: Date;
+  category: CategoryInfo;
+}
+
+export interface CategoryInfo {
+  id: string;
+  name: string;
+  color: string;
 }
 
 export enum USER_ROLE {

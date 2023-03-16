@@ -13,8 +13,6 @@ interface StorageRowProps {
 }
 
 export const StorageRow = ({ product }: StorageRowProps) => {
-  const color = `#${product.id.substring(0, 6)}`;
-
   const pieces = product.itemsPerPackage * product.stock;
 
   const { t } = useContent();
@@ -42,13 +40,13 @@ export const StorageRow = ({ product }: StorageRowProps) => {
           <Text
             mt="5px"
             as="span"
-            bg={color}
+            bg={product.category.color}
             color="white"
             p="3px 6px"
             borderRadius="6px"
             textAlign="center"
           >
-            {product.name}
+            {product.category.name}
           </Text>
           <Text display={isMobile ? "block" : "none"} mt="5px">
             {product.dimensions}
@@ -66,7 +64,7 @@ export const StorageRow = ({ product }: StorageRowProps) => {
               onClick={onEditOpen}
               w="28px"
               h="28px"
-              color={color}
+              color={product.category.color}
             ></EditIcon>
           </Button>
         </Td>

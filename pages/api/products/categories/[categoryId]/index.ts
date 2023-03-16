@@ -20,6 +20,7 @@ export default withApiMethods({
 
     const productCategory = await prismaClient.productCategory.findUnique({
       where: { id: categoryId },
+      include: { products: true },
     });
 
     if (!productCategory) {

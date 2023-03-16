@@ -9,11 +9,12 @@ export const StorageWrapper = () => {
   const { t } = useContent("errors.backendErrorLabel");
 
   const { isError, error, isLoading, data } = useGetProducts();
+  console.log(data);
 
   if (isLoading)
     return (
       <Flex justifyContent="center" alignItems="center" height="100%">
-        <LoadingAnimation></LoadingAnimation>
+        <LoadingAnimation />
       </Flex>
     );
 
