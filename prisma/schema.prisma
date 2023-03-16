@@ -67,8 +67,8 @@ model Destination {
 
 model ProductCategory {
   id String  @id @default(uuid())
-  name String
-  color String
+  name String @unique
+  color String @unique
   products Product[]
 }
 
