@@ -20,6 +20,7 @@ export default withApiMethods({
 
     const product = await prismaClient.product.findUnique({
       where: { id: productId },
+      include: { category: true },
     });
 
     if (!product) {
@@ -47,6 +48,7 @@ export default withApiMethods({
         const updatedProduct = await prismaClient.product.update({
           where: { id: productId },
           data: productData,
+          include: { category: true },
         });
 
         return res

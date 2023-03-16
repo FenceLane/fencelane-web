@@ -67,7 +67,6 @@ CREATE TABLE "ProductCategory" (
 -- CreateTable
 CREATE TABLE "Product" (
     "id" TEXT NOT NULL,
-    "name" TEXT NOT NULL,
     "dimensions" TEXT NOT NULL,
     "variant" TEXT NOT NULL,
     "itemsPerPackage" INTEGER NOT NULL,
@@ -140,7 +139,7 @@ CREATE UNIQUE INDEX "ProductCategory_name_key" ON "ProductCategory"("name");
 CREATE UNIQUE INDEX "ProductCategory_color_key" ON "ProductCategory"("color");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "Product_name_dimensions_variant_itemsPerPackage_key" ON "Product"("name", "dimensions", "variant", "itemsPerPackage");
+CREATE UNIQUE INDEX "Product_categoryId_dimensions_variant_itemsPerPackage_key" ON "Product"("categoryId", "dimensions", "variant", "itemsPerPackage");
 
 -- AddForeignKey
 ALTER TABLE "Session" ADD CONSTRAINT "Session_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;

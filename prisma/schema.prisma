@@ -74,7 +74,6 @@ model ProductCategory {
 
 model Product {
   id String  @id @default(uuid())
-  name String
   dimensions String
   variant String //variant of product (black, white_(wet|dry))
   itemsPerPackage Int //number of items per package
@@ -88,7 +87,7 @@ model Product {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  @@unique([name, dimensions, variant, itemsPerPackage])
+  @@unique([categoryId, dimensions, variant, itemsPerPackage])
 }
 
 model OrderStatus {

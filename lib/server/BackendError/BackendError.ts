@@ -20,6 +20,8 @@ export const BackendErrorLabel = {
   PRODUCT_DOES_NOT_EXIST: "product-does-not-exist",
   PRODUCT_CATEGORY_DOES_NOT_EXIST: "product-category-does-not-exist",
   CANNOT_DELETE_PRODUCT_WITH_ORDERS: "cannot-delete-product-with-orders",
+  CANNOT_DELETE_PRODUCT_CATEGORY_WITH_PRODUCTS:
+    "cannot-delete-product-category-with-products",
   CLIENT_DOES_NOT_EXIST: "client-does-not-exist",
 } as const;
 

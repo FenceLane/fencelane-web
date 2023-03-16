@@ -3,13 +3,13 @@ import { PRODUCT_VARIANT } from "../types";
 import { ProductOrderDataSchema } from "./productOrderData";
 
 export const ProductDataSchema = z.object({
-  name: z.string().min(1),
   dimensions: z.string().min(1),
   stock: z.number().min(0),
   variant: z.nativeEnum(PRODUCT_VARIANT),
   itemsPerPackage: z.number().min(1),
   volumePerPackage: z.number().min(0),
   orders: z.array(ProductOrderDataSchema),
+  categoryId: z.string().min(1),
 });
 
 export const ProductDataCreateSchema = ProductDataSchema.omit({ orders: true });

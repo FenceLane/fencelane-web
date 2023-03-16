@@ -93,6 +93,14 @@ export default withApiMethods({
             message: error.message,
           });
         }
+
+        if (error.code === PrismaErrorCode.FOREIGN_KEY_NOT_FOUND) {
+          return sendBackendError(res, {
+            code: BackendResponseStatusCode.NOT_FOUND,
+            label: BackendErrorLabel.CANNOT_DELETE_PRODUCT_WITH_ORDERS,
+            message: error.message,
+          });
+        }
       }
       throw error;
     }
