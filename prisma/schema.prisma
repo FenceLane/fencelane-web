@@ -65,13 +65,21 @@ model Destination {
   @@unique([country, city, postalCode, address])
 }
 
+model ProductCategory {
+  id String  @id @default(uuid())
+  name String @unique
+  color String @unique
+  products Product[]
+}
+
 model Product {
   id String  @id @default(uuid())
-  name String
   dimensions String
   variant String //variant of product (black, white_(wet|dry))
   itemsPerPackage Int //number of items per package
   volumePerPackage Decimal //m^3 per package
+  category ProductCategory @relation(fields: [categoryId], references: [id])
+  categoryId String
 
   stock Int
   orders ProductOrder[]
@@ -79,7 +87,7 @@ model Product {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  @@unique([name, dimensions, variant, itemsPerPackage])
+  @@unique([categoryId, dimensions, variant, itemsPerPackage])
 }
 
 model OrderStatus {

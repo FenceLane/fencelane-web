@@ -20,6 +20,7 @@ export default withApiMethods({
 
     const product = await prismaClient.product.findUnique({
       where: { id: productId },
+      include: { category: true },
     });
 
     if (!product) {
@@ -47,6 +48,7 @@ export default withApiMethods({
         const updatedProduct = await prismaClient.product.update({
           where: { id: productId },
           data: productData,
+          include: { category: true },
         });
 
         return res
@@ -58,6 +60,14 @@ export default withApiMethods({
             return sendBackendError(res, {
               code: BackendResponseStatusCode.NOT_FOUND,
               label: BackendErrorLabel.PRODUCT_DOES_NOT_EXIST,
+              message: error.message,
+            });
+          }
+
+          if (error.code === PrismaErrorCode.FOREIGN_KEY_NOT_FOUND) {
+            return sendBackendError(res, {
+              code: BackendResponseStatusCode.NOT_FOUND,
+              label: BackendErrorLabel.PRODUCT_CATEGORY_DOES_NOT_EXIST,
               message: error.message,
             });
           }

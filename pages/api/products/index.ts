@@ -14,11 +14,15 @@ import { withValidatedJSONRequestBody } from "../../../lib/server/middlewares/wi
 export default withApiMethods({
   POST: withApiAuth(
     withValidatedJSONRequestBody(ProductDataCreateSchema)(async (req, res) => {
-      const { ...newProductData } = req.parsedBody;
+      const { categoryId, ...newProductData } = req.parsedBody;
 
       try {
         const createdProduct = await prismaClient.product.create({
-          data: newProductData,
+          data: {
+            ...newProductData,
+            categoryId,
+          },
+          include: { category: true },
         });
 
         return res
@@ -33,6 +37,14 @@ export default withApiMethods({
               message: error.message,
             });
           }
+
+          if (error.code === PrismaErrorCode.FOREIGN_KEY_NOT_FOUND) {
+            return sendBackendError(res, {
+              code: BackendResponseStatusCode.CONFLICT,
+              label: BackendErrorLabel.PRODUCT_CATEGORY_DOES_NOT_EXIST,
+              message: error.message,
+            });
+          }
         }
         throw error;
       }
@@ -40,7 +52,9 @@ export default withApiMethods({
   ),
 
   GET: withApiAuth(async (_req, res) => {
-    const products = await prismaClient.product.findMany({});
+    const products = await prismaClient.product.findMany({
+      include: { category: true },
+    });
 
     return res
       .status(BackendResponseStatusCode.SUCCESS)

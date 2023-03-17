@@ -20,7 +20,12 @@ export default withApiMethods({
 
     const order = await prismaClient.order.findUnique({
       where: { id: Number(orderId) },
-      include: { client: true, destination: true, products: true },
+      include: {
+        client: true,
+        destination: true,
+        products: true,
+        statusHistory: true,
+      },
     });
 
     if (!order) {

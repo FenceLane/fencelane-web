@@ -43,7 +43,11 @@
       "destination-does-not-exist": "Destynacja o podanym id nie istnieje!",
       "cannot-delete-product-with-orders": "Nie można usunąć produktu, który ma istniejące zamówienia!",
       "unauthorized": "Brak uprawnień!",
-      "product-already-exists": "Podany produkt istnieje!"
+      "product-already-exists": "Podany produkt istnieje!",
+      "product-category-already-exists": "Podana kategoria produktu już istnieje!",
+      "product-category-does-not-exist": "Kategoria produktu o podanym id nie istnieje!",
+      "product-does-not-exist": "Produkt o podanym id nie istnieje!",
+      "cannot-delete-product-category-with-products": "Nie można usunąć kategorii produktu, która ma produkty!"
     }
   },
   "success": {
