@@ -28,12 +28,23 @@ const statusColor = (status: string) => {
 
 export const OrdersRow = ({ orderData }: any) => {
   const { t } = useContent();
+
   const date = new Date(orderData.createdAt);
+
+  const price = orderData.products.reduce(
+    (sum: number, object: { price: string }) => {
+      return sum + Number(object.price);
+    },
+    0
+  );
+
   const id = orderData.id
     .toString()
     .padStart(5 - orderData.id.toString().length, "0");
+
   const status =
     orderData.statusHistory[orderData.statusHistory.length - 1].status;
+
   const days = [
     t("days.monday"),
     t("days.tuesday"),
@@ -43,6 +54,7 @@ export const OrdersRow = ({ orderData }: any) => {
     t("days.saturday"),
     t("days.sunday"),
   ];
+
   const displayDate =
     (date.getDate() < 10 ? "0" + date.getDate() : date.getDate()) +
     "." +
@@ -53,6 +65,7 @@ export const OrdersRow = ({ orderData }: any) => {
     date.getFullYear() +
     " | " +
     days[date.getDay()].substring(0, 3);
+
   return (
     <Flex className={styles["order-container"]}>
       <Flex className={styles["left"]}>
@@ -101,8 +114,11 @@ export const OrdersRow = ({ orderData }: any) => {
         </Box>
       </Flex>
       <Box className={styles["right-bottom"]}>
-        <Text className={styles["price"]}>{orderData.products[0].price}€</Text>
-        <Link className={styles["details-link"]} href="">
+        <Text className={styles["price"]}>{price}€</Text>
+        <Link
+          className={styles["details-link"]}
+          href={`/orders/${orderData.id}`}
+        >
           {t("pages.orders.order.details")}
           <ArrowForwardIcon boxSize="4" />
         </Link>
