@@ -106,6 +106,10 @@ const getOrders = async (options?: { authCookie: string }) => {
   return data;
 };
 
+const getOrder = async (id: String) => {
+  return axiosInstance.get(apiPath(`orders/${id}`));
+};
+
 const postOrder = async (data: any) => {
   return axiosInstance.post(apiPath("orders"), data);
 };
@@ -144,6 +148,7 @@ export const apiClient = {
   },
   orders: {
     getOrders,
+    getOrder,
     postOrder,
     getClients,
     getDestinations,

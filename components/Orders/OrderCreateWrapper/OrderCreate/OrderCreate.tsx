@@ -12,7 +12,8 @@ import {
   AlertTitle,
 } from "@chakra-ui/react";
 import Link from "next/link";
-import React, { useState } from "react";
+import { useRouter } from "next/router";
+import React, { useEffect, useState } from "react";
 import { usePostOrder } from "../../../../lib/api/hooks/orders";
 import { useContent } from "../../../../lib/hooks/useContent";
 import { mapAxiosErrorToLabel } from "../../../../lib/server/BackendError/BackendError";
@@ -29,6 +30,7 @@ const initialNewProductsData = {
 };
 
 export const OrderCreate = ({ clients, destinations, products }: any) => {
+  const router = useRouter();
   const { t } = useContent("errors.backendErrorLabel");
   const [newProducts, setNewProducts] = useState([initialNewProductsData]);
 
@@ -93,20 +95,23 @@ export const OrderCreate = ({ clients, destinations, products }: any) => {
   };
 
   const handlePostOrder = () => {
-    let numberedProducts = newProducts;
-    numberedProducts.map((product: any) => {
-      product.price = Number(product.price);
-      product.quantity = Number(product.quantity);
+    const numberedProducts = newProducts.map((product) => ({
+      productId: Number(product.productId),
+      quantity: Number(product.quantity),
+      price: Number(product.price),
+    }));
+    postOrder({
+      clientId: orderData.clientId,
+      destinationId: orderData.destinationId,
+      products: numberedProducts,
     });
-    if (orderData.clientId == "" || orderData.destinationId == "")
-      setErrorAlert(true);
-    else
-      postOrder({
-        clientId: orderData.clientId,
-        destinationId: orderData.destinationId,
-        products: numberedProducts,
-      });
   };
+
+  useEffect(() => {
+    if (isSuccess) {
+      router.push("/");
+    }
+  }, [router, isSuccess]);
 
   return (
     <>
@@ -115,6 +120,7 @@ export const OrderCreate = ({ clients, destinations, products }: any) => {
       </Text>
       <label>Klient</label>
       <Select
+        required
         bg="white"
         placeholder="Klient"
         mb="20px"
@@ -129,6 +135,7 @@ export const OrderCreate = ({ clients, destinations, products }: any) => {
       </Select>
       <label>Destynacja</label>
       <Select
+        required
         bg="white"
         placeholder="Destynacja"
         mb="20px"
@@ -137,11 +144,7 @@ export const OrderCreate = ({ clients, destinations, products }: any) => {
       >
         {destinations.data.map((destination: any) => (
           <option data-key={destination.id} key={destination.id}>
-            {destination.address +
-              ", " +
-              destination.postalCode +
-              " " +
-              destination.city}
+            {`${destination.address}, ${destination.postalCode} ${destination.city}`}
           </option>
         ))}
       </Select>
@@ -157,6 +160,7 @@ export const OrderCreate = ({ clients, destinations, products }: any) => {
             />
           </Flex>
           <Select
+            required
             bg="white"
             mb="20px"
             placeholder="Produkt"
@@ -182,6 +186,7 @@ export const OrderCreate = ({ clients, destinations, products }: any) => {
           </Select>
           <label>Ilość pakietów</label>
           <Input
+            required
             value={newProducts[index].quantity}
             name="quantity"
             bg="white"
@@ -225,7 +230,7 @@ export const OrderCreate = ({ clients, destinations, products }: any) => {
           onClick={handleAddProduct}
         ></IconButton>
       </Flex>
-      {errorAlert && (
+      {error && (
         <Alert status="error">
           <AlertIcon />
           <AlertTitle>{t(mapAxiosErrorToLabel(error))}</AlertTitle>

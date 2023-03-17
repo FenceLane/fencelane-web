@@ -63,7 +63,7 @@ export const Nav = ({
                 <Box className={styles["nav-item"]}>
                   <Image
                     width="20px"
-                    src={`./images/navicons/ustawienia.svg`}
+                    src={`/images/navicons/ustawienia.svg`}
                     alt=""
                   />
                   <Text
@@ -85,7 +85,7 @@ export const Nav = ({
                 <Box className={styles["nav-item"]}>
                   <Image
                     width="20px"
-                    src={`./images/navicons/pomoc.svg`}
+                    src={`/images/navicons/pomoc.svg`}
                     alt="pomoc"
                   />
                   <Text>{t(`layout.sidebar.menu.help.label`)}</Text>
