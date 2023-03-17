@@ -80,6 +80,18 @@ const getProducts = async (options?: {
   return data;
 };
 
+const getProductsCategories = async (options?: {
+  authCookie: string;
+}): Promise<ProductInfo[]> => {
+  const {
+    data: { data },
+  } = await axiosInstance.get(apiPath("products/categories"), {
+    headers: { cookie: options?.authCookie },
+  });
+
+  return data;
+};
+
 const deleteProduct = async (id: String) => {
   return axiosInstance.delete(apiPath(`products/${id}`));
 };
@@ -142,6 +154,7 @@ export const apiClient = {
   },
   products: {
     getProducts,
+    getProductsCategories,
     postProduct,
     deleteProduct,
     editProduct,

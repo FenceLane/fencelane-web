@@ -12,14 +12,17 @@ import {
   ModalFooter,
 } from "@chakra-ui/react";
 import { mapAxiosErrorToLabel } from "../../../../lib/server/BackendError/BackendError";
-import { usePostProduct } from "../../../../lib/api/hooks/products";
+import {
+  useGetProductsCategories,
+  usePostProduct,
+} from "../../../../lib/api/hooks/products";
 import React, { useState } from "react";
 import { useContent } from "../../../../lib/hooks/useContent";
 import { PRODUCT_VARIANT } from "../../../../lib/types";
 import styles from "./ProductAddModal.module.scss";
 
 const initialProductState = {
-  name: "",
+  categoryId: "",
   dimensions: "",
   variant: PRODUCT_VARIANT.WHITE_WET,
   itemsPerPackage: "",
@@ -52,11 +55,18 @@ export const ProductAddModal = ({
     isLoading,
   } = usePostProduct(handleModalClose);
 
+  const {
+    error: categoriesError,
+    isSuccess: isCategoriesSuccess,
+    isLoading: isCategoriesLoading,
+    data: productsCategories,
+  } = useGetProductsCategories();
+
   const handlePostProduct = () => {
     const {
       dimensions,
       itemsPerPackage,
-      name,
+      categoryId,
       stock,
       variant,
       volumePerPackage,
@@ -65,7 +75,7 @@ export const ProductAddModal = ({
     postProduct({
       dimensions,
       itemsPerPackage: Number(itemsPerPackage),
-      name,
+      categoryId,
       stock: Number(stock),
       variant: variant,
       volumePerPackage: Number(volumePerPackage),
@@ -80,6 +90,12 @@ export const ProductAddModal = ({
     }));
   };
 
+  const handleNameChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    setProductData((productData) => ({
+      ...productData,
+      categoryId: event.target.value,
+    }));
+  };
   const handleVariantChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setProductData((productData) => ({
       ...productData,
@@ -94,12 +110,17 @@ export const ProductAddModal = ({
         <ModalHeader>{t("pages.storage.modals.commodity_adding")}</ModalHeader>
         <ModalCloseButton />
         <ModalBody className={styles["modal-inputs"]}>
-          <Input
-            name="name"
+          <Select
             placeholder={t("pages.storage.table.headings.name")}
-            value={String(productData.name)}
-            onChange={handleChange}
-          />
+            onChange={handleNameChange}
+          >
+            {productsCategories &&
+              productsCategories.map((category: any) => (
+                <option value={category.id} key={category.id}>
+                  {category.name}
+                </option>
+              ))}
+          </Select>
           <Input
             name="dimensions"
             placeholder={t("pages.storage.table.headings.dimensions")}

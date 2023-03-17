@@ -96,10 +96,16 @@ export const OrderCreate = ({ clients, destinations, products }: any) => {
 
   const handlePostOrder = () => {
     const numberedProducts = newProducts.map((product) => ({
-      productId: Number(product.productId),
+      productId: product.productId,
       quantity: Number(product.quantity),
       price: Number(product.price),
     }));
+    console.log();
+    console.log({
+      clientId: orderData.clientId,
+      destinationId: orderData.destinationId,
+      products: numberedProducts,
+    });
     postOrder({
       clientId: orderData.clientId,
       destinationId: orderData.destinationId,
@@ -109,7 +115,7 @@ export const OrderCreate = ({ clients, destinations, products }: any) => {
 
   useEffect(() => {
     if (isSuccess) {
-      router.push("/");
+      router.push("/orders");
     }
   }, [router, isSuccess]);
 
@@ -171,7 +177,9 @@ export const OrderCreate = ({ clients, destinations, products }: any) => {
               products.map(
                 (product: {
                   id: string | null | undefined;
-                  name: string;
+                  category: {
+                    name: string;
+                  };
                   dimensions: string;
                 }) => (
                   <option
@@ -179,7 +187,7 @@ export const OrderCreate = ({ clients, destinations, products }: any) => {
                     key={product.id}
                     selected={product.id === newProducts[index].productId}
                   >
-                    {product.name + " " + product.dimensions}
+                    {product.category.name + " " + product.dimensions}
                   </option>
                 )
               )}

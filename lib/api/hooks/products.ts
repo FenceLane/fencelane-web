@@ -11,6 +11,15 @@ export const useGetProducts = () => {
   return mutation;
 };
 
+export const useGetProductsCategories = () => {
+  const mutation = useQuery({
+    queryFn: () => apiClient.products.getProductsCategories(),
+    queryKey: [QUERY_KEY.PRODUCTS_CATEGORIES],
+  });
+
+  return mutation;
+};
+
 export const usePostProduct = (onSuccess: () => void) => {
   const mutation = useMutation({
     mutationFn: apiClient.products.postProduct,
