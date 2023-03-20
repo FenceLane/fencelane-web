@@ -19,6 +19,7 @@ export const QUERY_KEY = {
   PRODUCTS: "products",
   PRODUCTS_CATEGORIES: "products/categories",
   ORDERS: "orders",
+  ORDER: "order",
   CLIENTS: "clients",
   DESTINATIONS: "destinations",
 };

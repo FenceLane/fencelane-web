@@ -9,7 +9,7 @@ import Link from "next/link";
 // import styles from "./Orders.module.scss";
 
 interface OrderProps {
-  orders: OrderInfo;
+  orders: OrderInfo[];
 }
 
 export const Orders = ({ orders }: OrderProps) => {
@@ -40,7 +40,7 @@ export const Orders = ({ orders }: OrderProps) => {
           </Link>
         </Button>
       </Flex>
-      {Object.values(orders)[0].map((order: any) => (
+      {orders.map((order) => (
         <OrdersRow key={order.id} orderData={order} />
       ))}
       <OrderAddModal

@@ -6,7 +6,11 @@ import { mapAxiosErrorToLabel } from "../../../lib/server/BackendError/BackendEr
 import { LoadingAnimation } from "../../LoadingAnimation/LoadingAnimation";
 import { OrderDetails } from "./OrderDetails/OrderDetails";
 
-export const OrderDetailsWrapper = ({ id }: any) => {
+interface OrderDetailsWrapperProps {
+  id: string;
+}
+
+export const OrderDetailsWrapper = ({ id }: OrderDetailsWrapperProps) => {
   const { t } = useContent("errors.backendErrorLabel");
   const { isError, error, isLoading, data } = useGetOrder(id);
 
@@ -21,6 +25,5 @@ export const OrderDetailsWrapper = ({ id }: any) => {
   if (isError) {
     return <p>{t(mapAxiosErrorToLabel(error))}</p>;
   }
-  console.log(isLoading);
-  return <OrderDetails orderData={data.data.data} />;
+  return <OrderDetails orderData={data} />;
 };

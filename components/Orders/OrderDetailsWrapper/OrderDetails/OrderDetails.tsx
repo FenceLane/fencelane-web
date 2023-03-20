@@ -5,7 +5,7 @@ import { OrderInfo } from "../../../../lib/types";
 import styles from "./OrderDetails.module.scss";
 
 interface OrderDetailsProps {
-  orderData: OrderInfo["data"];
+  orderData: OrderInfo;
 }
 const statusColor = (status: string) => {
   switch (status) {
@@ -25,7 +25,6 @@ const statusColor = (status: string) => {
 };
 export const OrderDetails = ({ orderData }: OrderDetailsProps) => {
   const { t } = useContent();
-  console.log(orderData.id);
   const id = orderData.id
     .toString()
     .padStart(5 - orderData.id.toString().length, "0");

@@ -14,7 +14,7 @@ export const useGetOrders = () => {
 export const useGetOrder = (id: String) => {
   const mutation = useQuery({
     queryFn: () => apiClient.orders.getOrder(id),
-    queryKey: [QUERY_KEY.ORDERS],
+    queryKey: [QUERY_KEY.ORDER, id],
   });
 
   return mutation;

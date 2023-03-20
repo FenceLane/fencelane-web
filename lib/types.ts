@@ -25,41 +25,39 @@ export interface CategoryInfo {
 }
 
 export interface OrderInfo {
-  data: {
-    id: number;
-    clientId: string;
-    destinationId: string;
-    date: Date;
-    status: ORDER_STATUS;
-    files: string[];
-    createdAt: Date;
-    updatedAt: Date;
-    client: {
-      id: string;
-      name: string;
-      shortName: string;
-      email: string;
-      phone: string;
-    };
-    destination: {
-      id: string;
-      country: string;
-      address: string;
-      postalCode: string;
-      city: string;
-    };
-    products: [
-      {
-        id: string;
-        orderId: number;
-        productId: string;
-        quantity: number;
-        price: string;
-        createdAt: Date;
-        updatedAt: Date;
-      }
-    ];
+  id: number;
+  clientId: string;
+  destinationId: string;
+  date: Date;
+  status: ORDER_STATUS;
+  files: string[];
+  createdAt: Date;
+  updatedAt: Date;
+  client: {
+    id: string;
+    name: string;
+    shortName: string;
+    email: string;
+    phone: string;
   };
+  destination: {
+    id: string;
+    country: string;
+    address: string;
+    postalCode: string;
+    city: string;
+  };
+  products: [
+    {
+      id: string;
+      orderId: number;
+      productId: string;
+      quantity: number;
+      price: string;
+      createdAt: Date;
+      updatedAt: Date;
+    }
+  ];
 }
 
 export enum USER_ROLE {

@@ -1,6 +1,6 @@
 import axios from "axios";
 import { ClientConfig } from "../AppConfig/ClientConfig";
-import { ProductInfo, USER_ROLE } from "../types";
+import { OrderInfo, ProductInfo, USER_ROLE } from "../types";
 import https from "https";
 import { ProductDataCreate, ProductDataUpdate } from "../schema/productData";
 
@@ -110,16 +110,23 @@ const editProduct = async ({
   return axiosInstance.put(apiPath(`products/${id}`), data);
 };
 
-const getOrders = async (options?: { authCookie: string }) => {
-  const { data } = await axiosInstance.get(apiPath("orders"), {
+const getOrders = async (options?: {
+  authCookie: string;
+}): Promise<OrderInfo[]> => {
+  const {
+    data: { data },
+  } = await axiosInstance.get(apiPath("orders"), {
     headers: { cookie: options?.authCookie },
   });
 
   return data;
 };
 
-const getOrder = async (id: String) => {
-  return axiosInstance.get(apiPath(`orders/${id}`));
+const getOrder = async (id: String): Promise<OrderInfo> => {
+  const {
+    data: { data },
+  } = await axiosInstance.get(apiPath(`orders/${id}`));
+  return data;
 };
 
 const postOrder = async (data: any) => {
