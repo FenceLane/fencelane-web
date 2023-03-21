@@ -25,7 +25,10 @@ export const usePostOrder = (onSuccess: () => void) => {
     mutationFn: apiClient.orders.postOrder,
     onSuccess: () => {
       onSuccess();
-      queryClient.invalidateQueries([QUERY_KEY.ORDERS, QUERY_KEY.PRODUCTS]);
+      return Promise.all([
+        queryClient.invalidateQueries({ queryKey: [QUERY_KEY.ORDERS] }),
+        queryClient.invalidateQueries({ queryKey: [QUERY_KEY.PRODUCTS] }),
+      ]);
     },
   });
 

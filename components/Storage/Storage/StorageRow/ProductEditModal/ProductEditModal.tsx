@@ -61,7 +61,7 @@ export const ProductEditModal = ({
     const {
       dimensions,
       itemsPerPackage,
-      name,
+      category,
       stock,
       variant,
       volumePerPackage,
@@ -72,7 +72,7 @@ export const ProductEditModal = ({
       data: {
         dimensions,
         itemsPerPackage: Number(itemsPerPackage),
-        name,
+        categoryId: category.id,
         stock: Number(stock),
         variant: variant,
         volumePerPackage: Number(volumePerPackage),
@@ -106,8 +106,8 @@ export const ProductEditModal = ({
         <ModalBody className={styles["modal-inputs"]}>
           <label>{t("pages.storage.table.headings.name")}</label>
           <Input
-            name="name"
-            value={String(productData.name)}
+            name="categoryId"
+            value={String(productData.category.name)}
             onChange={handleChange}
           />
           <label>{t("pages.storage.table.headings.dimensions")}</label>
