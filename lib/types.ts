@@ -61,7 +61,7 @@ export interface OrderInfo {
   statusHistory: [
     {
       id: string;
-      status: string;
+      status: ORDER_STATUS;
       date: Date;
       creatorId: string;
       orderId: number;

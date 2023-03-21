@@ -2,6 +2,7 @@
   background-color: white;
   width: 100%;
   min-height: 100%;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.15);
 }
 .order-container {
   width: 100%;
@@ -12,7 +13,6 @@
   font-size: 15px;
   flex-direction: row;
   gap: 20px;
-  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.15);
   position: relative;
 }
 .left,
@@ -21,10 +21,10 @@
   width: 50%;
 }
 .left {
-  padding: 20px 0 20px 40px;
+  padding: 0 0 20px 40px;
 }
 .right {
-  padding: 20px 40px 20px 0;
+  padding: 0 40px 20px 0;
 }
 .text-box {
   margin-bottom: 10px;
@@ -51,6 +51,23 @@
 .details-link {
   font-size: 13px;
   color: var(--font-gray);
+}
+.order-history div:nth-child(2) {
+  font-weight: 600;
+  color: black;
+}
+.order-history div p:first-child {
+  text-transform: uppercase;
+}
+.order-history div p:first-child::before {
+  content: "> ";
+}
+.spec-table th,
+.spec-table td,
+.file-table th,
+.file-table td {
+  text-align: center;
+  font-size: 10px;
 }
 
 @media only screen and (min-width: 768px) {
