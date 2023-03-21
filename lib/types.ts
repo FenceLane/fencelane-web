@@ -58,6 +58,15 @@ export interface OrderInfo {
       updatedAt: Date;
     }
   ];
+  statusHistory: [
+    {
+      id: string;
+      status: string;
+      date: Date;
+      creatorId: string;
+      orderId: number;
+    }
+  ];
 }
 
 export enum USER_ROLE {

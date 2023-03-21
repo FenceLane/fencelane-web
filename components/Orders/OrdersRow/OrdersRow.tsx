@@ -7,7 +7,7 @@ import { OrderInfo } from "../../../lib/types";
 import styles from "./OrdersRow.module.scss";
 
 interface OrderDataProps {
-  orderData: OrderInfo["data"];
+  orderData: OrderInfo;
 }
 const statusColor = (status: string) => {
   switch (status) {
@@ -26,7 +26,7 @@ const statusColor = (status: string) => {
   }
 };
 
-export const OrdersRow = ({ orderData }: any) => {
+export const OrdersRow = ({ orderData }: OrderDataProps) => {
   const { t } = useContent();
 
   const date = new Date(orderData.createdAt);
