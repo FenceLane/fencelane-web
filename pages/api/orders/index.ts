@@ -84,7 +84,9 @@ export default withApiMethods({
       include: {
         client: true,
         destination: true,
-        statusHistory: { include: { creator: true } },
+        statusHistory: {
+          include: { creator: { select: { name: true, role: true } } },
+        },
         products: { include: { product: { include: { category: true } } } },
       },
     });
