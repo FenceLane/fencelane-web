@@ -99,9 +99,10 @@ export enum PRODUCT_VARIANT {
 }
 
 export enum ORDER_STATUS {
-  CREATED = "created",
-  PREPARING = "preparing",
-  PACKED = "packed",
-  DELIVERY = "delivery",
-  FINISHED = "finished",
+  ORDER_CREATED = "order created",
+  RECEIVED_IN_STORAGE = "received in storage",
+  DRIED = "dried",
+  IMPREGNATED = "impregnated",
+  SENT = "sent",
+  DELIVERED = "delivered",
 }

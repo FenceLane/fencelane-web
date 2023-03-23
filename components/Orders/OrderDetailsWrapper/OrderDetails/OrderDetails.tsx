@@ -24,16 +24,18 @@ interface OrderDetailsProps {
 }
 const statusColor = (status: string) => {
   switch (status) {
-    case "created":
+    case "order created":
       return "#811081";
-    case "preparing":
+    case "received in storage":
       return "#805AD5";
-    case "packed":
+    case "dried":
       return "red";
-    case "delivery":
+    case "impregnated":
       return "#C7BB52";
-    case "finished":
+    case "sent":
       return "#38A169";
+    case "delivered":
+      return "#00A1E9";
     default:
       return "#ededed";
   }
@@ -140,9 +142,10 @@ export const OrderDetails = ({ orderData }: OrderDetailsProps) => {
             {[...orderData.statusHistory].reverse().map((status) => (
               <Flex key={status.id} flexDir="column" mb="10px" color="grey">
                 <Text>{t(`pages.orders.status.${status.status}`)}</Text>
-                <Text>{`${displayDate(
-                  status.date
-                )} | ${status.creatorId.substring(0, 5)}`}</Text>
+                <Text>{`${displayDate(status.date).substring(
+                  0,
+                  displayDate(status.date).length - 5
+                )} | ${status.creator.name}`}</Text>
               </Flex>
             ))}
           </Flex>

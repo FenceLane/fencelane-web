@@ -36,8 +36,6 @@ export const OrderCreate = ({ clients, destinations, products }: any) => {
 
   const [orderData, setOrderData] = useState(initialOrderData);
 
-  const [errorAlert, setErrorAlert] = useState(false);
-
   const {
     mutate: postOrder,
     error,
@@ -100,12 +98,12 @@ export const OrderCreate = ({ clients, destinations, products }: any) => {
       quantity: Number(product.quantity),
       price: Number(product.price),
     }));
-    console.log();
-    console.log({
-      clientId: orderData.clientId,
-      destinationId: orderData.destinationId,
-      products: numberedProducts,
-    });
+    // console.log();
+    // console.log({
+    //   clientId: orderData.clientId,
+    //   destinationId: orderData.destinationId,
+    //   products: numberedProducts,
+    // });
     postOrder({
       clientId: orderData.clientId,
       destinationId: orderData.destinationId,

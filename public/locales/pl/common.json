@@ -186,11 +186,12 @@
         "new": "Nowe"
       },
       "status": {
-        "created": "Utworzono zamówienie",
-        "preparing": "W przygotowaniu",
-        "packed": "Zapakowane",
-        "delivery": "W drodze",
-        "finished": "Dostarczono"
+        "order created": "Utworzono zamówienie",
+        "received in storage": "Przyjęto na magazynie",
+        "dried": "Wysuszono",
+        "impregnated": "Nasycono",
+        "sent": "Wysłano",
+        "delivered": "Dostarczono"
       }
     }
   },
