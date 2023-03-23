@@ -23,7 +23,7 @@ export default withApiMethods({
       include: {
         client: true,
         destination: true,
-        products: true,
+        products: { include: { product: { include: { category: true } } } },
         statusHistory: true,
       },
     });
