@@ -138,7 +138,7 @@ export const ChangeStatusModal = ({
               onClick={handleUpdateStatus}
               mr={3}
             >
-              {t("pages.storage.buttons.add")}
+              Zmień
             </Button>
             <Button colorScheme="red" onClick={handleModalClose}>
               {t("pages.storage.buttons.cancel")}

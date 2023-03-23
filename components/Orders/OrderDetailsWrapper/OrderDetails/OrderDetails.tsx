@@ -17,7 +17,7 @@ import {
   Tbody,
 } from "@chakra-ui/react";
 import NextLink from "next/link";
-import React from "react";
+import React, { useState } from "react";
 import { useContent } from "../../../../lib/hooks/useContent";
 import { OrderInfo } from "../../../../lib/types";
 import { ChangeStatusModal } from "./ChangeStatusModal/ChangeStatusModal";
@@ -46,6 +46,8 @@ const statusColor = (status: string) => {
 };
 export const OrderDetails = ({ orderData }: OrderDetailsProps) => {
   const { t } = useContent();
+
+  const [specType, setSpecType] = useState("pieces");
 
   const {
     isOpen: isStatusChangeOpen,
@@ -83,6 +85,10 @@ export const OrderDetails = ({ orderData }: OrderDetailsProps) => {
       " | " +
       days[date.getDay()].substring(0, 3)
     );
+  };
+
+  const handleSpecChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setSpecType(e.target.value);
   };
 
   return (
@@ -178,9 +184,18 @@ export const OrderDetails = ({ orderData }: OrderDetailsProps) => {
         <Heading size="sm" mb="10px" ml="40px">
           SPECYFIKACJA
         </Heading>
-        <Select w="120px" mr="40px" bg="var(--font-gray)" color="white">
-          <option>SZTUKI</option>
-          <option>PAKIETY</option>
+        <Select
+          w="120px"
+          mr="40px"
+          color="black"
+          onChange={handleSpecChange}
+          value={specType}
+        >
+          <option value="pieces">SZTUKI</option>
+          {/* itemsPerPackage * stock ale w tym przypadku razy quantity*/}
+          <option value="packages">PACZKI</option>
+          <option value="m3">M3</option>
+          {/* tu chyba chodzi o volumePerPackage razy quantity */}
         </Select>
       </Flex>
       <Table className={styles["spec-table"]}>
@@ -198,7 +213,16 @@ export const OrderDetails = ({ orderData }: OrderDetailsProps) => {
               <Tr key={product.id}>
                 <Td>{product.product.category.name}</Td>
                 <Td>{product.product.dimensions}</Td>
-                <Td>{product.quantity}</Td>
+                {specType == "pieces" && (
+                  <Td>{product.quantity * product.product.itemsPerPackage}</Td>
+                )}
+                {specType == "packages" && <Td>{product.quantity}</Td>}
+                {specType == "m3" && (
+                  <Td>
+                    {product.quantity *
+                      Number(product.product.volumePerPackage)}
+                  </Td>
+                )}
                 <Td>{product.price}</Td>
               </Tr>
             ))}
