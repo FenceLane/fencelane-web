@@ -38,7 +38,10 @@ export default withApiMethods({
               ...orderData,
               products: { createMany: { data: requestedProducts } },
               statusHistory: {
-                create: { status: ORDER_STATUS.CREATED, creatorId: creator.id },
+                create: {
+                  status: ORDER_STATUS.ORDER_CREATED,
+                  creatorId: creator.id,
+                },
               },
               creatorId: creator.id,
             },

@@ -29,7 +29,6 @@ export interface OrderInfo {
   clientId: string;
   destinationId: string;
   date: Date;
-  status: ORDER_STATUS;
   files: string[];
   createdAt: Date;
   updatedAt: Date;

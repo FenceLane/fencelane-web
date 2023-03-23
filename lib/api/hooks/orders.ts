@@ -52,3 +52,15 @@ export const useGetDestinations = () => {
 
   return mutation;
 };
+
+export const useUpdateStatus = (onSuccess: () => void) => {
+  const mutation = useMutation({
+    mutationFn: apiClient.orders.updateStatus,
+    onSuccess: () => {
+      onSuccess();
+      queryClient.invalidateQueries({ queryKey: [QUERY_KEY.STATUS] });
+    },
+  });
+
+  return mutation;
+};

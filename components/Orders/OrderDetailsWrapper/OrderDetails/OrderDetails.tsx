@@ -12,11 +12,15 @@ import {
   Td,
   IconButton,
   Link,
+  useDisclosure,
+  Thead,
+  Tbody,
 } from "@chakra-ui/react";
 import NextLink from "next/link";
 import React from "react";
 import { useContent } from "../../../../lib/hooks/useContent";
 import { OrderInfo } from "../../../../lib/types";
+import { ChangeStatusModal } from "./ChangeStatusModal/ChangeStatusModal";
 import styles from "./OrderDetails.module.scss";
 
 interface OrderDetailsProps {
@@ -42,11 +46,20 @@ const statusColor = (status: string) => {
 };
 export const OrderDetails = ({ orderData }: OrderDetailsProps) => {
   const { t } = useContent();
+
+  const {
+    isOpen: isStatusChangeOpen,
+    onOpen: onStatusChangeOpen,
+    onClose: onStatusChangeClose,
+  } = useDisclosure();
+
   const id = orderData.id
     .toString()
     .padStart(5 - orderData.id.toString().length, "0");
+
   const currentStatus =
     orderData.statusHistory[orderData.statusHistory.length - 1].status;
+
   const days = [
     t("days.monday"),
     t("days.tuesday"),
@@ -150,7 +163,12 @@ export const OrderDetails = ({ orderData }: OrderDetailsProps) => {
             ))}
           </Flex>
           <Flex>
-            <Button color="white" bg="var(--button-grey)" fontWeight="400">
+            <Button
+              color="white"
+              bg="var(--button-grey)"
+              fontWeight="400"
+              onClick={onStatusChangeOpen}
+            >
               Zmień status
             </Button>
           </Flex>
@@ -166,21 +184,25 @@ export const OrderDetails = ({ orderData }: OrderDetailsProps) => {
         </Select>
       </Flex>
       <Table className={styles["spec-table"]}>
-        <Tr>
-          <Th>RODZAJ</Th>
-          <Th>WYMIAR</Th>
-          <Th>ILOŚĆ</Th>
-          <Th>CENA</Th>
-        </Tr>
-        {orderData &&
-          orderData.products.map((product) => (
-            <Tr key={product.id}>
-              <Td>{product.product.category.name}</Td>
-              <Td>{product.product.dimensions}</Td>
-              <Td>{product.quantity}</Td>
-              <Td>{product.price}</Td>
-            </Tr>
-          ))}
+        <Thead>
+          <Tr>
+            <Th>RODZAJ</Th>
+            <Th>WYMIAR</Th>
+            <Th>ILOŚĆ</Th>
+            <Th>CENA</Th>
+          </Tr>
+        </Thead>
+        <Tbody>
+          {orderData &&
+            orderData.products.map((product) => (
+              <Tr key={product.id}>
+                <Td>{product.product.category.name}</Td>
+                <Td>{product.product.dimensions}</Td>
+                <Td>{product.quantity}</Td>
+                <Td>{product.price}</Td>
+              </Tr>
+            ))}
+        </Tbody>
       </Table>
       <Flex justifyContent="space-around" mt="10px">
         <Button color="white" bg="var(--button-orange)" fontWeight="400">
@@ -204,16 +226,26 @@ export const OrderDetails = ({ orderData }: OrderDetailsProps) => {
         </Button>
       </Flex>
       <Table className={styles["file-table"]}>
-        <Tr>
-          <Th>PLIK</Th>
-          <Th>POBIERZ</Th>
-        </Tr>
+        <Thead>
+          <Tr>
+            <Th>PLIK</Th>
+            <Th>POBIERZ</Th>
+          </Tr>
+        </Thead>
       </Table>
       <Flex mr="20px" justifyContent="flex-end" m="20px 20px 20px 0px">
         <Button bg="var(--button-green)" color="white" fontWeight="400">
           POBIERZ WSZYSTKIE
         </Button>
       </Flex>
+      <ChangeStatusModal
+        id={orderData.id}
+        onClose={onStatusChangeClose}
+        isOpen={isStatusChangeOpen}
+        oldStatus={
+          orderData.statusHistory[orderData.statusHistory.length - 1].status
+        }
+      />
     </Flex>
   );
 };

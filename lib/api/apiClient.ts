@@ -149,6 +149,10 @@ const getDestinations = async (options?: { authCookie: string }) => {
   return data;
 };
 
+const updateStatus = async ({ data, id }: any) => {
+  return axiosInstance.post(apiPath(`orders/${id}/statuses`), data);
+};
+
 export const apiClient = {
   auth: {
     postLogin,
@@ -172,5 +176,6 @@ export const apiClient = {
     postOrder,
     getClients,
     getDestinations,
+    updateStatus,
   },
 };

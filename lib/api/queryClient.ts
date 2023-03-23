@@ -22,4 +22,5 @@ export const QUERY_KEY = {
   ORDER: "order",
   CLIENTS: "clients",
   DESTINATIONS: "destinations",
+  STATUS: "status",
 };
