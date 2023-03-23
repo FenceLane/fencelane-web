@@ -47,17 +47,31 @@ export interface OrderInfo {
     postalCode: string;
     city: string;
   };
-  products: [
-    {
+  products: {
+    id: string;
+    orderId: number;
+    productId: string;
+    quantity: number;
+    price: string;
+    createdAt: Date;
+    updatedAt: Date;
+    product: {
       id: string;
-      orderId: number;
-      productId: string;
-      quantity: number;
-      price: string;
+      dimensions: string;
+      variant: string;
+      itemsPerPackage: number;
+      volumePerPackage: string;
+      categoryId: string;
+      stock: number;
       createdAt: Date;
       updatedAt: Date;
-    }
-  ];
+      category: {
+        id: string;
+        name: string;
+        color: string;
+      };
+    };
+  }[];
   statusHistory: [
     {
       id: string;
@@ -65,6 +79,10 @@ export interface OrderInfo {
       date: Date;
       creatorId: string;
       orderId: number;
+      creator: {
+        name: string;
+        role: USER_ROLE;
+      };
     }
   ];
 }

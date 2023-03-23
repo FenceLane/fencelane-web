@@ -169,14 +169,15 @@ export const OrderDetails = ({ orderData }: OrderDetailsProps) => {
           <Th>ILOŚĆ</Th>
           <Th>CENA</Th>
         </Tr>
-        {orderData.products.map((product) => (
-          <Tr key={product.id}>
-            <Td>{product.productId}</Td>
-            <Td>{product.productId}</Td>
-            <Td>{product.quantity}</Td>
-            <Td>{product.price}</Td>
-          </Tr>
-        ))}
+        {orderData &&
+          orderData.products.map((product) => (
+            <Tr key={product.id}>
+              <Td>{product.product.category.name}</Td>
+              <Td>{product.product.dimensions}</Td>
+              <Td>{product.quantity}</Td>
+              <Td>{product.price}</Td>
+            </Tr>
+          ))}
       </Table>
       <Flex justifyContent="space-around" mt="10px">
         <Button color="white" bg="var(--button-orange)" fontWeight="400">
