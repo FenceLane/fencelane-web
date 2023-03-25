@@ -3,6 +3,7 @@ import { ClientConfig } from "../AppConfig/ClientConfig";
 import { OrderInfo, ProductInfo, USER_ROLE } from "../types";
 import https from "https";
 import { ProductDataCreate, ProductDataUpdate } from "../schema/productData";
+import { OrderStatusData } from "../schema/orderStatusData";
 
 const axiosInstance = axios.create({
   httpsAgent: new https.Agent({
@@ -122,7 +123,7 @@ const getOrders = async (options?: {
   return data;
 };
 
-const getOrder = async (id: String): Promise<OrderInfo> => {
+const getOrder = async (id: number): Promise<OrderInfo> => {
   const {
     data: { data },
   } = await axiosInstance.get(apiPath(`orders/${id}`));
@@ -149,7 +150,13 @@ const getDestinations = async (options?: { authCookie: string }) => {
   return data;
 };
 
-const updateStatus = async ({ data, id }: any) => {
+const updateStatus = async ({
+  data,
+  id,
+}: {
+  id: number;
+  data: OrderStatusData;
+}) => {
   return axiosInstance.post(apiPath(`orders/${id}/statuses`), data);
 };
 

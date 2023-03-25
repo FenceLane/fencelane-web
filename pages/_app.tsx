@@ -6,6 +6,7 @@ import { QueryClientProvider } from "@tanstack/react-query";
 import { queryClient } from "../lib/api/queryClient";
 import { ToastContainer } from "react-toastify";
 import { LoadingProvider } from "../lib/hooks/loadingContext";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
 const theme = extendTheme({
   fonts: {
@@ -17,6 +18,7 @@ const theme = extendTheme({
 function App({ Component, pageProps }: AppProps) {
   return (
     <QueryClientProvider client={queryClient}>
+      <ReactQueryDevtools initialIsOpen={false} />
       <ChakraProvider theme={theme}>
         <LoadingProvider>
           <ToastContainer position="bottom-right" />

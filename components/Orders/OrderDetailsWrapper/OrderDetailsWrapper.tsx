@@ -7,7 +7,7 @@ import { LoadingAnimation } from "../../LoadingAnimation/LoadingAnimation";
 import { OrderDetails } from "./OrderDetails/OrderDetails";
 
 interface OrderDetailsWrapperProps {
-  id: string;
+  id: number;
 }
 
 export const OrderDetailsWrapper = ({ id }: OrderDetailsWrapperProps) => {
@@ -17,7 +17,7 @@ export const OrderDetailsWrapper = ({ id }: OrderDetailsWrapperProps) => {
   if (isLoading) {
     return (
       <Flex justifyContent="center" alignItems="center" height="100%">
-        <LoadingAnimation></LoadingAnimation>
+        <LoadingAnimation />
       </Flex>
     );
   }

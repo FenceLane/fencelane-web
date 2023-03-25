@@ -16,13 +16,23 @@ import React, { useState } from "react";
 import { useUpdateStatus } from "../../../../../lib/api/hooks/orders";
 import { useContent } from "../../../../../lib/hooks/useContent";
 import { mapAxiosErrorToLabel } from "../../../../../lib/server/BackendError/BackendError";
+import { ORDER_STATUS } from "../../../../../lib/types";
 
 interface ChangeStatusModalProps {
   id: number;
   onClose: Function;
   isOpen: boolean;
-  oldStatus: string;
+  oldStatus: ORDER_STATUS;
 }
+
+const statusLabels = {
+  [ORDER_STATUS.ORDER_CREATED]: "Utworzono zamówienie",
+  [ORDER_STATUS.RECEIVED_IN_STORAGE]: "Przyjęto na magazynie",
+  [ORDER_STATUS.DRIED]: "Wysuszono",
+  [ORDER_STATUS.IMPREGNATED]: "Nasycono",
+  [ORDER_STATUS.SENT]: "Wysłano",
+  [ORDER_STATUS.DELIVERED]: "Dostarczono",
+} as const;
 
 export const ChangeStatusModal = ({
   id,
@@ -32,7 +42,7 @@ export const ChangeStatusModal = ({
 }: ChangeStatusModalProps) => {
   const { t } = useContent();
 
-  const [newStatus, setNewStatus] = useState(oldStatus);
+  const [newStatus, setNewStatus] = useState<ORDER_STATUS>(oldStatus);
 
   const handleModalClose = () => {
     onClose();
@@ -44,28 +54,20 @@ export const ChangeStatusModal = ({
     error,
     isSuccess,
     isLoading,
-  } = useUpdateStatus(handleModalClose);
+  } = useUpdateStatus(id, handleModalClose);
 
   const handleUpdateStatus = () => {
     if (newStatus !== oldStatus) {
-      updateStatus({ id: id, data: { status: newStatus } });
+      updateStatus({ status: newStatus });
     }
   };
 
-  const handleChange = (value: string) => {
+  const handleChange = (value: ORDER_STATUS) => {
     setNewStatus(value);
   };
 
-  const statuses = [
-    "order created",
-    "received in storage",
-    "dried",
-    "impregnated",
-    "sent",
-    "delivered",
-  ];
-
-  const isOptionDisabled = (option: string) => {
+  const isOptionDisabled = (option: ORDER_STATUS) => {
+    const statuses = Object.keys(statusLabels) as ORDER_STATUS[];
     return statuses.indexOf(option) < statuses.indexOf(oldStatus);
   };
 
@@ -78,51 +80,19 @@ export const ChangeStatusModal = ({
           <ModalCloseButton />
           <ModalBody>
             <RadioGroup
-              onChange={(value) => handleChange(value)}
+              onChange={(value: ORDER_STATUS) => handleChange(value)}
               value={newStatus}
             >
               <Stack direction="column">
-                <Radio
-                  value={statuses[0]}
-                  isDisabled={isOptionDisabled(statuses[0])}
-                >
-                  Utworzono zamówienie
-                </Radio>
-
-                <Radio
-                  value={statuses[1]}
-                  isDisabled={isOptionDisabled(statuses[1])}
-                >
-                  Przyjęto na magazynie
-                </Radio>
-
-                <Radio
-                  value={statuses[2]}
-                  isDisabled={isOptionDisabled(statuses[2])}
-                >
-                  Wysuszono
-                </Radio>
-
-                <Radio
-                  value={statuses[3]}
-                  isDisabled={isOptionDisabled(statuses[3])}
-                >
-                  Nasycono
-                </Radio>
-
-                <Radio
-                  value={statuses[4]}
-                  isDisabled={isOptionDisabled(statuses[4])}
-                >
-                  Wysłano
-                </Radio>
-
-                <Radio
-                  value={statuses[5]}
-                  isDisabled={isOptionDisabled(statuses[5])}
-                >
-                  Dostarczono
-                </Radio>
+                {Object.entries(statusLabels).map(([status, label]) => (
+                  <Radio
+                    key={status}
+                    value={status}
+                    isDisabled={isOptionDisabled(status as ORDER_STATUS)}
+                  >
+                    {label}
+                  </Radio>
+                ))}
               </Stack>
             </RadioGroup>
             {!!error && (

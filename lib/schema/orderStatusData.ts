@@ -5,3 +5,5 @@ export const OrderStatusDataSchema = z.object({
   date: z.date().optional(),
   status: z.nativeEnum(ORDER_STATUS),
 });
+
+export type OrderStatusData = z.infer<typeof OrderStatusDataSchema>;

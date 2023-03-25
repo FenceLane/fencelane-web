@@ -1,4 +1,5 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
+import { OrderStatusData } from "../../schema/orderStatusData";
 import { apiClient } from "../apiClient";
 import { queryClient, QUERY_KEY } from "../queryClient";
 
@@ -11,7 +12,7 @@ export const useGetOrders = () => {
   return mutation;
 };
 
-export const useGetOrder = (id: String) => {
+export const useGetOrder = (id: number) => {
   const mutation = useQuery({
     queryFn: () => apiClient.orders.getOrder(id),
     queryKey: [QUERY_KEY.ORDER, id],
@@ -53,12 +54,15 @@ export const useGetDestinations = () => {
   return mutation;
 };
 
-export const useUpdateStatus = (onSuccess: () => void) => {
+export const useUpdateStatus = (orderId: number, onSuccess: () => void) => {
   const mutation = useMutation({
-    mutationFn: apiClient.orders.updateStatus,
+    mutationFn: (data: OrderStatusData) =>
+      apiClient.orders.updateStatus({ id: orderId, data }),
     onSuccess: () => {
       onSuccess();
-      queryClient.invalidateQueries({ queryKey: [QUERY_KEY.STATUS] });
+      return queryClient.invalidateQueries({
+        queryKey: [QUERY_KEY.ORDER, orderId],
+      });
     },
   });
 
