@@ -28,20 +28,10 @@ interface OrderDetailsProps {
 }
 const statusColor = (status: string) => {
   switch (status) {
-    case "order created":
-      return "#811081";
-    case "received in storage":
-      return "#805AD5";
-    case "dried":
-      return "red";
-    case "impregnated":
-      return "#C7BB52";
-    case "sent":
-      return "#38A169";
     case "delivered":
-      return "#00A1E9";
+      return "#339926";
     default:
-      return "#ededed";
+      return "#232ccf";
   }
 };
 export const OrderDetails = ({ orderData }: OrderDetailsProps) => {
@@ -55,9 +45,7 @@ export const OrderDetails = ({ orderData }: OrderDetailsProps) => {
     onClose: onStatusChangeClose,
   } = useDisclosure();
 
-  const id = orderData.id
-    .toString()
-    .padStart(5 - orderData.id.toString().length, "0");
+  const id = orderData.id.toString().padStart(4, "0");
 
   const currentStatus =
     orderData.statusHistory[orderData.statusHistory.length - 1].status;
@@ -192,10 +180,8 @@ export const OrderDetails = ({ orderData }: OrderDetailsProps) => {
           value={specType}
         >
           <option value="pieces">SZTUKI</option>
-          {/* itemsPerPackage * stock ale w tym przypadku razy quantity*/}
           <option value="packages">PACZKI</option>
           <option value="m3">M3</option>
-          {/* tu chyba chodzi o volumePerPackage razy quantity */}
         </Select>
       </Flex>
       <Table className={styles["spec-table"]}>
@@ -211,19 +197,50 @@ export const OrderDetails = ({ orderData }: OrderDetailsProps) => {
           {orderData &&
             orderData.products.map((product) => (
               <Tr key={product.id}>
-                <Td>{product.product.category.name}</Td>
+                <Td fontWeight={500}>
+                  {product.product.category.name}
+                  <br />
+                  {t(
+                    `pages.storage.variants.${String(product.product.variant)}`
+                  )}
+                </Td>
                 <Td>{product.product.dimensions}</Td>
                 {specType == "pieces" && (
-                  <Td>{product.quantity * product.product.itemsPerPackage}</Td>
+                  <>
+                    <Td>
+                      {product.quantity * product.product.itemsPerPackage}
+                    </Td>
+                    <Td>
+                      {(
+                        Number(product.price) /
+                        (product.quantity * product.product.itemsPerPackage)
+                      ).toFixed(2)}
+                    </Td>
+                  </>
                 )}
-                {specType == "packages" && <Td>{product.quantity}</Td>}
+                {specType == "packages" && (
+                  <>
+                    <Td>{product.quantity}</Td>
+                    <Td>
+                      {(Number(product.price) / product.quantity).toFixed(2)}
+                    </Td>
+                  </>
+                )}
                 {specType == "m3" && (
-                  <Td>
-                    {product.quantity *
-                      Number(product.product.volumePerPackage)}
-                  </Td>
+                  <>
+                    <Td>
+                      {product.quantity *
+                        Number(product.product.volumePerPackage)}
+                    </Td>
+                    <Td>
+                      {(
+                        Number(product.price) /
+                        (product.quantity *
+                          Number(product.product.volumePerPackage))
+                      ).toFixed(2)}
+                    </Td>
+                  </>
                 )}
-                <Td>{product.price}</Td>
               </Tr>
             ))}
         </Tbody>

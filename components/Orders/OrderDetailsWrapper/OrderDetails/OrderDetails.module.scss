@@ -67,7 +67,8 @@
 .file-table th,
 .file-table td {
   text-align: center;
-  font-size: 10px;
+  font-size: 12px;
+  padding: 10px 5px;
 }
 
 @media only screen and (min-width: 768px) {
@@ -75,6 +76,35 @@
   .right {
     flex-direction: row;
     justify-content: space-between;
-    margin-right: 50px;
+    gap: 30px;
+    font-size: 15px;
+    width: 100%;
+    margin: 10px 30px;
+    padding: 0;
+  }
+  .order-container {
+    gap: 0px;
+    justify-content: space-between;
+    flex-wrap: wrap;
+  }
+  .spec-table th,
+  .spec-table td,
+  .file-table th,
+  .file-table td {
+    text-align: center;
+    font-size: 15px;
+  }
+}
+@media only screen and (min-width: 1024px) {
+  .left,
+  .right {
+    flex-direction: row;
+    justify-content: space-around;
+    gap: 40px;
+    font-size: 15px;
+    width: 50%;
+  }
+  .order-container {
+    flex-wrap: nowrap;
   }
 }

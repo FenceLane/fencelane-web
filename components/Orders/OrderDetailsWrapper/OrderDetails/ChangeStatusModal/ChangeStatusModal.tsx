@@ -68,7 +68,7 @@ export const ChangeStatusModal = ({
 
   const isOptionDisabled = (option: ORDER_STATUS) => {
     const statuses = Object.keys(statusLabels) as ORDER_STATUS[];
-    return statuses.indexOf(option) < statuses.indexOf(oldStatus);
+    return statuses.indexOf(option) <= statuses.indexOf(oldStatus);
   };
 
   return (

@@ -9,20 +9,13 @@ import styles from "./OrdersRow.module.scss";
 interface OrderDataProps {
   orderData: OrderInfo;
 }
+
 const statusColor = (status: string) => {
   switch (status) {
-    case "created":
-      return "#811081";
-    case "preparing":
-      return "#805AD5";
-    case "packed":
-      return "red";
-    case "delivery":
-      return "#C7BB52";
-    case "finished":
-      return "#38A169";
+    case "delivered":
+      return "#339926";
     default:
-      return "#ededed";
+      return "#232ccf";
   }
 };
 
@@ -38,9 +31,7 @@ export const OrdersRow = ({ orderData }: OrderDataProps) => {
     0
   );
 
-  const id = orderData.id
-    .toString()
-    .padStart(5 - orderData.id.toString().length, "0");
+  const id = orderData.id.toString().padStart(4, "0");
 
   const status =
     orderData.statusHistory[orderData.statusHistory.length - 1].status;

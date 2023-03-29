@@ -147,7 +147,8 @@
           "dimensions": "Wymiary",
           "variant": "Wariant",
           "itemsPerPackage": "Pakowanie",
-          "volumePerPackage": "M3",
+          "volumePerPackage": "M3 w paczce",
+          "m3": "M3",
           "stock": "Ilość pakietów",
           "pieces": "Ilość sztuk"
         }

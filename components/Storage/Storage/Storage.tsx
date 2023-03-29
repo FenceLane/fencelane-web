@@ -69,7 +69,7 @@ export const Storage = ({ products }: StorageProps) => {
               )}
               <Th>{t("pages.storage.table.headings.variant")}</Th>
               <Th>{t("pages.storage.table.headings.itemsPerPackage")}</Th>
-              <Th>{t("pages.storage.table.headings.volumePerPackage")}</Th>
+              <Th>{t("pages.storage.table.headings.m3")}</Th>
               <Th>{t("pages.storage.table.headings.pieces")}</Th>
               <Th>{t("pages.storage.table.headings.stock")}</Th>
               <Th></Th>

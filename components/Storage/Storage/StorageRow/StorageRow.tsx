@@ -14,6 +14,8 @@ interface StorageRowProps {
 }
 
 export const StorageRow = ({ product }: StorageRowProps) => {
+  const m3 = product.volumePerPackage * product.stock;
+
   const pieces = product.itemsPerPackage * product.stock;
 
   const { t } = useContent();
@@ -62,7 +64,7 @@ export const StorageRow = ({ product }: StorageRowProps) => {
         {!isMobile && <Td>{product.dimensions}</Td>}
         <Td>{t(`pages.storage.variants.${String(product.variant)}`)}</Td>
         <Td>{String(product.itemsPerPackage)}</Td>
-        <Td>{String(product.volumePerPackage)}</Td>
+        <Td>{String(m3)}</Td>
         <Td>{String(pieces)}</Td>
         <Td>{String(product.stock)}</Td>
         <Td>
