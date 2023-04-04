@@ -105,16 +105,42 @@ CREATE TABLE "Order" (
 );
 
 -- CreateTable
+CREATE TABLE "TransportCost" (
+    "id" TEXT NOT NULL,
+    "price" DECIMAL(65,30) NOT NULL,
+    "currency" TEXT NOT NULL,
+    "orderId" INTEGER NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "TransportCost_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
 CREATE TABLE "ProductOrder" (
     "id" TEXT NOT NULL,
     "orderId" INTEGER NOT NULL,
     "productId" TEXT NOT NULL,
     "quantity" INTEGER NOT NULL,
     "price" DECIMAL(65,30) NOT NULL,
+    "currency" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
     CONSTRAINT "ProductOrder_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "ProductExpanse" (
+    "id" TEXT NOT NULL,
+    "price" DECIMAL(65,30) NOT NULL,
+    "currency" TEXT NOT NULL,
+    "type" TEXT NOT NULL,
+    "productOrderId" TEXT NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "ProductExpanse_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateIndex
@@ -141,6 +167,9 @@ CREATE UNIQUE INDEX "ProductCategory_color_key" ON "ProductCategory"("color");
 -- CreateIndex
 CREATE UNIQUE INDEX "Product_categoryId_dimensions_variant_itemsPerPackage_key" ON "Product"("categoryId", "dimensions", "variant", "itemsPerPackage");
 
+-- CreateIndex
+CREATE UNIQUE INDEX "TransportCost_orderId_key" ON "TransportCost"("orderId");
+
 -- AddForeignKey
 ALTER TABLE "Session" ADD CONSTRAINT "Session_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
@@ -166,7 +195,13 @@ ALTER TABLE "Order" ADD CONSTRAINT "Order_destinationId_fkey" FOREIGN KEY ("dest
 ALTER TABLE "Order" ADD CONSTRAINT "Order_creatorId_fkey" FOREIGN KEY ("creatorId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
+ALTER TABLE "TransportCost" ADD CONSTRAINT "TransportCost_orderId_fkey" FOREIGN KEY ("orderId") REFERENCES "Order"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
 ALTER TABLE "ProductOrder" ADD CONSTRAINT "ProductOrder_orderId_fkey" FOREIGN KEY ("orderId") REFERENCES "Order"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "ProductOrder" ADD CONSTRAINT "ProductOrder_productId_fkey" FOREIGN KEY ("productId") REFERENCES "Product"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "ProductExpanse" ADD CONSTRAINT "ProductExpanse_productOrderId_fkey" FOREIGN KEY ("productOrderId") REFERENCES "ProductOrder"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
