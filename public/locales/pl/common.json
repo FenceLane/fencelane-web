@@ -48,7 +48,8 @@
       "product-category-already-exists": "Podana kategoria produktu już istnieje!",
       "product-category-does-not-exist": "Kategoria produktu o podanym id nie istnieje!",
       "product-does-not-exist": "Produkt o podanym id nie istnieje!",
-      "cannot-delete-product-category-with-products": "Nie można usunąć kategorii produktu, która ma produkty!"
+      "cannot-delete-product-category-with-products": "Nie można usunąć kategorii produktu, która ma produkty!",
+      "expanse-does-not-exist": "Koszt o podanym id nie istnieje!"
     }
   },
   "success": {

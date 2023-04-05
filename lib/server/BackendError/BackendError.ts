@@ -17,6 +17,7 @@ export const BackendErrorLabel = {
   DESTINATION_DOES_NOT_EXIST: "destination-does-not-exist",
   UNAUTHORIZED: "unauthorized",
   ORDER_DOES_NOT_EXIST: "order-does-not-exist",
+  EXPANSE_DOES_NOT_EXIST: "expanse-does-not-exist",
   PRODUCT_ORDER_DOES_NOT_EXIST: "product-order-does-not-exist",
   PRODUCT_DOES_NOT_EXIST: "product-does-not-exist",
   PRODUCT_CATEGORY_DOES_NOT_EXIST: "product-category-does-not-exist",

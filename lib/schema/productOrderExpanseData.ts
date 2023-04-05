@@ -7,3 +7,6 @@ export const ProductOrderExpanseDataSchema = z.object({
   type: z.nativeEnum(PRODUCT_EXPANSE),
   productOrderId: z.string().min(1),
 });
+
+export const ProductOrderExpanseDataUpdateSchema =
+  ProductOrderExpanseDataSchema.omit({ productOrderId: true }).partial();

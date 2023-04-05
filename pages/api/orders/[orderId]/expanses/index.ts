@@ -60,7 +60,13 @@ export default withApiMethods({
 
     const orderExpanses = await prismaClient.productExpanse.findMany({
       where: { productOrder: { orderId: Number(orderId) } },
-      select: { price: true, currency: true, type: true },
+      select: {
+        id: true,
+        price: true,
+        currency: true,
+        type: true,
+        productOrderId: true,
+      },
     });
 
     return res
