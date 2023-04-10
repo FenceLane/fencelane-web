@@ -5,4 +5,5 @@ export const ProductOrderDataSchema = z.object({
   productId: z.string().min(1),
   quantity: z.number().min(0),
   price: z.number().min(0),
+  currency: z.string().min(1),
 });

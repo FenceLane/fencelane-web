@@ -14,6 +14,7 @@ import { withValidatedJSONRequestBody } from "../../../../lib/server/middlewares
 export default withApiMethods({
   GET: withApiAuth(async (req, res) => {
     const { orderId } = req.query;
+
     if (typeof orderId !== "string") {
       throw Error('"orderId" was not passed in dynamic api path.');
     }
@@ -35,7 +36,17 @@ export default withApiMethods({
       });
     }
 
-    return res.status(BackendResponseStatusCode.SUCCESS).send({ data: order });
+    const orderResponse = {
+      ...order,
+      products: order.products.map(({ id, ...product }) => ({
+        ...product,
+        productOrderId: id,
+      })),
+    };
+
+    return res
+      .status(BackendResponseStatusCode.SUCCESS)
+      .send({ data: orderResponse });
   }),
 
   PUT: withApiAuth(

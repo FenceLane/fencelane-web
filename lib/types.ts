@@ -42,3 +42,11 @@ export enum ORDER_STATUS {
   DELIVERY = "delivery",
   FINISHED = "finished",
 }
+
+export enum PRODUCT_EXPANSE {
+  COMMODITY = "commodity", //towar
+  SATURATION = "saturation", //nasycanie
+  WOOD_FINISHING = "wood_finishing", //impregnacja
+  MARKETER = "marketer", //handlowiec
+  OTHER = "other", //inne
+}
