@@ -54,9 +54,17 @@ export default withApiMethods({
             },
           });
 
+          const orderResponse = {
+            ...createdOrder,
+            products: createdOrder.products.map(({ id, ...product }) => ({
+              ...product,
+              productOrderId: id,
+            })),
+          };
+
           return res
             .status(BackendResponseStatusCode.SUCCESS)
-            .send({ data: createdOrder });
+            .send({ data: orderResponse });
         });
       } catch (error) {
         if (error instanceof PrismaClientKnownRequestError) {
@@ -87,14 +95,28 @@ export default withApiMethods({
       include: {
         client: true,
         destination: true,
-        statusHistory: {
-          include: { creator: { select: { name: true, role: true } } },
+        statusHistory: true,
+        products: {
+          select: {
+            productId: true,
+            quantity: true,
+            price: true,
+            currency: true,
+            id: true,
+          },
         },
-        products: { include: { product: { include: { category: true } } } },
       },
     });
 
-    return res.status(BackendResponseStatusCode.SUCCESS).send({ data: orders });
+    return res.status(BackendResponseStatusCode.SUCCESS).send({
+      data: orders.map((order) => ({
+        ...order,
+        products: order.products.map(({ id, ...product }) => ({
+          ...product,
+          productOrderId: id,
+        })),
+      })),
+    });
   }),
 });
 
