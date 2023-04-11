@@ -6168,6 +6168,11 @@ yocto-queue@^0.1.0:
   resolved "https://registry.npmjs.org/yocto-queue/-/yocto-queue-0.1.0.tgz"
   integrity sha512-rVksvsnNCdJ/ohGc6xgPwyN8eheCxsiLM8mxuE/t/mOVqJewPuO1miLpTHQiRgTKCLexL4MeAFVagts7HmNZ2Q==
 
+zod-form-data@^2.0.1:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/zod-form-data/-/zod-form-data-2.0.1.tgz#b069b76ad8a47e2ee475f691db87db8afa9dd3f2"
+  integrity sha512-4jcsj3vFyFGINLLHEmehfOPKdcw+HqV65RwsV2IdyLHp9wpvGJRVXWg1yY8sq0ASEbQfTVBRtI7LcDGv3Qpj8g==
+
 zod-formik-adapter@1.1.1:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/zod-formik-adapter/-/zod-formik-adapter-1.1.1.tgz#6eb35aea46da84e4bb07a9b07b1070557d0b2bc3"

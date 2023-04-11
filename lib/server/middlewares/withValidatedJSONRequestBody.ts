@@ -9,7 +9,20 @@ import { sendValidationBackendError } from "../BackendError/ValidationBackendErr
 
 export enum CONTENT_TYPE {
   APPLICATION_JSON = "application/json",
+  MULTIPART_FORM_DATA = "multipart/form-data",
 }
+
+const isApplicationJson = (
+  contentTypeHeader: string
+): contentTypeHeader is CONTENT_TYPE.APPLICATION_JSON => {
+  return contentTypeHeader === CONTENT_TYPE.APPLICATION_JSON;
+};
+
+const isMultiPartFormData = (
+  contentTypeHeader: string
+): contentTypeHeader is CONTENT_TYPE.MULTIPART_FORM_DATA => {
+  return contentTypeHeader.includes(CONTENT_TYPE.MULTIPART_FORM_DATA);
+};
 
 interface NextApiRequestExtended<T> extends NextApiRequest {
   parsedBody: T;
@@ -24,10 +37,13 @@ export const withValidatedJSONRequestBody =
     ) => Promise<void>
   ) =>
   async (req: NextApiRequestExtended<T>, res: NextApiResponse) => {
-    const contentTypeHeader = req.headers["content-type"];
+    const contentTypeHeader = req.headers["content-type"] as CONTENT_TYPE;
     if (
       contentTypeHeader &&
-      contentTypeHeader !== CONTENT_TYPE.APPLICATION_JSON
+      !(
+        isApplicationJson(contentTypeHeader) ||
+        isMultiPartFormData(contentTypeHeader)
+      )
     ) {
       return sendBackendError(res, {
         code: BackendResponseStatusCode.BAD_REQUEST,
