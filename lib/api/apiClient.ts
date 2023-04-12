@@ -160,6 +160,13 @@ const updateStatus = async ({
   return axiosInstance.post(apiPath(`orders/${id}/statuses`), data);
 };
 
+const getEurRate = async () => {
+  const { data } = await axiosInstance.get(
+    "https://api.nbp.pl/api/exchangerates/rates/A/EUR/?format=json"
+  );
+  return data.rates[0].mid;
+};
+
 export const apiClient = {
   auth: {
     postLogin,
@@ -184,5 +191,8 @@ export const apiClient = {
     getClients,
     getDestinations,
     updateStatus,
+  },
+  calcs: {
+    getEurRate,
   },
 };

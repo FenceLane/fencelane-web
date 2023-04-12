@@ -4,7 +4,7 @@ import styles from "./CalculationCreator.module.scss";
 
 interface CalculationCreatorProps {
   orderId: number;
-  calculationId: number;
+  calculationId: string;
 }
 
 export const CalculationCreator = ({

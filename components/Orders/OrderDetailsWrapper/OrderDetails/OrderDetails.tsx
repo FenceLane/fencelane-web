@@ -158,6 +158,7 @@ export const OrderDetails = ({ orderData }: OrderDetailsProps) => {
           </Flex>
           <Flex>
             <Button
+              ml="20px"
               color="white"
               bg="var(--button-grey)"
               fontWeight="400"

@@ -6,7 +6,6 @@ import { AddIcon } from "@chakra-ui/icons";
 import { useContent } from "../../lib/hooks/useContent";
 import { OrderAddModal } from "./OrderAddModal/OrderAddModal";
 import Link from "next/link";
-// import styles from "./Orders.module.scss";
 
 interface OrderProps {
   orders: OrderInfo[];

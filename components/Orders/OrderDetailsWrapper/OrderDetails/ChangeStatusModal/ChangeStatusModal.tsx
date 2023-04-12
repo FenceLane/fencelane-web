@@ -79,10 +79,7 @@ export const ChangeStatusModal = ({
           <ModalHeader>Zmiana statusu</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <RadioGroup
-              onChange={(value: ORDER_STATUS) => handleChange(value)}
-              value={newStatus}
-            >
+            <RadioGroup onChange={(value: ORDER_STATUS) => handleChange(value)}>
               <Stack direction="column">
                 {Object.entries(statusLabels).map(([status, label]) => (
                   <Radio
