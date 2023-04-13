@@ -23,4 +23,6 @@ export const QUERY_KEY = {
   CLIENTS: "clients",
   DESTINATIONS: "destinations",
   STATUS: "status",
+  EXPANSES: "expanses",
+  TRANSPORT_COST: "transport/cost",
 };

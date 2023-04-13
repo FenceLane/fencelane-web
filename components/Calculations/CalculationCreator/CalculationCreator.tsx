@@ -4,12 +4,8 @@ import styles from "./CalculationCreator.module.scss";
 
 interface CalculationCreatorProps {
   orderId: number;
-  calculationId: string;
 }
 
-export const CalculationCreator = ({
-  orderId,
-  calculationId,
-}: CalculationCreatorProps) => {
-  return <Box className={styles.container}></Box>;
+export const CalculationCreator = ({ orderId }: CalculationCreatorProps) => {
+  return <Box className={styles.container}>kreator kalkulacji</Box>;
 };

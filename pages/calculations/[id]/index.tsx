@@ -3,7 +3,7 @@ import { withServerSideAuth } from "../../../lib/server/middlewares/withServerSi
 import { withTranslationProps } from "../../../lib/server/middlewares/withTranslationProps";
 import { InferGetServerSidePropsType } from "next";
 import { useRouter } from "next/router";
-import { OrderDetailsWrapper } from "../../../components/Orders/OrderDetailsWrapper/OrderDetailsWrapper";
+import { CalculationWrapper } from "../../../components/CalculationWrapper/CalculationWrapper";
 
 const OrderDetailsPage = ({
   user,
@@ -15,7 +15,7 @@ const OrderDetailsPage = ({
 
   return (
     <Layout user={user}>
-      <OrderDetailsWrapper id={Number(id)} />
+      <CalculationWrapper orderId={Number(id)} />
     </Layout>
   );
 };

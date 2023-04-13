@@ -86,6 +86,25 @@ export interface OrderInfo {
   ];
 }
 
+export interface TransportInfo {
+  id: string;
+  price: string;
+  currency: string;
+  orderId: number;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export interface ExpansesInfo {
+  data: [
+    id: string,
+    price: string,
+    currency: string,
+    type: PRODUCT_EXPANSE,
+    productOrderId: string
+  ];
+}
+
 export enum USER_ROLE {
   ADMIN = 0,
   USER = 1,

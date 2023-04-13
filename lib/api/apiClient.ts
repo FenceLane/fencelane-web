@@ -167,6 +167,19 @@ const getEurRate = async () => {
   return data.rates[0].mid;
 };
 
+const getOrderTransportCost = async (id: number) => {
+  const {
+    data: { data },
+  } = await axiosInstance.get(apiPath(`orders/${id}/transport-cost`));
+  return data;
+};
+const getOrderExpanses = async (id: number) => {
+  const {
+    data: { data },
+  } = await axiosInstance.get(apiPath(`orders/${id}/expanses`));
+  return data;
+};
+
 export const apiClient = {
   auth: {
     postLogin,
@@ -194,5 +207,7 @@ export const apiClient = {
   },
   calcs: {
     getEurRate,
+    getOrderTransportCost,
+    getOrderExpanses,
   },
 };

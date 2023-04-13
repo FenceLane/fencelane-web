@@ -251,7 +251,7 @@ export const OrderDetails = ({ orderData }: OrderDetailsProps) => {
           EDYTUJ
         </Button>
         <Button color="white" bg="var(--button-blue)">
-          KALKULACJA
+          <Link href={`/calculations/${orderData.id}`}>KALKULACJA</Link>
         </Button>
       </Flex>
       <Flex m="40px 0px" justifyContent="space-between" alignItems="center">
