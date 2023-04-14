@@ -164,7 +164,7 @@ const getEurRate = async () => {
   const { data } = await axiosInstance.get(
     "https://api.nbp.pl/api/exchangerates/rates/A/EUR/?format=json"
   );
-  return data.rates[0].mid;
+  return data.rates[0];
 };
 
 const getOrderTransportCost = async (id: number) => {

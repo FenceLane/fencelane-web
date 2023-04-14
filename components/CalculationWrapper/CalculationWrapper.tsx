@@ -5,16 +5,29 @@ import { LoadingAnimation } from "../LoadingAnimation/LoadingAnimation";
 import {
   useGetOrderTransportCost,
   useGetOrderExpanses,
+  useGetEurRate,
 } from "../../lib/api/hooks/calcs";
 import { Calculation } from "../Calculations/Calculation/Calculation";
 import { CalculationCreator } from "../Calculations/CalculationCreator/CalculationCreator";
+import { useGetOrder } from "../../lib/api/hooks/orders";
 
 interface CalculationWrapperProps {
   orderId: number;
+  rateDate: string;
 }
 
-export const CalculationWrapper = ({ orderId }: CalculationWrapperProps) => {
+export const CalculationWrapper = ({
+  orderId,
+  rateDate,
+}: CalculationWrapperProps) => {
   const { t } = useContent("errors.backendErrorLabel");
+
+  const {
+    isError: isOrdersError,
+    error: ordersError,
+    isLoading: isOrdersLoading,
+    data: orderData,
+  } = useGetOrder(orderId);
 
   const {
     isError: isTransportCostError,
@@ -30,7 +43,19 @@ export const CalculationWrapper = ({ orderId }: CalculationWrapperProps) => {
     data: expanses,
   } = useGetOrderExpanses(orderId);
 
-  if (isTransportCostLoading || isExpansesLoading)
+  const {
+    isError: isRateError,
+    error: rateError,
+    isLoading: isRateLoading,
+    data: rate,
+  } = useGetEurRate();
+
+  if (
+    isTransportCostLoading ||
+    isExpansesLoading ||
+    isOrdersLoading ||
+    isRateLoading
+  )
     return (
       <Flex justifyContent="center" alignItems="center" height="100%">
         <LoadingAnimation></LoadingAnimation>
@@ -38,12 +63,15 @@ export const CalculationWrapper = ({ orderId }: CalculationWrapperProps) => {
     );
 
   if (
-    (isTransportCostError &&
+    ((isTransportCostError &&
       mapAxiosErrorToLabel(transportCostError) ===
         "travel-cost-does-not-exist") ||
-    Object.keys(expanses).length === 0
+      Object.keys(expanses).length === 0) &&
+    !isOrdersError
   ) {
-    return <CalculationCreator orderId={orderId} />;
+    return (
+      <CalculationCreator orderId={orderId} orderData={orderData} rate={rate} />
+    );
   }
   console.log(expanses);
   if (isTransportCostError || isExpansesError) {

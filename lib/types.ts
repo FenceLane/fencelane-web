@@ -24,6 +24,32 @@ export interface CategoryInfo {
   color: string;
 }
 
+export interface OrderProductInfo {
+  id: string;
+  orderId: number;
+  productId: string;
+  quantity: number;
+  price: string;
+  createdAt: Date;
+  updatedAt: Date;
+  product: {
+    id: string;
+    dimensions: string;
+    variant: string;
+    itemsPerPackage: number;
+    volumePerPackage: string;
+    categoryId: string;
+    stock: number;
+    createdAt: Date;
+    updatedAt: Date;
+    category: {
+      id: string;
+      name: string;
+      color: string;
+    };
+  };
+}
+
 export interface OrderInfo {
   id: number;
   clientId: string;
@@ -46,31 +72,7 @@ export interface OrderInfo {
     postalCode: string;
     city: string;
   };
-  products: {
-    id: string;
-    orderId: number;
-    productId: string;
-    quantity: number;
-    price: string;
-    createdAt: Date;
-    updatedAt: Date;
-    product: {
-      id: string;
-      dimensions: string;
-      variant: string;
-      itemsPerPackage: number;
-      volumePerPackage: string;
-      categoryId: string;
-      stock: number;
-      createdAt: Date;
-      updatedAt: Date;
-      category: {
-        id: string;
-        name: string;
-        color: string;
-      };
-    };
-  }[];
+  products: OrderProductInfo[];
   statusHistory: [
     {
       id: string;
