@@ -185,7 +185,16 @@
         "client": "Klient",
         "date": "Data",
         "destination": "Destynacja",
-        "details": "Szczegóły"
+        "details": "Szczegóły",
+        "change-status": "Zmień status",
+        "pieces": "Sztuki",
+        "packages": "Paczki",
+        "specification": "Specyfikacja",
+        "calculation": "Kalkulacja",
+        "documents": "Dokumenty",
+        "file": "Plik",
+        "download": "Pobierz",
+        "download-all": "Pobierz wszystkie"
       },
       "buttons": {
         "new": "Nowe"
@@ -197,8 +206,41 @@
         "impregnated": "Nasycono",
         "sent": "Wysłano",
         "delivered": "Dostarczono"
+      },
+      "order-creator": {
+        "order-creator": "Kreator zamówienia",
+        "packages-quantity": "Ilość pakietów"
+      },
+      "spec-table": {
+        "type": "Rodzaj",
+        "dimensions": "Wymiar",
+        "quantity": "Ilość",
+        "price": "Cena"
       }
     }
+  },
+  "buttons": {
+    "add": "Dodaj",
+    "modify": "Modyfikuj",
+    "edit": "Edytuj",
+    "delete": "Usuń",
+    "cancel": "Anuluj",
+    "next": "Dalej",
+    "save": "Zapisz",
+    "confirm": "Zatwierdź",
+    "new": "Nowe"
+  },
+  "main": {
+    "product": "Produkt",
+    "order": "Zamówienie",
+    "status": "Status",
+    "client": "Klient",
+    "date": "Data",
+    "destination": "Destynacja",
+    "details": "Szczegóły",
+    "price": "Cena",
+    "quantity": "Ilość",
+    "history": "Historia"
   },
 
   "days": {

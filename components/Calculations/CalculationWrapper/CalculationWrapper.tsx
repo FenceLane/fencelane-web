@@ -1,15 +1,15 @@
 import { Flex } from "@chakra-ui/react";
-import { useContent } from "../../lib/hooks/useContent";
-import { mapAxiosErrorToLabel } from "../../lib/server/BackendError/BackendError";
-import { LoadingAnimation } from "../LoadingAnimation/LoadingAnimation";
+import { useContent } from "../../../lib/hooks/useContent";
+import { mapAxiosErrorToLabel } from "../../../lib/server/BackendError/BackendError";
+import { LoadingAnimation } from "../../LoadingAnimation/LoadingAnimation";
 import {
   useGetOrderTransportCost,
   useGetOrderExpanses,
   useGetEurRate,
-} from "../../lib/api/hooks/calcs";
-import { Calculation } from "../Calculations/Calculation/Calculation";
-import { CalculationCreator } from "../Calculations/CalculationCreator/CalculationCreator";
-import { useGetOrder } from "../../lib/api/hooks/orders";
+} from "../../../lib/api/hooks/calcs";
+import { Calculation } from "../Calculation/Calculation";
+import { CalculationCreator } from "../CalculationCreator/CalculationCreator";
+import { useGetOrder } from "../../../lib/api/hooks/orders";
 
 interface CalculationWrapperProps {
   orderId: number;

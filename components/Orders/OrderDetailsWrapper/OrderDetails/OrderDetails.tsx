@@ -140,123 +140,127 @@ export const OrderDetails = ({ orderData }: OrderDetailsProps) => {
           </Box>
         </Flex>
       </Flex>
-      <Box>
-        <Flex p="20px 40px" flexDir="row">
-          <Flex flexDir="column" className={styles["order-history"]}>
-            <Heading size="sm" mb="10px">
-              HISTORIA
-            </Heading>
-            {[...orderData.statusHistory].reverse().map((status) => (
-              <Flex key={status.id} flexDir="column" mb="10px" color="grey">
-                <Text>{t(`pages.orders.status.${status.status}`)}</Text>
-                <Text>{`${displayDate(status.date).substring(
-                  0,
-                  displayDate(status.date).length - 5
-                )} | ${status.creator.name}`}</Text>
-              </Flex>
-            ))}
-          </Flex>
-          <Flex>
-            <Button
-              ml="20px"
-              color="white"
-              bg="var(--button-grey)"
-              fontWeight="400"
-              onClick={onStatusChangeOpen}
-            >
-              Zmień status
-            </Button>
-          </Flex>
+      <Flex className={styles["history-container"]} flexDir="row">
+        <Flex flexDir="column" className={styles["order-history"]}>
+          <Heading size="sm" mb="10px">
+            {t("main.history")}
+          </Heading>
+          {[...orderData.statusHistory].reverse().map((status) => (
+            <Flex key={status.id} flexDir="column" mb="10px" color="grey">
+              <Text>{t(`pages.orders.status.${status.status}`)}</Text>
+              <Text>{`${displayDate(status.date).substring(
+                0,
+                displayDate(status.date).length - 5
+              )} | ${status.creator.name}`}</Text>
+            </Flex>
+          ))}
         </Flex>
-      </Box>
-      <Flex justifyContent="space-between" alignItems="center" mt="20px">
-        <Heading size="sm" mb="10px" ml="40px">
-          SPECYFIKACJA
-        </Heading>
-        <Select
-          w="120px"
-          mr="40px"
-          color="black"
-          onChange={handleSpecChange}
-          value={specType}
-        >
-          <option value="pieces">SZTUKI</option>
-          <option value="packages">PACZKI</option>
-          <option value="m3">M3</option>
-        </Select>
+        <Flex>
+          <Button
+            className={styles["change-status-button"]}
+            color="white"
+            bg="var(--button-grey)"
+            fontWeight="400"
+            onClick={onStatusChangeOpen}
+          >
+            {t("pages.orders.order.change-status")}
+          </Button>
+        </Flex>
       </Flex>
-      <Table className={styles["spec-table"]}>
-        <Thead>
-          <Tr>
-            <Th>RODZAJ</Th>
-            <Th>WYMIAR</Th>
-            <Th>ILOŚĆ</Th>
-            <Th>CENA</Th>
-          </Tr>
-        </Thead>
-        <Tbody>
-          {orderData &&
-            orderData.products.map((product) => (
-              <Tr key={product.id}>
-                <Td fontWeight={500}>
-                  {product.product.category.name}
-                  <br />
-                  {t(
-                    `pages.storage.variants.${String(product.product.variant)}`
+      <Box className={styles["spec-container"]}>
+        <Flex justifyContent="space-between" alignItems="center" mt="20px">
+          <Heading className={styles["spec-header"]} size="sm" mb="10px">
+            {t("pages.orders.order.specification")}
+          </Heading>
+          <Select
+            w="120px"
+            mr="40px"
+            color="black"
+            onChange={handleSpecChange}
+            value={specType}
+          >
+            <option value="pieces">{t("pages.orders.order.pieces")}</option>
+            <option value="packages">{t("pages.orders.order.packages")}</option>
+            <option value="m3">M3</option>
+          </Select>
+        </Flex>
+        <Table className={styles["spec-table"]}>
+          <Thead>
+            <Tr>
+              <Th>{t("pages.orders.spec-table.type")}</Th>
+              <Th>{t("pages.orders.spec-table.dimensions")}</Th>
+              <Th>{t("pages.orders.spec-table.quantity")}</Th>
+              <Th>{t("pages.orders.spec-table.price")}</Th>
+            </Tr>
+          </Thead>
+          <Tbody>
+            {orderData &&
+              orderData.products.map((product) => (
+                <Tr key={product.id}>
+                  <Td fontWeight={500}>
+                    {product.product.category.name}
+                    <br />
+                    {t(
+                      `pages.storage.variants.${String(
+                        product.product.variant
+                      )}`
+                    )}
+                  </Td>
+                  <Td>{product.product.dimensions}</Td>
+                  {specType == "pieces" && (
+                    <>
+                      <Td>
+                        {product.quantity * product.product.itemsPerPackage}
+                      </Td>
+                      <Td>
+                        {(
+                          Number(product.price) /
+                          (product.quantity * product.product.itemsPerPackage)
+                        ).toFixed(2)}
+                      </Td>
+                    </>
                   )}
-                </Td>
-                <Td>{product.product.dimensions}</Td>
-                {specType == "pieces" && (
-                  <>
-                    <Td>
-                      {product.quantity * product.product.itemsPerPackage}
-                    </Td>
-                    <Td>
-                      {(
-                        Number(product.price) /
-                        (product.quantity * product.product.itemsPerPackage)
-                      ).toFixed(2)}
-                    </Td>
-                  </>
-                )}
-                {specType == "packages" && (
-                  <>
-                    <Td>{product.quantity}</Td>
-                    <Td>
-                      {(Number(product.price) / product.quantity).toFixed(2)}
-                    </Td>
-                  </>
-                )}
-                {specType == "m3" && (
-                  <>
-                    <Td>
-                      {product.quantity *
-                        Number(product.product.volumePerPackage)}
-                    </Td>
-                    <Td>
-                      {(
-                        Number(product.price) /
-                        (product.quantity *
-                          Number(product.product.volumePerPackage))
-                      ).toFixed(2)}
-                    </Td>
-                  </>
-                )}
-              </Tr>
-            ))}
-        </Tbody>
-      </Table>
+                  {specType == "packages" && (
+                    <>
+                      <Td>{product.quantity}</Td>
+                      <Td>
+                        {(Number(product.price) / product.quantity).toFixed(2)}
+                      </Td>
+                    </>
+                  )}
+                  {specType == "m3" && (
+                    <>
+                      <Td>
+                        {product.quantity *
+                          Number(product.product.volumePerPackage)}
+                      </Td>
+                      <Td>
+                        {(
+                          Number(product.price) /
+                          (product.quantity *
+                            Number(product.product.volumePerPackage))
+                        ).toFixed(2)}
+                      </Td>
+                    </>
+                  )}
+                </Tr>
+              ))}
+          </Tbody>
+        </Table>
+      </Box>
       <Flex justifyContent="space-around" mt="10px">
         <Button color="white" bg="var(--button-orange)" fontWeight="400">
-          EDYTUJ
+          {t("buttons.edit")}
         </Button>
         <Button color="white" bg="var(--button-blue)">
-          <Link href={`/calculations/${orderData.id}`}>KALKULACJA</Link>
+          <Link href={`/calculations/${orderData.id}`}>
+            {t("pages.orders.order.calculation")}
+          </Link>
         </Button>
       </Flex>
       <Flex m="40px 0px" justifyContent="space-between" alignItems="center">
         <Heading size="sm" mb="10px" ml="40px">
-          DOKUMENTY
+          {t("pages.orders.order.documents")}
         </Heading>
         <Button
           color="white"
@@ -264,20 +268,20 @@ export const OrderDetails = ({ orderData }: OrderDetailsProps) => {
           fontWeight="400"
           mr="40px"
         >
-          DODAJ
+          {t("buttons.add")}
         </Button>
       </Flex>
       <Table className={styles["file-table"]}>
         <Thead>
           <Tr>
-            <Th>PLIK</Th>
-            <Th>POBIERZ</Th>
+            <Th>{t("pages.orders.order.file")}</Th>
+            <Th>{t("pages.orders.order.download")}</Th>
           </Tr>
         </Thead>
       </Table>
       <Flex mr="20px" justifyContent="flex-end" m="20px 20px 20px 0px">
         <Button bg="var(--button-green)" color="white" fontWeight="400">
-          POBIERZ WSZYSTKIE
+          {t("pages.orders.order.download-all")}
         </Button>
       </Flex>
       <ChangeStatusModal

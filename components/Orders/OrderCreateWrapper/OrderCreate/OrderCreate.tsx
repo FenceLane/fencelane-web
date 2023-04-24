@@ -7,9 +7,6 @@ import {
   IconButton,
   Input,
   Select,
-  Alert,
-  AlertIcon,
-  AlertTitle,
 } from "@chakra-ui/react";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -38,7 +35,7 @@ export const OrderCreate = ({ clients, destinations, products }: any) => {
     data: rate,
   } = useGetEurRate();
   const router = useRouter();
-  const { t } = useContent("errors.backendErrorLabel");
+  const { t } = useContent();
   const [newProducts, setNewProducts] = useState([initialNewProductsData]);
 
   const [orderData, setOrderData] = useState(initialOrderData);
@@ -122,13 +119,13 @@ export const OrderCreate = ({ clients, destinations, products }: any) => {
   return (
     <>
       <Text color="var(--dark)" fontSize="20px" fontWeight="500" m="10px">
-        Kreator zamówienia
+        {t("pages.orders.order-creator.order-creator")}
       </Text>
-      <label>Klient</label>
+      <label>{t("main.client")}</label>
       <Select
         required
         bg="white"
-        placeholder="Klient"
+        placeholder={t("main.client")}
         mb="20px"
         name="clientId"
         onChange={handleChange}
@@ -139,11 +136,11 @@ export const OrderCreate = ({ clients, destinations, products }: any) => {
           </option>
         ))}
       </Select>
-      <label>Destynacja</label>
+      <label>{t("main.destination")}</label>
       <Select
         required
         bg="white"
-        placeholder="Destynacja"
+        placeholder={t("main.destination")}
         mb="20px"
         name="destinationId"
         onChange={handleChange}
@@ -157,7 +154,9 @@ export const OrderCreate = ({ clients, destinations, products }: any) => {
       {newProducts.map((item, index) => (
         <>
           <Flex justifyContent="space-between" alignItems="center">
-            <label>Produkt {index + 1}</label>
+            <label>
+              {t("main.product")} {index + 1}
+            </label>
             <IconButton
               colorScheme="red"
               aria-label="delete product"
@@ -169,7 +168,7 @@ export const OrderCreate = ({ clients, destinations, products }: any) => {
             required
             bg="white"
             mb="20px"
-            placeholder="Produkt"
+            placeholder={t("main.product")}
             data-index={index}
             onChange={handleProductChange}
           >
@@ -192,7 +191,7 @@ export const OrderCreate = ({ clients, destinations, products }: any) => {
                 )
               )}
           </Select>
-          <label>Ilość pakietów</label>
+          <label>{t("pages.orders.order-creator.packages-quantity")}</label>
           <Input
             required
             value={newProducts[index].quantity}
@@ -200,18 +199,18 @@ export const OrderCreate = ({ clients, destinations, products }: any) => {
             bg="white"
             mb="20px"
             type="number"
-            placeholder="Ilość"
+            placeholder={t("main.quantity")}
             data-index={index}
             onChange={handleProductDetailsChange}
           />
-          <label>Cena</label>
+          <label>{t("main.price")}</label>
           <Input
             value={newProducts[index].price}
             name="price"
             bg="white"
             mb="20px"
             type="number"
-            placeholder="Cena"
+            placeholder={t("main.price")}
             data-index={index}
             onChange={handleProductDetailsChange}
           />
@@ -225,10 +224,10 @@ export const OrderCreate = ({ clients, destinations, products }: any) => {
             onClick={handlePostOrder}
             mr="20px"
           >
-            Zatwierdź
+            {t("buttons.confirm")}
           </Button>
           <Button colorScheme="red">
-            <Link href="/orders">Anuluj</Link>
+            <Link href="/orders">{t("buttons.cancel")}</Link>
           </Button>
         </Box>
         <IconButton
@@ -239,10 +238,9 @@ export const OrderCreate = ({ clients, destinations, products }: any) => {
         ></IconButton>
       </Flex>
       {error && (
-        <Alert status="error">
-          <AlertIcon />
-          <AlertTitle>{t(mapAxiosErrorToLabel(error))}</AlertTitle>
-        </Alert>
+        <Text color="red" fontWeight="600" fontSize="18px">
+          {t(`errors.backendErrorLabel.${mapAxiosErrorToLabel(error)}`)}
+        </Text>
       )}
     </>
   );
