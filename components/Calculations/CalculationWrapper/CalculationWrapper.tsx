@@ -50,12 +50,7 @@ export const CalculationWrapper = ({
     data: rate,
   } = useGetEurRate();
 
-  if (
-    isTransportCostLoading ||
-    isExpansesLoading ||
-    isOrdersLoading ||
-    isRateLoading
-  )
+  if (isExpansesLoading || isOrdersLoading || isRateLoading)
     return (
       <Flex justifyContent="center" alignItems="center" height="100%">
         <LoadingAnimation></LoadingAnimation>

@@ -15,6 +15,7 @@ import {
   useDisclosure,
   Thead,
   Tbody,
+  Input,
 } from "@chakra-ui/react";
 import NextLink from "next/link";
 import React, { useState } from "react";
@@ -38,6 +39,9 @@ export const OrderDetails = ({ orderData }: OrderDetailsProps) => {
   const { t } = useContent();
 
   const [specType, setSpecType] = useState("pieces");
+
+  const [newOrderDetails, setNewOrderDetails] = useState(orderData.products);
+  console.log(newOrderDetails);
 
   const {
     isOpen: isStatusChangeOpen,
@@ -77,6 +81,12 @@ export const OrderDetails = ({ orderData }: OrderDetailsProps) => {
 
   const handleSpecChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setSpecType(e.target.value);
+  };
+
+  const handleSpecValueChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    console.log(e.target.dataset.productId);
+    console.log(value);
   };
 
   return (
@@ -210,36 +220,78 @@ export const OrderDetails = ({ orderData }: OrderDetailsProps) => {
                   {specType == "pieces" && (
                     <>
                       <Td>
-                        {product.quantity * product.product.itemsPerPackage}
+                        <Input
+                          onChange={handleSpecValueChange}
+                          data-unit="pieces"
+                          data-column="quantity"
+                          data-productId={product.id}
+                          defaultValue={
+                            product.quantity * product.product.itemsPerPackage
+                          }
+                        />
                       </Td>
                       <Td>
-                        {(
-                          Number(product.price) /
-                          (product.quantity * product.product.itemsPerPackage)
-                        ).toFixed(2)}
+                        <Input
+                          onChange={handleSpecValueChange}
+                          data-unit="pieces"
+                          data-column="price"
+                          data-productId={product.id}
+                          defaultValue={(
+                            (Number(product.price) *
+                              Number(product.product.volumePerPackage)) /
+                            product.product.itemsPerPackage
+                          ).toFixed(2)}
+                        />
                       </Td>
                     </>
                   )}
                   {specType == "packages" && (
                     <>
-                      <Td>{product.quantity}</Td>
                       <Td>
-                        {(Number(product.price) / product.quantity).toFixed(2)}
+                        <Input
+                          onChange={handleSpecValueChange}
+                          data-unit="packages"
+                          data-column="quantity"
+                          data-productId={product.id}
+                          defaultValue={product.quantity}
+                        />
+                      </Td>
+                      <Td>
+                        <Input
+                          onChange={handleSpecValueChange}
+                          data-unit="packages"
+                          data-column="price"
+                          data-productId={product.id}
+                          defaultValue={
+                            Number(product.price) *
+                            Number(product.product.volumePerPackage)
+                          }
+                        />
                       </Td>
                     </>
                   )}
                   {specType == "m3" && (
                     <>
                       <Td>
-                        {product.quantity *
-                          Number(product.product.volumePerPackage)}
+                        <Input
+                          onChange={handleSpecValueChange}
+                          data-unit="m3"
+                          data-column="quantity"
+                          data-productId={product.id}
+                          defaultValue={
+                            product.quantity *
+                            Number(product.product.volumePerPackage)
+                          }
+                        />
                       </Td>
                       <Td>
-                        {(
-                          Number(product.price) /
-                          (product.quantity *
-                            Number(product.product.volumePerPackage))
-                        ).toFixed(2)}
+                        <Input
+                          onChange={handleSpecValueChange}
+                          data-unit="m3"
+                          data-column="price"
+                          data-productId={product.id}
+                          defaultValue={Number(product.price)}
+                        />
                       </Td>
                     </>
                   )}

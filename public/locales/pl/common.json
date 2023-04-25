@@ -209,7 +209,8 @@
       },
       "order-creator": {
         "order-creator": "Kreator zamówienia",
-        "packages-quantity": "Ilość pakietów"
+        "packages-quantity": "Ilość pakietów",
+        "price-per-m3": "Cena za m3"
       },
       "spec-table": {
         "type": "Rodzaj",

@@ -203,14 +203,14 @@ export const OrderCreate = ({ clients, destinations, products }: any) => {
             data-index={index}
             onChange={handleProductDetailsChange}
           />
-          <label>{t("main.price")}</label>
+          <label>{t("pages.orders.order-creator.price-per-m3")}</label>
           <Input
             value={newProducts[index].price}
             name="price"
             bg="white"
             mb="20px"
             type="number"
-            placeholder={t("main.price")}
+            placeholder={t("pages.orders.order-creator.price-per-m3")}
             data-index={index}
             onChange={handleProductDetailsChange}
           />
