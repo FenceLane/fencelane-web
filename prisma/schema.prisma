@@ -112,6 +112,7 @@ model Order{
   products ProductOrder[]
   creator User @relation(fields: [creatorId], references: [id])
   creatorId String
+  profit Decimal?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
