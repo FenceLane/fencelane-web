@@ -19,7 +19,11 @@ export const CalculationCreator = ({
   orderData,
   rate,
 }: CalculationCreatorProps) => {
-  const eurRate = rate.mid.toFixed(2);
+  const [transportCost, setTransportCost] = useState(0);
+
+  const [expansesList, setExpansesList] = useState([]);
+
+  const [eurRate, setEurRate] = useState(rate.mid.toFixed(2));
 
   const date = new Date(rate.effectiveDate);
 
@@ -38,9 +42,14 @@ export const CalculationCreator = ({
 
   const id = orderId.toString().padStart(4, "0");
 
+  const handleRateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setEurRate(e.target.value);
+  };
+
   const handleNextStep = () => {
     setCurrentProduct((prev) => prev + 1);
   };
+
   const handlePrevStep = () => {
     setCurrentProduct((prev) => prev - 1);
   };
@@ -66,6 +75,9 @@ export const CalculationCreator = ({
       </Flex>
       {currentProduct === 0 && (
         <TransportCost
+          transportCost={transportCost}
+          handleRateChange={handleRateChange}
+          setTransportCost={setTransportCost}
           handleNextStep={handleNextStep}
           rate={eurRate}
           rateDate={rateDate}
@@ -74,6 +86,9 @@ export const CalculationCreator = ({
 
       {currentProduct > 0 && currentProduct <= productsQuantity && (
         <ProductExpanses
+          expansesList={expansesList}
+          setExpansesList={setExpansesList}
+          handleRateChange={handleRateChange}
           productData={orderData.products[currentProduct - 1]}
           handleNextStep={handleNextStep}
           currentProduct={currentProduct}
@@ -84,6 +99,8 @@ export const CalculationCreator = ({
       )}
       {currentProduct > productsQuantity && (
         <Summary
+          expansesList={expansesList}
+          handleRateChange={handleRateChange}
           handlePrevStep={handlePrevStep}
           rate={eurRate}
           rateDate={rateDate}

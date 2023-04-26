@@ -41,7 +41,6 @@ export const OrderDetails = ({ orderData }: OrderDetailsProps) => {
   const [specType, setSpecType] = useState("pieces");
 
   const [newOrderDetails, setNewOrderDetails] = useState(orderData.products);
-  console.log(newOrderDetails);
 
   const {
     isOpen: isStatusChangeOpen,
@@ -85,7 +84,8 @@ export const OrderDetails = ({ orderData }: OrderDetailsProps) => {
 
   const handleSpecValueChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
-    console.log(e.target.dataset.productId);
+    console.log(e.target.dataset.unit);
+    console.log(e.target.dataset.column);
     console.log(value);
   };
 
@@ -224,7 +224,7 @@ export const OrderDetails = ({ orderData }: OrderDetailsProps) => {
                           onChange={handleSpecValueChange}
                           data-unit="pieces"
                           data-column="quantity"
-                          data-productId={product.id}
+                          data-productid={product.id}
                           defaultValue={
                             product.quantity * product.product.itemsPerPackage
                           }
@@ -235,7 +235,7 @@ export const OrderDetails = ({ orderData }: OrderDetailsProps) => {
                           onChange={handleSpecValueChange}
                           data-unit="pieces"
                           data-column="price"
-                          data-productId={product.id}
+                          data-productid={product.id}
                           defaultValue={(
                             (Number(product.price) *
                               Number(product.product.volumePerPackage)) /
@@ -252,7 +252,7 @@ export const OrderDetails = ({ orderData }: OrderDetailsProps) => {
                           onChange={handleSpecValueChange}
                           data-unit="packages"
                           data-column="quantity"
-                          data-productId={product.id}
+                          data-productid={product.id}
                           defaultValue={product.quantity}
                         />
                       </Td>
@@ -261,7 +261,7 @@ export const OrderDetails = ({ orderData }: OrderDetailsProps) => {
                           onChange={handleSpecValueChange}
                           data-unit="packages"
                           data-column="price"
-                          data-productId={product.id}
+                          data-productid={product.id}
                           defaultValue={
                             Number(product.price) *
                             Number(product.product.volumePerPackage)
@@ -277,7 +277,7 @@ export const OrderDetails = ({ orderData }: OrderDetailsProps) => {
                           onChange={handleSpecValueChange}
                           data-unit="m3"
                           data-column="quantity"
-                          data-productId={product.id}
+                          data-productid={product.id}
                           defaultValue={
                             product.quantity *
                             Number(product.product.volumePerPackage)
@@ -289,7 +289,7 @@ export const OrderDetails = ({ orderData }: OrderDetailsProps) => {
                           onChange={handleSpecValueChange}
                           data-unit="m3"
                           data-column="price"
-                          data-productId={product.id}
+                          data-productid={product.id}
                           defaultValue={Number(product.price)}
                         />
                       </Td>

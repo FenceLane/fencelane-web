@@ -20,6 +20,8 @@ import styles from "./Summary.module.scss";
 interface SummaryProps {
   productData: OrderProductInfo[];
   handlePrevStep: React.MouseEventHandler<HTMLButtonElement>;
+  handleRateChange: React.ChangeEventHandler<HTMLInputElement>;
+  expansesList: any;
   rate: number;
   rateDate: string;
 }
@@ -27,12 +29,15 @@ interface SummaryProps {
 export const Summary = ({
   productData,
   handlePrevStep,
+  handleRateChange,
+  expansesList,
   rate,
   rateDate,
 }: SummaryProps) => {
   const { t } = useContent();
 
   let specType = "pieces";
+  console.log(expansesList);
 
   return (
     <Flex
@@ -58,6 +63,8 @@ export const Summary = ({
               <Text fontSize="11px">{`Z ${rateDate}`}</Text>
             </Flex>
             <Input
+              onChange={handleRateChange}
+              type="number"
               padding="0"
               textAlign="center"
               width="60px"

@@ -68,7 +68,6 @@ export const CalculationWrapper = ({
       <CalculationCreator orderId={orderId} orderData={orderData} rate={rate} />
     );
   }
-  console.log(expanses);
   if (isTransportCostError || isExpansesError) {
     return (
       <p>
