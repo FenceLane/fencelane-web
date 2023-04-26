@@ -7,3 +7,10 @@ export const ProductOrderDataSchema = z.object({
   price: z.number().min(0),
   currency: z.string().min(1),
 });
+
+export const ProductOrderDataUpdateSchema = ProductOrderDataSchema.omit({
+  orderId: true,
+  productId: true,
+})
+  .partial()
+  .extend({ productOrderId: z.string().min(1) });
