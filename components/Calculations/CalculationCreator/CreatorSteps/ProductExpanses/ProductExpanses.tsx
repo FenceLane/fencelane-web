@@ -1,6 +1,6 @@
 import { Input, Select, Flex, Text, Box, Button } from "@chakra-ui/react";
-import React, { useEffect, useState } from "react";
-import { OrderProductInfo } from "../../../../../lib/types";
+import React, { useState } from "react";
+import { InitialCosts, OrderProductInfo } from "../../../../../lib/types";
 import { useContent } from "../../../../../lib/hooks/useContent";
 
 interface InitialCostsProps {
@@ -32,69 +32,21 @@ interface InitialCostsProps {
 [];
 
 interface ProductExpansesProps {
+  initialCosts: InitialCosts;
   productData: OrderProductInfo;
   currentProduct: number;
-  expansesList: {
-    commodity: {
-      price: number;
-      currency: string;
-      costType: string;
-      quantityType: string;
-    };
-    saturation: {
-      price: number;
-      currency: string;
-      costType: string;
-      quantityType: string;
-    };
-    marketer: {
-      price: number;
-      currency: string;
-      costType: string;
-      quantityType: string;
-    };
-    other: {
-      price: number;
-      currency: string;
-      costType: string;
-      quantityType: string;
-    };
-  }[];
+  expansesList: InitialCosts[];
   setExpansesList: Function;
   handleRateChange: React.ChangeEventHandler<HTMLInputElement>;
   handleNextStep: React.MouseEventHandler<HTMLButtonElement>;
   handlePrevStep: React.MouseEventHandler<HTMLButtonElement>;
   rate: number;
   rateDate: string;
+  productsQuantity: number;
 }
-const initialCosts: InitialCostsProps = {
-  commodity: {
-    price: 0,
-    currency: "EUR",
-    costType: "commodity",
-    quantityType: "m3",
-  },
-  saturation: {
-    price: 0,
-    currency: "EUR",
-    costType: "saturation",
-    quantityType: "m3",
-  },
-  marketer: {
-    price: 0,
-    currency: "EUR",
-    costType: "marketer",
-    quantityType: "m3",
-  },
-  other: {
-    price: 0,
-    currency: "EUR",
-    costType: "other",
-    quantityType: "m3",
-  },
-} as const;
 
 export const ProductExpanses = ({
+  initialCosts,
   expansesList,
   productData,
   currentProduct,
@@ -104,17 +56,20 @@ export const ProductExpanses = ({
   handlePrevStep,
   rate,
   rateDate,
+  productsQuantity,
 }: ProductExpansesProps) => {
   const { t } = useContent();
 
   const [quantityType, setQuantityType] = useState("pieces");
 
-  const [expanses, setExpanses] = useState(initialCosts);
-  useEffect(() => {
-    if (expansesList.length >= currentProduct) {
-      setExpanses(expansesList[currentProduct - 1]);
-    }
-  }, [expansesList, currentProduct]);
+  const disexpans = expansesList[currentProduct - 1];
+
+  const [expanses, setExpanses] = useState(
+    () => expansesList[currentProduct - 1]
+  );
+
+  console.log(expansesList[currentProduct - 1]);
+  console.log(expanses);
 
   const handleQuantityTypeChange = (
     e: React.ChangeEvent<HTMLSelectElement>
@@ -135,16 +90,18 @@ export const ProductExpanses = ({
     });
   };
 
-  const handleNext = (e: React.MouseEvent<HTMLButtonElement>) => {
-    if (expansesList.length < currentProduct) {
-      setExpansesList((prev: any) => [...prev, expanses]);
-    } else {
-      let newExpansesList = expansesList;
-      newExpansesList[currentProduct - 1] = expanses;
-      setExpansesList(newExpansesList);
-    }
-    setExpanses(initialCosts);
+  console.log(currentProduct);
+
+  const handleNext = async (e: React.MouseEvent<HTMLButtonElement>) => {
+    const newExpansesList = [...expansesList];
+    newExpansesList[currentProduct - 1] = expanses;
+    console.log(newExpansesList);
+    setExpansesList(newExpansesList);
     handleNextStep(e);
+  };
+
+  const handlePrev = (e: React.MouseEvent<HTMLButtonElement>) => {
+    handlePrevStep(e);
   };
 
   return (
@@ -381,7 +338,7 @@ export const ProductExpanses = ({
         </Flex>
       </Box>
       <Flex justifyContent="space-between">
-        <Button colorScheme="gray" w="116px" h="40px" onClick={handlePrevStep}>
+        <Button colorScheme="gray" w="116px" h="40px" onClick={handlePrev}>
           Cofnij
         </Button>
         <Button colorScheme="green" w="116px" h="40px" onClick={handleNext}>

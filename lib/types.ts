@@ -107,6 +107,34 @@ export interface ExpansesInfo {
   ];
 }
 
+export interface InitialCosts {
+  commodity: {
+    price: number;
+    currency: string;
+    costType: string;
+    quantityType: string;
+  };
+  saturation: {
+    price: number;
+    currency: string;
+    costType: string;
+    quantityType: string;
+  };
+  marketer: {
+    price: number;
+    currency: string;
+    costType: string;
+    quantityType: string;
+  };
+  other: {
+    price: number;
+    currency: string;
+    costType: string;
+    quantityType: string;
+  };
+}
+[];
+
 export enum USER_ROLE {
   ADMIN = 0,
   USER = 1,

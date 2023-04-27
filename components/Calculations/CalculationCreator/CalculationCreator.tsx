@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import styles from "./CalculationCreator.module.scss";
 import { ArrowBackIcon } from "@chakra-ui/icons";
 import { TransportCost } from "./CreatorSteps/TransportCost/TransportCost";
-import { OrderInfo } from "../../../lib/types";
+import { OrderInfo, InitialCosts } from "../../../lib/types";
 import { ProductExpanses } from "./CreatorSteps/ProductExpanses/ProductExpanses";
 import { Summary } from "./CreatorSteps/Summary/Summary";
 
@@ -14,14 +14,45 @@ interface CalculationCreatorProps {
   rate: any;
 }
 
+const initialCosts: InitialCosts = {
+  commodity: {
+    price: 0,
+    currency: "EUR",
+    costType: "commodity",
+    quantityType: "m3",
+  },
+  saturation: {
+    price: 0,
+    currency: "EUR",
+    costType: "saturation",
+    quantityType: "m3",
+  },
+  marketer: {
+    price: 0,
+    currency: "EUR",
+    costType: "marketer",
+    quantityType: "m3",
+  },
+  other: {
+    price: 0,
+    currency: "EUR",
+    costType: "other",
+    quantityType: "m3",
+  },
+} as const;
+
 export const CalculationCreator = ({
   orderId,
   orderData,
   rate,
 }: CalculationCreatorProps) => {
+  const productsQuantity = orderData.products.length;
+
   const [transportCost, setTransportCost] = useState(0);
 
-  const [expansesList, setExpansesList] = useState([]);
+  const [expansesList, setExpansesList] = useState(
+    Array(productsQuantity).fill(initialCosts)
+  );
 
   const [eurRate, setEurRate] = useState(rate.mid.toFixed(2));
 
@@ -35,8 +66,6 @@ export const CalculationCreator = ({
       : Number(date.getMonth()) + 1) +
     "." +
     date.getFullYear();
-
-  const productsQuantity = orderData.products.length;
 
   const [currentProduct, setCurrentProduct] = useState(0);
 
@@ -86,6 +115,8 @@ export const CalculationCreator = ({
 
       {currentProduct > 0 && currentProduct <= productsQuantity && (
         <ProductExpanses
+          initialCosts={initialCosts}
+          productsQuantity={productsQuantity}
           expansesList={expansesList}
           setExpansesList={setExpansesList}
           handleRateChange={handleRateChange}
