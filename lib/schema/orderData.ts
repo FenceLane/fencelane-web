@@ -12,6 +12,8 @@ export const OrderDataSchema = z.object({
   products: z.array(ProductOrderDataSchema.omit({ orderId: true })),
 });
 
-export const OrderDataUpdateSchema = OrderDataSchema.partial();
+export const OrderDataUpdateSchema = OrderDataSchema.omit({
+  products: true,
+}).partial();
 
 export type OrderData = z.infer<typeof OrderDataSchema>;

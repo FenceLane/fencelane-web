@@ -58,20 +58,12 @@ export default withApiMethods({
         throw Error('"orderId" was not passed in dynamic api path.');
       }
 
-      const { products, ...orderData } = req.parsedBody;
+      const orderData = req.parsedBody;
 
       try {
         const updatedOrder = await prismaClient.order.update({
           where: { id: Number(orderId) },
-          data: {
-            ...orderData,
-            products: {
-              connectOrCreate: products?.map((p) => ({
-                where: { id: p.productId },
-                create: p,
-              })),
-            },
-          },
+          data: orderData,
         });
 
         return res
