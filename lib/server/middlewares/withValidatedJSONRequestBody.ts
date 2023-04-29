@@ -6,22 +6,12 @@ import {
 } from "../BackendError/BackendError";
 import { z } from "zod";
 import { sendValidationBackendError } from "../BackendError/ValidationBackendError";
-
-export enum CONTENT_TYPE {
-  APPLICATION_JSON = "application/json",
-  MULTIPART_FORM_DATA = "multipart/form-data",
-}
+import { CONTENT_TYPE } from "../../types";
 
 const isApplicationJson = (
   contentTypeHeader: string
 ): contentTypeHeader is CONTENT_TYPE.APPLICATION_JSON => {
   return contentTypeHeader === CONTENT_TYPE.APPLICATION_JSON;
-};
-
-const isMultiPartFormData = (
-  contentTypeHeader: string
-): contentTypeHeader is CONTENT_TYPE.MULTIPART_FORM_DATA => {
-  return contentTypeHeader.includes(CONTENT_TYPE.MULTIPART_FORM_DATA);
 };
 
 interface NextApiRequestExtended<T> extends NextApiRequest {
@@ -38,13 +28,7 @@ export const withValidatedJSONRequestBody =
   ) =>
   async (req: NextApiRequestExtended<T>, res: NextApiResponse) => {
     const contentTypeHeader = req.headers["content-type"] as CONTENT_TYPE;
-    if (
-      contentTypeHeader &&
-      !(
-        isApplicationJson(contentTypeHeader) ||
-        isMultiPartFormData(contentTypeHeader)
-      )
-    ) {
+    if (contentTypeHeader && !isApplicationJson(contentTypeHeader)) {
       return sendBackendError(res, {
         code: BackendResponseStatusCode.BAD_REQUEST,
         label: BackendErrorLabel.INVALID_REQUEST_CONTENT_TYPE,
