@@ -53,6 +53,7 @@
       "travel-cost-already-exists": "Koszt transportu dla tego zamówienia już istnieje!",
       "travel-cost-does-not-exist": "Koszt transportu dla danego zamówienia nie istnieje!",
       "file-upload-error": "Wystąpił błąd podczas przesyłania pliku!",
+      "file-delete-error": "Wystąpił błąd podczas usuwania pliku!",
       "order-file-does-not-exist": "Plik o podanej nazwie nie istnieje w danym zamówieniu!"
     }
   },

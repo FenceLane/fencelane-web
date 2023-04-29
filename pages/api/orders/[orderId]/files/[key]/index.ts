@@ -1,6 +1,7 @@
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime";
 import { prismaClient } from "../../../../../../lib/prisma/prismaClient";
 import {
+  BackendError,
   BackendErrorLabel,
   BackendResponseStatusCode,
   PrismaErrorCode,
@@ -47,15 +48,25 @@ export default withApiMethods({
     }
 
     try {
-      const deletedFile = await prismaClient.orderFile.delete({
-        where: { key },
+      return prismaClient.$transaction(async (tx) => {
+        const deletedFile = await tx.orderFile.delete({
+          where: { key },
+        });
+
+        try {
+          // if file is not deleted properly form bucket, we want to rollback the transaction
+          await deleteFile(key);
+        } catch (error) {
+          throw new BackendError({
+            code: BackendResponseStatusCode.BAD_REQUEST,
+            label: BackendErrorLabel.FILE_DELETE_ERROR,
+          });
+        }
+
+        return res
+          .status(BackendResponseStatusCode.SUCCESS)
+          .send({ data: deletedFile });
       });
-
-      await deleteFile(key);
-
-      return res
-        .status(BackendResponseStatusCode.SUCCESS)
-        .send({ data: deletedFile });
     } catch (error) {
       if (error instanceof PrismaClientKnownRequestError) {
         if (error.code === PrismaErrorCode.RECORD_NOT_FOUND_OR_RESTRICTED) {
