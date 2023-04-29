@@ -51,7 +51,8 @@
       "cannot-delete-product-category-with-products": "Nie można usunąć kategorii produktu, która ma produkty!",
       "expanse-does-not-exist": "Koszt o podanym id nie istnieje!",
       "travel-cost-already-exists": "Koszt transportu dla tego zamówienia już istnieje!",
-      "travel-cost-does-not-exist": "Koszt transportu dla danego zamówienia nie istnieje!"
+      "travel-cost-does-not-exist": "Koszt transportu dla danego zamówienia nie istnieje!",
+      "file-upload-error": "Wystąpił błąd podczas przesyłania pliku!"
     }
   },
   "success": {
