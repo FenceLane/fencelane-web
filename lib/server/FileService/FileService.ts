@@ -33,3 +33,12 @@ export const uploadFile = async (file: File) => {
 
   return uploadedImage;
 };
+
+export const deleteFile = async (key: string) => {
+  return s3
+    .deleteObject({
+      Bucket: bucketName,
+      Key: key,
+    })
+    .promise();
+};

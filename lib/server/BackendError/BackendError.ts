@@ -28,6 +28,7 @@ export const BackendErrorLabel = {
     "cannot-delete-product-category-with-products",
   CLIENT_DOES_NOT_EXIST: "client-does-not-exist",
   FILE_UPLOAD_ERROR: "file-upload-error",
+  ORDER_FILE_DOES_NOT_EXIST: "order-file-does-not-exist",
 } as const;
 
 export const PrismaErrorCode = {

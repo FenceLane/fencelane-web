@@ -52,7 +52,8 @@
       "expanse-does-not-exist": "Koszt o podanym id nie istnieje!",
       "travel-cost-already-exists": "Koszt transportu dla tego zamówienia już istnieje!",
       "travel-cost-does-not-exist": "Koszt transportu dla danego zamówienia nie istnieje!",
-      "file-upload-error": "Wystąpił błąd podczas przesyłania pliku!"
+      "file-upload-error": "Wystąpił błąd podczas przesyłania pliku!",
+      "order-file-does-not-exist": "Plik o podanej nazwie nie istnieje w danym zamówieniu!"
     }
   },
   "success": {
