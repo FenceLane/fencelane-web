@@ -19,8 +19,10 @@ const formidableConfig = {
 };
 
 interface NextApiRequestExtended extends NextApiRequest {
-  fields: formidable.Fields;
-  files: formidable.File[];
+  formData: {
+    fields: formidable.Fields;
+    files: formidable.File[];
+  };
 }
 
 const formidablePromise = (req: NextApiRequest) => {
@@ -55,8 +57,7 @@ export const withValidatedFormDataBody =
 
     try {
       const { fields, files } = await formidablePromise(req);
-      req.fields = fields;
-      req.files = Object.values(files).flat();
+      req.formData = { fields, files: Object.values(files).flat() };
     } catch (error) {
       return sendBackendError(res, {
         code: BackendResponseStatusCode.BAD_REQUEST,
