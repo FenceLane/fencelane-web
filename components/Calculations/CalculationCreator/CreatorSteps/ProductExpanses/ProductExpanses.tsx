@@ -68,9 +68,6 @@ export const ProductExpanses = ({
     () => expansesList[currentProduct - 1]
   );
 
-  console.log(expansesList[currentProduct - 1]);
-  console.log(expanses);
-
   const handleQuantityTypeChange = (
     e: React.ChangeEvent<HTMLSelectElement>
   ) => {
@@ -90,12 +87,9 @@ export const ProductExpanses = ({
     });
   };
 
-  console.log(currentProduct);
-
   const handleNext = async (e: React.MouseEvent<HTMLButtonElement>) => {
     const newExpansesList = [...expansesList];
     newExpansesList[currentProduct - 1] = expanses;
-    console.log(newExpansesList);
     setExpansesList(newExpansesList);
     handleNextStep(e);
   };

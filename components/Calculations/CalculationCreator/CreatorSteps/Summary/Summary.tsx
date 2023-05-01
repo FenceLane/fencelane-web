@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Input,
   Flex,
@@ -24,6 +24,7 @@ interface SummaryProps {
   expansesList: any;
   rate: number;
   rateDate: string;
+  transportCost: number;
 }
 
 export const Summary = ({
@@ -33,11 +34,58 @@ export const Summary = ({
   expansesList,
   rate,
   rateDate,
+  transportCost,
 }: SummaryProps) => {
   const { t } = useContent();
 
-  let specType = "pieces";
-  console.log(expansesList);
+  const [quantityType, setQuantityType] = useState("pieces");
+
+  const transportCostPerM3 =
+    transportCost /
+    productData.reduce(
+      (acc, currentProduct: any) =>
+        acc +
+        Number(
+          currentProduct.quantity *
+            Number(currentProduct.product.volumePerPackage)
+        ),
+      0
+    );
+
+  const profit = [...expansesList].map((item, key: number) => {
+    let summaryCost = 0;
+    Object.entries(item).map((expanse: any) => {
+      //dodawanie do sumarycznego kosztu jednej paczki wszystkich kosztów:
+      const expanseData = expanse[1];
+      let expanseCost = Number(expanseData.price);
+      if (expanseData.currency == "PLN") {
+        expanseCost = expanseCost / rate;
+      }
+      if (expanseData.quantityType == "m3") {
+        expanseCost =
+          expanseCost * Number(productData[key].product.volumePerPackage);
+      }
+      if (expanseData.quantityType == "pieces") {
+        expanseCost =
+          expanseCost * Number(productData[key].product.itemsPerPackage);
+      }
+      summaryCost += expanseCost;
+    });
+    summaryCost +=
+      transportCostPerM3 * Number(productData[key].product.volumePerPackage); // koszty i cena transportu produktu za jedna paczke
+    summaryCost *= productData[key].quantity; // wszystkie koszty tego produktu (za całość)
+    const totalPrice =
+      Number(productData[key].price) *
+      Number(productData[key].product.volumePerPackage) *
+      productData[key].quantity; // całkowita kwota płacona przez klienta
+    return Number((totalPrice - summaryCost).toFixed(2)); //zarobek na 1 produkcie (za wszystkie paczki)
+  });
+
+  const handleQuantityTypeChange = (
+    e: React.ChangeEvent<HTMLSelectElement>
+  ) => {
+    setQuantityType(e.target.value);
+  };
 
   return (
     <Flex
@@ -70,7 +118,7 @@ export const Summary = ({
               width="60px"
               height="30px"
               fontSize="14px"
-              value={rate}
+              defaultValue={rate}
             />
           </Flex>
         </Flex>
@@ -85,14 +133,18 @@ export const Summary = ({
           Waluta i jednostka
         </Text>
         <Flex gap="10px" mb="10px">
-          <Select w="80px" value="EUR">
+          <Select w="80px" defaultValue="EUR">
             <option>EUR</option>
             <option>PLN</option>
           </Select>
-          <Select w="116px" value="Sztuki">
-            <option>M3</option>
-            <option>Sztuki</option>
-            <option>Paczki</option>
+          <Select
+            w="116px"
+            defaultValue={quantityType}
+            onChange={handleQuantityTypeChange}
+          >
+            <option value="packages">Paczki</option>
+            <option value="m3">M3</option>
+            <option value="pieces">Sztuki</option>
           </Select>
         </Flex>
 
@@ -107,35 +159,33 @@ export const Summary = ({
           </Thead>
           <Tbody>
             {productData &&
-              productData.map((product) => (
+              productData.map((product, key) => (
                 <Tr key={product.id}>
                   <Td fontWeight={500}>
                     {product.product.category.name}
                     <br />
                     {product.product.dimensions}
                   </Td>
-                  {specType == "pieces" && (
+                  {quantityType == "pieces" && (
                     <>
                       <Td>
                         {product.quantity * product.product.itemsPerPackage}
                       </Td>
                       <Td>
                         {(
-                          Number(product.price) /
+                          profit[key] /
                           (product.quantity * product.product.itemsPerPackage)
-                        ).toFixed(2)}
+                        ).toFixed(3)}
                       </Td>
                     </>
                   )}
-                  {specType == "packages" && (
+                  {quantityType == "packages" && (
                     <>
                       <Td>{product.quantity}</Td>
-                      <Td>
-                        {(Number(product.price) / product.quantity).toFixed(2)}
-                      </Td>
+                      <Td>{(profit[key] / product.quantity).toFixed(3)}</Td>
                     </>
                   )}
-                  {specType == "m3" && (
+                  {quantityType == "m3" && (
                     <>
                       <Td>
                         {product.quantity *
@@ -143,18 +193,21 @@ export const Summary = ({
                       </Td>
                       <Td>
                         {(
-                          Number(product.price) /
+                          profit[key] /
                           (product.quantity *
                             Number(product.product.volumePerPackage))
-                        ).toFixed(2)}
+                        ).toFixed(3)}
                       </Td>
                     </>
                   )}
-                  <Td></Td>
+                  <Td>{profit[key]}</Td>
                 </Tr>
               ))}
           </Tbody>
         </Table>
+        <Text mr="50px" fontWeight={500} textAlign="right">
+          RAZEM: {profit.reduce((sum, value) => sum + value)}
+        </Text>
       </Box>
       <Flex justifyContent="space-between">
         <Button colorScheme="gray" w="116px" h="40px" onClick={handlePrevStep}>

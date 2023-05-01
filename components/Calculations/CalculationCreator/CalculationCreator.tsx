@@ -115,6 +115,7 @@ export const CalculationCreator = ({
 
       {currentProduct > 0 && currentProduct <= productsQuantity && (
         <ProductExpanses
+          key={currentProduct}
           initialCosts={initialCosts}
           productsQuantity={productsQuantity}
           expansesList={expansesList}
@@ -130,6 +131,7 @@ export const CalculationCreator = ({
       )}
       {currentProduct > productsQuantity && (
         <Summary
+          transportCost={transportCost}
           expansesList={expansesList}
           handleRateChange={handleRateChange}
           handlePrevStep={handlePrevStep}

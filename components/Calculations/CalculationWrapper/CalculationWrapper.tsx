@@ -70,10 +70,10 @@ export const CalculationWrapper = ({
   }
   if (isTransportCostError || isExpansesError) {
     return (
-      <p>
-        `${t(mapAxiosErrorToLabel(transportCostError))} $
-        {t(mapAxiosErrorToLabel(transportCostError))} `
-      </p>
+      <>
+        <p>{t(mapAxiosErrorToLabel(transportCostError))}</p>
+        <p>{t(mapAxiosErrorToLabel(expansesError))}</p>
+      </>
     );
   }
   return (
