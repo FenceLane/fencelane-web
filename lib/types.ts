@@ -50,3 +50,8 @@ export enum PRODUCT_EXPANSE {
   MARKETER = "marketer", //handlowiec
   OTHER = "other", //inne
 }
+
+export enum CONTENT_TYPE {
+  APPLICATION_JSON = "application/json",
+  MULTIPART_FORM_DATA = "multipart/form-data",
+}

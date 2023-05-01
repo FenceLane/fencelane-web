@@ -108,7 +108,7 @@ model Order{
   destinationId String
   date DateTime @default(now())
   statusHistory OrderStatus[]
-  files String[] @default([])
+  files OrderFile[]
   products ProductOrder[]
   creator User @relation(fields: [creatorId], references: [id])
   creatorId String
@@ -118,6 +118,15 @@ model Order{
   updatedAt DateTime @updatedAt
 
   transportCost TransportCost?
+}
+
+model OrderFile {
+  key String @id @unique
+  url String
+  order Order @relation(fields: [orderId], references: [id])
+  orderId Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model TransportCost {

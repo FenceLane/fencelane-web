@@ -6,10 +6,13 @@ import {
 } from "../BackendError/BackendError";
 import { z } from "zod";
 import { sendValidationBackendError } from "../BackendError/ValidationBackendError";
+import { CONTENT_TYPE } from "../../types";
 
-export enum CONTENT_TYPE {
-  APPLICATION_JSON = "application/json",
-}
+const isApplicationJson = (
+  contentTypeHeader: string
+): contentTypeHeader is CONTENT_TYPE.APPLICATION_JSON => {
+  return contentTypeHeader === CONTENT_TYPE.APPLICATION_JSON;
+};
 
 interface NextApiRequestExtended<T> extends NextApiRequest {
   parsedBody: T;
@@ -24,11 +27,8 @@ export const withValidatedJSONRequestBody =
     ) => Promise<void>
   ) =>
   async (req: NextApiRequestExtended<T>, res: NextApiResponse) => {
-    const contentTypeHeader = req.headers["content-type"];
-    if (
-      contentTypeHeader &&
-      contentTypeHeader !== CONTENT_TYPE.APPLICATION_JSON
-    ) {
+    const contentTypeHeader = req.headers["content-type"] as CONTENT_TYPE;
+    if (contentTypeHeader && !isApplicationJson(contentTypeHeader)) {
       return sendBackendError(res, {
         code: BackendResponseStatusCode.BAD_REQUEST,
         label: BackendErrorLabel.INVALID_REQUEST_CONTENT_TYPE,
