@@ -135,6 +135,21 @@ export interface InitialCosts {
 }
 [];
 
+export interface ExpansePostInfo {
+  id: number;
+  data: {
+    price: number;
+    currency: CURRENCY;
+    productOrderId: string;
+    type: PRODUCT_EXPANSE;
+  };
+}
+
+export interface TransportPostInfo {
+  id: number;
+  data: { price: number; currency: CURRENCY };
+}
+
 export enum USER_ROLE {
   ADMIN = 0,
   USER = 1,
@@ -166,4 +181,9 @@ export enum PRODUCT_EXPANSE {
 export enum CONTENT_TYPE {
   APPLICATION_JSON = "application/json",
   MULTIPART_FORM_DATA = "multipart/form-data",
+}
+
+export enum CURRENCY {
+  EUR = "EUR",
+  PLN = "PLN",
 }

@@ -14,7 +14,6 @@ import React, { useEffect, useState } from "react";
 import { usePostOrder } from "../../../../lib/api/hooks/orders";
 import { useContent } from "../../../../lib/hooks/useContent";
 import { mapAxiosErrorToLabel } from "../../../../lib/server/BackendError/BackendError";
-import { useGetEurRate } from "../../../../lib/api/hooks/calcs";
 
 const initialOrderData = {
   clientId: "",
@@ -28,12 +27,6 @@ const initialNewProductsData = {
 };
 
 export const OrderCreate = ({ clients, destinations, products }: any) => {
-  const {
-    isError: isRateError,
-    error: rateError,
-    isLoading: isRateLoading,
-    data: rate,
-  } = useGetEurRate();
   const router = useRouter();
   const { t } = useContent();
   const [newProducts, setNewProducts] = useState([initialNewProductsData]);

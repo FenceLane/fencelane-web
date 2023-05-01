@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Input,
   Flex,
@@ -16,6 +16,11 @@ import {
 import { OrderProductInfo } from "../../../../../lib/types";
 import { useContent } from "../../../../../lib/hooks/useContent";
 import styles from "./Summary.module.scss";
+import {
+  usePostOrderExpanses,
+  usePostOrderTransportCost,
+} from "../../../../../lib/api/hooks/calcs";
+import router from "next/router";
 
 interface SummaryProps {
   productData: OrderProductInfo[];
@@ -43,6 +48,19 @@ export const Summary = ({
   const [quantityType, setQuantityType] = useState("pieces");
 
   const [currency, setCurrency] = useState("EUR");
+
+  const {
+    mutate: postOrderExpanses,
+    error: postExpansesError,
+    isSuccess: isPostExpansesSuccess,
+    isLoading: isPostExpansesLoading,
+  } = usePostOrderExpanses(() => console.log("expanses success"));
+  const {
+    mutate: postOrderTransportCost,
+    error: postTransportCost,
+    isSuccess: isPostTransportCostSuccess,
+    isLoading: isPostTransportCostLoading,
+  } = usePostOrderTransportCost(() => console.log("transport cost success"));
 
   const transportCostInEur =
     transportCostCurrency === "EUR" ? transportCost : transportCost / rate;
@@ -110,6 +128,42 @@ export const Summary = ({
   ) => {
     setQuantityType(e.target.value);
   };
+
+  const handlePostCalc = () => {
+    const postExpansesList = expansesList.map((expanses: any, key: number) => {
+      return Object.values(expanses).map((expanse: any) => {
+        let price = expanse.price;
+        if (expanse.currency === "PLN") {
+          price = expanse.price / rate;
+        }
+
+        if (expanse.quantityType == "m3") {
+          price = price * Number(productData[key].product.volumePerPackage);
+        }
+        if (expanse.quantityType == "pieces") {
+          price = price * Number(productData[key].product.itemsPerPackage);
+        }
+        return {
+          price: Number(price),
+          currency: "EUR",
+          productOrderId: productData[key].productId,
+          type: expanse.costType,
+        };
+      });
+    });
+    const postTransportCost = {
+      price: Number(transportCostInEur),
+      currency: "EUR",
+    };
+    console.log(postExpansesList.flat());
+    console.log(postTransportCost);
+  };
+
+  useEffect(() => {
+    if (isPostExpansesSuccess && isPostTransportCostSuccess) {
+      router.push("/orders");
+    }
+  }, [isPostExpansesSuccess, isPostTransportCostSuccess]);
 
   return (
     <Flex
@@ -241,7 +295,14 @@ export const Summary = ({
         <Button colorScheme="gray" w="116px" h="40px" onClick={handlePrevStep}>
           Cofnij
         </Button>
-        <Button bg="black" color="white" w="116px" h="40px">
+        <Button
+          bg="black"
+          color="white"
+          w="116px"
+          h="40px"
+          onClick={handlePostCalc}
+          isLoading={isPostExpansesLoading || isPostTransportCostLoading}
+        >
           Zapisz
         </Button>
       </Flex>

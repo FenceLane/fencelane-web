@@ -1,6 +1,12 @@
 import axios from "axios";
 import { ClientConfig } from "../AppConfig/ClientConfig";
-import { OrderInfo, ProductInfo, USER_ROLE } from "../types";
+import {
+  ExpansePostInfo,
+  OrderInfo,
+  ProductInfo,
+  TransportPostInfo,
+  USER_ROLE,
+} from "../types";
 import https from "https";
 import { ProductDataCreate, ProductDataUpdate } from "../schema/productData";
 import { OrderStatusData } from "../schema/orderStatusData";
@@ -180,6 +186,14 @@ const getOrderExpanses = async (id: number) => {
   return data;
 };
 
+const postOrderTransportCost = async ({ id, data }: TransportPostInfo) => {
+  return axiosInstance.post(apiPath(`orders/${id}/transport-cost`), data);
+};
+
+const postOrderExpanses = async ({ id, data }: ExpansePostInfo) => {
+  return axiosInstance.post(apiPath(`orders/${id}/expanses`), data);
+};
+
 export const apiClient = {
   auth: {
     postLogin,
@@ -209,5 +223,7 @@ export const apiClient = {
     getEurRate,
     getOrderTransportCost,
     getOrderExpanses,
+    postOrderTransportCost,
+    postOrderExpanses,
   },
 };

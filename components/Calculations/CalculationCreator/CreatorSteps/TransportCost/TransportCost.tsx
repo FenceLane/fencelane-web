@@ -73,7 +73,7 @@ export const TransportCost = ({
         </Flex>
         <Flex justifyContent="space-between" mt="20px">
           <Input
-            value={transportCost == 0 ? "" : transportCost}
+            defaultValue={transportCost == 0 ? "" : transportCost}
             width="150px"
             placeholder="Transport"
             type="number"
