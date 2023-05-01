@@ -25,6 +25,7 @@ interface SummaryProps {
   rate: number;
   rateDate: string;
   transportCost: number;
+  transportCostCurrency: string;
 }
 
 export const Summary = ({
@@ -35,13 +36,19 @@ export const Summary = ({
   rate,
   rateDate,
   transportCost,
+  transportCostCurrency,
 }: SummaryProps) => {
   const { t } = useContent();
 
   const [quantityType, setQuantityType] = useState("pieces");
 
+  const [currency, setCurrency] = useState("EUR");
+
+  const transportCostInEur =
+    transportCostCurrency === "EUR" ? transportCost : transportCost / rate;
+
   const transportCostPerM3 =
-    transportCost /
+    transportCostInEur /
     productData.reduce(
       (acc, currentProduct: any) =>
         acc +
@@ -52,7 +59,7 @@ export const Summary = ({
       0
     );
 
-  const profit = [...expansesList].map((item, key: number) => {
+  let initialProfit = [...expansesList].map((item, key: number) => {
     let summaryCost = 0;
     Object.entries(item).map((expanse: any) => {
       //dodawanie do sumarycznego kosztu jednej paczki wszystkich kosztów:
@@ -78,8 +85,25 @@ export const Summary = ({
       Number(productData[key].price) *
       Number(productData[key].product.volumePerPackage) *
       productData[key].quantity; // całkowita kwota płacona przez klienta
-    return Number((totalPrice - summaryCost).toFixed(2)); //zarobek na 1 produkcie (za wszystkie paczki)
+    return Number(totalPrice - summaryCost); //zarobek na 1 produkcie (za wszystkie paczki)
   });
+
+  const [profit, setProfit] = useState(initialProfit);
+
+  const handleCurrencyChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    if (currency === "PLN" && e.target.value === "EUR") {
+      setCurrency(e.target.value);
+      setProfit(profit.map((profit: number) => profit / rate));
+      console.log("pln na eur");
+    }
+
+    if (currency === "EUR" && e.target.value === "PLN") {
+      setCurrency(e.target.value);
+      setProfit(profit.map((profit: number) => profit * rate));
+      console.log("eur na pln");
+    }
+    console.log(profit);
+  };
 
   const handleQuantityTypeChange = (
     e: React.ChangeEvent<HTMLSelectElement>
@@ -133,9 +157,13 @@ export const Summary = ({
           Waluta i jednostka
         </Text>
         <Flex gap="10px" mb="10px">
-          <Select w="80px" defaultValue="EUR">
-            <option>EUR</option>
-            <option>PLN</option>
+          <Select
+            w="80px"
+            defaultValue={currency}
+            onChange={handleCurrencyChange}
+          >
+            <option value="EUR">EUR</option>
+            <option value="PLN">PLN</option>
           </Select>
           <Select
             w="116px"
@@ -175,14 +203,14 @@ export const Summary = ({
                         {(
                           profit[key] /
                           (product.quantity * product.product.itemsPerPackage)
-                        ).toFixed(3)}
+                        ).toFixed(2)}
                       </Td>
                     </>
                   )}
                   {quantityType == "packages" && (
                     <>
                       <Td>{product.quantity}</Td>
-                      <Td>{(profit[key] / product.quantity).toFixed(3)}</Td>
+                      <Td>{(profit[key] / product.quantity).toFixed(2)}</Td>
                     </>
                   )}
                   {quantityType == "m3" && (
@@ -196,17 +224,17 @@ export const Summary = ({
                           profit[key] /
                           (product.quantity *
                             Number(product.product.volumePerPackage))
-                        ).toFixed(3)}
+                        ).toFixed(2)}
                       </Td>
                     </>
                   )}
-                  <Td>{profit[key]}</Td>
+                  <Td>{profit[key].toFixed(2)}</Td>
                 </Tr>
               ))}
           </Tbody>
         </Table>
         <Text mr="50px" fontWeight={500} textAlign="right">
-          RAZEM: {profit.reduce((sum, value) => sum + value)}
+          RAZEM: {profit.reduce((sum, value) => sum + value).toFixed(2)}
         </Text>
       </Box>
       <Flex justifyContent="space-between">

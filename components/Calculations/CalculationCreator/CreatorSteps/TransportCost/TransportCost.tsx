@@ -1,11 +1,13 @@
 import { Input, Select, Flex, Text, Button, Box } from "@chakra-ui/react";
-import React, { useState } from "react";
+import React from "react";
 
 interface TransportCostProps {
   setTransportCost: Function;
   transportCost: number | string;
   handleNextStep: React.MouseEventHandler<HTMLButtonElement>;
   handleRateChange: React.ChangeEventHandler<HTMLInputElement>;
+  setTransportCostCurrency: Function;
+  transportCostCurrency: string;
   rate: number;
   rateDate: string;
 }
@@ -15,13 +17,13 @@ export const TransportCost = ({
   transportCost,
   handleNextStep,
   handleRateChange,
+  setTransportCostCurrency,
+  transportCostCurrency,
   rate,
   rateDate,
 }: TransportCostProps) => {
-  const [currency, setCurrency] = useState("EUR");
-
   const handleCurrencyChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setCurrency(e.target.value);
+    setTransportCostCurrency(e.target.value);
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -31,9 +33,6 @@ export const TransportCost = ({
   const handleNext = (e: React.MouseEvent<HTMLButtonElement>) => {
     if (transportCost === 0 || transportCost === "") {
       return;
-    }
-    if (currency === "PLN") {
-      setTransportCost((prev: number) => (prev / rate).toFixed(2));
     }
     handleNextStep(e);
   };
@@ -80,7 +79,11 @@ export const TransportCost = ({
             type="number"
             onInput={handleChange}
           />
-          <Select width="80px" onChange={handleCurrencyChange}>
+          <Select
+            width="80px"
+            onChange={handleCurrencyChange}
+            defaultValue={transportCostCurrency}
+          >
             <option value="EUR">EUR</option>
             <option value="PLN">PLN</option>
           </Select>

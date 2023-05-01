@@ -50,6 +50,8 @@ export const CalculationCreator = ({
 
   const [transportCost, setTransportCost] = useState(0);
 
+  const [transportCostCurrency, setTransportCostCurrency] = useState("EUR");
+
   const [expansesList, setExpansesList] = useState(
     Array(productsQuantity).fill(initialCosts)
   );
@@ -108,6 +110,8 @@ export const CalculationCreator = ({
           handleRateChange={handleRateChange}
           setTransportCost={setTransportCost}
           handleNextStep={handleNextStep}
+          setTransportCostCurrency={setTransportCostCurrency}
+          transportCostCurrency={transportCostCurrency}
           rate={eurRate}
           rateDate={rateDate}
         />
@@ -131,6 +135,7 @@ export const CalculationCreator = ({
       )}
       {currentProduct > productsQuantity && (
         <Summary
+          transportCostCurrency={transportCostCurrency}
           transportCost={transportCost}
           expansesList={expansesList}
           handleRateChange={handleRateChange}
