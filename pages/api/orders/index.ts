@@ -1,7 +1,7 @@
 import { User } from "@prisma/client";
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime";
 import { prismaClient } from "../../../lib/prisma/prismaClient";
-import { OrderDataSchema } from "../../../lib/schema/orderData";
+import { OrderDataCreateSchema } from "../../../lib/schema/orderData";
 import {
   BackendErrorLabel,
   BackendResponseStatusCode,
@@ -15,7 +15,7 @@ import { ORDER_STATUS } from "../../../lib/types";
 
 export default withApiMethods({
   POST: withApiAuth(
-    withValidatedJSONRequestBody(OrderDataSchema)(async (req, res) => {
+    withValidatedJSONRequestBody(OrderDataCreateSchema)(async (req, res) => {
       //FIXME: improve types for req.session.user
       const creator = (req as typeof req & { session: { user: User } }).session
         .user;

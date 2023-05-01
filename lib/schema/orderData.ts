@@ -1,6 +1,7 @@
 import { z } from "zod";
 import { ORDER_STATUS } from "../types";
 import { ProductOrderDataSchema } from "./productOrderData";
+import { OrderFileDataSchema } from "./orderFileData";
 
 export const OrderDataSchema = z.object({
   clientId: z.string().min(1),
@@ -8,11 +9,15 @@ export const OrderDataSchema = z.object({
   date: z.date().optional(),
   profit: z.number().optional(),
   status: z.nativeEnum(ORDER_STATUS).optional(),
-  files: z.array(z.string()).optional(),
+  files: z.array(OrderFileDataSchema),
   products: z.array(ProductOrderDataSchema.omit({ orderId: true })),
 });
 
-export const OrderDataUpdateSchema = OrderDataSchema.omit({
+export const OrderDataCreateSchema = OrderDataSchema.omit({
+  files: true,
+});
+
+export const OrderDataUpdateSchema = OrderDataCreateSchema.omit({
   products: true,
 }).partial();
 
