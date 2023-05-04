@@ -65,7 +65,7 @@ export const StorageRow = ({ product }: StorageRowProps) => {
         <Td>{String(product.stock)}</Td>
         <Td>{t(`pages.storage.variants.${String(product.variant)}`)}</Td>
         <Td>{String(product.itemsPerPackage)}</Td>
-        <Td>{String(m3)}</Td>
+        <Td>{String(m3.toFixed(3).replace(/\.000$/, ""))}</Td>
         <Td>{String(pieces)}</Td>
         <Td>
           <IconButton
