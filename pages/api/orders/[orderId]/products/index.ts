@@ -3,6 +3,7 @@ import { prismaClient } from "../../../../../lib/prisma/prismaClient";
 import { z } from "zod";
 
 import {
+  BackendError,
   BackendErrorLabel,
   BackendResponseStatusCode,
   PrismaErrorCode,
@@ -52,8 +53,36 @@ export default withApiMethods({
         await prismaClient.$transaction(async (tx) => {
           const updatedProducts = await Promise.all(
             productOrderData.map(
-              async ({ productOrderId, quantity, ...data }) => {
-                if (quantity === 0) {
+              async ({ productOrderId, quantity: newQuantity, ...data }) => {
+                if (!newQuantity) {
+                  return;
+                }
+
+                const existingProductOrder = await tx.productOrder.findUnique({
+                  where: { id: productOrderId },
+                });
+
+                if (!existingProductOrder) {
+                  throw new BackendError({
+                    code: BackendResponseStatusCode.NOT_FOUND,
+                    label: BackendErrorLabel.PRODUCT_ORDER_DOES_NOT_EXIST,
+                  });
+                }
+
+                const quantityDiff =
+                  existingProductOrder.quantity - newQuantity;
+
+                //update stock
+                await tx.product.update({
+                  where: { id: existingProductOrder.productId },
+                  data: {
+                    stock: {
+                      increment: quantityDiff,
+                    },
+                  },
+                });
+
+                if (newQuantity === 0) {
                   //we want to delete the productOrder if quantity is 0
                   return tx.productOrder.delete({
                     where: { id: productOrderId },
