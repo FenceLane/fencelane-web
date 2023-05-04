@@ -207,6 +207,7 @@ export const ProductExpanses = ({
           <Text>Koszty:</Text>
           <Flex justifyContent="space-between" mb="5px">
             <Input
+              autoFocus
               type="number"
               name="commodity"
               defaultValue={

@@ -78,6 +78,7 @@ export const TransportCost = ({
             placeholder="Transport"
             type="number"
             onInput={handleChange}
+            autoFocus
           />
           <Select
             width="80px"
