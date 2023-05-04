@@ -60,14 +60,16 @@ export const CalculationCreator = ({
 
   const date = new Date(rate.effectiveDate);
 
-  const rateDate =
-    (date.getDate() < 10 ? "0" + date.getDate() : date.getDate()) +
-    "." +
-    (Number(date.getMonth()) + 1 < 10
-      ? "0" + String(Number(date.getMonth()) + 1)
-      : Number(date.getMonth()) + 1) +
-    "." +
-    date.getFullYear();
+  const [rateDate, setRateDate] = useState(
+    "Z " +
+      (date.getDate() < 10 ? "0" + date.getDate() : date.getDate()) +
+      "." +
+      (Number(date.getMonth()) + 1 < 10
+        ? "0" + String(Number(date.getMonth()) + 1)
+        : Number(date.getMonth()) + 1) +
+      "." +
+      date.getFullYear()
+  );
 
   const [currentProduct, setCurrentProduct] = useState(0);
 
@@ -75,6 +77,7 @@ export const CalculationCreator = ({
 
   const handleRateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEurRate(e.target.value);
+    setRateDate("");
   };
 
   const handleNextStep = () => {

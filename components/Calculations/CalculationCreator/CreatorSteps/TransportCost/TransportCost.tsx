@@ -57,7 +57,7 @@ export const TransportCost = ({
           <Flex alignItems="center" color="var(--grey)">
             <Flex flexDir="column" mr="10px">
               <Text fontSize="15px">Kurs EUR</Text>
-              <Text fontSize="11px">{`Z ${rateDate}`}</Text>
+              {rateDate !== "" && <Text fontSize="11px">{rateDate}</Text>}
             </Flex>
             <Input
               onChange={handleRateChange}
