@@ -166,7 +166,7 @@ model ProductExpanse {
 
   type String //type of expanses (commodity costs, saturation, wood finishing, marketer, other...)
 
-  productOrder ProductOrder @relation(fields: [productOrderId], references: [id])
+  productOrder ProductOrder @relation(fields: [productOrderId], references: [id], onDelete: Cascade)
   productOrderId String
 
   createdAt DateTime @default(now())
