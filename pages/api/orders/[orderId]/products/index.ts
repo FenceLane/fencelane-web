@@ -51,13 +51,21 @@ export default withApiMethods({
       try {
         await prismaClient.$transaction(async (tx) => {
           const updatedProducts = await Promise.all(
-            productOrderData.map(async ({ productOrderId, ...data }) => {
-              const updatedProductOrder = await tx.productOrder.update({
-                where: { id: productOrderId },
-                data,
-              });
-              return updatedProductOrder;
-            })
+            productOrderData.map(
+              async ({ productOrderId, quantity, ...data }) => {
+                if (quantity === 0) {
+                  //we want to delete the productOrder if quantity is 0
+                  return tx.productOrder.delete({
+                    where: { id: productOrderId },
+                  });
+                }
+
+                return tx.productOrder.update({
+                  where: { id: productOrderId },
+                  data,
+                });
+              }
+            )
           );
 
           return res

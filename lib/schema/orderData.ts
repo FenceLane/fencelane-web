@@ -10,7 +10,11 @@ export const OrderDataSchema = z.object({
   profit: z.number().optional(),
   status: z.nativeEnum(ORDER_STATUS).optional(),
   files: z.array(OrderFileDataSchema),
-  products: z.array(ProductOrderDataSchema.omit({ orderId: true })),
+  products: z.array(
+    ProductOrderDataSchema.omit({ orderId: true }).extend({
+      quantity: z.number().min(1),
+    })
+  ),
 });
 
 export const OrderDataCreateSchema = OrderDataSchema.omit({

@@ -106,6 +106,7 @@ export default withApiMethods({
           },
         },
       },
+      orderBy: { createdAt: "desc" },
     });
 
     return res.status(BackendResponseStatusCode.SUCCESS).send({
