@@ -62,11 +62,11 @@ export const StorageRow = ({ product }: StorageRowProps) => {
           </Text>
         </Td>
         {!isMobile && <Td>{product.dimensions}</Td>}
+        <Td>{String(product.stock)}</Td>
         <Td>{t(`pages.storage.variants.${String(product.variant)}`)}</Td>
         <Td>{String(product.itemsPerPackage)}</Td>
         <Td>{String(m3)}</Td>
         <Td>{String(pieces)}</Td>
-        <Td>{String(product.stock)}</Td>
         <Td>
           <IconButton
             icon={<EditIcon w="32px" h="32px" />}
