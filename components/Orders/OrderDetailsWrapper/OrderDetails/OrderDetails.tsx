@@ -20,7 +20,7 @@ import {
 import NextLink from "next/link";
 import React, { useState } from "react";
 import { useContent } from "../../../../lib/hooks/useContent";
-import { OrderInfo } from "../../../../lib/types";
+import { OrderInfo, OrderProductInfo } from "../../../../lib/types";
 import { ChangeStatusModal } from "./ChangeStatusModal/ChangeStatusModal";
 import styles from "./OrderDetails.module.scss";
 
@@ -82,7 +82,12 @@ export const OrderDetails = ({ orderData }: OrderDetailsProps) => {
     setSpecType(e.target.value);
   };
 
-  const handleSpecValueChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleSpecValueChange = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    product: OrderProductInfo
+  ) => {
+    console.log(product.productOrderId);
+    console.log(product.productId);
     const value = e.target.value;
     console.log(e.target.dataset.unit);
     console.log(e.target.dataset.column);
@@ -206,7 +211,7 @@ export const OrderDetails = ({ orderData }: OrderDetailsProps) => {
           <Tbody>
             {orderData &&
               orderData.products.map((product) => (
-                <Tr key={product.id}>
+                <Tr key={product.productOrderId}>
                   <Td fontWeight={500}>
                     {product.product.category.name}
                     <br />
@@ -221,7 +226,7 @@ export const OrderDetails = ({ orderData }: OrderDetailsProps) => {
                     <>
                       <Td>
                         <Input
-                          onChange={handleSpecValueChange}
+                          onChange={(e) => handleSpecValueChange(e, product)}
                           data-unit="pieces"
                           data-column="quantity"
                           data-productid={product.id}
@@ -232,7 +237,7 @@ export const OrderDetails = ({ orderData }: OrderDetailsProps) => {
                       </Td>
                       <Td>
                         <Input
-                          onChange={handleSpecValueChange}
+                          onChange={(e) => handleSpecValueChange(e, product)}
                           data-unit="pieces"
                           data-column="price"
                           data-productid={product.id}
@@ -249,7 +254,7 @@ export const OrderDetails = ({ orderData }: OrderDetailsProps) => {
                     <>
                       <Td>
                         <Input
-                          onChange={handleSpecValueChange}
+                          onChange={(e) => handleSpecValueChange(e, product)}
                           data-unit="packages"
                           data-column="quantity"
                           data-productid={product.id}
@@ -258,7 +263,7 @@ export const OrderDetails = ({ orderData }: OrderDetailsProps) => {
                       </Td>
                       <Td>
                         <Input
-                          onChange={handleSpecValueChange}
+                          onChange={(e) => handleSpecValueChange(e, product)}
                           data-unit="packages"
                           data-column="price"
                           data-productid={product.id}
@@ -274,7 +279,7 @@ export const OrderDetails = ({ orderData }: OrderDetailsProps) => {
                     <>
                       <Td>
                         <Input
-                          onChange={handleSpecValueChange}
+                          onChange={(e) => handleSpecValueChange(e, product)}
                           data-unit="m3"
                           data-column="quantity"
                           data-productid={product.id}
@@ -286,7 +291,7 @@ export const OrderDetails = ({ orderData }: OrderDetailsProps) => {
                       </Td>
                       <Td>
                         <Input
-                          onChange={handleSpecValueChange}
+                          onChange={(e) => handleSpecValueChange(e, product)}
                           data-unit="m3"
                           data-column="price"
                           data-productid={product.id}

@@ -62,7 +62,9 @@ export const ProductExpanses = ({
 
   const [quantityType, setQuantityType] = useState("pieces");
 
-  const disexpans = expansesList[currentProduct - 1];
+  const [specType, setSpecType] = useState("pieces");
+
+  const [clientCostCurrency, setClientCostCurrency] = useState(1);
 
   const [expanses, setExpanses] = useState(
     () => expansesList[currentProduct - 1]
@@ -96,6 +98,21 @@ export const ProductExpanses = ({
 
   const handlePrev = (e: React.MouseEvent<HTMLButtonElement>) => {
     handlePrevStep(e);
+  };
+
+  const handleSpecChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setSpecType(e.target.value);
+  };
+
+  const handleClientCostCurrencyChange = (
+    e: React.ChangeEvent<HTMLSelectElement>
+  ) => {
+    if (e.target.value === "EUR") {
+      setClientCostCurrency(1);
+    }
+    if (e.target.value === "PLN") {
+      setClientCostCurrency(rate);
+    }
   };
 
   return (
@@ -319,15 +336,55 @@ export const ProductExpanses = ({
         </Box>
         <Text>Cena u klienta:</Text>
         <Flex justifyContent="space-between" mb="20px">
-          <Input w="116px" />
-          <Select w="80px" defaultValue="EUR">
+          {specType == "pieces" && (
+            <Input
+              readOnly
+              w="116px"
+              defaultValue={(
+                (Number(productData.price) *
+                  Number(productData.product.volumePerPackage)) /
+                productData.product.itemsPerPackage /
+                clientCostCurrency
+              ).toFixed(2)}
+            />
+          )}
+          {specType == "packages" && (
+            <Input
+              readOnly
+              w="116px"
+              defaultValue={(
+                (Number(productData.price) *
+                  Number(productData.product.volumePerPackage)) /
+                clientCostCurrency
+              ).toFixed(2)}
+            />
+          )}
+          {specType == "m3" && (
+            <Input
+              readOnly
+              w="116px"
+              defaultValue={(
+                Number(productData.price) / clientCostCurrency
+              ).toFixed(2)}
+            />
+          )}
+          <Select
+            w="80px"
+            defaultValue={clientCostCurrency}
+            onChange={handleClientCostCurrencyChange}
+          >
             <option>EUR</option>
             <option>PLN</option>
           </Select>
-          <Select w="116px" defaultValue="M3">
-            <option>M3</option>
-            <option>Sztuki</option>
-            <option>Paczki</option>
+          <Select
+            w="120px"
+            color="black"
+            onChange={handleSpecChange}
+            value={specType}
+          >
+            <option value="pieces">{t("pages.orders.order.pieces")}</option>
+            <option value="packages">{t("pages.orders.order.packages")}</option>
+            <option value="m3">M3</option>
           </Select>
         </Flex>
       </Box>

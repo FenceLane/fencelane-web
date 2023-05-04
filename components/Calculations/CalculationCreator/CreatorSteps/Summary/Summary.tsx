@@ -13,7 +13,7 @@ import {
   Tbody,
   Th,
 } from "@chakra-ui/react";
-import { OrderProductInfo } from "../../../../../lib/types";
+import { CURRENCY, OrderProductInfo } from "../../../../../lib/types";
 import { useContent } from "../../../../../lib/hooks/useContent";
 import styles from "./Summary.module.scss";
 import {
@@ -21,6 +21,9 @@ import {
   usePostOrderTransportCost,
 } from "../../../../../lib/api/hooks/calcs";
 import router from "next/router";
+
+import { TransportPostInfo } from "../../../../../lib/types";
+import { mapAxiosErrorToLabel } from "../../../../../lib/server/BackendError/BackendError";
 
 interface SummaryProps {
   productData: OrderProductInfo[];
@@ -52,12 +55,14 @@ export const Summary = ({
   const {
     mutate: postOrderExpanses,
     error: postExpansesError,
+    isError: isPostExpansesError,
     isSuccess: isPostExpansesSuccess,
     isLoading: isPostExpansesLoading,
   } = usePostOrderExpanses(() => console.log("expanses success"));
   const {
     mutate: postOrderTransportCost,
-    error: postTransportCost,
+    error: postTransportCostError,
+    isError: isPostTransportCostError,
     isSuccess: isPostTransportCostSuccess,
     isLoading: isPostTransportCostLoading,
   } = usePostOrderTransportCost(() => console.log("transport cost success"));
@@ -130,40 +135,44 @@ export const Summary = ({
   };
 
   const handlePostCalc = () => {
-    const postExpansesList = expansesList.map((expanses: any, key: number) => {
-      return Object.values(expanses).map((expanse: any) => {
-        let price = expanse.price;
-        if (expanse.currency === "PLN") {
-          price = expanse.price / rate;
-        }
+    const postExpansesList = expansesList.flatMap(
+      (expanses: any, key: number) => {
+        return Object.values(expanses).map((expanse: any) => {
+          let price = expanse.price;
+          if (expanse.currency === "PLN") {
+            price = expanse.price / rate;
+          }
 
-        if (expanse.quantityType == "m3") {
-          price = price * Number(productData[key].product.volumePerPackage);
-        }
-        if (expanse.quantityType == "pieces") {
-          price = price * Number(productData[key].product.itemsPerPackage);
-        }
-        return {
-          price: Number(price),
-          currency: "EUR",
-          productOrderId: productData[key].productId,
-          type: expanse.costType,
-        };
-      });
-    });
-    const postTransportCost = {
+          if (expanse.quantityType == "m3") {
+            price = price * Number(productData[key].product.volumePerPackage);
+          }
+          if (expanse.quantityType == "pieces") {
+            price = price * Number(productData[key].product.itemsPerPackage);
+          }
+          return {
+            price: Number(price),
+            currency: "EUR",
+            productOrderId: productData[key].productOrderId,
+            type: expanse.costType,
+          };
+        });
+      }
+    );
+    const postTransportData: TransportPostInfo["data"] = {
       price: Number(transportCostInEur),
-      currency: "EUR",
+      currency: CURRENCY.EUR,
     };
-    console.log(postExpansesList.flat());
-    console.log(postTransportCost);
+    const orderId = productData[0].orderId;
+    // console.log({ id: orderId, data: postExpansesList });
+    postOrderExpanses({ id: orderId, data: postExpansesList });
+    postOrderTransportCost({ id: orderId, data: postTransportData });
   };
 
   useEffect(() => {
     if (isPostExpansesSuccess && isPostTransportCostSuccess) {
-      router.push("/orders");
+      router.push(`/orders/${productData[0].orderId}`);
     }
-  }, [isPostExpansesSuccess, isPostTransportCostSuccess]);
+  }, [isPostExpansesSuccess, isPostTransportCostSuccess, productData]);
 
   return (
     <Flex
@@ -306,6 +315,15 @@ export const Summary = ({
           Zapisz
         </Button>
       </Flex>
+      {(isPostExpansesError || isPostTransportCostError) && (
+        <Text color="red" fontWeight="600" fontSize="18px">
+          {t(
+            `errors.backendErrorLabel.${mapAxiosErrorToLabel(
+              postExpansesError
+            )} ${mapAxiosErrorToLabel(postTransportCostError)}`
+          )}
+        </Text>
+      )}
     </Flex>
   );
 };

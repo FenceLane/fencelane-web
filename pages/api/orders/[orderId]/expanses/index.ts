@@ -38,6 +38,7 @@ export default withApiMethods({
           .status(BackendResponseStatusCode.SUCCESS)
           .send({ data: createdOrderStatusesCount });
       } catch (error) {
+        console.log(error);
         if (error instanceof PrismaClientKnownRequestError) {
           if (error.code === PrismaErrorCode.FOREIGN_KEY_NOT_FOUND) {
             return sendBackendError(res, {

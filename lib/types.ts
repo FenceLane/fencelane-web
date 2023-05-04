@@ -25,6 +25,7 @@ export interface CategoryInfo {
 }
 
 export interface OrderProductInfo {
+  productOrderId: string;
   id: string;
   orderId: number;
   productId: string;
