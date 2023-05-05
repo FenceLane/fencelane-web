@@ -59,6 +59,7 @@ export interface OrderInfo {
   files: string[];
   createdAt: Date;
   updatedAt: Date;
+  price: number;
   client: {
     id: string;
     name: string;
@@ -102,7 +103,7 @@ export interface ExpansesInfo {
   data: [
     id: string,
     price: string,
-    currency: string,
+    currency: CURRENCY,
     type: PRODUCT_EXPANSE,
     productOrderId: string
   ];
@@ -111,27 +112,27 @@ export interface ExpansesInfo {
 export interface InitialCosts {
   commodity: {
     price: number;
-    currency: string;
-    costType: string;
-    quantityType: string;
+    currency: CURRENCY;
+    costType: PRODUCT_EXPANSE;
+    quantityType: QUANTITY_TYPE;
   };
   saturation: {
     price: number;
-    currency: string;
-    costType: string;
-    quantityType: string;
+    currency: CURRENCY;
+    costType: PRODUCT_EXPANSE;
+    quantityType: QUANTITY_TYPE;
   };
   marketer: {
     price: number;
-    currency: string;
-    costType: string;
-    quantityType: string;
+    currency: CURRENCY;
+    costType: PRODUCT_EXPANSE;
+    quantityType: QUANTITY_TYPE;
   };
   other: {
     price: number;
-    currency: string;
-    costType: string;
-    quantityType: string;
+    currency: CURRENCY;
+    costType: PRODUCT_EXPANSE;
+    quantityType: QUANTITY_TYPE;
   };
 }
 [];
@@ -143,7 +144,7 @@ export interface ExpansePostInfo {
     currency: CURRENCY;
     productOrderId: string;
     type: PRODUCT_EXPANSE;
-  };
+  }[];
 }
 
 export interface TransportPostInfo {
@@ -172,11 +173,11 @@ export enum ORDER_STATUS {
 }
 
 export enum PRODUCT_EXPANSE {
-  COMMODITY = "commodity", //towar
-  SATURATION = "saturation", //nasycanie
-  WOOD_FINISHING = "wood_finishing", //impregnacja
-  MARKETER = "marketer", //handlowiec
-  OTHER = "other", //inne
+  COMMODITY = "commodity",
+  SATURATION = "saturation",
+  WOOD_FINISHING = "wood_finishing",
+  MARKETER = "marketer",
+  OTHER = "other",
 }
 
 export enum CONTENT_TYPE {
@@ -187,4 +188,10 @@ export enum CONTENT_TYPE {
 export enum CURRENCY {
   EUR = "EUR",
   PLN = "PLN",
+}
+
+export enum QUANTITY_TYPE {
+  PACKAGES = "packages",
+  M3 = "m3",
+  PIECES = "pieces",
 }

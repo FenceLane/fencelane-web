@@ -1,5 +1,6 @@
 import { Input, Select, Flex, Text, Button, Box } from "@chakra-ui/react";
 import React from "react";
+import { CURRENCY } from "../../../../../lib/types";
 
 interface TransportCostProps {
   setTransportCost: Function;
@@ -85,8 +86,8 @@ export const TransportCost = ({
             onChange={handleCurrencyChange}
             defaultValue={transportCostCurrency}
           >
-            <option value="EUR">EUR</option>
-            <option value="PLN">PLN</option>
+            <option value={CURRENCY.EUR}>EUR</option>
+            <option value={CURRENCY.PLN}>PLN</option>
           </Select>
         </Flex>
       </Box>

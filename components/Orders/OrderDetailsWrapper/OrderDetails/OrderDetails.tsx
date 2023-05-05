@@ -20,13 +20,22 @@ import {
 import NextLink from "next/link";
 import React, { useState } from "react";
 import { useContent } from "../../../../lib/hooks/useContent";
-import { OrderInfo, OrderProductInfo } from "../../../../lib/types";
+import { OrderInfo, QUANTITY_TYPE } from "../../../../lib/types";
 import { ChangeStatusModal } from "./ChangeStatusModal/ChangeStatusModal";
 import styles from "./OrderDetails.module.scss";
 
 interface OrderDetailsProps {
   orderData: OrderInfo;
 }
+
+interface SpecTableTypes {
+  productName: string;
+  productVariant: string;
+  productDimensions: string;
+  productQuantity: number;
+  productPrice: number;
+}
+
 const statusColor = (status: string) => {
   switch (status) {
     case "delivered":
@@ -38,20 +47,20 @@ const statusColor = (status: string) => {
 export const OrderDetails = ({ orderData }: OrderDetailsProps) => {
   const { t } = useContent();
 
-  const [specType, setSpecType] = useState("pieces");
+  const [specType, setSpecType] = useState(QUANTITY_TYPE.PIECES);
 
-  const [newOrderDetails, setNewOrderDetails] = useState(orderData.products);
+  const [newOrderDetails, setNewOrderDetails] = useState(orderData.products); // dane do zmiany ilosci i ceny produktow w zamowieniu
 
   const {
     isOpen: isStatusChangeOpen,
     onOpen: onStatusChangeOpen,
     onClose: onStatusChangeClose,
-  } = useDisclosure();
+  } = useDisclosure(); // do zmiany statusu
 
   const id = orderData.id.toString().padStart(4, "0");
 
   const currentStatus =
-    orderData.statusHistory[orderData.statusHistory.length - 1].status;
+    orderData.statusHistory[orderData.statusHistory.length - 1].status; //branie ostatniego statusu jako obecnego
 
   const days = [
     t("days.monday"),
@@ -78,19 +87,67 @@ export const OrderDetails = ({ orderData }: OrderDetailsProps) => {
     );
   };
 
-  const handleSpecChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setSpecType(e.target.value);
-  };
+  const initialSpecTableContent = orderData.products.map((product) => ({
+    productName: product.product.category.name,
+    productVariant: product.product.variant,
+    productDimensions: product.product.dimensions,
+    productQuantity: product.quantity * product.product.itemsPerPackage,
+    productPrice:
+      (Number(product.price) * Number(product.product.volumePerPackage)) /
+      product.product.itemsPerPackage,
+  })); // domyślna tabela z podsumowaniem (w sztukach)
+
+  const [specTableContent, setSpecTableContent] = useState<SpecTableTypes[]>(
+    initialSpecTableContent
+  );
+
+  const handleQuantityTypeChange = (
+    e: React.ChangeEvent<HTMLSelectElement>
+  ) => {
+    const quantityType = e.target.value as QUANTITY_TYPE;
+    setSpecType(quantityType);
+    const newSpecTableContent = orderData.products.map((product) => {
+      switch (quantityType) {
+        case QUANTITY_TYPE.PIECES:
+          return {
+            productName: product.product.category.name,
+            productVariant: product.product.variant,
+            productDimensions: product.product.dimensions,
+            productQuantity: product.quantity * product.product.itemsPerPackage,
+            productPrice:
+              (Number(product.price) *
+                Number(product.product.volumePerPackage)) /
+              product.product.itemsPerPackage,
+          };
+        case QUANTITY_TYPE.PACKAGES:
+          return {
+            productName: product.product.category.name,
+            productVariant: product.product.variant,
+            productDimensions: product.product.dimensions,
+            productQuantity: product.quantity,
+            productPrice:
+              Number(product.price) * Number(product.product.volumePerPackage),
+          };
+        case QUANTITY_TYPE.M3:
+          return {
+            productName: product.product.category.name,
+            productVariant: product.product.variant,
+            productDimensions: product.product.dimensions,
+            productQuantity:
+              product.quantity * Number(product.product.volumePerPackage),
+            productPrice: Number(product.price),
+          };
+      }
+    });
+    setSpecTableContent(newSpecTableContent);
+  }; // zmiana zawartości tabeli dla zmiany rodzaju ilości
 
   const handleSpecValueChange = (
     e: React.ChangeEvent<HTMLInputElement>,
-    product: OrderProductInfo
+    key: number
   ) => {
-    console.log(product.productOrderId);
-    console.log(product.productId);
+    console.log(orderData.products[key].product);
     const value = e.target.value;
-    console.log(e.target.dataset.unit);
-    console.log(e.target.dataset.column);
     console.log(value);
   };
 
@@ -191,12 +248,16 @@ export const OrderDetails = ({ orderData }: OrderDetailsProps) => {
             w="120px"
             mr="40px"
             color="black"
-            onChange={handleSpecChange}
-            value={specType}
+            onChange={handleQuantityTypeChange}
+            defaultValue={specType}
           >
-            <option value="pieces">{t("pages.orders.order.pieces")}</option>
-            <option value="packages">{t("pages.orders.order.packages")}</option>
-            <option value="m3">M3</option>
+            <option value={QUANTITY_TYPE.PIECES}>
+              {t("pages.orders.order.pieces")}
+            </option>
+            <option value={QUANTITY_TYPE.PACKAGES}>
+              {t("pages.orders.order.packages")}
+            </option>
+            <option value={QUANTITY_TYPE.M3}>M3</option>
           </Select>
         </Flex>
         <Table className={styles["spec-table"]}>
@@ -209,99 +270,36 @@ export const OrderDetails = ({ orderData }: OrderDetailsProps) => {
             </Tr>
           </Thead>
           <Tbody>
-            {orderData &&
-              orderData.products.map((product) => (
-                <Tr key={product.productOrderId}>
-                  <Td fontWeight={500}>
-                    {product.product.category.name}
-                    <br />
-                    {t(
-                      `pages.storage.variants.${String(
-                        product.product.variant
-                      )}`
-                    )}
-                  </Td>
-                  <Td>{product.product.dimensions}</Td>
-                  {specType == "pieces" && (
-                    <>
-                      <Td>
-                        <Input
-                          onChange={(e) => handleSpecValueChange(e, product)}
-                          data-unit="pieces"
-                          data-column="quantity"
-                          data-productid={product.id}
-                          defaultValue={
-                            product.quantity * product.product.itemsPerPackage
-                          }
-                        />
-                      </Td>
-                      <Td>
-                        <Input
-                          onChange={(e) => handleSpecValueChange(e, product)}
-                          data-unit="pieces"
-                          data-column="price"
-                          data-productid={product.id}
-                          defaultValue={(
-                            (Number(product.price) *
-                              Number(product.product.volumePerPackage)) /
-                            product.product.itemsPerPackage
-                          ).toFixed(2)}
-                        />
-                      </Td>
-                    </>
-                  )}
-                  {specType == "packages" && (
-                    <>
-                      <Td>
-                        <Input
-                          onChange={(e) => handleSpecValueChange(e, product)}
-                          data-unit="packages"
-                          data-column="quantity"
-                          data-productid={product.id}
-                          defaultValue={product.quantity}
-                        />
-                      </Td>
-                      <Td>
-                        <Input
-                          onChange={(e) => handleSpecValueChange(e, product)}
-                          data-unit="packages"
-                          data-column="price"
-                          data-productid={product.id}
-                          defaultValue={
-                            Number(product.price) *
-                            Number(product.product.volumePerPackage)
-                          }
-                        />
-                      </Td>
-                    </>
-                  )}
-                  {specType == "m3" && (
-                    <>
-                      <Td>
-                        <Input
-                          onChange={(e) => handleSpecValueChange(e, product)}
-                          data-unit="m3"
-                          data-column="quantity"
-                          data-productid={product.id}
-                          defaultValue={
-                            product.quantity *
-                            Number(product.product.volumePerPackage)
-                          }
-                        />
-                      </Td>
-                      <Td>
-                        <Input
-                          onChange={(e) => handleSpecValueChange(e, product)}
-                          data-unit="m3"
-                          data-column="price"
-                          data-productid={product.id}
-                          defaultValue={Number(product.price)}
-                        />
-                      </Td>
-                    </>
-                  )}
-                </Tr>
-              ))}
+            {specTableContent.map((row, key) => (
+              <Tr
+                key={`${row.productName} ${row.productDimensions} ${row.productQuantity}`}
+              >
+                <Td fontWeight={500}>
+                  {row.productName}
+                  <br />
+                  {t(`pages.storage.variants.${String(row.productVariant)}`)}
+                </Td>
+                <Td>{row.productDimensions}</Td>
+                <Td>
+                  <Input
+                    onChange={(e) => handleSpecValueChange(e, key)}
+                    data-column="quantity"
+                    defaultValue={row.productQuantity
+                      .toFixed(2)
+                      .replace(/\.00$/, "")}
+                  />
+                </Td>
+                <Td>
+                  <Input
+                    onChange={(e) => handleSpecValueChange(e, key)}
+                    data-column="price"
+                    defaultValue={row.productPrice
+                      .toFixed(2)
+                      .replace(/\.00$/, "")}
+                  />
+                </Td>
+              </Tr>
+            ))}
           </Tbody>
         </Table>
       </Box>

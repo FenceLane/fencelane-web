@@ -1,37 +1,19 @@
 import { Input, Select, Flex, Text, Box, Button } from "@chakra-ui/react";
 import React, { useState } from "react";
-import { InitialCosts, OrderProductInfo } from "../../../../../lib/types";
+import {
+  CURRENCY,
+  InitialCosts,
+  OrderProductInfo,
+  PRODUCT_EXPANSE,
+  QUANTITY_TYPE,
+} from "../../../../../lib/types";
 import { useContent } from "../../../../../lib/hooks/useContent";
 
-interface InitialCostsProps {
-  commodity: {
-    price: number;
-    currency: string;
-    costType: string;
-    quantityType: string;
-  };
-  saturation: {
-    price: number;
-    currency: string;
-    costType: string;
-    quantityType: string;
-  };
-  marketer: {
-    price: number;
-    currency: string;
-    costType: string;
-    quantityType: string;
-  };
-  other: {
-    price: number;
-    currency: string;
-    costType: string;
-    quantityType: string;
-  };
-}
-[];
-
 interface ProductExpansesProps {
+  setSaturationCost: Function;
+  setMarketerCost: Function;
+  marketerCost: InitialCosts["marketer"];
+  saturationCost: InitialCosts["saturation"];
   initialCosts: InitialCosts;
   productData: OrderProductInfo;
   currentProduct: number;
@@ -46,6 +28,10 @@ interface ProductExpansesProps {
 }
 
 export const ProductExpanses = ({
+  setSaturationCost,
+  setMarketerCost,
+  marketerCost,
+  saturationCost,
   initialCosts,
   expansesList,
   productData,
@@ -60,21 +46,21 @@ export const ProductExpanses = ({
 }: ProductExpansesProps) => {
   const { t } = useContent();
 
-  const [quantityType, setQuantityType] = useState("pieces");
+  const [quantityType, setQuantityType] = useState(QUANTITY_TYPE.PIECES); // wyświetlana ilość w górnym inputcie
 
-  const [specType, setSpecType] = useState("pieces");
+  const [specType, setSpecType] = useState(QUANTITY_TYPE.M3); // wyświetlany rodzaj ceny u klienta
 
-  const [clientCostCurrency, setClientCostCurrency] = useState(1);
+  const [clientCostCurrency, setClientCostCurrency] = useState(1); // waluta ceny u klienta - 1 to eur (mnoży się razy 1), rate to pln
 
   const [expanses, setExpanses] = useState(
     () => expansesList[currentProduct - 1]
-  );
+  ); // koszty obecnego produktu
 
   const handleQuantityTypeChange = (
     e: React.ChangeEvent<HTMLSelectElement>
   ) => {
-    setQuantityType(e.target.value);
-  };
+    setQuantityType(e.target.value as QUANTITY_TYPE);
+  }; // zmiana rodzaju ilości towaru w górnym inpucie
 
   const handleCostsChange = (
     e:
@@ -87,33 +73,50 @@ export const ProductExpanses = ({
       ...expanses,
       [type]: { ...expanses[type], [column]: e.target.value },
     });
-  };
+    if (type === PRODUCT_EXPANSE.SATURATION) {
+      setSaturationCost({
+        ...saturationCost,
+        [column]: e.target.value,
+      });
+    }
+    if (type === PRODUCT_EXPANSE.MARKETER) {
+      setMarketerCost({
+        ...marketerCost,
+        [column]: e.target.value,
+      });
+    }
+  }; // zmiana kosztów, ich waluty i rodzaju ilości towaru za który są
 
   const handleNext = async (e: React.MouseEvent<HTMLButtonElement>) => {
+    setExpanses({
+      ...expanses,
+      saturation: saturationCost,
+      marketer: marketerCost, // jednakowa cena za marketera i saturation dla każdego towaru
+    });
     const newExpansesList = [...expansesList];
     newExpansesList[currentProduct - 1] = expanses;
     setExpansesList(newExpansesList);
     handleNextStep(e);
-  };
+  }; // aktualizowanie ilości towarów w głównym expansesList
 
   const handlePrev = (e: React.MouseEvent<HTMLButtonElement>) => {
     handlePrevStep(e);
   };
 
   const handleSpecChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setSpecType(e.target.value);
-  };
+    setSpecType(e.target.value as QUANTITY_TYPE);
+  }; // zmiana wyświetlanego rodzaju ceny u klienta
 
   const handleClientCostCurrencyChange = (
     e: React.ChangeEvent<HTMLSelectElement>
   ) => {
-    if (e.target.value === "EUR") {
+    if (e.target.value === CURRENCY.EUR) {
       setClientCostCurrency(1);
     }
-    if (e.target.value === "PLN") {
-      setClientCostCurrency(rate);
+    if (e.target.value === CURRENCY.PLN) {
+      setClientCostCurrency(Number(rate));
     }
-  };
+  }; // zmiana wyświetlanej ceny u klienta w zależności od waluty
 
   return (
     <Flex
@@ -169,7 +172,7 @@ export const ProductExpanses = ({
           </Flex>
           <Flex flexDir="column">
             <label>Ilość</label>
-            {quantityType == "pieces" && (
+            {quantityType == QUANTITY_TYPE.PIECES && (
               <Input
                 w="100px"
                 readOnly
@@ -178,10 +181,10 @@ export const ProductExpanses = ({
                 }
               />
             )}
-            {quantityType == "packages" && (
+            {quantityType == QUANTITY_TYPE.PACKAGES && (
               <Input w="100px" readOnly defaultValue={productData.quantity} />
             )}
-            {quantityType == "m3" && (
+            {quantityType == QUANTITY_TYPE.M3 && (
               <Input
                 w="100px"
                 readOnly
@@ -198,9 +201,13 @@ export const ProductExpanses = ({
             onChange={handleQuantityTypeChange}
             defaultValue={quantityType}
           >
-            <option value="pieces">{t("pages.orders.order.pieces")}</option>
-            <option value="packages">{t("pages.orders.order.packages")}</option>
-            <option value="m3">M3</option>
+            <option value={QUANTITY_TYPE.PIECES}>
+              {t("pages.orders.order.pieces")}
+            </option>
+            <option value={QUANTITY_TYPE.PACKAGES}>
+              {t("pages.orders.order.packages")}
+            </option>
+            <option value={QUANTITY_TYPE.M3}>M3</option>
           </Select>
         </Flex>
         <Box mb="20px">
@@ -224,8 +231,8 @@ export const ProductExpanses = ({
               defaultValue={expanses.commodity.currency}
               onChange={(e) => handleCostsChange(e, "currency")}
             >
-              <option>EUR</option>
-              <option>PLN</option>
+              <option value={CURRENCY.EUR}>EUR</option>
+              <option value={CURRENCY.PLN}>PLN</option>
             </Select>
             <Select
               w="116px"
@@ -233,9 +240,13 @@ export const ProductExpanses = ({
               defaultValue={expanses.commodity.quantityType}
               onChange={(e) => handleCostsChange(e, "quantityType")}
             >
-              <option value="pieces">Sztuki</option>
-              <option value="packages">Paczki</option>
-              <option value="m3">M3</option>
+              <option value={QUANTITY_TYPE.PIECES}>
+                {t("pages.orders.order.pieces")}
+              </option>
+              <option value={QUANTITY_TYPE.PACKAGES}>
+                {t("pages.orders.order.packages")}
+              </option>
+              <option value={QUANTITY_TYPE.M3}>M3</option>
             </Select>
           </Flex>
           <Flex justifyContent="space-between" mb="5px">
@@ -243,7 +254,7 @@ export const ProductExpanses = ({
               type="number"
               name="saturation"
               defaultValue={
-                expanses.saturation.price == 0 ? "" : expanses.saturation.price
+                saturationCost.price == 0 ? "" : saturationCost.price
               }
               onChange={(e) => handleCostsChange(e, "price")}
               placeholder="Nasycanie"
@@ -253,30 +264,32 @@ export const ProductExpanses = ({
             <Select
               w="80px"
               name="saturation"
-              defaultValue={expanses.saturation.currency}
+              defaultValue={saturationCost.currency}
               onChange={(e) => handleCostsChange(e, "currency")}
             >
-              <option>EUR</option>
-              <option>PLN</option>
+              <option value={CURRENCY.EUR}>EUR</option>
+              <option value={CURRENCY.PLN}>PLN</option>
             </Select>
             <Select
               w="116px"
               name="saturation"
-              defaultValue={expanses.saturation.quantityType}
+              defaultValue={saturationCost.quantityType}
               onChange={(e) => handleCostsChange(e, "quantityType")}
             >
-              <option value="pieces">Sztuki</option>
-              <option value="packages">Paczki</option>
-              <option value="m3">M3</option>
+              <option value={QUANTITY_TYPE.PIECES}>
+                {t("pages.orders.order.pieces")}
+              </option>
+              <option value={QUANTITY_TYPE.PACKAGES}>
+                {t("pages.orders.order.packages")}
+              </option>
+              <option value={QUANTITY_TYPE.M3}>M3</option>
             </Select>
           </Flex>
           <Flex justifyContent="space-between" mb="5px">
             <Input
               type="number"
               name="marketer"
-              defaultValue={
-                expanses.marketer.price == 0 ? "" : expanses.marketer.price
-              }
+              defaultValue={marketerCost.price == 0 ? "" : marketerCost.price}
               onChange={(e) => handleCostsChange(e, "price")}
               placeholder="Handlowiec"
               w="116px"
@@ -285,21 +298,25 @@ export const ProductExpanses = ({
             <Select
               w="80px"
               name="marketer"
-              defaultValue={expanses.marketer.currency}
+              defaultValue={marketerCost.currency}
               onChange={(e) => handleCostsChange(e, "currency")}
             >
-              <option>EUR</option>
-              <option>PLN</option>
+              <option value={CURRENCY.EUR}>EUR</option>
+              <option value={CURRENCY.PLN}>PLN</option>
             </Select>
             <Select
               w="116px"
               name="marketer"
-              defaultValue={expanses.marketer.quantityType}
+              defaultValue={marketerCost.quantityType}
               onChange={(e) => handleCostsChange(e, "quantityType")}
             >
-              <option value="pieces">Sztuki</option>
-              <option value="packages">Paczki</option>
-              <option value="m3">M3</option>
+              <option value={QUANTITY_TYPE.PIECES}>
+                {t("pages.orders.order.pieces")}
+              </option>
+              <option value={QUANTITY_TYPE.PACKAGES}>
+                {t("pages.orders.order.packages")}
+              </option>
+              <option value={QUANTITY_TYPE.M3}>M3</option>
             </Select>
           </Flex>
           <Flex justifyContent="space-between">
@@ -320,8 +337,8 @@ export const ProductExpanses = ({
               defaultValue={expanses.other.currency}
               onChange={(e) => handleCostsChange(e, "currency")}
             >
-              <option>EUR</option>
-              <option>PLN</option>
+              <option value={CURRENCY.EUR}>EUR</option>
+              <option value={CURRENCY.PLN}>PLN</option>
             </Select>
             <Select
               w="116px"
@@ -329,63 +346,71 @@ export const ProductExpanses = ({
               defaultValue={expanses.other.quantityType}
               onChange={(e) => handleCostsChange(e, "quantityType")}
             >
-              <option value="pieces">Sztuki</option>
-              <option value="packages">Paczki</option>
-              <option value="m3">M3</option>
+              <option value={QUANTITY_TYPE.PIECES}>
+                {t("pages.orders.order.pieces")}
+              </option>
+              <option value={QUANTITY_TYPE.PACKAGES}>
+                {t("pages.orders.order.packages")}
+              </option>
+              <option value={QUANTITY_TYPE.M3}>M3</option>
             </Select>
           </Flex>
         </Box>
         <Text>Cena u klienta:</Text>
         <Flex justifyContent="space-between" mb="20px">
-          {specType == "pieces" && (
+          {specType == QUANTITY_TYPE.PIECES && (
             <Input
               readOnly
               w="116px"
               defaultValue={(
-                (Number(productData.price) *
+                ((Number(productData.price) *
                   Number(productData.product.volumePerPackage)) /
-                productData.product.itemsPerPackage /
+                  productData.product.itemsPerPackage) *
                 clientCostCurrency
               ).toFixed(2)}
             />
           )}
-          {specType == "packages" && (
+          {specType == QUANTITY_TYPE.PACKAGES && (
             <Input
               readOnly
               w="116px"
               defaultValue={(
-                (Number(productData.price) *
-                  Number(productData.product.volumePerPackage)) /
+                Number(productData.price) *
+                Number(productData.product.volumePerPackage) *
                 clientCostCurrency
               ).toFixed(2)}
             />
           )}
-          {specType == "m3" && (
+          {specType == QUANTITY_TYPE.M3 && (
             <Input
               readOnly
               w="116px"
               defaultValue={(
-                Number(productData.price) / clientCostCurrency
+                Number(productData.price) * clientCostCurrency
               ).toFixed(2)}
             />
           )}
           <Select
             w="80px"
-            defaultValue={clientCostCurrency}
+            defaultValue={CURRENCY.EUR}
             onChange={handleClientCostCurrencyChange}
           >
-            <option>EUR</option>
-            <option>PLN</option>
+            <option value={CURRENCY.EUR}>EUR</option>
+            <option value={CURRENCY.PLN}>PLN</option>
           </Select>
           <Select
             w="120px"
             color="black"
             onChange={handleSpecChange}
-            value={specType}
+            defaultValue={specType}
           >
-            <option value="pieces">{t("pages.orders.order.pieces")}</option>
-            <option value="packages">{t("pages.orders.order.packages")}</option>
-            <option value="m3">M3</option>
+            <option value={QUANTITY_TYPE.PIECES}>
+              {t("pages.orders.order.pieces")}
+            </option>
+            <option value={QUANTITY_TYPE.PACKAGES}>
+              {t("pages.orders.order.packages")}
+            </option>
+            <option value={QUANTITY_TYPE.M3}>M3</option>
           </Select>
         </Flex>
       </Box>

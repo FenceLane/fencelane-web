@@ -4,7 +4,13 @@ import React, { useState } from "react";
 import styles from "./CalculationCreator.module.scss";
 import { ArrowBackIcon } from "@chakra-ui/icons";
 import { TransportCost } from "./CreatorSteps/TransportCost/TransportCost";
-import { OrderInfo, InitialCosts } from "../../../lib/types";
+import {
+  OrderInfo,
+  InitialCosts,
+  PRODUCT_EXPANSE,
+  CURRENCY,
+  QUANTITY_TYPE,
+} from "../../../lib/types";
 import { ProductExpanses } from "./CreatorSteps/ProductExpanses/ProductExpanses";
 import { Summary } from "./CreatorSteps/Summary/Summary";
 
@@ -13,33 +19,6 @@ interface CalculationCreatorProps {
   orderData: OrderInfo;
   rate: any;
 }
-
-const initialCosts: InitialCosts = {
-  commodity: {
-    price: 0,
-    currency: "EUR",
-    costType: "commodity",
-    quantityType: "m3",
-  },
-  saturation: {
-    price: 0,
-    currency: "EUR",
-    costType: "saturation",
-    quantityType: "m3",
-  },
-  marketer: {
-    price: 0,
-    currency: "EUR",
-    costType: "marketer",
-    quantityType: "m3",
-  },
-  other: {
-    price: 0,
-    currency: "EUR",
-    costType: "other",
-    quantityType: "m3",
-  },
-} as const;
 
 export const CalculationCreator = ({
   orderId,
@@ -52,7 +31,48 @@ export const CalculationCreator = ({
 
   const [transportCostCurrency, setTransportCostCurrency] = useState("EUR");
 
-  const [expansesList, setExpansesList] = useState(
+  const [saturationCost, setSaturationCost] = useState({
+    price: 0,
+    currency: CURRENCY.EUR,
+    costType: PRODUCT_EXPANSE.SATURATION,
+    quantityType: QUANTITY_TYPE.M3,
+  });
+
+  const [marketerCost, setMarketerCost] = useState({
+    price: 0,
+    currency: CURRENCY.EUR,
+    costType: PRODUCT_EXPANSE.MARKETER,
+    quantityType: QUANTITY_TYPE.M3,
+  });
+
+  const initialCosts: InitialCosts = {
+    commodity: {
+      price: 0,
+      currency: CURRENCY.EUR,
+      costType: PRODUCT_EXPANSE.COMMODITY,
+      quantityType: QUANTITY_TYPE.M3,
+    },
+    saturation: {
+      price: 0,
+      currency: CURRENCY.EUR,
+      costType: PRODUCT_EXPANSE.SATURATION,
+      quantityType: QUANTITY_TYPE.M3,
+    },
+    marketer: {
+      price: 0,
+      currency: CURRENCY.EUR,
+      costType: PRODUCT_EXPANSE.MARKETER,
+      quantityType: QUANTITY_TYPE.M3,
+    },
+    other: {
+      price: 0,
+      currency: CURRENCY.EUR,
+      costType: PRODUCT_EXPANSE.OTHER,
+      quantityType: QUANTITY_TYPE.M3,
+    },
+  } as const;
+
+  const [expansesList, setExpansesList] = useState<InitialCosts[]>(
     Array(productsQuantity).fill(initialCosts)
   );
 
@@ -122,6 +142,10 @@ export const CalculationCreator = ({
 
       {currentProduct > 0 && currentProduct <= productsQuantity && (
         <ProductExpanses
+          setSaturationCost={setSaturationCost}
+          saturationCost={saturationCost}
+          setMarketerCost={setMarketerCost}
+          marketerCost={marketerCost}
           key={currentProduct}
           initialCosts={initialCosts}
           productsQuantity={productsQuantity}

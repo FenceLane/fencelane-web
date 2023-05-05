@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, Flex, Text, useDisclosure } from "@chakra-ui/react";
+import { Button, Flex, Text } from "@chakra-ui/react";
 import { OrderInfo } from "../../lib/types";
 import { OrdersRow } from "./OrdersRow/OrdersRow";
 import { AddIcon } from "@chakra-ui/icons";
@@ -12,12 +12,6 @@ interface OrderProps {
 
 export const Orders = ({ orders }: OrderProps) => {
   const { t } = useContent();
-
-  const {
-    isOpen: isAddOpen,
-    onOpen: onAddOpen,
-    onClose: onAddClose,
-  } = useDisclosure();
 
   return (
     <>

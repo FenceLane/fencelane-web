@@ -13,7 +13,12 @@ import {
   Tbody,
   Th,
 } from "@chakra-ui/react";
-import { CURRENCY, OrderProductInfo } from "../../../../../lib/types";
+import {
+  CURRENCY,
+  InitialCosts,
+  OrderProductInfo,
+  QUANTITY_TYPE,
+} from "../../../../../lib/types";
 import { useContent } from "../../../../../lib/hooks/useContent";
 import styles from "./Summary.module.scss";
 import {
@@ -29,11 +34,18 @@ interface SummaryProps {
   productData: OrderProductInfo[];
   handlePrevStep: React.MouseEventHandler<HTMLButtonElement>;
   handleRateChange: React.ChangeEventHandler<HTMLInputElement>;
-  expansesList: any;
+  expansesList: InitialCosts[];
   rate: number;
   rateDate: string;
   transportCost: number;
   transportCostCurrency: string;
+}
+
+interface SpecTableTypes {
+  productName: string;
+  productDimensions: string;
+  productQuantity: number;
+  productDifference: number;
 }
 
 export const Summary = ({
@@ -48,9 +60,7 @@ export const Summary = ({
 }: SummaryProps) => {
   const { t } = useContent();
 
-  const [quantityType, setQuantityType] = useState("pieces");
-
-  const [currency, setCurrency] = useState("EUR");
+  const [currency, setCurrency] = useState("EUR"); //waluta całego podsumowania
 
   const {
     mutate: postOrderExpanses,
@@ -80,22 +90,22 @@ export const Summary = ({
             Number(currentProduct.product.volumePerPackage)
         ),
       0
-    );
+    ); //koszt jednostkowy za jeden m3
 
   let initialProfit = [...expansesList].map((item, key: number) => {
     let summaryCost = 0;
-    Object.entries(item).map((expanse: any) => {
-      //dodawanie do sumarycznego kosztu jednej paczki wszystkich kosztów:
+    Object.entries(item).map((expanse) => {
+      //dodawanie do sumarycznego kosztu jednej paczki wszystkich kosztów cząstkowych:
       const expanseData = expanse[1];
       let expanseCost = Number(expanseData.price);
-      if (expanseData.currency == "PLN") {
+      if (expanseData.currency === CURRENCY.PLN) {
         expanseCost = expanseCost / rate;
       }
-      if (expanseData.quantityType == "m3") {
+      if (expanseData.quantityType === QUANTITY_TYPE.M3) {
         expanseCost =
           expanseCost * Number(productData[key].product.volumePerPackage);
       }
-      if (expanseData.quantityType == "pieces") {
+      if (expanseData.quantityType === QUANTITY_TYPE.PIECES) {
         expanseCost =
           expanseCost * Number(productData[key].product.itemsPerPackage);
       }
@@ -107,72 +117,123 @@ export const Summary = ({
     const totalPrice =
       Number(productData[key].price) *
       Number(productData[key].product.volumePerPackage) *
-      productData[key].quantity; // całkowita kwota płacona przez klienta
-    return Number(totalPrice - summaryCost); //zarobek na 1 produkcie (za wszystkie paczki)
-  });
+      productData[key].quantity; // całkowita kwota płacona przez klienta, czyli cena za 1m3 razy przelicznik m3 razy ilosc paczek
+    return Number(totalPrice - summaryCost); //zarobek na 1 produkcie (za wszystkie jego paczki)
+  }); // jest to tablica przechowująca całkowity profit kolejno na każdym produkcie
 
   const [profit, setProfit] = useState(initialProfit);
 
   const handleCurrencyChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    if (currency === "PLN" && e.target.value === "EUR") {
+    if (currency === CURRENCY.PLN && e.target.value === CURRENCY.EUR) {
+      // zmiana z pln na eur
       setCurrency(e.target.value);
-      setProfit(profit.map((profit: number) => profit / rate));
-      console.log("pln na eur");
+      setProfit(profit.map((profit: number) => profit / rate)); //aktualizowanie całkowitych profitów
+      setSpecTableContent(
+        specTableContent.map((row) => ({
+          ...row,
+          productDifference: row.productDifference / rate, //aktualizowanie różnicy w każdym produkcie
+        }))
+      );
     }
 
-    if (currency === "EUR" && e.target.value === "PLN") {
+    if (currency === CURRENCY.EUR && e.target.value === CURRENCY.PLN) {
+      //zmiana z eur na pln
       setCurrency(e.target.value);
       setProfit(profit.map((profit: number) => profit * rate));
-      console.log("eur na pln");
+      setSpecTableContent(
+        specTableContent.map((row) => ({
+          ...row,
+          productDifference: row.productDifference * rate,
+        }))
+      );
     }
-    console.log(profit);
   };
+
+  const initialSpecTableContent = productData.map((product, key) => ({
+    productName: product.product.category.name,
+    productDimensions: product.product.dimensions,
+    productQuantity: Number(product.quantity),
+    productDifference: Number(profit[key] / product.quantity),
+  })); // domyślna tabela z podsumowaniem (w paczkach)
+
+  const [specTableContent, setSpecTableContent] = useState<SpecTableTypes[]>(
+    initialSpecTableContent
+  );
 
   const handleQuantityTypeChange = (
     e: React.ChangeEvent<HTMLSelectElement>
   ) => {
-    setQuantityType(e.target.value);
-  };
+    const quantityType = e.target.value as QUANTITY_TYPE;
+    const newSpecTableContent = productData.map((product, key) => {
+      switch (quantityType) {
+        case QUANTITY_TYPE.PIECES:
+          return {
+            productName: product.product.category.name,
+            productDimensions: product.product.dimensions,
+            productQuantity: product.quantity * product.product.itemsPerPackage,
+            productDifference:
+              profit[key] /
+              (product.quantity * product.product.itemsPerPackage),
+          };
+        case QUANTITY_TYPE.PACKAGES:
+          return {
+            productName: product.product.category.name,
+            productDimensions: product.product.dimensions,
+            productQuantity: Number(product.quantity),
+            productDifference: profit[key] / product.quantity,
+          };
+        case QUANTITY_TYPE.M3:
+          return {
+            productName: product.product.category.name,
+            productDimensions: product.product.dimensions,
+            productQuantity:
+              product.quantity * Number(product.product.volumePerPackage),
+            productDifference:
+              profit[key] /
+              (product.quantity * Number(product.product.volumePerPackage)),
+          };
+      }
+    });
+    setSpecTableContent(newSpecTableContent);
+  }; // zmiana zawartości tabeli dla zmiany rodzaju ilości
 
   const handlePostCalc = () => {
-    const postExpansesList = expansesList.flatMap(
-      (expanses: any, key: number) => {
-        return Object.values(expanses).map((expanse: any) => {
+    const postExpansesList = expansesList.flatMap((expanses, key: number) => {
+      return Object.values(expanses).map(
+        (expanse: InitialCosts["commodity"]) => {
           let price = expanse.price;
-          if (expanse.currency === "PLN") {
+          if (expanse.currency === CURRENCY.PLN) {
             price = expanse.price / rate;
           }
-
-          if (expanse.quantityType == "m3") {
+          if (expanse.quantityType === QUANTITY_TYPE.M3) {
             price = price * Number(productData[key].product.volumePerPackage);
           }
-          if (expanse.quantityType == "pieces") {
+          if (expanse.quantityType == QUANTITY_TYPE.PIECES) {
             price = price * Number(productData[key].product.itemsPerPackage);
           }
           return {
             price: Number(price),
-            currency: "EUR",
+            currency: CURRENCY.EUR,
             productOrderId: productData[key].productOrderId,
             type: expanse.costType,
           };
-        });
-      }
-    );
+        }
+      );
+    });
     const postTransportData: TransportPostInfo["data"] = {
       price: Number(transportCostInEur),
       currency: CURRENCY.EUR,
     };
     const orderId = productData[0].orderId;
-    // console.log({ id: orderId, data: postExpansesList });
     postOrderExpanses({ id: orderId, data: postExpansesList });
     postOrderTransportCost({ id: orderId, data: postTransportData });
-  };
+  }; // wysyłanie kosztów do bazy
 
   useEffect(() => {
     if (isPostExpansesSuccess && isPostTransportCostSuccess) {
       router.push(`/orders/${productData[0].orderId}`);
     }
-  }, [isPostExpansesSuccess, isPostTransportCostSuccess, productData]);
+  }, [isPostExpansesSuccess, isPostTransportCostSuccess, productData]); //przy successie dodawania produktów przechodzenie do podstrony orderu
 
   return (
     <Flex
@@ -225,17 +286,17 @@ export const Summary = ({
             defaultValue={currency}
             onChange={handleCurrencyChange}
           >
-            <option value="EUR">EUR</option>
-            <option value="PLN">PLN</option>
+            <option value={CURRENCY.EUR}>EUR</option>
+            <option value={CURRENCY.PLN}>PLN</option>
           </Select>
           <Select
             w="116px"
-            defaultValue={quantityType}
+            defaultValue={QUANTITY_TYPE.PACKAGES}
             onChange={handleQuantityTypeChange}
           >
-            <option value="packages">Paczki</option>
-            <option value="m3">M3</option>
-            <option value="pieces">Sztuki</option>
+            <option value={QUANTITY_TYPE.PACKAGES}>Paczki</option>
+            <option value={QUANTITY_TYPE.M3}>M3</option>
+            <option value={QUANTITY_TYPE.PIECES}>Sztuki</option>
           </Select>
         </Flex>
 
@@ -249,55 +310,26 @@ export const Summary = ({
             </Tr>
           </Thead>
           <Tbody>
-            {productData &&
-              productData.map((product, key) => (
-                <Tr key={product.id}>
-                  <Td fontWeight={500}>
-                    {product.product.category.name}
-                    <br />
-                    {product.product.dimensions}
-                  </Td>
-                  {quantityType == "pieces" && (
-                    <>
-                      <Td>
-                        {product.quantity * product.product.itemsPerPackage}
-                      </Td>
-                      <Td>
-                        {(
-                          profit[key] /
-                          (product.quantity * product.product.itemsPerPackage)
-                        ).toFixed(2)}
-                      </Td>
-                    </>
-                  )}
-                  {quantityType == "packages" && (
-                    <>
-                      <Td>{product.quantity}</Td>
-                      <Td>{(profit[key] / product.quantity).toFixed(2)}</Td>
-                    </>
-                  )}
-                  {quantityType == "m3" && (
-                    <>
-                      <Td>
-                        {product.quantity *
-                          Number(product.product.volumePerPackage)}
-                      </Td>
-                      <Td>
-                        {(
-                          profit[key] /
-                          (product.quantity *
-                            Number(product.product.volumePerPackage))
-                        ).toFixed(2)}
-                      </Td>
-                    </>
-                  )}
-                  <Td>{profit[key].toFixed(2)}</Td>
-                </Tr>
-              ))}
+            {specTableContent.map((row, index) => (
+              <Tr key={`${row.productName} ${row.productDimensions}`}>
+                <Td>
+                  {row.productName}
+                  <br />
+                  {row.productDimensions}
+                </Td>
+                <Td>{row.productQuantity}</Td>
+                <Td>{row.productDifference.toFixed(2).replace(/\.00$/, "")}</Td>
+                <Td>{profit[index].toFixed(2).replace(/\.00$/, "")}</Td>
+              </Tr>
+            ))}
           </Tbody>
         </Table>
         <Text mr="50px" fontWeight={500} textAlign="right">
-          RAZEM: {profit.reduce((sum, value) => sum + value).toFixed(2)}
+          RAZEM:{" "}
+          {`${profit
+            .reduce((sum, value) => sum + value)
+            .toFixed(2)
+            .replace(/\.00$/, "")} ${currency}`}
         </Text>
       </Box>
       <Flex justifyContent="space-between">
