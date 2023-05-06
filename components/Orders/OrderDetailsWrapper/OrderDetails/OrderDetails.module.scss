@@ -23,7 +23,8 @@
 .left {
   margin: 0 0 20px 30px;
 }
-.right {
+.right,
+.profit {
   margin: 0 30px 20px 0;
 }
 .text-box {
@@ -40,14 +41,15 @@
   bottom: 10px;
   right: 10px;
 }
-.price {
+.profit {
   color: var(--dark);
   font-weight: 700;
   font-size: 16px;
+  text-align: right;
 }
-.price::before {
-  content: "+ ";
-}
+// .profit::before {
+//   content: "+ ";
+// }
 .details-link {
   font-size: 13px;
   color: var(--font-gray);

@@ -194,6 +194,16 @@ const postOrderExpanses = async ({ id, data }: ExpansePostInfo) => {
   return axiosInstance.post(apiPath(`orders/${id}/expanses`), data);
 };
 
+const updateOrder = async ({
+  data,
+  id,
+}: {
+  id: number;
+  data: Partial<OrderInfo>;
+}) => {
+  return axiosInstance.put(apiPath(`orders/${id}`), data);
+};
+
 export const apiClient = {
   auth: {
     postLogin,
@@ -218,6 +228,7 @@ export const apiClient = {
     getClients,
     getDestinations,
     updateStatus,
+    updateOrder,
   },
   calcs: {
     getEurRate,

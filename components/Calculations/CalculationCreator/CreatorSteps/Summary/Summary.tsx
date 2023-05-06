@@ -24,6 +24,7 @@ import styles from "./Summary.module.scss";
 import {
   usePostOrderExpanses,
   usePostOrderTransportCost,
+  useUpdateStatus,
 } from "../../../../../lib/api/hooks/calcs";
 import router from "next/router";
 
@@ -31,6 +32,7 @@ import { TransportPostInfo } from "../../../../../lib/types";
 import { mapAxiosErrorToLabel } from "../../../../../lib/server/BackendError/BackendError";
 
 interface SummaryProps {
+  orderId: number;
   productData: OrderProductInfo[];
   handlePrevStep: React.MouseEventHandler<HTMLButtonElement>;
   handleRateChange: React.ChangeEventHandler<HTMLInputElement>;
@@ -49,6 +51,7 @@ interface SpecTableTypes {
 }
 
 export const Summary = ({
+  orderId,
   productData,
   handlePrevStep,
   handleRateChange,
@@ -77,8 +80,18 @@ export const Summary = ({
     isLoading: isPostTransportCostLoading,
   } = usePostOrderTransportCost(() => console.log("transport cost success"));
 
+  const {
+    mutate: updateOrder,
+    error: updateOrderError,
+    isError: isUpdateOrderError,
+    isSuccess: isUpdateOrderSuccess,
+    isLoading: isUpdateOrderLoading,
+  } = useUpdateStatus(orderId);
+
   const transportCostInEur =
-    transportCostCurrency === "EUR" ? transportCost : transportCost / rate;
+    transportCostCurrency === CURRENCY.EUR
+      ? transportCost
+      : transportCost / rate;
 
   const transportCostPerM3 =
     transportCostInEur /
@@ -160,6 +173,11 @@ export const Summary = ({
     initialSpecTableContent
   );
 
+  const displayProfit = profit
+    .reduce((sum, value) => sum + value)
+    .toFixed(2)
+    .replace(/\.00$/, "");
+
   const handleQuantityTypeChange = (
     e: React.ChangeEvent<HTMLSelectElement>
   ) => {
@@ -227,15 +245,23 @@ export const Summary = ({
     const orderId = productData[0].orderId;
     postOrderExpanses({ id: orderId, data: postExpansesList });
     postOrderTransportCost({ id: orderId, data: postTransportData });
+    updateOrder({ profit: Number(displayProfit) });
   }; // wysyłanie kosztów do bazy (expansy w bazie za paczke, transportcost za m3)
 
   useEffect(() => {
-    if (isPostExpansesSuccess && isPostTransportCostSuccess) {
+    if (
+      isPostExpansesSuccess &&
+      isPostTransportCostSuccess &&
+      isUpdateOrderSuccess
+    ) {
       router.push(`/orders/${productData[0].orderId}`);
     }
-  }, [isPostExpansesSuccess, isPostTransportCostSuccess, productData]); //przy successie dodawania produktów przechodzenie do podstrony orderu
-
-  console.log(expansesList);
+  }, [
+    isPostExpansesSuccess,
+    isPostTransportCostSuccess,
+    isUpdateOrderSuccess,
+    productData,
+  ]); //przy successie dodawania produktów przechodzenie do podstrony orderu
 
   return (
     <Flex
@@ -327,11 +353,7 @@ export const Summary = ({
           </Tbody>
         </Table>
         <Text mr="50px" fontWeight={500} textAlign="right">
-          RAZEM:{" "}
-          {`${profit
-            .reduce((sum, value) => sum + value)
-            .toFixed(2)
-            .replace(/\.00$/, "")} ${currency}`}
+          RAZEM: {displayProfit} {currency}
         </Text>
       </Box>
       <Flex justifyContent="space-between">
@@ -344,12 +366,18 @@ export const Summary = ({
           w="116px"
           h="40px"
           onClick={handlePostCalc}
-          isLoading={isPostExpansesLoading || isPostTransportCostLoading}
+          isLoading={
+            isPostExpansesLoading ||
+            isPostTransportCostLoading ||
+            isUpdateOrderLoading
+          }
         >
           Zapisz
         </Button>
       </Flex>
-      {(isPostExpansesError || isPostTransportCostError) && (
+      {(isPostExpansesError ||
+        isPostTransportCostError ||
+        isUpdateOrderError) && (
         <Text color="red" fontWeight="600" fontSize="18px">
           {t(
             `errors.backendErrorLabel.${mapAxiosErrorToLabel(

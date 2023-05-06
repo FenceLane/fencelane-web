@@ -1,6 +1,7 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { apiClient } from "../apiClient";
 import { QUERY_KEY, queryClient } from "../queryClient";
+import { OrderInfo } from "../../types";
 
 export const useGetEurRate = () => {
   const mutation = useQuery({
@@ -46,6 +47,20 @@ export const usePostOrderTransportCost = (onSuccess: () => void) => {
       onSuccess();
       queryClient.invalidateQueries({
         queryKey: [QUERY_KEY.ORDER, QUERY_KEY.TRANSPORT_COST],
+      });
+    },
+  });
+
+  return mutation;
+};
+
+export const useUpdateStatus = (orderId: number) => {
+  const mutation = useMutation({
+    mutationFn: (data: Partial<OrderInfo>) =>
+      apiClient.orders.updateOrder({ id: orderId, data }),
+    onSuccess: () => {
+      return queryClient.invalidateQueries({
+        queryKey: [QUERY_KEY.ORDER, orderId],
       });
     },
   });

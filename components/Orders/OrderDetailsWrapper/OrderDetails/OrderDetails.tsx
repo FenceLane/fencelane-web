@@ -49,6 +49,8 @@ export const OrderDetails = ({ orderData }: OrderDetailsProps) => {
 
   const [specType, setSpecType] = useState(QUANTITY_TYPE.PIECES);
 
+  const profit = orderData.profit;
+
   const [newOrderDetails, setNewOrderDetails] = useState(orderData.products); // dane do zmiany ilosci i ceny produktow w zamowieniu
 
   const {
@@ -212,6 +214,7 @@ export const OrderDetails = ({ orderData }: OrderDetailsProps) => {
           </Box>
         </Flex>
       </Flex>
+      {profit && <Text className={styles["profit"]}>Zysk: +{profit}€</Text>}
       <Flex className={styles["history-container"]} flexDir="row">
         <Flex flexDir="column" className={styles["order-history"]}>
           <Heading size="sm" mb="10px">
@@ -282,6 +285,8 @@ export const OrderDetails = ({ orderData }: OrderDetailsProps) => {
                 <Td>{row.productDimensions}</Td>
                 <Td>
                   <Input
+                    textAlign="center"
+                    w="100px"
                     onChange={(e) => handleSpecValueChange(e, key)}
                     data-column="quantity"
                     defaultValue={row.productQuantity
@@ -291,6 +296,8 @@ export const OrderDetails = ({ orderData }: OrderDetailsProps) => {
                 </Td>
                 <Td>
                   <Input
+                    textAlign="center"
+                    w="100px"
                     onChange={(e) => handleSpecValueChange(e, key)}
                     data-column="price"
                     defaultValue={row.productPrice
@@ -307,11 +314,11 @@ export const OrderDetails = ({ orderData }: OrderDetailsProps) => {
         <Button color="white" bg="var(--button-orange)" fontWeight="400">
           {t("buttons.edit")}
         </Button>
-        <Button color="white" bg="var(--button-blue)">
-          <Link href={`/calculations/${orderData.id}`}>
+        <Link href={`/calculations/${orderData.id}`}>
+          <Button color="white" bg="var(--button-blue)">
             {t("pages.orders.order.calculation")}
-          </Link>
-        </Button>
+          </Button>
+        </Link>
       </Flex>
       <Flex m="40px 0px" justifyContent="space-between" alignItems="center">
         <Heading size="sm" mb="10px" ml="40px">

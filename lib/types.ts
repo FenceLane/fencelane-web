@@ -60,6 +60,7 @@ export interface OrderInfo {
   createdAt: Date;
   updatedAt: Date;
   price: number;
+  profit: number | null;
   client: {
     id: string;
     name: string;

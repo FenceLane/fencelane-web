@@ -162,6 +162,7 @@ export const CalculationCreator = ({
       )}
       {currentProduct > productsQuantity && (
         <Summary
+          orderId={orderId}
           transportCostCurrency={transportCostCurrency}
           transportCost={transportCost}
           expansesList={expansesList}

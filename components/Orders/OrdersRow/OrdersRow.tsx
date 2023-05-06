@@ -24,7 +24,7 @@ export const OrdersRow = ({ orderData }: OrderDataProps) => {
 
   const date = new Date(orderData.createdAt);
 
-  const price = orderData.price;
+  const profit = orderData.profit;
 
   const id = orderData.id.toString().padStart(4, "0");
 
@@ -100,7 +100,7 @@ export const OrdersRow = ({ orderData }: OrderDataProps) => {
         </Box>
       </Flex>
       <Box className={styles["right-bottom"]}>
-        {price && <Text className={styles["price"]}>{price}€</Text>}
+        {profit && <Text className={styles["price"]}>{profit}€</Text>}
         <Link
           className={styles["details-link"]}
           href={`/orders/${orderData.id}`}

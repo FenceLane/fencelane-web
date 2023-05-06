@@ -220,7 +220,7 @@ export const ProductExpanses = ({
               type="number"
               name="commodity"
               defaultValue={
-                expanses.commodity.price == 0 ? "" : expanses.commodity.price
+                expanses.commodity.price === 0 ? "" : expanses.commodity.price
               }
               onChange={(e) => handleCostsChange(e, "price")}
               placeholder="Towar"
@@ -255,7 +255,9 @@ export const ProductExpanses = ({
             <Input
               type="number"
               name="saturation"
-              defaultValue={expanses.saturation.price}
+              defaultValue={
+                expanses.saturation.price === 0 ? "" : expanses.saturation.price
+              }
               onChange={(e) => handleCostsChange(e, "price")}
               placeholder="Nasycanie"
               w="116px"
