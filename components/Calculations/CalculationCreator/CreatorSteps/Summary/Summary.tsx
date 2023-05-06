@@ -88,7 +88,7 @@ export const Summary = ({
       return prev.map((cost: InitialCosts) => ({
         ...cost,
         saturation: saturationCost,
-        marketerCost: marketerCost,
+        marketer: marketerCost,
       }));
     });
   }, [marketerCost, saturationCost, setExpansesList]); // przypisanie tej samej ceny saturacji i marketera dla każdego towaru
