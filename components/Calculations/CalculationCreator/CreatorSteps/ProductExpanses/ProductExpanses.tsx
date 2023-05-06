@@ -88,11 +88,6 @@ export const ProductExpanses = ({
   }; // zmiana kosztów, ich waluty i rodzaju ilości towaru za który są
 
   const handleNext = async (e: React.MouseEvent<HTMLButtonElement>) => {
-    setExpanses({
-      ...expanses,
-      saturation: saturationCost,
-      marketer: marketerCost, // jednakowa cena za marketera i saturation dla każdego towaru
-    });
     const newExpansesList = [...expansesList];
     newExpansesList[currentProduct - 1] = expanses;
     setExpansesList(newExpansesList);

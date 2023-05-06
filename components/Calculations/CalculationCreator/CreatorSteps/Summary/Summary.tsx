@@ -35,10 +35,13 @@ interface SummaryProps {
   handlePrevStep: React.MouseEventHandler<HTMLButtonElement>;
   handleRateChange: React.ChangeEventHandler<HTMLInputElement>;
   expansesList: InitialCosts[];
+  setExpansesList: Function;
   rate: number;
   rateDate: string;
   transportCost: number;
   transportCostCurrency: string;
+  marketerCost: InitialCosts["marketer"];
+  saturationCost: InitialCosts["saturation"];
 }
 
 interface SpecTableTypes {
@@ -53,10 +56,13 @@ export const Summary = ({
   handlePrevStep,
   handleRateChange,
   expansesList,
+  setExpansesList,
   rate,
   rateDate,
   transportCost,
   transportCostCurrency,
+  marketerCost,
+  saturationCost,
 }: SummaryProps) => {
   const { t } = useContent();
 
@@ -77,6 +83,16 @@ export const Summary = ({
     isLoading: isPostTransportCostLoading,
   } = usePostOrderTransportCost(() => console.log("transport cost success"));
 
+  useEffect(() => {
+    setExpansesList((prev: InitialCosts[]) => {
+      return prev.map((cost: InitialCosts) => ({
+        ...cost,
+        saturation: saturationCost,
+        marketerCost: marketerCost,
+      }));
+    });
+  }, [marketerCost, saturationCost, setExpansesList]); // przypisanie tej samej ceny saturacji i marketera dla każdego towaru
+
   const transportCostInEur =
     transportCostCurrency === "EUR" ? transportCost : transportCost / rate;
 
@@ -92,7 +108,7 @@ export const Summary = ({
       0
     ); //koszt jednostkowy za jeden m3
 
-  let initialProfit = [...expansesList].map((item, key: number) => {
+  const initialProfit = [...expansesList].map((item, key: number) => {
     let summaryCost = 0;
     Object.entries(item).map((expanse) => {
       //dodawanie do sumarycznego kosztu jednej paczki wszystkich kosztów cząstkowych:

@@ -162,9 +162,12 @@ export const CalculationCreator = ({
       )}
       {currentProduct > productsQuantity && (
         <Summary
+          saturationCost={saturationCost}
+          marketerCost={marketerCost}
           transportCostCurrency={transportCostCurrency}
           transportCost={transportCost}
           expansesList={expansesList}
+          setExpansesList={setExpansesList}
           handleRateChange={handleRateChange}
           handlePrevStep={handlePrevStep}
           rate={eurRate}
