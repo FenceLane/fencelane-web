@@ -10,28 +10,28 @@ import {
 import { useContent } from "../../../../../lib/hooks/useContent";
 
 interface ProductExpansesProps {
-  setSaturationCost: Function;
-  setMarketerCost: Function;
-  marketerCost: InitialCosts["marketer"];
-  saturationCost: InitialCosts["saturation"];
+  setDefaultSaturationCost: Function;
+  setDefaultMarketerCost: Function;
+  defaultMarketerCost: InitialCosts["marketer"];
+  defaultSaturationCost: InitialCosts["saturation"];
   initialCosts: InitialCosts;
   productData: OrderProductInfo;
   currentProduct: number;
   expansesList: InitialCosts[];
   setExpansesList: Function;
   handleRateChange: React.ChangeEventHandler<HTMLInputElement>;
-  handleNextStep: React.MouseEventHandler<HTMLButtonElement>;
-  handlePrevStep: React.MouseEventHandler<HTMLButtonElement>;
+  handleNextStep: () => void;
+  handlePrevStep: () => void;
   rate: number;
   rateDate: string;
   productsQuantity: number;
 }
 
 export const ProductExpanses = ({
-  setSaturationCost,
-  setMarketerCost,
-  marketerCost,
-  saturationCost,
+  setDefaultSaturationCost,
+  setDefaultMarketerCost,
+  defaultMarketerCost,
+  defaultSaturationCost,
   initialCosts,
   expansesList,
   productData,
@@ -52,9 +52,9 @@ export const ProductExpanses = ({
 
   const [clientCostCurrency, setClientCostCurrency] = useState(1); // waluta ceny u klienta - 1 to eur (mnoży się razy 1), rate to pln
 
-  const [expanses, setExpanses] = useState(
-    () => expansesList[currentProduct - 1]
-  ); // koszty obecnego produktu
+  const [expanses, setExpanses] = useState({
+    ...expansesList[currentProduct - 1],
+  }); // koszty obecnego produktu
 
   const handleQuantityTypeChange = (
     e: React.ChangeEvent<HTMLSelectElement>
@@ -74,28 +74,35 @@ export const ProductExpanses = ({
       [type]: { ...expanses[type], [column]: e.target.value },
     });
     if (type === PRODUCT_EXPANSE.SATURATION) {
-      setSaturationCost({
-        ...saturationCost,
+      setDefaultSaturationCost({
+        ...defaultSaturationCost,
         [column]: e.target.value,
       });
     }
     if (type === PRODUCT_EXPANSE.MARKETER) {
-      setMarketerCost({
-        ...marketerCost,
+      setDefaultMarketerCost({
+        ...defaultMarketerCost,
         [column]: e.target.value,
       });
     }
   }; // zmiana kosztów, ich waluty i rodzaju ilości towaru za który są
 
-  const handleNext = async (e: React.MouseEvent<HTMLButtonElement>) => {
+  const handleNext = () => {
     const newExpansesList = [...expansesList];
     newExpansesList[currentProduct - 1] = expanses;
+    if (currentProduct < productsQuantity) {
+      newExpansesList[currentProduct] = {
+        ...newExpansesList[currentProduct],
+        marketer: defaultMarketerCost,
+        saturation: defaultSaturationCost,
+      };
+    }
     setExpansesList(newExpansesList);
-    handleNextStep(e);
+    handleNextStep();
   }; // aktualizowanie ilości towarów w głównym expansesList
 
-  const handlePrev = (e: React.MouseEvent<HTMLButtonElement>) => {
-    handlePrevStep(e);
+  const handlePrev = () => {
+    handlePrevStep();
   };
 
   const handleSpecChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -248,9 +255,7 @@ export const ProductExpanses = ({
             <Input
               type="number"
               name="saturation"
-              defaultValue={
-                saturationCost.price == 0 ? "" : saturationCost.price
-              }
+              defaultValue={expanses.saturation.price}
               onChange={(e) => handleCostsChange(e, "price")}
               placeholder="Nasycanie"
               w="116px"
@@ -259,7 +264,7 @@ export const ProductExpanses = ({
             <Select
               w="80px"
               name="saturation"
-              defaultValue={saturationCost.currency}
+              defaultValue={expanses.saturation.currency}
               onChange={(e) => handleCostsChange(e, "currency")}
             >
               <option value={CURRENCY.EUR}>EUR</option>
@@ -268,7 +273,7 @@ export const ProductExpanses = ({
             <Select
               w="116px"
               name="saturation"
-              defaultValue={saturationCost.quantityType}
+              defaultValue={expanses.saturation.quantityType}
               onChange={(e) => handleCostsChange(e, "quantityType")}
             >
               <option value={QUANTITY_TYPE.PIECES}>
@@ -284,7 +289,9 @@ export const ProductExpanses = ({
             <Input
               type="number"
               name="marketer"
-              defaultValue={marketerCost.price == 0 ? "" : marketerCost.price}
+              defaultValue={
+                expanses.marketer.price === 0 ? "" : expanses.marketer.price
+              }
               onChange={(e) => handleCostsChange(e, "price")}
               placeholder="Handlowiec"
               w="116px"
@@ -293,7 +300,7 @@ export const ProductExpanses = ({
             <Select
               w="80px"
               name="marketer"
-              defaultValue={marketerCost.currency}
+              defaultValue={expanses.marketer.currency}
               onChange={(e) => handleCostsChange(e, "currency")}
             >
               <option value={CURRENCY.EUR}>EUR</option>
@@ -302,7 +309,7 @@ export const ProductExpanses = ({
             <Select
               w="116px"
               name="marketer"
-              defaultValue={marketerCost.quantityType}
+              defaultValue={expanses.marketer.quantityType}
               onChange={(e) => handleCostsChange(e, "quantityType")}
             >
               <option value={QUANTITY_TYPE.PIECES}>

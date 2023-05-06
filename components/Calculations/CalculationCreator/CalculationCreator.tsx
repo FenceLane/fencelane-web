@@ -20,6 +20,33 @@ interface CalculationCreatorProps {
   rate: any;
 }
 
+const initialCosts: InitialCosts = {
+  commodity: {
+    price: 0,
+    currency: CURRENCY.EUR,
+    costType: PRODUCT_EXPANSE.COMMODITY,
+    quantityType: QUANTITY_TYPE.M3,
+  },
+  saturation: {
+    price: 0,
+    currency: CURRENCY.EUR,
+    costType: PRODUCT_EXPANSE.SATURATION,
+    quantityType: QUANTITY_TYPE.M3,
+  },
+  marketer: {
+    price: 0,
+    currency: CURRENCY.EUR,
+    costType: PRODUCT_EXPANSE.MARKETER,
+    quantityType: QUANTITY_TYPE.M3,
+  },
+  other: {
+    price: 0,
+    currency: CURRENCY.EUR,
+    costType: PRODUCT_EXPANSE.OTHER,
+    quantityType: QUANTITY_TYPE.M3,
+  },
+} as const;
+
 export const CalculationCreator = ({
   orderId,
   orderData,
@@ -31,46 +58,19 @@ export const CalculationCreator = ({
 
   const [transportCostCurrency, setTransportCostCurrency] = useState("EUR");
 
-  const [saturationCost, setSaturationCost] = useState({
+  const [defaultSaturationCost, setDefaultSaturationCost] = useState({
     price: 0,
     currency: CURRENCY.EUR,
     costType: PRODUCT_EXPANSE.SATURATION,
     quantityType: QUANTITY_TYPE.M3,
   });
 
-  const [marketerCost, setMarketerCost] = useState({
+  const [defaultMarketerCost, setDefaultMarketerCost] = useState({
     price: 0,
     currency: CURRENCY.EUR,
     costType: PRODUCT_EXPANSE.MARKETER,
     quantityType: QUANTITY_TYPE.M3,
   });
-
-  const initialCosts: InitialCosts = {
-    commodity: {
-      price: 0,
-      currency: CURRENCY.EUR,
-      costType: PRODUCT_EXPANSE.COMMODITY,
-      quantityType: QUANTITY_TYPE.M3,
-    },
-    saturation: {
-      price: 0,
-      currency: CURRENCY.EUR,
-      costType: PRODUCT_EXPANSE.SATURATION,
-      quantityType: QUANTITY_TYPE.M3,
-    },
-    marketer: {
-      price: 0,
-      currency: CURRENCY.EUR,
-      costType: PRODUCT_EXPANSE.MARKETER,
-      quantityType: QUANTITY_TYPE.M3,
-    },
-    other: {
-      price: 0,
-      currency: CURRENCY.EUR,
-      costType: PRODUCT_EXPANSE.OTHER,
-      quantityType: QUANTITY_TYPE.M3,
-    },
-  } as const;
 
   const [expansesList, setExpansesList] = useState<InitialCosts[]>(
     Array(productsQuantity).fill(initialCosts)
@@ -142,10 +142,10 @@ export const CalculationCreator = ({
 
       {currentProduct > 0 && currentProduct <= productsQuantity && (
         <ProductExpanses
-          setSaturationCost={setSaturationCost}
-          saturationCost={saturationCost}
-          setMarketerCost={setMarketerCost}
-          marketerCost={marketerCost}
+          setDefaultSaturationCost={setDefaultSaturationCost}
+          defaultSaturationCost={defaultSaturationCost}
+          setDefaultMarketerCost={setDefaultMarketerCost}
+          defaultMarketerCost={defaultMarketerCost}
           key={currentProduct}
           initialCosts={initialCosts}
           productsQuantity={productsQuantity}
@@ -162,12 +162,9 @@ export const CalculationCreator = ({
       )}
       {currentProduct > productsQuantity && (
         <Summary
-          saturationCost={saturationCost}
-          marketerCost={marketerCost}
           transportCostCurrency={transportCostCurrency}
           transportCost={transportCost}
           expansesList={expansesList}
-          setExpansesList={setExpansesList}
           handleRateChange={handleRateChange}
           handlePrevStep={handlePrevStep}
           rate={eurRate}

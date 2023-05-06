@@ -35,13 +35,10 @@ interface SummaryProps {
   handlePrevStep: React.MouseEventHandler<HTMLButtonElement>;
   handleRateChange: React.ChangeEventHandler<HTMLInputElement>;
   expansesList: InitialCosts[];
-  setExpansesList: Function;
   rate: number;
   rateDate: string;
   transportCost: number;
   transportCostCurrency: string;
-  marketerCost: InitialCosts["marketer"];
-  saturationCost: InitialCosts["saturation"];
 }
 
 interface SpecTableTypes {
@@ -56,13 +53,10 @@ export const Summary = ({
   handlePrevStep,
   handleRateChange,
   expansesList,
-  setExpansesList,
   rate,
   rateDate,
   transportCost,
   transportCostCurrency,
-  marketerCost,
-  saturationCost,
 }: SummaryProps) => {
   const { t } = useContent();
 
@@ -82,16 +76,6 @@ export const Summary = ({
     isSuccess: isPostTransportCostSuccess,
     isLoading: isPostTransportCostLoading,
   } = usePostOrderTransportCost(() => console.log("transport cost success"));
-
-  useEffect(() => {
-    setExpansesList((prev: InitialCosts[]) => {
-      return prev.map((cost: InitialCosts) => ({
-        ...cost,
-        saturation: saturationCost,
-        marketer: marketerCost,
-      }));
-    });
-  }, [marketerCost, saturationCost, setExpansesList]); // przypisanie tej samej ceny saturacji i marketera dla każdego towaru
 
   const transportCostInEur =
     transportCostCurrency === "EUR" ? transportCost : transportCost / rate;
