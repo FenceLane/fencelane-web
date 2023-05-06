@@ -93,15 +93,7 @@ export default withApiMethods({
         client: true,
         destination: true,
         statusHistory: true,
-        products: {
-          select: {
-            productId: true,
-            quantity: true,
-            price: true,
-            currency: true,
-            id: true,
-          },
-        },
+        products: true,
       },
       orderBy: { createdAt: "desc" },
     });
