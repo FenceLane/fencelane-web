@@ -353,7 +353,7 @@ export const ProductExpanses = ({
         </Box>
         <Text>Cena u klienta:</Text>
         <Flex justifyContent="space-between" mb="20px">
-          {specType == QUANTITY_TYPE.PIECES && (
+          {specType === QUANTITY_TYPE.PIECES && (
             <Input
               readOnly
               w="116px"
@@ -365,7 +365,7 @@ export const ProductExpanses = ({
               ).toFixed(2)}
             />
           )}
-          {specType == QUANTITY_TYPE.PACKAGES && (
+          {specType === QUANTITY_TYPE.PACKAGES && (
             <Input
               readOnly
               w="116px"
@@ -376,7 +376,7 @@ export const ProductExpanses = ({
               ).toFixed(2)}
             />
           )}
-          {specType == QUANTITY_TYPE.M3 && (
+          {specType === QUANTITY_TYPE.M3 && (
             <Input
               readOnly
               w="116px"

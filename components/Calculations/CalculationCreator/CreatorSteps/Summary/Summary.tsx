@@ -243,13 +243,15 @@ export const Summary = ({
     const orderId = productData[0].orderId;
     postOrderExpanses({ id: orderId, data: postExpansesList });
     postOrderTransportCost({ id: orderId, data: postTransportData });
-  }; // wysyłanie kosztów do bazy
+  }; // wysyłanie kosztów do bazy (expansy w bazie za paczke, transportcost za m3)
 
   useEffect(() => {
     if (isPostExpansesSuccess && isPostTransportCostSuccess) {
       router.push(`/orders/${productData[0].orderId}`);
     }
   }, [isPostExpansesSuccess, isPostTransportCostSuccess, productData]); //przy successie dodawania produktów przechodzenie do podstrony orderu
+
+  console.log(expansesList);
 
   return (
     <Flex
