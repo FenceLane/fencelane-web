@@ -18,6 +18,19 @@ export interface ProductInfo {
   category: CategoryInfo;
 }
 
+export interface EventInfo {
+  id: string;
+  title: string;
+  description: string;
+  startDate: string;
+  endDate: string;
+  orderId: number;
+  creatorId: string;
+  createdAt: string;
+  updatedAt: string;
+  creator: UserInfo;
+}
+
 export interface CategoryInfo {
   id: string;
   name: string;

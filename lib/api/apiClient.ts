@@ -8,10 +8,9 @@ import {
   OrderInfo,
   OrderPostInfo,
   OrderProductInfo,
-  ProductInfo,
   TransportPostInfo,
-  USER_ROLE,
 } from "../types";
+import { EventInfo, USER_ROLE } from "../types";
 import https from "https";
 import { ProductDataCreate, ProductDataUpdate } from "../schema/productData";
 import { OrderStatusData } from "../schema/orderStatusData";
@@ -82,7 +81,7 @@ const getMe = async () => {
 
 const getProducts = async (options?: {
   authCookie: string;
-}): Promise<ProductInfo[]> => {
+}): Promise<EventInfo[]> => {
   const {
     data: { data },
   } = await axiosInstance.get(apiPath("products"), {
@@ -147,6 +146,17 @@ const postOrder = async (data: OrderPostInfo) => {
 
 const getClients = async (options?: { authCookie: string }) => {
   const { data } = await axiosInstance.get(apiPath("clients"), {
+    headers: { cookie: options?.authCookie },
+  });
+  return data;
+};
+
+const getEvents = async (options?: {
+  authCookie: string;
+}): Promise<EventInfo[]> => {
+  const {
+    data: { data },
+  } = await axiosInstance.get(apiPath("events"), {
     headers: { cookie: options?.authCookie },
   });
 
@@ -263,5 +273,8 @@ export const apiClient = {
     postOrderExpanses,
     deleteExpanses,
     deleteTransportCost,
+  },
+  events: {
+    getEvents,
   },
 };
