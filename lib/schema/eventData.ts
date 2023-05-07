@@ -8,4 +8,4 @@ export const EventDataSchema = z.object({
   orderId: z.number(),
 });
 
-export const EventUpdateDataSchema = EventDataSchema.partial();
+export const EventDataUpdateSchema = EventDataSchema.partial();
