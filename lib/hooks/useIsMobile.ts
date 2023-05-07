@@ -1,18 +1,15 @@
-import { useLayoutEffect, useState } from "react";
-import debounce from "../util/debounce";
+import { useState } from "react";
+import { useIsomorphicLayoutEffect } from "framer-motion";
 
 export const useIsMobile = (): boolean => {
   const [isMobile, setIsMobile] = useState(false);
 
-  useLayoutEffect(() => {
+  useIsomorphicLayoutEffect(() => {
     if (typeof window !== "undefined") {
       setIsMobile(window.innerWidth < 768);
     }
 
-    const updateSize = debounce(
-      () => setIsMobile(window.innerWidth < 768),
-      250
-    );
+    const updateSize = () => setIsMobile(window.innerWidth < 768);
 
     window.addEventListener("resize", updateSize);
     return () => window.removeEventListener("resize", updateSize);

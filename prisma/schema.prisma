@@ -22,6 +22,7 @@ model User {
   passwordResetTokens  PasswordResetToken[]
   orders Order[]
   orderStatuses OrderStatus[]
+  events Event[]
 }
 
 model Session {
@@ -108,6 +109,7 @@ model Order{
   destinationId String
   date DateTime @default(now())
   statusHistory OrderStatus[]
+  events Event[]
   files OrderFile[]
   products ProductOrder[]
   creator User @relation(fields: [creatorId], references: [id])
@@ -168,6 +170,22 @@ model ProductExpanse {
 
   productOrder ProductOrder @relation(fields: [productOrderId], references: [id], onDelete: Cascade)
   productOrderId String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Event {
+  id String  @id @default(uuid())
+  title String
+  description String
+  startDate DateTime
+  endDate DateTime
+  order Order? @relation(fields: [orderId], references: [id])
+  orderId Int?
+
+  creator User @relation(fields: [creatorId], references: [id])
+  creatorId String
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

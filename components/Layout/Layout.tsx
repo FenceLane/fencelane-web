@@ -85,7 +85,7 @@ export const Layout = ({
               isMenuActive={isMenuActive}
               isMobile={isMobile}
               menuItems={menuItems}
-            ></Nav>
+            />
             <Box
               color="black"
               className={styles.content}
