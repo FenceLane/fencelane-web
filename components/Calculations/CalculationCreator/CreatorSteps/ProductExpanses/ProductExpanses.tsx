@@ -52,6 +52,10 @@ export const ProductExpanses = ({
 
   const [clientCostCurrency, setClientCostCurrency] = useState(1); // waluta ceny u klienta - 1 to eur (mnoży się razy 1), rate to pln
 
+  const [clientCost, setClientCost] = useState(
+    Number(productData.price) * clientCostCurrency
+  );
+
   const [expanses, setExpanses] = useState({
     ...expansesList[currentProduct - 1],
   }); // koszty obecnego produktu
@@ -106,17 +110,41 @@ export const ProductExpanses = ({
   };
 
   const handleSpecChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setSpecType(e.target.value as QUANTITY_TYPE);
+    const quantityType = e.target.value;
+    setSpecType(quantityType as QUANTITY_TYPE);
+    if (quantityType === QUANTITY_TYPE.PIECES) {
+      setClientCost(
+        ((Number(productData.price) *
+          Number(productData.product.volumePerPackage)) /
+          productData.product.itemsPerPackage) *
+          clientCostCurrency
+      );
+    }
+    if (quantityType === QUANTITY_TYPE.PACKAGES) {
+      setClientCost(
+        Number(productData.price) *
+          Number(productData.product.volumePerPackage) *
+          clientCostCurrency
+      );
+    }
+    if (quantityType === QUANTITY_TYPE.M3) {
+      setClientCost(Number(productData.price) * clientCostCurrency);
+    }
   }; // zmiana wyświetlanego rodzaju ceny u klienta
 
   const handleClientCostCurrencyChange = (
     e: React.ChangeEvent<HTMLSelectElement>
   ) => {
-    if (e.target.value === CURRENCY.EUR) {
+    if (
+      clientCostCurrency === Number(rate) &&
+      e.target.value === CURRENCY.EUR
+    ) {
       setClientCostCurrency(1);
+      setClientCost((prev) => prev / rate);
     }
-    if (e.target.value === CURRENCY.PLN) {
+    if (clientCostCurrency === 1 && e.target.value === CURRENCY.PLN) {
       setClientCostCurrency(Number(rate));
+      setClientCost((prev) => prev * rate);
     }
   }; // zmiana wyświetlanej ceny u klienta w zależności od waluty
 
@@ -362,38 +390,11 @@ export const ProductExpanses = ({
         </Box>
         <Text>Cena u klienta:</Text>
         <Flex justifyContent="space-between" mb="20px">
-          {specType === QUANTITY_TYPE.PIECES && (
-            <Input
-              readOnly
-              w="116px"
-              defaultValue={(
-                ((Number(productData.price) *
-                  Number(productData.product.volumePerPackage)) /
-                  productData.product.itemsPerPackage) *
-                clientCostCurrency
-              ).toFixed(2)}
-            />
-          )}
-          {specType === QUANTITY_TYPE.PACKAGES && (
-            <Input
-              readOnly
-              w="116px"
-              defaultValue={(
-                Number(productData.price) *
-                Number(productData.product.volumePerPackage) *
-                clientCostCurrency
-              ).toFixed(2)}
-            />
-          )}
-          {specType === QUANTITY_TYPE.M3 && (
-            <Input
-              readOnly
-              w="116px"
-              defaultValue={(
-                Number(productData.price) * clientCostCurrency
-              ).toFixed(2)}
-            />
-          )}
+          <Input
+            readOnly
+            w="116px"
+            value={clientCost ? clientCost.toFixed(2) : 0}
+          />
           <Select
             w="80px"
             defaultValue={CURRENCY.EUR}
