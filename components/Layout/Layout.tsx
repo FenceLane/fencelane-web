@@ -90,7 +90,7 @@ export const Layout = ({
               color="black"
               className={styles.content}
               pl={user && !isMobile ? 220 : 2.5}
-              bg={hideSidebar ? "white" : "--light-content"}
+              bg={hideSidebar ? "white" : "var(--light-content)"}
             >
               {children}
             </Box>
