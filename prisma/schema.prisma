@@ -178,7 +178,7 @@ model ProductExpanse {
 model Event {
   id String  @id @default(uuid())
   title String
-  description String
+  description String?
   startDate DateTime
   endDate DateTime
   order Order? @relation(fields: [orderId], references: [id])
