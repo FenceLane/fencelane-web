@@ -52,49 +52,48 @@ export default withApiMethods({
       try {
         await prismaClient.$transaction(async (tx) => {
           const updatedProducts = await Promise.all(
-            productOrderData.map(
-              async ({ productOrderId, quantity: newQuantity, ...data }) => {
-                if (!newQuantity) {
-                  return;
-                }
+            productOrderData.map(async ({ productOrderId, ...data }) => {
+              const { quantity: newQuantity } = data;
 
-                const existingProductOrder = await tx.productOrder.findUnique({
-                  where: { id: productOrderId },
-                });
+              if (!newQuantity) {
+                return;
+              }
 
-                if (!existingProductOrder) {
-                  throw new BackendError({
-                    code: BackendResponseStatusCode.NOT_FOUND,
-                    label: BackendErrorLabel.PRODUCT_ORDER_DOES_NOT_EXIST,
-                  });
-                }
+              const existingProductOrder = await tx.productOrder.findUnique({
+                where: { id: productOrderId },
+              });
 
-                const quantityDiff =
-                  existingProductOrder.quantity - newQuantity;
-
-                //update stock
-                await tx.product.update({
-                  where: { id: existingProductOrder.productId },
-                  data: {
-                    stock: {
-                      increment: quantityDiff,
-                    },
-                  },
-                });
-
-                if (newQuantity === 0) {
-                  //we want to delete the productOrder if quantity is 0
-                  return tx.productOrder.delete({
-                    where: { id: productOrderId },
-                  });
-                }
-
-                return tx.productOrder.update({
-                  where: { id: productOrderId },
-                  data,
+              if (!existingProductOrder) {
+                throw new BackendError({
+                  code: BackendResponseStatusCode.NOT_FOUND,
+                  label: BackendErrorLabel.PRODUCT_ORDER_DOES_NOT_EXIST,
                 });
               }
-            )
+
+              const quantityDiff = existingProductOrder.quantity - newQuantity;
+
+              //update stock
+              await tx.product.update({
+                where: { id: existingProductOrder.productId },
+                data: {
+                  stock: {
+                    increment: quantityDiff,
+                  },
+                },
+              });
+
+              if (newQuantity === 0) {
+                //we want to delete the productOrder if quantity is 0
+                return tx.productOrder.delete({
+                  where: { id: productOrderId },
+                });
+              }
+
+              return tx.productOrder.update({
+                where: { id: productOrderId },
+                data,
+              });
+            })
           );
 
           return res
