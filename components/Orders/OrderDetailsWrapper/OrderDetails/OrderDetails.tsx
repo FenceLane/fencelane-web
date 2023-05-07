@@ -23,6 +23,8 @@ import { useContent } from "../../../../lib/hooks/useContent";
 import { OrderInfo, QUANTITY_TYPE } from "../../../../lib/types";
 import { ChangeStatusModal } from "./ChangeStatusModal/ChangeStatusModal";
 import styles from "./OrderDetails.module.scss";
+import { useUpdateOrderProducts } from "../../../../lib/api/hooks/orders";
+import { mapAxiosErrorToLabel } from "../../../../lib/server/BackendError/BackendError";
 
 interface OrderDetailsProps {
   orderData: OrderInfo;
@@ -50,8 +52,17 @@ export const OrderDetails = ({ orderData }: OrderDetailsProps) => {
   const [specType, setSpecType] = useState(QUANTITY_TYPE.PIECES);
 
   const profit = orderData.profit;
+  const initialNewProductDetails = orderData.products.map((product) => ({
+    productOrderId: product.productOrderId,
+    quantity: product.quantity * product.product.itemsPerPackage,
+    price:
+      (Number(product.price) * Number(product.product.volumePerPackage)) /
+      product.product.itemsPerPackage,
+  }));
 
-  const [newOrderDetails, setNewOrderDetails] = useState(orderData.products); // dane do zmiany ilosci i ceny produktow w zamowieniu
+  const [newProductDetails, setNewProductDetails] = useState(
+    initialNewProductDetails
+  ); // dane do zmiany ilosci i ceny produktow w zamowieniu
 
   const {
     isOpen: isStatusChangeOpen,
@@ -142,15 +153,76 @@ export const OrderDetails = ({ orderData }: OrderDetailsProps) => {
       }
     });
     setSpecTableContent(newSpecTableContent);
+
+    setNewProductDetails((prev) =>
+      prev.map((product, key) => ({
+        ...product,
+        quantity: newSpecTableContent[key].productQuantity,
+        price: newSpecTableContent[key].productPrice,
+      }))
+    );
   }; // zmiana zawartości tabeli dla zmiany rodzaju ilości
 
   const handleSpecValueChange = (
     e: React.ChangeEvent<HTMLInputElement>,
     key: number
   ) => {
-    console.log(orderData.products[key].product);
+    const column = e.target.dataset.column as string;
     const value = e.target.value;
-    console.log(value);
+    const updatedNewProductDetails = [...newProductDetails];
+    updatedNewProductDetails[key] = {
+      ...updatedNewProductDetails[key],
+      [column]: Number(value),
+    };
+    setNewProductDetails(updatedNewProductDetails);
+  };
+
+  const {
+    mutate: updateOrderProducts,
+    error: updateOrderProductsError,
+    isError: isUpdateOrderProductsError,
+    isSuccess: isUpdateOrderProductsSuccess,
+    isLoading: isUpdateOrderProductsLoading,
+  } = useUpdateOrderProducts(orderData.id, () => console.log("update success"));
+
+  const handleUpdateProductDetails = () => {
+    const calculatedNewProductDetails = newProductDetails.map(
+      (product, key) => {
+        switch (specType) {
+          case QUANTITY_TYPE.PIECES:
+            return {
+              productOrderId: product.productOrderId,
+              quantity:
+                product.quantity /
+                orderData.products[key].product.itemsPerPackage,
+              price: String(
+                (Number(product.price) *
+                  orderData.products[key].product.itemsPerPackage) /
+                  Number(orderData.products[key].product.volumePerPackage)
+              ),
+            };
+          case QUANTITY_TYPE.PACKAGES:
+            return {
+              productOrderId: product.productOrderId,
+              quantity: product.quantity,
+              price: String(
+                Number(product.price) /
+                  Number(orderData.products[key].product.volumePerPackage)
+              ),
+            };
+          case QUANTITY_TYPE.M3:
+            return {
+              productOrderId: product.productOrderId,
+              quantity:
+                product.quantity /
+                Number(orderData.products[key].product.volumePerPackage),
+              price: String(product.price),
+            };
+        }
+      }
+    );
+    console.table(calculatedNewProductDetails);
+    updateOrderProducts(calculatedNewProductDetails);
   };
 
   return (
@@ -311,7 +383,13 @@ export const OrderDetails = ({ orderData }: OrderDetailsProps) => {
         </Table>
       </Box>
       <Flex justifyContent="space-around" mt="10px">
-        <Button color="white" bg="var(--button-orange)" fontWeight="400">
+        <Button
+          color="white"
+          bg="var(--button-orange)"
+          fontWeight="400"
+          onClick={handleUpdateProductDetails}
+          isLoading={isUpdateOrderProductsLoading}
+        >
           {t("buttons.edit")}
         </Button>
         <Link href={`/calculations/${orderData.id}`}>
@@ -320,6 +398,11 @@ export const OrderDetails = ({ orderData }: OrderDetailsProps) => {
           </Button>
         </Link>
       </Flex>
+      {isUpdateOrderProductsError && (
+        <Text color="red">
+          {t(mapAxiosErrorToLabel(updateOrderProductsError))}
+        </Text>
+      )}
       <Flex m="40px 0px" justifyContent="space-between" alignItems="center">
         <Heading size="sm" mb="10px" ml="40px">
           {t("pages.orders.order.documents")}

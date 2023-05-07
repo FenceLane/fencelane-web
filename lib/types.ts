@@ -33,6 +33,7 @@ export interface OrderProductInfo {
   price: string;
   createdAt: Date;
   updatedAt: Date;
+  currency: CURRENCY;
   product: {
     id: string;
     dimensions: string;

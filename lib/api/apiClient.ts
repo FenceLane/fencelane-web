@@ -3,6 +3,7 @@ import { ClientConfig } from "../AppConfig/ClientConfig";
 import {
   ExpansePostInfo,
   OrderInfo,
+  OrderProductInfo,
   ProductInfo,
   TransportPostInfo,
   USER_ROLE,
@@ -204,6 +205,16 @@ const updateOrder = async ({
   return axiosInstance.put(apiPath(`orders/${id}`), data);
 };
 
+const updateOrderProducts = async ({
+  data,
+  id,
+}: {
+  id: number;
+  data: Partial<OrderProductInfo>[];
+}) => {
+  return axiosInstance.patch(apiPath(`orders/${id}/products`), data);
+};
+
 export const apiClient = {
   auth: {
     postLogin,
@@ -229,6 +240,7 @@ export const apiClient = {
     getDestinations,
     updateStatus,
     updateOrder,
+    updateOrderProducts,
   },
   calcs: {
     getEurRate,
