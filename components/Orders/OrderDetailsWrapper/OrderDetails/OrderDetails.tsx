@@ -16,6 +16,12 @@ import {
   Thead,
   Tbody,
   Input,
+  AlertDialog,
+  AlertDialogOverlay,
+  AlertDialogContent,
+  AlertDialogHeader,
+  AlertDialogBody,
+  AlertDialogFooter,
 } from "@chakra-ui/react";
 import NextLink from "next/link";
 import React, { useState } from "react";
@@ -47,11 +53,22 @@ const statusColor = (status: string) => {
   }
 };
 export const OrderDetails = ({ orderData }: OrderDetailsProps) => {
+  const {
+    isOpen: isQuantityConfirmOpen,
+    onOpen: onQuantityConfirmOpen,
+    onClose: onQuantityConfirmClose,
+  } = useDisclosure();
+
+  const cancelRef = React.useRef(null);
+
+  const [invalidValueText, setInvalidValueText] = useState(<p></p>);
+
   const { t } = useContent();
 
   const [specType, setSpecType] = useState(QUANTITY_TYPE.PIECES);
 
   const profit = orderData.profit;
+
   const initialNewProductDetails = orderData.products.map((product) => ({
     productOrderId: product.productOrderId,
     quantity: product.quantity * product.product.itemsPerPackage,
@@ -100,75 +117,79 @@ export const OrderDetails = ({ orderData }: OrderDetailsProps) => {
     );
   };
 
-  const initialSpecTableContent = orderData.products.map((product) => ({
-    productName: product.product.category.name,
-    productVariant: product.product.variant,
-    productDimensions: product.product.dimensions,
-    productQuantity: product.quantity * product.product.itemsPerPackage,
-    productPrice:
-      (Number(product.price) * Number(product.product.volumePerPackage)) /
-      product.product.itemsPerPackage,
-  })); // domyślna tabela z podsumowaniem (w sztukach)
+  const specTableContent = orderData.products.map((product) => {
+    switch (specType) {
+      case QUANTITY_TYPE.PIECES:
+        return {
+          productName: product.product.category.name,
+          productVariant: product.product.variant,
+          productDimensions: product.product.dimensions,
+          productQuantity: product.quantity * product.product.itemsPerPackage,
+          productPrice:
+            (Number(product.price) * Number(product.product.volumePerPackage)) /
+            product.product.itemsPerPackage,
+        };
+      case QUANTITY_TYPE.PACKAGES:
+        return {
+          productName: product.product.category.name,
+          productVariant: product.product.variant,
+          productDimensions: product.product.dimensions,
+          productQuantity: product.quantity,
+          productPrice:
+            Number(product.price) * Number(product.product.volumePerPackage),
+        };
+      case QUANTITY_TYPE.M3:
+        return {
+          productName: product.product.category.name,
+          productVariant: product.product.variant,
+          productDimensions: product.product.dimensions,
+          productQuantity:
+            product.quantity * Number(product.product.volumePerPackage),
+          productPrice: Number(product.price),
+        };
+    }
+  });
 
-  const [specTableContent, setSpecTableContent] = useState<SpecTableTypes[]>(
-    initialSpecTableContent
-  );
-
-  const handleQuantityTypeChange = (
-    e: React.ChangeEvent<HTMLSelectElement>
-  ) => {
-    const quantityType = e.target.value as QUANTITY_TYPE;
+  const handleQuantityTypeChange = (quantityType: QUANTITY_TYPE) => {
     setSpecType(quantityType);
-    const newSpecTableContent = orderData.products.map((product) => {
-      switch (quantityType) {
-        case QUANTITY_TYPE.PIECES:
-          return {
-            productName: product.product.category.name,
-            productVariant: product.product.variant,
-            productDimensions: product.product.dimensions,
-            productQuantity: product.quantity * product.product.itemsPerPackage,
-            productPrice:
-              (Number(product.price) *
-                Number(product.product.volumePerPackage)) /
-              product.product.itemsPerPackage,
-          };
-        case QUANTITY_TYPE.PACKAGES:
-          return {
-            productName: product.product.category.name,
-            productVariant: product.product.variant,
-            productDimensions: product.product.dimensions,
-            productQuantity: product.quantity,
-            productPrice:
-              Number(product.price) * Number(product.product.volumePerPackage),
-          };
-        case QUANTITY_TYPE.M3:
-          return {
-            productName: product.product.category.name,
-            productVariant: product.product.variant,
-            productDimensions: product.product.dimensions,
-            productQuantity:
-              product.quantity * Number(product.product.volumePerPackage),
-            productPrice: Number(product.price),
-          };
-      }
-    });
-    setSpecTableContent(newSpecTableContent);
-
-    setNewProductDetails((prev) =>
-      prev.map((product, key) => ({
-        ...product,
-        quantity: newSpecTableContent[key].productQuantity,
-        price: newSpecTableContent[key].productPrice,
-      }))
+    setNewProductDetails(
+      orderData.products.map((product) => {
+        switch (quantityType) {
+          case QUANTITY_TYPE.PIECES:
+            return {
+              productOrderId: product.productOrderId,
+              quantity: product.quantity * product.product.itemsPerPackage,
+              price:
+                (Number(product.price) *
+                  Number(product.product.volumePerPackage)) /
+                product.product.itemsPerPackage,
+            };
+          case QUANTITY_TYPE.PACKAGES:
+            return {
+              productOrderId: product.productOrderId,
+              quantity: product.quantity,
+              price:
+                Number(product.price) *
+                Number(product.product.volumePerPackage),
+            };
+          case QUANTITY_TYPE.M3:
+            return {
+              productOrderId: product.productOrderId,
+              quantity:
+                product.quantity * Number(product.product.volumePerPackage),
+              price: Number(product.price),
+            };
+        }
+      })
     );
-  }; // zmiana zawartości tabeli dla zmiany rodzaju ilości
+  }; // zmiana  rodzaju wyświetlania tabeli i wartości do updateu
 
   const handleSpecValueChange = (
     e: React.ChangeEvent<HTMLInputElement>,
     key: number
   ) => {
     const column = e.target.dataset.column as string;
-    const value = e.target.value;
+    const value = e.target.value.replace(/,/g, ".");
     const updatedNewProductDetails = [...newProductDetails];
     updatedNewProductDetails[key] = {
       ...updatedNewProductDetails[key],
@@ -183,7 +204,59 @@ export const OrderDetails = ({ orderData }: OrderDetailsProps) => {
     isError: isUpdateOrderProductsError,
     isSuccess: isUpdateOrderProductsSuccess,
     isLoading: isUpdateOrderProductsLoading,
-  } = useUpdateOrderProducts(orderData.id, () => console.log("update success"));
+  } = useUpdateOrderProducts(orderData.id, () =>
+    setSpecType(QUANTITY_TYPE.PACKAGES)
+  );
+
+  const handleInvalidQuantity = () => {
+    const calculatedNewProductDetails = newProductDetails.map(
+      (product, key) => {
+        switch (specType) {
+          case QUANTITY_TYPE.PIECES:
+            return {
+              productOrderId: product.productOrderId,
+              quantity: Math.floor(
+                product.quantity /
+                  orderData.products[key].product.itemsPerPackage
+              ),
+              price: String(
+                (Number(product.price) *
+                  orderData.products[key].product.itemsPerPackage) /
+                  Number(orderData.products[key].product.volumePerPackage)
+              ),
+            };
+          case QUANTITY_TYPE.PACKAGES:
+            return {
+              productOrderId: product.productOrderId,
+              quantity: Math.floor(product.quantity),
+              price: String(
+                Number(product.price) /
+                  Number(orderData.products[key].product.volumePerPackage)
+              ),
+            };
+          case QUANTITY_TYPE.M3:
+            return {
+              productOrderId: product.productOrderId,
+              quantity: Math.floor(
+                product.quantity /
+                  Number(orderData.products[key].product.volumePerPackage)
+              ),
+              price: String(product.price),
+            };
+        }
+      }
+    );
+    updateOrderProducts(calculatedNewProductDetails);
+    setNewProductDetails(
+      calculatedNewProductDetails.map((product) => ({
+        ...product,
+        price: Number(product.price),
+      }))
+    );
+    if (specType != QUANTITY_TYPE.PIECES) {
+      setSpecType(QUANTITY_TYPE.PIECES);
+    }
+  };
 
   const handleUpdateProductDetails = () => {
     const calculatedNewProductDetails = newProductDetails.map(
@@ -221,8 +294,48 @@ export const OrderDetails = ({ orderData }: OrderDetailsProps) => {
         }
       }
     );
-    console.table(calculatedNewProductDetails);
-    updateOrderProducts(calculatedNewProductDetails);
+    let invalidValue = false;
+    setInvalidValueText(<Text>Wprowadzono:</Text>);
+    calculatedNewProductDetails.map((product, key) => {
+      if (product.quantity !== Math.floor(product.quantity)) {
+        invalidValue = true;
+        const invalidQuantity = newProductDetails[key].quantity;
+        const invalidQuantityInPackages = product.quantity;
+        const prefferedNewQuantityInPackages = Math.floor(product.quantity);
+        const quantityType = specType;
+        if (specType === QUANTITY_TYPE.PACKAGES) {
+          setInvalidValueText((prev) => (
+            <span>
+              {prev}
+              <Text fontWeight="500">{`Dla: ${orderData.products[key].product.category.name} ${orderData.products[key].product.dimensions}`}</Text>
+              <Text>
+                {`${invalidQuantityInPackages.toFixed(
+                  2
+                )} pakietów. Czy chodziło Ci o ${prefferedNewQuantityInPackages} pakietów? `}
+              </Text>
+            </span>
+          ));
+        } else {
+          setInvalidValueText((prev) => (
+            <span>
+              {prev}
+              <Text fontWeight="500">{`Dla: ${orderData.products[key].product.category.name} ${orderData.products[key].product.dimensions}`}</Text>
+              <Text>
+                {`${invalidQuantity} ${quantityType}, co daje ${invalidQuantityInPackages.toFixed(
+                  2
+                )} pakietów. Czy chodziło Ci o
+              ${prefferedNewQuantityInPackages} pakietów? `}
+              </Text>
+            </span>
+          ));
+        }
+      }
+    });
+    if (invalidValue) {
+      onQuantityConfirmOpen();
+    } else {
+      updateOrderProducts(calculatedNewProductDetails);
+    }
   };
 
   return (
@@ -323,8 +436,10 @@ export const OrderDetails = ({ orderData }: OrderDetailsProps) => {
             w="120px"
             mr="40px"
             color="black"
-            onChange={handleQuantityTypeChange}
-            defaultValue={specType}
+            onChange={(e) =>
+              handleQuantityTypeChange(e.target.value as QUANTITY_TYPE)
+            }
+            value={specType}
           >
             <option value={QUANTITY_TYPE.PIECES}>
               {t("pages.orders.order.pieces")}
@@ -341,7 +456,7 @@ export const OrderDetails = ({ orderData }: OrderDetailsProps) => {
               <Th>{t("pages.orders.spec-table.type")}</Th>
               <Th>{t("pages.orders.spec-table.dimensions")}</Th>
               <Th>{t("pages.orders.spec-table.quantity")}</Th>
-              <Th>{t("pages.orders.spec-table.price")}</Th>
+              <Th>{t("pages.orders.spec-table.price")} [€]</Th>
             </Tr>
           </Thead>
           <Tbody>
@@ -357,8 +472,10 @@ export const OrderDetails = ({ orderData }: OrderDetailsProps) => {
                 <Td>{row.productDimensions}</Td>
                 <Td>
                   <Input
+                    fontSize="15px"
+                    padding="0"
                     textAlign="center"
-                    w="100px"
+                    w="80px"
                     onChange={(e) => handleSpecValueChange(e, key)}
                     data-column="quantity"
                     defaultValue={row.productQuantity
@@ -368,8 +485,10 @@ export const OrderDetails = ({ orderData }: OrderDetailsProps) => {
                 </Td>
                 <Td>
                   <Input
+                    fontSize="15px"
+                    padding="0"
                     textAlign="center"
-                    w="100px"
+                    w="80px"
                     onChange={(e) => handleSpecValueChange(e, key)}
                     data-column="price"
                     defaultValue={row.productPrice
@@ -437,6 +556,37 @@ export const OrderDetails = ({ orderData }: OrderDetailsProps) => {
           orderData.statusHistory[orderData.statusHistory.length - 1].status
         }
       />
+      <AlertDialog
+        isOpen={isQuantityConfirmOpen}
+        onClose={onQuantityConfirmClose}
+        leastDestructiveRef={cancelRef}
+      >
+        <AlertDialogOverlay>
+          <AlertDialogContent>
+            <AlertDialogHeader fontSize="lg" fontWeight="bold">
+              Wprowadzono błędną ilość
+            </AlertDialogHeader>
+
+            <AlertDialogBody>{invalidValueText}</AlertDialogBody>
+
+            <AlertDialogFooter>
+              <Button ref={cancelRef} onClick={onQuantityConfirmClose}>
+                Anuluj
+              </Button>
+              <Button
+                colorScheme="green"
+                onClick={() => {
+                  onQuantityConfirmClose();
+                  handleInvalidQuantity();
+                }}
+                ml={3}
+              >
+                Potwierdź
+              </Button>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialogOverlay>
+      </AlertDialog>
     </Flex>
   );
 };
