@@ -50,7 +50,7 @@ model Client {
   shortName String
   email String @unique
   phone String @unique
-  orders Order[]
+  destinations Destination[]
 }
 
 
@@ -61,6 +61,8 @@ model Destination {
   postalCode String
   city String
   orders Order[]
+  client Client @relation(fields: [clientId], references: [id])
+  clientId String
 
   @@unique([country, city, postalCode, address])
 }
@@ -102,8 +104,6 @@ model OrderStatus {
 
 model Order{
   id Int  @id @default(autoincrement())
-  client Client @relation(fields: [clientId], references: [id])
-  clientId String
   destination Destination @relation(fields: [destinationId], references: [id])
   destinationId String
   date DateTime @default(now())
