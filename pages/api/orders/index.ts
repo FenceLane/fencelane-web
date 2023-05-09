@@ -44,8 +44,7 @@ export default withApiMethods({
             },
             include: {
               products: true,
-              client: true,
-              destination: true,
+              destination: { include: { client: true } },
               creator: true,
               statusHistory: true,
             },
@@ -90,8 +89,7 @@ export default withApiMethods({
   GET: withApiAuth(async (_req, res) => {
     const orders = await prismaClient.order.findMany({
       include: {
-        client: true,
-        destination: true,
+        destination: { include: { client: true } },
         statusHistory: true,
         products: true,
       },

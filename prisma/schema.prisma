@@ -61,7 +61,7 @@ model Destination {
   postalCode String
   city String
   orders Order[]
-  client Client @relation(fields: [clientId], references: [id])
+  client Client @relation(fields: [clientId], references: [id], onDelete: Cascade)
   clientId String
 
   @@unique([country, city, postalCode, address])

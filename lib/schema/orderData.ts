@@ -4,7 +4,6 @@ import { ProductOrderDataSchema } from "./productOrderData";
 import { OrderFileDataSchema } from "./orderFileData";
 
 export const OrderDataSchema = z.object({
-  clientId: z.string().min(1),
   destinationId: z.string().min(1),
   date: z.date().optional(),
   profit: z.number().optional(),

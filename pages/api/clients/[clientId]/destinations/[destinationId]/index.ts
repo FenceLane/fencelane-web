@@ -1,15 +1,15 @@
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime";
-import { prismaClient } from "../../../../lib/prisma/prismaClient";
-import { DestinationDataUpdateSchema } from "../../../../lib/schema/destinationData";
+import { prismaClient } from "../../../../../../lib/prisma/prismaClient";
+import { DestinationDataUpdateSchema } from "../../../../../../lib/schema/destinationData";
 import {
   BackendErrorLabel,
   BackendResponseStatusCode,
   PrismaErrorCode,
   sendBackendError,
-} from "../../../../lib/server/BackendError/BackendError";
-import { withApiAuth } from "../../../../lib/server/middlewares/withApiAuth";
-import { withApiMethods } from "../../../../lib/server/middlewares/withApiMethods";
-import { withValidatedJSONRequestBody } from "../../../../lib/server/middlewares/withValidatedJSONRequestBody";
+} from "../../../../../../lib/server/BackendError/BackendError";
+import { withApiAuth } from "../../../../../../lib/server/middlewares/withApiAuth";
+import { withApiMethods } from "../../../../../../lib/server/middlewares/withApiMethods";
+import { withValidatedJSONRequestBody } from "../../../../../../lib/server/middlewares/withValidatedJSONRequestBody";
 
 export default withApiMethods({
   GET: withApiAuth(async (req, res) => {
@@ -20,6 +20,7 @@ export default withApiMethods({
 
     const destination = await prismaClient.destination.findUnique({
       where: { id: destinationId },
+      include: { client: true },
     });
 
     if (!destination) {
@@ -48,6 +49,7 @@ export default withApiMethods({
           const updatedDestination = await prismaClient.destination.update({
             where: { id: destinationId },
             data: destinationData,
+            include: { client: true },
           });
 
           return res
