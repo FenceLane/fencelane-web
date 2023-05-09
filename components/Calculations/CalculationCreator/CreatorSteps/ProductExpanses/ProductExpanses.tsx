@@ -75,18 +75,21 @@ export const ProductExpanses = ({
     const type = e.target.name as keyof typeof initialCosts;
     setExpanses({
       ...expanses,
-      [type]: { ...expanses[type], [column]: e.target.value },
+      [type]: {
+        ...expanses[type],
+        [column]: e.target.value.replace(/,/g, "."),
+      },
     });
     if (type === PRODUCT_EXPANSE.SATURATION) {
       setDefaultSaturationCost({
         ...defaultSaturationCost,
-        [column]: e.target.value,
+        [column]: e.target.value.replace(/,/g, "."),
       });
     }
     if (type === PRODUCT_EXPANSE.MARKETER) {
       setDefaultMarketerCost({
         ...defaultMarketerCost,
-        [column]: e.target.value,
+        [column]: e.target.value.replace(/,/g, "."),
       });
     }
   }; // zmiana kosztów, ich waluty i rodzaju ilości towaru za który są

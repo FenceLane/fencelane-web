@@ -26,7 +26,12 @@ import {
 import NextLink from "next/link";
 import React, { useState } from "react";
 import { useContent } from "../../../../lib/hooks/useContent";
-import { OrderInfo, QUANTITY_TYPE } from "../../../../lib/types";
+import {
+  ExpansesInfo,
+  OrderInfo,
+  QUANTITY_TYPE,
+  TransportInfo,
+} from "../../../../lib/types";
 import { ChangeStatusModal } from "./ChangeStatusModal/ChangeStatusModal";
 import styles from "./OrderDetails.module.scss";
 import { useUpdateOrderProducts } from "../../../../lib/api/hooks/orders";
@@ -34,14 +39,8 @@ import { mapAxiosErrorToLabel } from "../../../../lib/server/BackendError/Backen
 
 interface OrderDetailsProps {
   orderData: OrderInfo;
-}
-
-interface SpecTableTypes {
-  productName: string;
-  productVariant: string;
-  productDimensions: string;
-  productQuantity: number;
-  productPrice: number;
+  expanses: ExpansesInfo | null;
+  transportCost: TransportInfo | null;
 }
 
 const statusColor = (status: string) => {
@@ -52,12 +51,19 @@ const statusColor = (status: string) => {
       return "#232ccf";
   }
 };
-export const OrderDetails = ({ orderData }: OrderDetailsProps) => {
+export const OrderDetails = ({
+  orderData,
+  expanses,
+  transportCost,
+}: OrderDetailsProps) => {
   const {
     isOpen: isQuantityConfirmOpen,
     onOpen: onQuantityConfirmOpen,
     onClose: onQuantityConfirmClose,
   } = useDisclosure();
+
+  console.log(expanses); // to cena za 1 paczke
+  console.log(transportCost); // to cena całkowita
 
   const cancelRef = React.useRef(null);
 
@@ -204,9 +210,7 @@ export const OrderDetails = ({ orderData }: OrderDetailsProps) => {
     isError: isUpdateOrderProductsError,
     isSuccess: isUpdateOrderProductsSuccess,
     isLoading: isUpdateOrderProductsLoading,
-  } = useUpdateOrderProducts(orderData.id, () =>
-    setSpecType(QUANTITY_TYPE.PACKAGES)
-  );
+  } = useUpdateOrderProducts(orderData.id, () => handleUpdateSuccess);
 
   const handleInvalidQuantity = () => {
     const calculatedNewProductDetails = newProductDetails.map(
@@ -336,6 +340,10 @@ export const OrderDetails = ({ orderData }: OrderDetailsProps) => {
     } else {
       updateOrderProducts(calculatedNewProductDetails);
     }
+  };
+
+  const handleUpdateSuccess = () => {
+    setSpecType(QUANTITY_TYPE.PACKAGES);
   };
 
   return (

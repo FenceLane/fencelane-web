@@ -28,7 +28,7 @@ export const TransportCost = ({
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setTransportCost(e.target.value);
+    setTransportCost(e.target.value.replace(/,/g, "."));
   };
 
   const handleNext = (e: React.MouseEvent<HTMLButtonElement>) => {

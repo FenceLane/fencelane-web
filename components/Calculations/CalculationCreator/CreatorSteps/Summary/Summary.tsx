@@ -379,11 +379,24 @@ export const Summary = ({
         isPostTransportCostError ||
         isUpdateOrderError) && (
         <Text color="red" fontWeight="600" fontSize="18px">
-          {t(
-            `errors.backendErrorLabel.${mapAxiosErrorToLabel(
-              postExpansesError
-            )} ${mapAxiosErrorToLabel(postTransportCostError)}`
-          )}
+          {isPostExpansesError &&
+            t(
+              `errors.backendErrorLabel.${mapAxiosErrorToLabel(
+                postExpansesError
+              )}`
+            )}
+          {isPostTransportCostError &&
+            t(
+              `errors.backendErrorLabel.${mapAxiosErrorToLabel(
+                postTransportCostError
+              )}`
+            )}
+          {isUpdateOrderError &&
+            t(
+              `errors.backendErrorLabel.${mapAxiosErrorToLabel(
+                updateOrderError
+              )}`
+            )}
         </Text>
       )}
     </Flex>
