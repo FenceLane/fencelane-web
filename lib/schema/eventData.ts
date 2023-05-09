@@ -5,7 +5,8 @@ export const EventDataSchema = z.object({
   description: z.string().min(1).optional(),
   startDate: z.string().min(1),
   endDate: z.string().min(1),
-  orderId: z.number(),
+  orderId: z.number().optional(),
 });
 
+export type EventDataCreate = z.infer<typeof EventDataSchema>;
 export const EventDataUpdateSchema = EventDataSchema.partial();
