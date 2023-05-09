@@ -19,6 +19,7 @@ export default withApiMethods({
       try {
         const createdClient = await prismaClient.client.create({
           data: newClientData,
+          include: { destinations: true },
         });
 
         return res
@@ -40,7 +41,9 @@ export default withApiMethods({
   ),
 
   GET: withApiAuth(async (_req, res) => {
-    const clients = await prismaClient.client.findMany({});
+    const clients = await prismaClient.client.findMany({
+      include: { destinations: true },
+    });
 
     return res
       .status(BackendResponseStatusCode.SUCCESS)

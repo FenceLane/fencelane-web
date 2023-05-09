@@ -69,8 +69,34 @@ export default withApiMethods({
       },
     });
 
+    const groupedByProductOrder = orderExpanses.reduce(
+      (acc, expanse) => ({
+        ...acc,
+        [expanse.productOrderId]: [
+          ...(acc[expanse.productOrderId] || []),
+          expanse,
+        ],
+      }),
+      {} as Record<string, typeof orderExpanses>
+    );
+
     return res
       .status(BackendResponseStatusCode.SUCCESS)
-      .send({ data: orderExpanses });
+      .send({ data: groupedByProductOrder });
+  }),
+
+  DELETE: withApiAuth(async (req, res) => {
+    const { orderId } = req.query;
+    if (typeof orderId !== "string") {
+      throw Error('"orderId" was not passed in dynamic api path.');
+    }
+
+    const deletedExpanses = await prismaClient.productExpanse.deleteMany({
+      where: { productOrder: { orderId: Number(orderId) } },
+    });
+
+    return res
+      .status(BackendResponseStatusCode.SUCCESS)
+      .send({ data: deletedExpanses });
   }),
 });
