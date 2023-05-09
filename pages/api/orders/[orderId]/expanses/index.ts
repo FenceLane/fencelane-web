@@ -69,8 +69,19 @@ export default withApiMethods({
       },
     });
 
+    const groupedByProductOrder = orderExpanses.reduce(
+      (acc, expanse) => ({
+        ...acc,
+        [expanse.productOrderId]: [
+          ...(acc[expanse.productOrderId] || []),
+          expanse,
+        ],
+      }),
+      {} as Record<string, typeof orderExpanses>
+    );
+
     return res
       .status(BackendResponseStatusCode.SUCCESS)
-      .send({ data: orderExpanses });
+      .send({ data: groupedByProductOrder });
   }),
 });
