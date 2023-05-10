@@ -20,6 +20,7 @@ export default withApiMethods({
 
     const client = await prismaClient.client.findUnique({
       where: { id: clientId },
+      include: { destinations: true },
     });
 
     if (!client) {
@@ -45,6 +46,7 @@ export default withApiMethods({
         const updatedClient = await prismaClient.client.update({
           where: { id: clientId },
           data: clientData,
+          include: { destinations: true },
         });
 
         return res

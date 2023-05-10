@@ -22,12 +22,9 @@ export default withApiMethods({
     const order = await prismaClient.order.findUnique({
       where: { id: Number(orderId) },
       include: {
-        client: true,
-        destination: true,
-        products: { include: { product: { include: { category: true } } } },
-        statusHistory: {
-          include: { creator: { select: { name: true, role: true } } },
-        },
+        destination: { include: { client: true } },
+        products: true,
+        statusHistory: true,
       },
     });
 
