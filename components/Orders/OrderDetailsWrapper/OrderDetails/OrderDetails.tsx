@@ -62,10 +62,21 @@ export const OrderDetails = ({
     onClose: onQuantityConfirmClose,
   } = useDisclosure();
 
-  console.log(orderData);
+  console.log(
+    ...orderData.products.map((product) => ({
+      [product.productOrderId]: {
+        price: product.price,
+        quantity: product.quantity,
+      },
+    }))
+  );
 
-  // console.log(expanses); // to cena za 1 paczke
-  // console.log(transportCost); // to cena całkowita
+  // console.log(
+  //   ...Object.keys(expanses).map((productOrderId): string => {
+  //     return productOrderId;
+  //   })
+  // ); // to cena za 1 paczke
+  // console.log(transportCost.price); // to cena całkowita
 
   const cancelRef = React.useRef(null);
 

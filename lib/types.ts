@@ -68,7 +68,6 @@ export interface OrderInfo {
     postalCode: string;
     city: string;
     clientId: string;
-
     client: {
       id: string;
       name: string;
@@ -111,37 +110,24 @@ export interface ExpansesInfo {
 }
 
 export interface InitialCosts {
-  commodity: {
-    price: number;
-    currency: CURRENCY;
-    costType: PRODUCT_EXPANSE;
-    quantityType: QUANTITY_TYPE;
-  };
-  saturation: {
-    price: number;
-    currency: CURRENCY;
-    costType: PRODUCT_EXPANSE;
-    quantityType: QUANTITY_TYPE;
-  };
-  marketer: {
-    price: number;
-    currency: CURRENCY;
-    costType: PRODUCT_EXPANSE;
-    quantityType: QUANTITY_TYPE;
-  };
-  other: {
-    price: number;
-    currency: CURRENCY;
-    costType: PRODUCT_EXPANSE;
-    quantityType: QUANTITY_TYPE;
-  };
+  commodity: InitialCost;
+  saturation: InitialCost;
+  marketer: InitialCost;
+  other: InitialCost;
 }
 [];
+
+export interface InitialCost {
+  price: number;
+  currency: CURRENCY;
+  costType: PRODUCT_EXPANSE;
+  quantityType: QUANTITY_TYPE;
+}
 
 export interface ExpansePostInfo {
   id: number;
   data: {
-    price: number;
+    price: string;
     currency: CURRENCY;
     productOrderId: string;
     type: PRODUCT_EXPANSE;
@@ -150,7 +136,7 @@ export interface ExpansePostInfo {
 
 export interface TransportPostInfo {
   id: number;
-  data: { price: number; currency: CURRENCY };
+  data: { price: string; currency: CURRENCY };
 }
 
 export enum USER_ROLE {

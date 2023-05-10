@@ -45,16 +45,6 @@ export const useGetClients = () => {
 
   return mutation;
 };
-
-export const useGetDestinations = () => {
-  const mutation = useQuery({
-    queryFn: () => apiClient.orders.getDestinations(),
-    queryKey: [QUERY_KEY.DESTINATIONS],
-  });
-
-  return mutation;
-};
-
 export const useUpdateStatus = (orderId: number, onSuccess: () => void) => {
   const mutation = useMutation({
     mutationFn: (data: OrderStatusData) =>

@@ -14,6 +14,7 @@ import React, { useEffect, useState } from "react";
 import { usePostOrder } from "../../../../lib/api/hooks/orders";
 import { useContent } from "../../../../lib/hooks/useContent";
 import { mapAxiosErrorToLabel } from "../../../../lib/server/BackendError/BackendError";
+import { ProductInfo } from "../../../../lib/types";
 
 const initialOrderData = {
   clientId: "",
@@ -26,12 +27,38 @@ const initialNewProductsData = {
   price: "",
 };
 
-export const OrderCreate = ({ clients, destinations, products }: any) => {
+interface OrderCreateProps {
+  clients: {
+    destinations: {
+      id: string;
+      country: string;
+      address: string;
+      postalCode: string;
+      city: string;
+      clientId: string;
+    }[];
+    id: string;
+    name: string;
+    shortName: string;
+    email: string;
+    phone: string;
+  }[];
+  products: ProductInfo[];
+}
+
+export const OrderCreate = ({ clients, products }: OrderCreateProps) => {
   const router = useRouter();
   const { t } = useContent();
   const [newProducts, setNewProducts] = useState([initialNewProductsData]);
 
-  const [orderData, setOrderData] = useState(initialOrderData);
+  const [orderData, setOrderData] = useState({
+    clientId: clients[0].id,
+    destinationId: clients[0].destinations[0].id,
+  });
+
+  const currentClient = clients.find((client) => {
+    return client.id === orderData.clientId;
+  });
 
   const {
     mutate: postOrder,
@@ -94,7 +121,7 @@ export const OrderCreate = ({ clients, destinations, products }: any) => {
       productId: product.productId,
       quantity: Number(product.quantity),
       currency: "EUR",
-      price: Number(product.price),
+      price: String(product.price),
     }));
     postOrder({
       clientId: orderData.clientId,
@@ -118,12 +145,11 @@ export const OrderCreate = ({ clients, destinations, products }: any) => {
       <Select
         required
         bg="white"
-        placeholder={t("main.client")}
         mb="20px"
         name="clientId"
         onChange={handleChange}
       >
-        {clients.data.map((client: any) => (
+        {clients.map((client) => (
           <option data-key={client.id} key={client.id}>
             {client.name}
           </option>
@@ -133,16 +159,20 @@ export const OrderCreate = ({ clients, destinations, products }: any) => {
       <Select
         required
         bg="white"
-        placeholder={t("main.destination")}
         mb="20px"
         name="destinationId"
         onChange={handleChange}
       >
-        {destinations.data.map((destination: any) => (
-          <option data-key={destination.id} key={destination.id}>
-            {`${destination.address}, ${destination.postalCode} ${destination.city}`}
-          </option>
-        ))}
+        {orderData.clientId !== "" ? (
+          currentClient &&
+          currentClient.destinations.map((destination) => (
+            <option data-key={destination.id} key={destination.id}>
+              {`${destination.address}, ${destination.postalCode} ${destination.city}`}
+            </option>
+          ))
+        ) : (
+          <option>empty</option>
+        )}
       </Select>
       {newProducts.map((item, index) => (
         <>
@@ -166,23 +196,15 @@ export const OrderCreate = ({ clients, destinations, products }: any) => {
             onChange={handleProductChange}
           >
             {products &&
-              products.map(
-                (product: {
-                  id: string | null | undefined;
-                  category: {
-                    name: string;
-                  };
-                  dimensions: string;
-                }) => (
-                  <option
-                    data-key={product.id}
-                    key={product.id}
-                    selected={product.id === newProducts[index].productId}
-                  >
-                    {product.category.name + " " + product.dimensions}
-                  </option>
-                )
-              )}
+              products.map((product) => (
+                <option
+                  data-key={product.id}
+                  key={product.id}
+                  selected={product.id === newProducts[index].productId}
+                >
+                  {product.category.name + " " + product.dimensions}
+                </option>
+              ))}
           </Select>
           <label>{t("pages.orders.order-creator.packages-quantity")}</label>
           <Input
@@ -196,7 +218,7 @@ export const OrderCreate = ({ clients, destinations, products }: any) => {
             data-index={index}
             onChange={handleProductDetailsChange}
           />
-          <label>{t("pages.orders.order-creator.price-per-m3")}</label>
+          <label>{t("pages.orders.order-creator.price-per-m3")} [€]</label>
           <Input
             value={newProducts[index].price}
             name="price"

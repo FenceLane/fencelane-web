@@ -216,6 +216,7 @@ export const Summary = ({
   }; // zmiana zawartości tabeli dla zmiany rodzaju ilości
 
   const handlePostCalc = () => {
+    const orderId = productData[0].orderId;
     const postExpansesList = expansesList.flatMap((expanses, key: number) => {
       return Object.values(expanses).map(
         (expanse: InitialCosts["commodity"]) => {
@@ -230,7 +231,7 @@ export const Summary = ({
             price = price * Number(productData[key].product.itemsPerPackage);
           }
           return {
-            price: Number(price),
+            price: String(price),
             currency: CURRENCY.EUR,
             productOrderId: productData[key].productOrderId,
             type: expanse.costType,
@@ -239,21 +240,17 @@ export const Summary = ({
       );
     });
     const postTransportData: TransportPostInfo["data"] = {
-      price: Number(transportCostInEur),
+      price: String(transportCostInEur),
       currency: CURRENCY.EUR,
     };
-    const orderId = productData[0].orderId;
     let postProfit = Number(displayProfit);
     if (currency === CURRENCY.PLN) {
       postProfit = Number(displayProfit) / rate;
     }
-    console.log({ id: orderId, data: postExpansesList });
-    console.log({ id: orderId, data: postTransportData });
-    console.log({ profit: postProfit });
     postOrderExpanses({ id: orderId, data: postExpansesList });
     postOrderTransportCost({ id: orderId, data: postTransportData });
     updateOrder({ profit: postProfit });
-  }; // wysyłanie kosztów do bazy (expansy w bazie za paczke, transportcost za m3)
+  }; // wysyłanie kosztów do bazy (expansy w bazie za paczke, transportcost calkowity)
 
   useEffect(() => {
     if (
@@ -261,7 +258,7 @@ export const Summary = ({
       isPostTransportCostSuccess &&
       isUpdateOrderSuccess
     ) {
-      router.push(`/orders/${productData[0].orderId}`);
+      router.push(`/orders`);
     }
   }, [
     isPostExpansesSuccess,

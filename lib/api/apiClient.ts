@@ -149,14 +149,6 @@ const getClients = async (options?: { authCookie: string }) => {
   return data;
 };
 
-const getDestinations = async (options?: { authCookie: string }) => {
-  const { data } = await axiosInstance.get(apiPath("destinations"), {
-    headers: { cookie: options?.authCookie },
-  });
-
-  return data;
-};
-
 const updateStatus = async ({
   data,
   id,
@@ -237,7 +229,6 @@ export const apiClient = {
     getOrder,
     postOrder,
     getClients,
-    getDestinations,
     updateStatus,
     updateOrder,
     updateOrderProducts,
