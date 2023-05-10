@@ -43,7 +43,9 @@ export default withApiMethods({
               creatorId: creator.id,
             },
             include: {
-              products: true,
+              products: {
+                include: { product: { include: { category: true } } },
+              },
               destination: { include: { client: true } },
               creator: true,
               statusHistory: true,
@@ -91,7 +93,7 @@ export default withApiMethods({
       include: {
         destination: { include: { client: true } },
         statusHistory: true,
-        products: true,
+        products: { include: { product: { include: { category: true } } } },
       },
       orderBy: { createdAt: "desc" },
     });
