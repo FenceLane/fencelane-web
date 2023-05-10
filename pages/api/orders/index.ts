@@ -48,7 +48,7 @@ export default withApiMethods({
               },
               destination: { include: { client: true } },
               creator: true,
-              statusHistory: true,
+              statusHistory: { include: { creator: true } },
             },
           });
 
@@ -92,7 +92,7 @@ export default withApiMethods({
     const orders = await prismaClient.order.findMany({
       include: {
         destination: { include: { client: true } },
-        statusHistory: true,
+        statusHistory: { include: { creator: true } },
         products: { include: { product: { include: { category: true } } } },
       },
       orderBy: { createdAt: "desc" },
