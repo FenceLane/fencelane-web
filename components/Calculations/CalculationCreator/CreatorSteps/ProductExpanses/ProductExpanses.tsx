@@ -48,6 +48,10 @@ export const ProductExpanses = ({
 
   const [quantityType, setQuantityType] = useState(QUANTITY_TYPE.PIECES); // wyświetlana ilość w górnym inputcie
 
+  const [quantity, setQuantity] = useState(
+    productData.quantity * productData.product.itemsPerPackage
+  );
+
   const [specType, setSpecType] = useState(QUANTITY_TYPE.M3); // wyświetlany rodzaj ceny u klienta
 
   const [clientCostCurrency, setClientCostCurrency] = useState(1); // waluta ceny u klienta - 1 to eur (mnoży się razy 1), rate to pln
@@ -63,8 +67,27 @@ export const ProductExpanses = ({
   const handleQuantityTypeChange = (
     e: React.ChangeEvent<HTMLSelectElement>
   ) => {
-    setQuantityType(e.target.value as QUANTITY_TYPE);
-  }; // zmiana rodzaju ilości towaru w górnym inpucie
+    const newQuantityType = e.target.value as QUANTITY_TYPE;
+    setQuantityType(newQuantityType);
+    switch (newQuantityType) {
+      case QUANTITY_TYPE.PIECES:
+        setQuantity(productData.quantity * productData.product.itemsPerPackage);
+        console.log(productData.quantity * productData.product.itemsPerPackage);
+        break;
+      case QUANTITY_TYPE.PACKAGES:
+        setQuantity(productData.quantity);
+        console.log(productData.quantity);
+        break;
+      case QUANTITY_TYPE.M3:
+        setQuantity(
+          productData.quantity * Number(productData.product.volumePerPackage)
+        );
+        console.log(
+          productData.quantity * Number(productData.product.volumePerPackage)
+        );
+        break;
+    }
+  }; // zmiana  ilości i rodzaju towaru w górnym inpucie
 
   const handleCostsChange = (
     e:
@@ -205,28 +228,15 @@ export const ProductExpanses = ({
           </Flex>
           <Flex flexDir="column">
             <label>Ilość</label>
-            {quantityType == QUANTITY_TYPE.PIECES && (
-              <Input
-                w="100px"
-                readOnly
-                defaultValue={
-                  productData.quantity * productData.product.itemsPerPackage
-                }
-              />
-            )}
-            {quantityType == QUANTITY_TYPE.PACKAGES && (
-              <Input w="100px" readOnly defaultValue={productData.quantity} />
-            )}
-            {quantityType == QUANTITY_TYPE.M3 && (
-              <Input
-                w="100px"
-                readOnly
-                defaultValue={
-                  productData.quantity *
-                  Number(productData.product.volumePerPackage)
-                }
-              />
-            )}
+            <Input
+              w="100px"
+              readOnly
+              value={
+                quantity
+                  ? quantity
+                  : productData.quantity * productData.product.itemsPerPackage
+              }
+            />
           </Flex>
           <Select
             w="116px"
