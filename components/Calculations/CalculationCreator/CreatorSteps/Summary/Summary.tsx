@@ -243,9 +243,16 @@ export const Summary = ({
       currency: CURRENCY.EUR,
     };
     const orderId = productData[0].orderId;
+    let postProfit = Number(displayProfit);
+    if (currency === CURRENCY.PLN) {
+      postProfit = Number(displayProfit) / rate;
+    }
+    console.log({ id: orderId, data: postExpansesList });
+    console.log({ id: orderId, data: postTransportData });
+    console.log({ profit: postProfit });
     postOrderExpanses({ id: orderId, data: postExpansesList });
     postOrderTransportCost({ id: orderId, data: postTransportData });
-    updateOrder({ profit: Number(displayProfit) });
+    updateOrder({ profit: postProfit });
   }; // wysyłanie kosztów do bazy (expansy w bazie za paczke, transportcost za m3)
 
   useEffect(() => {

@@ -64,8 +64,8 @@ export const OrderDetails = ({
 
   console.log(orderData);
 
-  console.log(expanses); // to cena za 1 paczke
-  console.log(transportCost); // to cena całkowita
+  // console.log(expanses); // to cena za 1 paczke
+  // console.log(transportCost); // to cena całkowita
 
   const cancelRef = React.useRef(null);
 
@@ -212,7 +212,7 @@ export const OrderDetails = ({
     isError: isUpdateOrderProductsError,
     isSuccess: isUpdateOrderProductsSuccess,
     isLoading: isUpdateOrderProductsLoading,
-  } = useUpdateOrderProducts(orderData.id, () => handleUpdateSuccess);
+  } = useUpdateOrderProducts(orderData.id, () => handleUpdateSuccess());
 
   const handleInvalidQuantity = () => {
     const calculatedNewProductDetails = newProductDetails.map(
@@ -346,6 +346,7 @@ export const OrderDetails = ({
 
   const handleUpdateSuccess = () => {
     setSpecType(QUANTITY_TYPE.PACKAGES);
+    console.log("success");
   };
 
   return (
