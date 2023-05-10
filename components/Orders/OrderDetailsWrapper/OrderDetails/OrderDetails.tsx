@@ -62,6 +62,8 @@ export const OrderDetails = ({
     onClose: onQuantityConfirmClose,
   } = useDisclosure();
 
+  console.log(orderData);
+
   console.log(expanses); // to cena za 1 paczke
   console.log(transportCost); // to cena całkowita
 
@@ -381,7 +383,7 @@ export const OrderDetails = ({
               {t("pages.orders.order.client")}
             </Text>
             <Text className={styles["order-text"]}>
-              {orderData.client.name}
+              {orderData.destination.client.name}
             </Text>
           </Box>
         </Flex>

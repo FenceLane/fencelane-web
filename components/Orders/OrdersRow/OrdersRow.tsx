@@ -77,7 +77,9 @@ export const OrdersRow = ({ orderData }: OrderDataProps) => {
           <Text className={styles["order-header"]}>
             {t("pages.orders.order.client")}
           </Text>
-          <Text className={styles["order-text"]}>{orderData.client.name}</Text>
+          <Text className={styles["order-text"]}>
+            {orderData.destination.client.name}
+          </Text>
         </Box>
       </Flex>
       <Flex className={styles["right"]}>

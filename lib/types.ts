@@ -54,42 +54,41 @@ export interface OrderProductInfo {
 
 export interface OrderInfo {
   id: number;
-  clientId: string;
   destinationId: string;
   date: Date;
-  files: string[];
+  creatorId: string;
+  profit: number | null;
   createdAt: Date;
   updatedAt: Date;
-  price: number;
-  profit: number | null;
-  client: {
-    id: string;
-    name: string;
-    shortName: string;
-    email: string;
-    phone: string;
-  };
+  files: string[];
   destination: {
     id: string;
     country: string;
     address: string;
     postalCode: string;
     city: string;
+    clientId: string;
+
+    client: {
+      id: string;
+      name: string;
+      shortName: string;
+      email: string;
+      phone: string;
+    };
   };
   products: OrderProductInfo[];
-  statusHistory: [
-    {
-      id: string;
-      status: ORDER_STATUS;
-      date: Date;
-      creatorId: string;
-      orderId: number;
-      creator: {
-        name: string;
-        role: USER_ROLE;
-      };
-    }
-  ];
+  statusHistory: {
+    id: string;
+    status: ORDER_STATUS;
+    date: Date;
+    creatorId: string;
+    orderId: number;
+    creator: {
+      name: string;
+      role: USER_ROLE;
+    };
+  }[];
 }
 
 export interface TransportInfo {
