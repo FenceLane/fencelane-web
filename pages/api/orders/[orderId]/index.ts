@@ -23,7 +23,7 @@ export default withApiMethods({
       where: { id: Number(orderId) },
       include: {
         destination: { include: { client: true } },
-        products: true,
+        products: { include: { product: { include: { category: true } } } },
         statusHistory: true,
       },
     });
