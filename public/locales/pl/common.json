@@ -231,6 +231,19 @@
         "total": "Łącznie",
         "bottom-total": "RAZEM"
       },
+      "clients": {
+        "client-creator": "Dodawanie klienta",
+        "name": "Imię i nazwisko",
+        "short-name": "Inicjały",
+        "phone-number": "Numer telefonu"
+      },
+      "destinations": {
+        "destination-creator": "Dodawanie destynacji",
+        "country": "Kraj",
+        "address": "Ulica",
+        "postal-code": "Kod pocztowy",
+        "city": "Miasto"
+      },
       "buttons": {
         "new": "Nowe"
       },

@@ -1,6 +1,8 @@
 import axios from "axios";
 import { ClientConfig } from "../AppConfig/ClientConfig";
 import {
+  ClientPostInfo,
+  DestinationPostInfo,
   ExpansePostInfo,
   OrderInfo,
   OrderProductInfo,
@@ -207,6 +209,14 @@ const updateOrderProducts = async ({
   return axiosInstance.patch(apiPath(`orders/${id}/products`), data);
 };
 
+const postClient = async ({ data }: ClientPostInfo) => {
+  return axiosInstance.post(apiPath(`clients`), data);
+};
+
+const postDestination = async ({ id, data }: DestinationPostInfo) => {
+  return axiosInstance.post(apiPath(`clients/${id}/destinations`), data);
+};
+
 export const apiClient = {
   auth: {
     postLogin,
@@ -232,6 +242,8 @@ export const apiClient = {
     updateStatus,
     updateOrder,
     updateOrderProducts,
+    postClient,
+    postDestination,
   },
   calcs: {
     getEurRate,

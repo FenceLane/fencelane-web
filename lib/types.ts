@@ -139,6 +139,15 @@ export interface TransportPostInfo {
   data: { price: string; currency: CURRENCY };
 }
 
+export interface ClientPostInfo {
+  data: { name: string; shortName: string; email: string; phone: string };
+}
+
+export interface DestinationPostInfo {
+  id: string;
+  data: { country: string; address: string; postalCode: string; city: string };
+}
+
 export enum USER_ROLE {
   ADMIN = 0,
   USER = 1,

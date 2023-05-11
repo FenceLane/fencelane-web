@@ -16,11 +16,6 @@ import { useContent } from "../../../../lib/hooks/useContent";
 import { mapAxiosErrorToLabel } from "../../../../lib/server/BackendError/BackendError";
 import { ProductInfo } from "../../../../lib/types";
 
-const initialOrderData = {
-  clientId: "",
-  destinationId: "",
-};
-
 const initialNewProductsData = {
   productId: "",
   quantity: "",
@@ -142,6 +137,14 @@ export const OrderCreate = ({ clients, products }: OrderCreateProps) => {
       <Text color="var(--dark)" fontSize="20px" fontWeight="500" m="10px">
         {t("pages.orders.order-creator.order-creator")}
       </Text>
+      <Flex gap="20px" mb="20px">
+        <Link href="/orders/create-client">
+          <Button colorScheme="blue">Dodaj klienta</Button>
+        </Link>
+        <Link href="/orders/create-destination">
+          <Button colorScheme="gray">Dodaj destynację</Button>
+        </Link>
+      </Flex>
       <label>{t("main.client")}</label>
       <Select
         required
@@ -172,7 +175,7 @@ export const OrderCreate = ({ clients, products }: OrderCreateProps) => {
             </option>
           ))
         ) : (
-          <option>empty</option>
+          <option>Client error</option>
         )}
       </Select>
       {newProducts.map((item, index) => (

@@ -91,3 +91,31 @@ export const useUpdateOrder = (orderId: number) => {
 
   return mutation;
 };
+
+export const usePostClient = (onSuccess: () => void) => {
+  const mutation = useMutation({
+    mutationFn: apiClient.orders.postClient,
+    onSuccess: () => {
+      onSuccess();
+      queryClient.invalidateQueries({
+        queryKey: [QUERY_KEY.CLIENTS],
+      });
+    },
+  });
+
+  return mutation;
+};
+
+export const usePostDestination = (onSuccess: () => void) => {
+  const mutation = useMutation({
+    mutationFn: apiClient.orders.postDestination,
+    onSuccess: () => {
+      onSuccess();
+      queryClient.invalidateQueries({
+        queryKey: [QUERY_KEY.DESTINATIONS, QUERY_KEY.CLIENTS],
+      });
+    },
+  });
+
+  return mutation;
+};
