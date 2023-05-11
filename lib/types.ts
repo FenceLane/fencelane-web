@@ -106,6 +106,7 @@ export interface ExpansesInfo {
     currency: CURRENCY;
     type: PRODUCT_EXPANSE;
     productOrderId: string;
+    productOrder: OrderProductInfo;
   }[];
 }
 
