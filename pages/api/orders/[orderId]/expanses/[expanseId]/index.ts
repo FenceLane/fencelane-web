@@ -25,6 +25,9 @@ export default withApiMethods({
     const expanse = await prismaClient.productExpanse.findUnique({
       where: { id: expanseId },
       select: {
+        productOrder: {
+          include: { product: { include: { category: true } } },
+        },
         id: true,
         price: true,
         currency: true,

@@ -63,7 +63,7 @@ export default withApiMethods({
       where: { productOrder: { orderId: Number(orderId) } },
       select: {
         productOrder: {
-          include: { product: true },
+          include: { product: { include: { category: true } } },
         },
         id: true,
         price: true,
