@@ -25,15 +25,6 @@ interface ChangeStatusModalProps {
   oldStatus: ORDER_STATUS;
 }
 
-const statusLabels = {
-  [ORDER_STATUS.ORDER_CREATED]: "Utworzono zamówienie",
-  [ORDER_STATUS.RECEIVED_IN_STORAGE]: "Przyjęto na magazynie",
-  [ORDER_STATUS.DRIED]: "Wysuszono",
-  [ORDER_STATUS.IMPREGNATED]: "Nasycono",
-  [ORDER_STATUS.SENT]: "Wysłano",
-  [ORDER_STATUS.DELIVERED]: "Dostarczono",
-} as const;
-
 export const ChangeStatusModal = ({
   id,
   onClose,
@@ -41,6 +32,17 @@ export const ChangeStatusModal = ({
   oldStatus,
 }: ChangeStatusModalProps) => {
   const { t } = useContent();
+
+  const statusLabels = {
+    [ORDER_STATUS.ORDER_CREATED]: t("pages.orders.status.order-created"),
+    [ORDER_STATUS.RECEIVED_IN_STORAGE]: t(
+      "pages.orders.status.received-in-storage"
+    ),
+    [ORDER_STATUS.DRIED]: t("pages.orders.status.dried"),
+    [ORDER_STATUS.IMPREGNATED]: t("pages.orders.status.impregnated"),
+    [ORDER_STATUS.SENT]: t("pages.orders.status.sent"),
+    [ORDER_STATUS.DELIVERED]: t("pages.orders.status.delivered"),
+  } as const;
 
   const [newStatus, setNewStatus] = useState<ORDER_STATUS>(oldStatus);
 

@@ -214,66 +214,6 @@ export const OrderDetails = ({
     setNewProductDetails(updatedNewProductDetails);
   }; // zmiana wartosci w tabeli, ktora aktualizuje ten stan z produktami do wyslania
 
-  // const handleUpdateSuccess = (orderProducts: Partial<OrderProductInfo>[]) => {
-
-  //   console.log(orderProducts);
-
-  //   // handleQuantityTypeChange(QUANTITY_TYPE.PIECES);
-
-  //   console.log("update success");
-
-  //   if (expanses && transportCost) {
-  //     const productOrderIds = Object.keys(expanses);
-
-  //     const products = Object.assign(
-  //       {},
-  //       ...orderProducts.map((product) => ({
-  //         [product.productOrderId]: {
-  //           price: product.price,
-  //           quantity: product.quantity,
-  //           totalCost:
-  //             Number(
-  //               orderData.products.find(
-  //                 (orderDataProduct) =>
-  //                   orderDataProduct.productOrderId === product.productOrderId
-  //               ).product.volumePerPackage
-  //             ) *
-  //             Number(product.price) *
-  //             product.quantity,
-  //         },
-  //       }))
-  //     );
-
-  //     console.log(products);
-
-  //     const expansesPerProduct = productOrderIds.map(
-  //       (productOrderId: string) => {
-  //         return (
-  //           Number(products[productOrderId].quantity) *
-  //           expanses[productOrderId]
-  //             .map((currentExpanse) => currentExpanse.price)
-  //             .reduce((acc: number, price: string) => acc + Number(price), 0)
-  //         );
-  //       }
-  //     );
-  //     const totalExpanses = expansesPerProduct.reduce((a, b) => a + b, 0);
-  //     const totalClientCost = Object.values(products).reduce(
-  //       (sum: number, product: typeof products) =>
-  //         sum + Number(product.totalCost),
-  //       0
-  //     );
-  //     const newProfit = (totalClientCost -
-  //       totalExpanses -
-  //       Number(transportCost.price)) as number;
-
-  //     console.log(newProfit);
-
-  //     // updateOrder({ profit: newProfit });
-  //   }
-  // }; // success updateu produktow - aktualizowanie profitu
-
-  // ja naprawde chciałem zrobic nie po indexach
-
   const handleUpdateSuccess = (orderProducts: Partial<OrderProductInfo>[]) => {
     console.log("update success");
 

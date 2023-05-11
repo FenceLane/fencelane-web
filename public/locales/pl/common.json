@@ -248,6 +248,8 @@
         "new": "Nowe"
       },
       "status": {
+        "order-created": "Utworzono zamówienie",
+        "received-in-storage": "Przyjęto na magazynie",
         "order created": "Utworzono zamówienie",
         "received in storage": "Przyjęto na magazynie",
         "dried": "Wysuszono",
