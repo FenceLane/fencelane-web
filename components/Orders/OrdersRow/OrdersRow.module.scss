@@ -87,7 +87,7 @@
   }
   .right {
     justify-content: flex-start;
-    gap: 30%;
+    gap: 10%;
   }
   .order-container {
     flex-wrap: nowrap;
@@ -97,7 +97,8 @@
     margin-right: 0;
     padding-right: 0;
   }
-  .left div {
-    width: 30%;
+  .left div,
+  .right div {
+    width: 40%;
   }
 }

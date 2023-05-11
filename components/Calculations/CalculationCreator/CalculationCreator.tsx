@@ -13,6 +13,7 @@ import {
 } from "../../../lib/types";
 import { ProductExpanses } from "./CreatorSteps/ProductExpanses/ProductExpanses";
 import { Summary } from "./CreatorSteps/Summary/Summary";
+import { useContent } from "../../../lib/hooks/useContent";
 
 interface CalculationCreatorProps {
   orderId: number;
@@ -52,6 +53,8 @@ export const CalculationCreator = ({
   orderData,
   rate,
 }: CalculationCreatorProps) => {
+  const { t } = useContent();
+
   const productsQuantity = orderData.products.length;
 
   const [transportCost, setTransportCost] = useState(0);
@@ -81,7 +84,7 @@ export const CalculationCreator = ({
   const date = new Date(rate.effectiveDate);
 
   const [rateDate, setRateDate] = useState(
-    "Z " +
+    `${t("pages.orders.order.from")} ` +
       (date.getDate() < 10 ? "0" + date.getDate() : date.getDate()) +
       "." +
       (Number(date.getMonth()) + 1 < 10
@@ -109,70 +112,80 @@ export const CalculationCreator = ({
   };
 
   return (
-    <Box className={styles.container} bg="white">
-      <Flex alignItems="center" gap="10px">
-        <Link as={NextLink} href={`/orders/${orderId}`} w="32px">
-          <IconButton
-            icon={<ArrowBackIcon w="32px" h="32px" />}
-            aria-label="go back to order"
-            w="32px"
-            bg="white"
+    <Flex flexDir="column" alignItems="center">
+      <Box
+        width="100%"
+        height="100%"
+        minHeight="85vh"
+        className={styles.container}
+        bg="white"
+        maxWidth="700px"
+        boxShadow="0px 4px 4px rgba(0, 0, 0, 0.15)"
+      >
+        <Flex alignItems="center" gap="10px">
+          <Link as={NextLink} href={`/orders/${orderId}`} w="32px">
+            <IconButton
+              icon={<ArrowBackIcon w="32px" h="32px" />}
+              aria-label="go back to order"
+              w="32px"
+              bg="white"
+            />
+          </Link>
+          <Text
+            color="var(--dark)"
+            textTransform="uppercase"
+            fontSize="18px"
+            fontWeight="500"
+            m="10px"
+          >{`${t("pages.orders.order.calculation-to-order")} ${id}`}</Text>
+        </Flex>
+        {currentProduct === 0 && (
+          <TransportCost
+            transportCost={transportCost}
+            handleRateChange={handleRateChange}
+            setTransportCost={setTransportCost}
+            handleNextStep={handleNextStep}
+            setTransportCostCurrency={setTransportCostCurrency}
+            transportCostCurrency={transportCostCurrency}
+            rate={eurRate}
+            rateDate={rateDate}
           />
-        </Link>
-        <Text
-          color="var(--dark)"
-          textTransform="uppercase"
-          fontSize="18px"
-          fontWeight="500"
-          m="10px"
-        >{`Kalkulacja do zamówienia ${id}`}</Text>
-      </Flex>
-      {currentProduct === 0 && (
-        <TransportCost
-          transportCost={transportCost}
-          handleRateChange={handleRateChange}
-          setTransportCost={setTransportCost}
-          handleNextStep={handleNextStep}
-          setTransportCostCurrency={setTransportCostCurrency}
-          transportCostCurrency={transportCostCurrency}
-          rate={eurRate}
-          rateDate={rateDate}
-        />
-      )}
+        )}
 
-      {currentProduct > 0 && currentProduct <= productsQuantity && (
-        <ProductExpanses
-          setDefaultSaturationCost={setDefaultSaturationCost}
-          defaultSaturationCost={defaultSaturationCost}
-          setDefaultMarketerCost={setDefaultMarketerCost}
-          defaultMarketerCost={defaultMarketerCost}
-          key={currentProduct}
-          initialCosts={initialCosts}
-          productsQuantity={productsQuantity}
-          expansesList={expansesList}
-          setExpansesList={setExpansesList}
-          handleRateChange={handleRateChange}
-          productData={orderData.products[currentProduct - 1]}
-          handleNextStep={handleNextStep}
-          currentProduct={currentProduct}
-          handlePrevStep={handlePrevStep}
-          rate={eurRate}
-          rateDate={rateDate}
-        />
-      )}
-      {currentProduct > productsQuantity && (
-        <Summary
-          orderId={orderId}
-          transportCostCurrency={transportCostCurrency}
-          transportCost={transportCost}
-          expansesList={expansesList}
-          handleRateChange={handleRateChange}
-          handlePrevStep={handlePrevStep}
-          rate={eurRate}
-          rateDate={rateDate}
-          productData={orderData.products}
-        />
-      )}
-    </Box>
+        {currentProduct > 0 && currentProduct <= productsQuantity && (
+          <ProductExpanses
+            setDefaultSaturationCost={setDefaultSaturationCost}
+            defaultSaturationCost={defaultSaturationCost}
+            setDefaultMarketerCost={setDefaultMarketerCost}
+            defaultMarketerCost={defaultMarketerCost}
+            key={currentProduct}
+            initialCosts={initialCosts}
+            productsQuantity={productsQuantity}
+            expansesList={expansesList}
+            setExpansesList={setExpansesList}
+            handleRateChange={handleRateChange}
+            productData={orderData.products[currentProduct - 1]}
+            handleNextStep={handleNextStep}
+            currentProduct={currentProduct}
+            handlePrevStep={handlePrevStep}
+            rate={eurRate}
+            rateDate={rateDate}
+          />
+        )}
+        {currentProduct > productsQuantity && (
+          <Summary
+            orderId={orderId}
+            transportCostCurrency={transportCostCurrency}
+            transportCost={transportCost}
+            expansesList={expansesList}
+            handleRateChange={handleRateChange}
+            handlePrevStep={handlePrevStep}
+            rate={eurRate}
+            rateDate={rateDate}
+            productData={orderData.products}
+          />
+        )}
+      </Box>
+    </Flex>
   );
 };

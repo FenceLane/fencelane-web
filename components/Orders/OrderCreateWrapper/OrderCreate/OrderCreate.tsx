@@ -64,6 +64,7 @@ export const OrderCreate = ({ clients, products }: OrderCreateProps) => {
     mutate: postOrder,
     error,
     isSuccess,
+    isError,
     isLoading,
   } = usePostOrder(() => console.log("success"));
 
@@ -137,7 +138,7 @@ export const OrderCreate = ({ clients, products }: OrderCreateProps) => {
   }, [router, isSuccess]);
 
   return (
-    <>
+    <Flex width="100%" maxWidth="980px" flexDir="column">
       <Text color="var(--dark)" fontSize="20px" fontWeight="500" m="10px">
         {t("pages.orders.order-creator.order-creator")}
       </Text>
@@ -175,7 +176,7 @@ export const OrderCreate = ({ clients, products }: OrderCreateProps) => {
         )}
       </Select>
       {newProducts.map((item, index) => (
-        <>
+        <span key={item.productId}>
           <Flex justifyContent="space-between" alignItems="center">
             <label>
               {t("main.product")} {index + 1}
@@ -194,13 +195,14 @@ export const OrderCreate = ({ clients, products }: OrderCreateProps) => {
             placeholder={t("main.product")}
             data-index={index}
             onChange={handleProductChange}
+            defaultValue={newProducts[index].productId}
           >
             {products &&
               products.map((product) => (
                 <option
                   data-key={product.id}
                   key={product.id}
-                  selected={product.id === newProducts[index].productId}
+                  value={product.id}
                 >
                   {product.category.name + " " + product.dimensions}
                 </option>
@@ -229,7 +231,7 @@ export const OrderCreate = ({ clients, products }: OrderCreateProps) => {
             data-index={index}
             onChange={handleProductDetailsChange}
           />
-        </>
+        </span>
       ))}
       <Flex gap="30px" justifyContent="space-between">
         <Box>
@@ -252,11 +254,11 @@ export const OrderCreate = ({ clients, products }: OrderCreateProps) => {
           onClick={handleAddProduct}
         ></IconButton>
       </Flex>
-      {error && (
+      {isError && (
         <Text color="red" fontWeight="600" fontSize="18px">
           {t(`errors.backendErrorLabel.${mapAxiosErrorToLabel(error)}`)}
         </Text>
       )}
-    </>
+    </Flex>
   );
 };

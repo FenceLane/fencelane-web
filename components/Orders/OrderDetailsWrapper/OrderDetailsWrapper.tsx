@@ -72,7 +72,9 @@ export const OrderDetailsWrapper = ({ id }: OrderDetailsWrapperProps) => {
       </>
     );
   }
-  // console.log("exp i tr");
+  console.log("exp i tr");
+  console.log(expanses);
+  console.log(transportCost);
   return (
     <OrderDetails
       expanses={expanses}

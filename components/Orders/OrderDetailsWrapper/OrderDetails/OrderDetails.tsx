@@ -404,7 +404,9 @@ export const OrderDetails = ({
       }
     ); // zamiana ilosci na paczki i cen na za metr
     let invalidValue = false;
-    setInvalidValueText(<Text>Wprowadzono:</Text>);
+    setInvalidValueText(
+      <Text>{t("pages.orders.order.bad-quantity.entered")}:</Text>
+    );
     calculatedNewProductDetails.map((product, key) => {
       if (product.quantity !== Math.floor(product.quantity)) {
         invalidValue = true;
@@ -416,11 +418,18 @@ export const OrderDetails = ({
           setInvalidValueText((prev) => (
             <span>
               {prev}
-              <Text fontWeight="500">{`Dla: ${orderData.products[key].product.category.name} ${orderData.products[key].product.dimensions}`}</Text>
+              <Text fontWeight="500">{`
+                ${t("pages.orders.order.bad-quantity.for")}: ${
+                orderData.products[key].product.category.name
+              } ${orderData.products[key].product.dimensions}`}</Text>
               <Text>
-                {`${invalidQuantityInPackages.toFixed(
-                  2
-                )} pakietów. Czy chodziło Ci o ${prefferedNewQuantityInPackages} pakietów? `}
+                {`${invalidQuantityInPackages.toFixed(2)} ${t(
+                  "pages.orders.order.bad-quantity.packages"
+                )}. ${t(
+                  "pages.orders.order.bad-quantity.did-you-mean"
+                )} ${prefferedNewQuantityInPackages} ${t(
+                  "pages.orders.order.bad-quantity.packages"
+                )}? `}
               </Text>
             </span>
           ));
@@ -428,12 +437,23 @@ export const OrderDetails = ({
           setInvalidValueText((prev) => (
             <span>
               {prev}
-              <Text fontWeight="500">{`Dla: ${orderData.products[key].product.category.name} ${orderData.products[key].product.dimensions}`}</Text>
+              <Text fontWeight="500">{`${t(
+                "pages.orders.order.bad-quantity.for"
+              )}: ${orderData.products[key].product.category.name} ${
+                orderData.products[key].product.dimensions
+              }`}</Text>
               <Text>
-                {`${invalidQuantity} ${quantityType}, co daje ${invalidQuantityInPackages.toFixed(
-                  2
-                )} pakietów. Czy chodziło Ci o
-              ${prefferedNewQuantityInPackages} pakietów? `}
+                {`${invalidQuantity} ${t(
+                  `pages.orders.order.bad-quantity.${quantityType}`
+                )} ${t(
+                  "pages.orders.order.bad-quantity.which-stands-for"
+                )} ${invalidQuantityInPackages.toFixed(2)} ${t(
+                  "pages.orders.order.bad-quantity.packages"
+                )}. ${t(
+                  "pages.orders.order.bad-quantity.did-you-mean"
+                )} ${prefferedNewQuantityInPackages} ${t(
+                  "pages.orders.order.bad-quantity.packages"
+                )}? `}
               </Text>
             </span>
           ));
@@ -448,254 +468,263 @@ export const OrderDetails = ({
   }; // aktualizowanie ilosci i cen produktow
 
   return (
-    <Flex className={styles.container} flexDir="column">
-      <Link as={NextLink} href="/orders" w="32px">
-        <IconButton
-          icon={<ArrowBackIcon w="32px" h="32px" />}
-          aria-label="go back to orders"
-          w="32px"
-          bg="white"
-        />
-      </Link>
-      <Flex className={styles["order-container"]}>
-        <Flex className={styles["left"]}>
-          <Box className={styles["text-box"]}>
-            <Text className={styles["order-header"]}>
-              {t("pages.orders.order.order_id")}
-            </Text>
-            <Text className={styles["order-text"]}>{id}</Text>
-          </Box>
-          <Box className={styles["text-box"]}>
-            <Text className={styles["order-header"]}>
-              {t("pages.orders.order.status")}
-            </Text>
-            <Text
-              className={styles["order-text"]}
-              fontWeight="600"
-              color={statusColor(currentStatus)}
+    <Flex flexDir="column" alignItems="center" minHeight="100vh">
+      <Flex className={styles.container} flexDir="column">
+        <Link as={NextLink} href="/orders" w="32px">
+          <IconButton
+            icon={<ArrowBackIcon w="32px" h="32px" />}
+            aria-label="go back to orders"
+            w="32px"
+            bg="white"
+          />
+        </Link>
+        <Flex className={styles["order-container"]}>
+          <Flex className={styles["left"]}>
+            <Box className={styles["text-box"]}>
+              <Text className={styles["order-header"]}>
+                {t("pages.orders.order.order_id")}
+              </Text>
+              <Text className={styles["order-text"]}>{id}</Text>
+            </Box>
+            <Box className={styles["text-box"]}>
+              <Text className={styles["order-header"]}>
+                {t("pages.orders.order.status")}
+              </Text>
+              <Text
+                className={styles["order-text"]}
+                fontWeight="600"
+                color={statusColor(currentStatus)}
+              >
+                {t(`pages.orders.status.${currentStatus}`)}
+              </Text>
+            </Box>
+            <Box className={styles["text-box"]}>
+              <Text className={styles["order-header"]}>
+                {t("pages.orders.order.client")}
+              </Text>
+              <Text className={styles["order-text"]}>
+                {orderData.destination.client.name}
+              </Text>
+            </Box>
+          </Flex>
+          <Flex className={styles["right"]}>
+            <Box className={styles["text-box"]}>
+              <Text className={styles["order-header"]}>
+                {t("pages.orders.order.date")}
+              </Text>
+              <Text className={styles["order-text"]}>
+                {displayDate(orderData.createdAt)}
+              </Text>
+            </Box>
+            <Box className={styles["text-box"]}>
+              <Text className={styles["order-header"]}>
+                {t("pages.orders.order.destination")}
+              </Text>
+              <Text className={styles["order-text"]}>
+                {orderData.destination.city},
+              </Text>
+              <Text className={styles["order-text"]}>
+                {orderData.destination.country}
+              </Text>
+            </Box>
+          </Flex>
+        </Flex>
+        {profit && (
+          <Text className={styles["profit"]}>
+            {t("pages.orders.order.profit")}: +{profit}€
+          </Text>
+        )}
+        <Flex className={styles["history-container"]} flexDir="row">
+          <Flex flexDir="column" className={styles["order-history"]}>
+            <Heading size="sm" mb="10px">
+              {t("main.history")}
+            </Heading>
+            {[...orderData.statusHistory].reverse().map((status) => (
+              <Flex key={status.id} flexDir="column" mb="10px" color="grey">
+                <Text>{t(`pages.orders.status.${status.status}`)}</Text>
+                <Text>{`${displayDate(status.date).substring(
+                  0,
+                  displayDate(status.date).length - 5
+                )} | ${status.creator.name}`}</Text>
+              </Flex>
+            ))}
+          </Flex>
+          <Flex>
+            <Button
+              className={styles["change-status-button"]}
+              color="white"
+              bg="var(--button-grey)"
+              fontWeight="400"
+              onClick={onStatusChangeOpen}
             >
-              {t(`pages.orders.status.${currentStatus}`)}
-            </Text>
-          </Box>
-          <Box className={styles["text-box"]}>
-            <Text className={styles["order-header"]}>
-              {t("pages.orders.order.client")}
-            </Text>
-            <Text className={styles["order-text"]}>
-              {orderData.destination.client.name}
-            </Text>
-          </Box>
+              {t("pages.orders.order.change-status")}
+            </Button>
+          </Flex>
         </Flex>
-        <Flex className={styles["right"]}>
-          <Box className={styles["text-box"]}>
-            <Text className={styles["order-header"]}>
-              {t("pages.orders.order.date")}
-            </Text>
-            <Text className={styles["order-text"]}>
-              {displayDate(orderData.createdAt)}
-            </Text>
-          </Box>
-          <Box className={styles["text-box"]}>
-            <Text className={styles["order-header"]}>
-              {t("pages.orders.order.destination")}
-            </Text>
-            <Text className={styles["order-text"]}>
-              {orderData.destination.city},
-            </Text>
-            <Text className={styles["order-text"]}>
-              {orderData.destination.country}
-            </Text>
-          </Box>
-        </Flex>
-      </Flex>
-      {profit && <Text className={styles["profit"]}>Zysk: +{profit}€</Text>}
-      <Flex className={styles["history-container"]} flexDir="row">
-        <Flex flexDir="column" className={styles["order-history"]}>
-          <Heading size="sm" mb="10px">
-            {t("main.history")}
-          </Heading>
-          {[...orderData.statusHistory].reverse().map((status) => (
-            <Flex key={status.id} flexDir="column" mb="10px" color="grey">
-              <Text>{t(`pages.orders.status.${status.status}`)}</Text>
-              <Text>{`${displayDate(status.date).substring(
-                0,
-                displayDate(status.date).length - 5
-              )} | ${status.creator.name}`}</Text>
-            </Flex>
-          ))}
-        </Flex>
-        <Flex>
+        <Box className={styles["spec-container"]}>
+          <Flex justifyContent="space-between" alignItems="center" mt="20px">
+            <Heading className={styles["spec-header"]} size="sm" mb="10px">
+              {t("pages.orders.order.specification")}
+            </Heading>
+            <Select
+              w="120px"
+              mr="40px"
+              color="black"
+              onChange={(e) =>
+                handleQuantityTypeChange(e.target.value as QUANTITY_TYPE)
+              }
+              value={specType}
+            >
+              <option value={QUANTITY_TYPE.PIECES}>
+                {t("pages.orders.order.pieces")}
+              </option>
+              <option value={QUANTITY_TYPE.PACKAGES}>
+                {t("pages.orders.order.packages")}
+              </option>
+              <option value={QUANTITY_TYPE.M3}>M3</option>
+            </Select>
+          </Flex>
+          <Table className={styles["spec-table"]}>
+            <Thead>
+              <Tr>
+                <Th>{t("pages.orders.spec-table.type")}</Th>
+                <Th>{t("pages.orders.spec-table.dimensions")}</Th>
+                <Th>{t("pages.orders.spec-table.quantity")}</Th>
+                <Th>{t("pages.orders.spec-table.price")} [€]</Th>
+              </Tr>
+            </Thead>
+            <Tbody>
+              {specTableContent.map((row, key) => (
+                <Tr
+                  key={`${row.productName} ${row.productDimensions} ${row.productQuantity}`}
+                >
+                  <Td fontWeight={500}>
+                    {row.productName}
+                    <br />
+                    {t(`pages.storage.variants.${String(row.productVariant)}`)}
+                  </Td>
+                  <Td>{row.productDimensions}</Td>
+                  <Td>
+                    <Input
+                      fontSize="15px"
+                      padding="0"
+                      textAlign="center"
+                      w="80px"
+                      onChange={(e) => handleSpecValueChange(e, key)}
+                      data-column="quantity"
+                      defaultValue={row.productQuantity
+                        .toFixed(2)
+                        .replace(/\.00$/, "")}
+                    />
+                  </Td>
+                  <Td>
+                    <Input
+                      fontSize="15px"
+                      padding="0"
+                      textAlign="center"
+                      w="80px"
+                      onChange={(e) => handleSpecValueChange(e, key)}
+                      data-column="price"
+                      defaultValue={row.productPrice
+                        .toFixed(2)
+                        .replace(/\.00$/, "")}
+                    />
+                  </Td>
+                </Tr>
+              ))}
+            </Tbody>
+          </Table>
+        </Box>
+        <Flex justifyContent="space-around" mt="10px">
           <Button
-            className={styles["change-status-button"]}
             color="white"
-            bg="var(--button-grey)"
+            bg="var(--button-orange)"
             fontWeight="400"
-            onClick={onStatusChangeOpen}
+            onClick={handleUpdateProductDetails}
+            isLoading={isUpdateOrderProductsLoading}
           >
-            {t("pages.orders.order.change-status")}
+            {t("buttons.edit")}
+          </Button>
+          <Link href={`/calculations/${orderData.id}`}>
+            <Button color="white" bg="var(--button-blue)">
+              {t("pages.orders.order.calculation")}
+            </Button>
+          </Link>
+        </Flex>
+        {isUpdateOrderProductsError && (
+          <Text color="red">
+            {t(mapAxiosErrorToLabel(updateOrderProductsError))}
+          </Text>
+        )}
+        {isUpdateOrderError && (
+          <Text color="red">{t(mapAxiosErrorToLabel(updateOrderError))}</Text>
+        )}
+        <Flex m="40px 0px" justifyContent="space-between" alignItems="center">
+          <Heading size="sm" mb="10px" ml="40px">
+            {t("pages.orders.order.documents")}
+          </Heading>
+          <Button
+            color="white"
+            bg="var(--button-dark-orange)"
+            fontWeight="400"
+            mr="40px"
+          >
+            {t("buttons.add")}
           </Button>
         </Flex>
-      </Flex>
-      <Box className={styles["spec-container"]}>
-        <Flex justifyContent="space-between" alignItems="center" mt="20px">
-          <Heading className={styles["spec-header"]} size="sm" mb="10px">
-            {t("pages.orders.order.specification")}
-          </Heading>
-          <Select
-            w="120px"
-            mr="40px"
-            color="black"
-            onChange={(e) =>
-              handleQuantityTypeChange(e.target.value as QUANTITY_TYPE)
-            }
-            value={specType}
-          >
-            <option value={QUANTITY_TYPE.PIECES}>
-              {t("pages.orders.order.pieces")}
-            </option>
-            <option value={QUANTITY_TYPE.PACKAGES}>
-              {t("pages.orders.order.packages")}
-            </option>
-            <option value={QUANTITY_TYPE.M3}>M3</option>
-          </Select>
-        </Flex>
-        <Table className={styles["spec-table"]}>
+        <Table className={styles["file-table"]}>
           <Thead>
             <Tr>
-              <Th>{t("pages.orders.spec-table.type")}</Th>
-              <Th>{t("pages.orders.spec-table.dimensions")}</Th>
-              <Th>{t("pages.orders.spec-table.quantity")}</Th>
-              <Th>{t("pages.orders.spec-table.price")} [€]</Th>
+              <Th>{t("pages.orders.order.file")}</Th>
+              <Th>{t("pages.orders.order.download")}</Th>
             </Tr>
           </Thead>
-          <Tbody>
-            {specTableContent.map((row, key) => (
-              <Tr
-                key={`${row.productName} ${row.productDimensions} ${row.productQuantity}`}
-              >
-                <Td fontWeight={500}>
-                  {row.productName}
-                  <br />
-                  {t(`pages.storage.variants.${String(row.productVariant)}`)}
-                </Td>
-                <Td>{row.productDimensions}</Td>
-                <Td>
-                  <Input
-                    fontSize="15px"
-                    padding="0"
-                    textAlign="center"
-                    w="80px"
-                    onChange={(e) => handleSpecValueChange(e, key)}
-                    data-column="quantity"
-                    defaultValue={row.productQuantity
-                      .toFixed(2)
-                      .replace(/\.00$/, "")}
-                  />
-                </Td>
-                <Td>
-                  <Input
-                    fontSize="15px"
-                    padding="0"
-                    textAlign="center"
-                    w="80px"
-                    onChange={(e) => handleSpecValueChange(e, key)}
-                    data-column="price"
-                    defaultValue={row.productPrice
-                      .toFixed(2)
-                      .replace(/\.00$/, "")}
-                  />
-                </Td>
-              </Tr>
-            ))}
-          </Tbody>
         </Table>
-      </Box>
-      <Flex justifyContent="space-around" mt="10px">
-        <Button
-          color="white"
-          bg="var(--button-orange)"
-          fontWeight="400"
-          onClick={handleUpdateProductDetails}
-          isLoading={isUpdateOrderProductsLoading}
-        >
-          {t("buttons.edit")}
-        </Button>
-        <Link href={`/calculations/${orderData.id}`}>
-          <Button color="white" bg="var(--button-blue)">
-            {t("pages.orders.order.calculation")}
+        <Flex mr="20px" justifyContent="flex-end" m="20px 20px 20px 0px">
+          <Button bg="var(--button-green)" color="white" fontWeight="400">
+            {t("pages.orders.order.download-all")}
           </Button>
-        </Link>
-      </Flex>
-      {isUpdateOrderProductsError && (
-        <Text color="red">
-          {t(mapAxiosErrorToLabel(updateOrderProductsError))}
-        </Text>
-      )}
-      <Flex m="40px 0px" justifyContent="space-between" alignItems="center">
-        <Heading size="sm" mb="10px" ml="40px">
-          {t("pages.orders.order.documents")}
-        </Heading>
-        <Button
-          color="white"
-          bg="var(--button-dark-orange)"
-          fontWeight="400"
-          mr="40px"
+        </Flex>
+        <ChangeStatusModal
+          id={orderData.id}
+          onClose={onStatusChangeClose}
+          isOpen={isStatusChangeOpen}
+          oldStatus={
+            orderData.statusHistory[orderData.statusHistory.length - 1].status
+          }
+        />
+        <AlertDialog
+          isOpen={isQuantityConfirmOpen}
+          onClose={onQuantityConfirmClose}
+          leastDestructiveRef={cancelRef}
         >
-          {t("buttons.add")}
-        </Button>
-      </Flex>
-      <Table className={styles["file-table"]}>
-        <Thead>
-          <Tr>
-            <Th>{t("pages.orders.order.file")}</Th>
-            <Th>{t("pages.orders.order.download")}</Th>
-          </Tr>
-        </Thead>
-      </Table>
-      <Flex mr="20px" justifyContent="flex-end" m="20px 20px 20px 0px">
-        <Button bg="var(--button-green)" color="white" fontWeight="400">
-          {t("pages.orders.order.download-all")}
-        </Button>
-      </Flex>
-      <ChangeStatusModal
-        id={orderData.id}
-        onClose={onStatusChangeClose}
-        isOpen={isStatusChangeOpen}
-        oldStatus={
-          orderData.statusHistory[orderData.statusHistory.length - 1].status
-        }
-      />
-      <AlertDialog
-        isOpen={isQuantityConfirmOpen}
-        onClose={onQuantityConfirmClose}
-        leastDestructiveRef={cancelRef}
-      >
-        <AlertDialogOverlay>
-          <AlertDialogContent>
-            <AlertDialogHeader fontSize="lg" fontWeight="bold">
-              Wprowadzono błędną ilość
-            </AlertDialogHeader>
+          <AlertDialogOverlay>
+            <AlertDialogContent>
+              <AlertDialogHeader fontSize="lg" fontWeight="bold">
+                {t("pages.orders.order.bad-quantity.bad-quantity-entered")}
+              </AlertDialogHeader>
 
-            <AlertDialogBody>{invalidValueText}</AlertDialogBody>
+              <AlertDialogBody>{invalidValueText}</AlertDialogBody>
 
-            <AlertDialogFooter>
-              <Button ref={cancelRef} onClick={onQuantityConfirmClose}>
-                {t("buttons.cancel")}
-              </Button>
-              <Button
-                colorScheme="green"
-                onClick={() => {
-                  onQuantityConfirmClose();
-                  handleInvalidQuantity();
-                }}
-                ml={3}
-              >
-                {t("buttons.confirm")}
-              </Button>
-            </AlertDialogFooter>
-          </AlertDialogContent>
-        </AlertDialogOverlay>
-      </AlertDialog>
+              <AlertDialogFooter>
+                <Button ref={cancelRef} onClick={onQuantityConfirmClose}>
+                  {t("buttons.cancel")}
+                </Button>
+                <Button
+                  colorScheme="green"
+                  onClick={() => {
+                    onQuantityConfirmClose();
+                    handleInvalidQuantity();
+                  }}
+                  ml={3}
+                >
+                  {t("buttons.confirm")}
+                </Button>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialogOverlay>
+        </AlertDialog>
+      </Flex>
     </Flex>
   );
 };

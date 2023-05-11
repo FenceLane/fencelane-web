@@ -269,7 +269,7 @@ export const Summary = ({
 
   return (
     <Flex
-      height="calc(100% - 50px)"
+      height="calc(100vh - 150px)"
       p="24px"
       flexDir="column"
       justifyContent="space-between"
@@ -283,11 +283,11 @@ export const Summary = ({
             fontSize="18px"
             fontWeight="600"
           >
-            3. Podsumowanie
+            3. {t("pages.orders.order.summary")}
           </Text>
           <Flex alignItems="center" color="var(--grey)">
             <Flex flexDir="column" mr="10px">
-              <Text fontSize="15px">Kurs EUR</Text>
+              <Text fontSize="15px">{t("pages.orders.order.eur-rate")}</Text>
               {rateDate !== "" && <Text fontSize="11px">{rateDate}</Text>}
             </Flex>
             <Input
@@ -310,7 +310,7 @@ export const Summary = ({
           fontWeight="600"
           mb="10px"
         >
-          Waluta i jednostka
+          {t("pages.orders.order.currency-and-quantity-type")}
         </Text>
         <Flex gap="10px" mb="10px">
           <Select
@@ -326,19 +326,23 @@ export const Summary = ({
             defaultValue={QUANTITY_TYPE.PACKAGES}
             onChange={handleQuantityTypeChange}
           >
-            <option value={QUANTITY_TYPE.PACKAGES}>Paczki</option>
+            <option value={QUANTITY_TYPE.PACKAGES}>
+              {t("pages.orders.order.packages")}
+            </option>
             <option value={QUANTITY_TYPE.M3}>M3</option>
-            <option value={QUANTITY_TYPE.PIECES}>Sztuki</option>
+            <option value={QUANTITY_TYPE.PIECES}>
+              {t("pages.orders.order.pieces")}
+            </option>
           </Select>
         </Flex>
 
         <Table className={styles["spec-table"]}>
           <Thead>
             <Tr>
-              <Th>PRODUKT</Th>
-              <Th>ILOŚĆ</Th>
-              <Th>RÓŻNICA</Th>
-              <Th>ŁĄCZNIE</Th>
+              <Th>{t("pages.orders.order.product")}</Th>
+              <Th>{t("pages.orders.order.quantity")}</Th>
+              <Th>{t("pages.orders.order.difference")}</Th>
+              <Th>{t("pages.orders.order.total")}</Th>
             </Tr>
           </Thead>
           <Tbody>
@@ -357,12 +361,12 @@ export const Summary = ({
           </Tbody>
         </Table>
         <Text mr="50px" fontWeight={500} textAlign="right">
-          RAZEM: {displayProfit} {currency}
+          {t("pages.orders.order.bottom-total")}: {displayProfit} {currency}
         </Text>
       </Box>
       <Flex justifyContent="space-between">
         <Button colorScheme="gray" w="116px" h="40px" onClick={handlePrevStep}>
-          Cofnij
+          {t("buttons.back")}
         </Button>
         <Button
           bg="black"
@@ -376,7 +380,7 @@ export const Summary = ({
             isUpdateOrderLoading
           }
         >
-          Zapisz
+          {t("buttons.save")}
         </Button>
       </Flex>
       {(isPostExpansesError ||

@@ -177,7 +177,7 @@ export const ProductExpanses = ({
   return (
     <Flex
       p="24px"
-      height="calc(100% - 50px)"
+      height="calc(100vh - 150px)"
       flexDir="column"
       justifyContent="space-between"
     >
@@ -190,11 +190,11 @@ export const ProductExpanses = ({
             fontSize="18px"
             fontWeight="600"
           >
-            2. Produkty
+            2. {t("pages.orders.order.products")}
           </Text>
           <Flex alignItems="center" color="var(--grey)">
             <Flex flexDir="column" mr="10px">
-              <Text fontSize="15px">Kurs EUR</Text>
+              <Text fontSize="15px">{t("pages.orders.order.eur-rate")}</Text>
               {rateDate !== "" && <Text fontSize="11px">{rateDate}</Text>}
             </Flex>
             <Input
@@ -219,7 +219,7 @@ export const ProductExpanses = ({
         >{`${currentProduct}. ${productData.product.category.name} ${productData.product.dimensions}`}</Text>
         <Flex alignItems="flex-end" justifyContent="space-between" mb="20px">
           <Flex flexDir="column">
-            <label>Pakowanie:</label>
+            <label>{t("pages.orders.order.packing")}</label>
             <Input
               w="116px"
               defaultValue={`${productData.product.itemsPerPackage} szt.`}
@@ -227,9 +227,9 @@ export const ProductExpanses = ({
             />
           </Flex>
           <Flex flexDir="column">
-            <label>Ilość</label>
+            <label>{t("pages.orders.order.quantity")}</label>
             <Input
-              w="100px"
+              w="80px"
               readOnly
               value={
                 quantity
@@ -254,7 +254,7 @@ export const ProductExpanses = ({
           </Select>
         </Flex>
         <Box mb="20px">
-          <Text>Koszty:</Text>
+          <Text>{t("pages.orders.order.costs")}:</Text>
           <Flex justifyContent="space-between" mb="5px">
             <Input
               autoFocus
@@ -264,7 +264,7 @@ export const ProductExpanses = ({
                 expanses.commodity.price === 0 ? "" : expanses.commodity.price
               }
               onChange={(e) => handleCostsChange(e, "price")}
-              placeholder="Towar"
+              placeholder={t("pages.orders.order.commodity")}
               w="116px"
               p="10px"
             />
@@ -300,7 +300,7 @@ export const ProductExpanses = ({
                 expanses.saturation.price === 0 ? "" : expanses.saturation.price
               }
               onChange={(e) => handleCostsChange(e, "price")}
-              placeholder="Nasycanie"
+              placeholder={t("pages.orders.order.saturation")}
               w="116px"
               p="10px"
             />
@@ -336,7 +336,7 @@ export const ProductExpanses = ({
                 expanses.marketer.price === 0 ? "" : expanses.marketer.price
               }
               onChange={(e) => handleCostsChange(e, "price")}
-              placeholder="Handlowiec"
+              placeholder={t("pages.orders.order.marketer")}
               w="116px"
               p="10px"
             />
@@ -372,7 +372,7 @@ export const ProductExpanses = ({
                 expanses.other.price == 0 ? "" : expanses.other.price
               }
               onChange={(e) => handleCostsChange(e, "price")}
-              placeholder="Inne"
+              placeholder={t("pages.orders.order.other")}
               w="116px"
               p="10px"
             />
@@ -401,7 +401,7 @@ export const ProductExpanses = ({
             </Select>
           </Flex>
         </Box>
-        <Text>Cena u klienta:</Text>
+        <Text>{t("pages.orders.order.client-price")}: </Text>
         <Flex justifyContent="space-between" mb="20px">
           <Input
             readOnly
@@ -434,10 +434,10 @@ export const ProductExpanses = ({
       </Box>
       <Flex justifyContent="space-between">
         <Button colorScheme="gray" w="116px" h="40px" onClick={handlePrev}>
-          Cofnij
+          {t("buttons.back")}
         </Button>
         <Button colorScheme="green" w="116px" h="40px" onClick={handleNext}>
-          Dalej
+          {t("buttons.next")}
         </Button>
       </Flex>
     </Flex>

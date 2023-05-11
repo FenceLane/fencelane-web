@@ -1,3 +1,4 @@
+import { CalculationsWrapper } from "../../components/Calculations/CalculationsWrapper/CalculationsWrapper";
 import { Layout } from "../../components/Layout/Layout";
 import { withServerSideAuth } from "../../lib/server/middlewares/withServerSideAuth";
 import { withTranslationProps } from "../../lib/server/middlewares/withTranslationProps";
@@ -9,7 +10,11 @@ const CalculationsPage = ({
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const router = useRouter();
 
-  return <Layout user={user}>Tu będą chyba kalkulacje</Layout>;
+  return (
+    <Layout user={user}>
+      <CalculationsWrapper></CalculationsWrapper>
+    </Layout>
+  );
 };
 
 export default CalculationsPage;

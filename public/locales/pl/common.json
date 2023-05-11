@@ -182,6 +182,7 @@
     },
     "orders": {
       "order_history": "Historia zamówień",
+      "calculations_history": "Historia kalkulacji",
       "order": {
         "order_id": "Nr zamówienia",
         "status": "Status",
@@ -198,7 +199,37 @@
         "file": "Plik",
         "download": "Pobierz",
         "download-all": "Pobierz wszystkie",
-        "status-change": "Zmiana statusu"
+        "status-change": "Zmiana statusu",
+        "profit": "Zysk",
+        "bad-quantity": {
+          "bad-quantity-entered": "Wprowadzono błędną ilość",
+          "entered": "Wprowadzono",
+          "for": "Dla",
+          "which-stands-for": "co daje",
+          "packages": "pakietów",
+          "did-you-mean": "Czy chodziło Ci o ",
+          "pieces": "sztuk",
+          "m3": "m3"
+        },
+        "calculation-to-order": "Kalkulacja do zamówienia ",
+        "transport-cost": "Cena dostawy",
+        "products": "Produkty",
+        "summary": "Podsumowanie",
+        "eur-rate": "Kurs EUR",
+        "from": "Z",
+        "client-price": "Cena u klienta",
+        "packing": "Pakowanie",
+        "costs": "Koszty",
+        "commodity": "Towar",
+        "saturation": "Nasycanie",
+        "marketer": "Handlowiec",
+        "other": "Inne",
+        "currency-and-quantity-type": "Cena i jednostka",
+        "product": "Produkt",
+        "quantity": "Ilość",
+        "difference": "Różnica",
+        "total": "Łącznie",
+        "bottom-total": "RAZEM"
       },
       "buttons": {
         "new": "Nowe"
@@ -231,6 +262,7 @@
     "delete": "Usuń",
     "cancel": "Anuluj",
     "next": "Dalej",
+    "back": "Cofnij",
     "save": "Zapisz",
     "confirm": "Zatwierdź",
     "new": "Nowe"
