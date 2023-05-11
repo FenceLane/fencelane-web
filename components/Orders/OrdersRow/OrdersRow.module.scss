@@ -87,10 +87,17 @@
   }
   .right {
     justify-content: flex-start;
-    gap: 100px;
+    gap: 30%;
   }
   .order-container {
     flex-wrap: nowrap;
     gap: 50px;
+  }
+  .left {
+    margin-right: 0;
+    padding-right: 0;
+  }
+  .left div {
+    width: 30%;
   }
 }

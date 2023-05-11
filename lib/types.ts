@@ -100,13 +100,13 @@ export interface TransportInfo {
 }
 
 export interface ExpansesInfo {
-  data: [
-    id: string,
-    price: string,
-    currency: CURRENCY,
-    type: PRODUCT_EXPANSE,
-    productOrderId: string
-  ];
+  [productOrderId: string]: {
+    id: string;
+    price: string;
+    currency: CURRENCY;
+    type: PRODUCT_EXPANSE;
+    productOrderId: string;
+  }[];
 }
 
 export interface InitialCosts {

@@ -29,12 +29,16 @@ import { useContent } from "../../../../lib/hooks/useContent";
 import {
   ExpansesInfo,
   OrderInfo,
+  OrderProductInfo,
   QUANTITY_TYPE,
   TransportInfo,
 } from "../../../../lib/types";
 import { ChangeStatusModal } from "./ChangeStatusModal/ChangeStatusModal";
 import styles from "./OrderDetails.module.scss";
-import { useUpdateOrderProducts } from "../../../../lib/api/hooks/orders";
+import {
+  useUpdateOrder,
+  useUpdateOrderProducts,
+} from "../../../../lib/api/hooks/orders";
 import { mapAxiosErrorToLabel } from "../../../../lib/server/BackendError/BackendError";
 
 interface OrderDetailsProps {
@@ -51,6 +55,7 @@ const statusColor = (status: string) => {
       return "#232ccf";
   }
 };
+
 export const OrderDetails = ({
   orderData,
   expanses,
@@ -60,23 +65,15 @@ export const OrderDetails = ({
     isOpen: isQuantityConfirmOpen,
     onOpen: onQuantityConfirmOpen,
     onClose: onQuantityConfirmClose,
-  } = useDisclosure();
+  } = useDisclosure(); // do modala potwierdzajacego korektę invalid value
 
-  console.log(
-    ...orderData.products.map((product) => ({
-      [product.productOrderId]: {
-        price: product.price,
-        quantity: product.quantity,
-      },
-    }))
-  );
-
-  // console.log(
-  //   ...Object.keys(expanses).map((productOrderId): string => {
-  //     return productOrderId;
-  //   })
-  // ); // to cena za 1 paczke
-  // console.log(transportCost.price); // to cena całkowita
+  const {
+    mutate: updateOrder,
+    error: updateOrderError,
+    isError: isUpdateOrderError,
+    isSuccess: isUpdateOrderSuccess,
+    isLoading: isUpdateOrderLoading,
+  } = useUpdateOrder(orderData.id); // aktualizowanie ordera (profitu)
 
   const cancelRef = React.useRef(null);
 
@@ -94,7 +91,7 @@ export const OrderDetails = ({
     price:
       (Number(product.price) * Number(product.product.volumePerPackage)) /
       product.product.itemsPerPackage,
-  }));
+  })); // domyslne dane do zmiany ilosci i ceny (w pieces)
 
   const [newProductDetails, setNewProductDetails] = useState(
     initialNewProductDetails
@@ -104,7 +101,7 @@ export const OrderDetails = ({
     isOpen: isStatusChangeOpen,
     onOpen: onStatusChangeOpen,
     onClose: onStatusChangeClose,
-  } = useDisclosure(); // do zmiany statusu
+  } = useDisclosure(); // do modalu do zmiany statusu
 
   const id = orderData.id.toString().padStart(4, "0");
 
@@ -119,7 +116,7 @@ export const OrderDetails = ({
     t("days.friday"),
     t("days.saturday"),
     t("days.sunday"),
-  ];
+  ]; // dni tygodnia do daty
 
   const displayDate = (rawDate: Date) => {
     const date = new Date(rawDate);
@@ -134,7 +131,7 @@ export const OrderDetails = ({
       " | " +
       days[date.getDay()].substring(0, 3)
     );
-  };
+  }; // funkcja robiaca ładną datę
 
   const specTableContent = orderData.products.map((product) => {
     switch (specType) {
@@ -167,7 +164,7 @@ export const OrderDetails = ({
           productPrice: Number(product.price),
         };
     }
-  });
+  }); // zawartosc spec table
 
   const handleQuantityTypeChange = (quantityType: QUANTITY_TYPE) => {
     setSpecType(quantityType);
@@ -215,7 +212,111 @@ export const OrderDetails = ({
       [column]: Number(value),
     };
     setNewProductDetails(updatedNewProductDetails);
-  };
+  }; // zmiana wartosci w tabeli, ktora aktualizuje ten stan z produktami do wyslania
+
+  // const handleUpdateSuccess = (orderProducts: Partial<OrderProductInfo>[]) => {
+
+  //   console.log(orderProducts);
+
+  //   // handleQuantityTypeChange(QUANTITY_TYPE.PIECES);
+
+  //   console.log("update success");
+
+  //   if (expanses && transportCost) {
+  //     const productOrderIds = Object.keys(expanses);
+
+  //     const products = Object.assign(
+  //       {},
+  //       ...orderProducts.map((product) => ({
+  //         [product.productOrderId]: {
+  //           price: product.price,
+  //           quantity: product.quantity,
+  //           totalCost:
+  //             Number(
+  //               orderData.products.find(
+  //                 (orderDataProduct) =>
+  //                   orderDataProduct.productOrderId === product.productOrderId
+  //               ).product.volumePerPackage
+  //             ) *
+  //             Number(product.price) *
+  //             product.quantity,
+  //         },
+  //       }))
+  //     );
+
+  //     console.log(products);
+
+  //     const expansesPerProduct = productOrderIds.map(
+  //       (productOrderId: string) => {
+  //         return (
+  //           Number(products[productOrderId].quantity) *
+  //           expanses[productOrderId]
+  //             .map((currentExpanse) => currentExpanse.price)
+  //             .reduce((acc: number, price: string) => acc + Number(price), 0)
+  //         );
+  //       }
+  //     );
+  //     const totalExpanses = expansesPerProduct.reduce((a, b) => a + b, 0);
+  //     const totalClientCost = Object.values(products).reduce(
+  //       (sum: number, product: typeof products) =>
+  //         sum + Number(product.totalCost),
+  //       0
+  //     );
+  //     const newProfit = (totalClientCost -
+  //       totalExpanses -
+  //       Number(transportCost.price)) as number;
+
+  //     console.log(newProfit);
+
+  //     // updateOrder({ profit: newProfit });
+  //   }
+  // }; // success updateu produktow - aktualizowanie profitu
+
+  // ja naprawde chciałem zrobic nie po indexach
+
+  const handleUpdateSuccess = (orderProducts: Partial<OrderProductInfo>[]) => {
+    console.log("update success");
+
+    if (expanses && transportCost) {
+      const productOrderIds = Object.keys(expanses);
+
+      const products = Object.assign(
+        {},
+        ...orderProducts.map((product, key) => ({
+          [product.productOrderId || "undefined string"]: {
+            price: product.price,
+            quantity: product.quantity,
+            totalCost:
+              Number(orderData.products[key].product.volumePerPackage) *
+              (product.quantity || 0) *
+              Number(product.price),
+          },
+        }))
+      );
+
+      const expansesPerProduct = productOrderIds.map(
+        (productOrderId: string) => {
+          return (
+            Number(products[productOrderId].quantity) *
+            expanses[productOrderId]
+              .map((currentExpanse) => currentExpanse.price)
+              .reduce((acc: number, price: string) => acc + Number(price), 0)
+          );
+        }
+      );
+      const totalExpanses = expansesPerProduct.reduce((a, b) => a + b, 0);
+      const totalClientCost = Object.values(products).reduce(
+        (sum: number, product: typeof products) =>
+          sum + Number(product.totalCost),
+        0
+      );
+      const newProfit = (totalClientCost -
+        totalExpanses -
+        Number(transportCost.price)) as number;
+
+      updateOrder({ profit: newProfit });
+    }
+  }; // success
 
   const {
     mutate: updateOrderProducts,
@@ -223,7 +324,7 @@ export const OrderDetails = ({
     isError: isUpdateOrderProductsError,
     isSuccess: isUpdateOrderProductsSuccess,
     isLoading: isUpdateOrderProductsLoading,
-  } = useUpdateOrderProducts(orderData.id, () => handleUpdateSuccess());
+  } = useUpdateOrderProducts(orderData.id, handleUpdateSuccess);
 
   const handleInvalidQuantity = () => {
     const calculatedNewProductDetails = newProductDetails.map(
@@ -262,18 +363,9 @@ export const OrderDetails = ({
             };
         }
       }
-    );
+    ); // zamiana wszystkich ilosci na paczki i cen za metr (tak sa trzymane w bazie)
     updateOrderProducts(calculatedNewProductDetails);
-    setNewProductDetails(
-      calculatedNewProductDetails.map((product) => ({
-        ...product,
-        price: Number(product.price),
-      }))
-    );
-    if (specType != QUANTITY_TYPE.PIECES) {
-      setSpecType(QUANTITY_TYPE.PIECES);
-    }
-  };
+  }; // aktualizowanie ilosci i cen gdy pojawila sie bledna ilosc paczek
 
   const handleUpdateProductDetails = () => {
     const calculatedNewProductDetails = newProductDetails.map(
@@ -310,7 +402,7 @@ export const OrderDetails = ({
             };
         }
       }
-    );
+    ); // zamiana ilosci na paczki i cen na za metr
     let invalidValue = false;
     setInvalidValueText(<Text>Wprowadzono:</Text>);
     calculatedNewProductDetails.map((product, key) => {
@@ -347,18 +439,13 @@ export const OrderDetails = ({
           ));
         }
       }
-    });
+    }); //sprawdzanie czy są błędne ilości
     if (invalidValue) {
       onQuantityConfirmOpen();
     } else {
       updateOrderProducts(calculatedNewProductDetails);
     }
-  };
-
-  const handleUpdateSuccess = () => {
-    setSpecType(QUANTITY_TYPE.PACKAGES);
-    console.log("success");
-  };
+  }; // aktualizowanie ilosci i cen produktow
 
   return (
     <Flex className={styles.container} flexDir="column">
@@ -593,7 +680,7 @@ export const OrderDetails = ({
 
             <AlertDialogFooter>
               <Button ref={cancelRef} onClick={onQuantityConfirmClose}>
-                Anuluj
+                {t("buttons.cancel")}
               </Button>
               <Button
                 colorScheme="green"
@@ -603,7 +690,7 @@ export const OrderDetails = ({
                 }}
                 ml={3}
               >
-                Potwierdź
+                {t("buttons.confirm")}
               </Button>
             </AlertDialogFooter>
           </AlertDialogContent>

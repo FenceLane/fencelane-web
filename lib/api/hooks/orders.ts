@@ -2,7 +2,7 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { OrderStatusData } from "../../schema/orderStatusData";
 import { apiClient } from "../apiClient";
 import { queryClient, QUERY_KEY } from "../queryClient";
-import { OrderProductInfo } from "../../types";
+import { OrderInfo, OrderProductInfo } from "../../types";
 
 export const useGetOrders = () => {
   const mutation = useQuery({
@@ -62,13 +62,27 @@ export const useUpdateStatus = (orderId: number, onSuccess: () => void) => {
 
 export const useUpdateOrderProducts = (
   orderId: number,
-  onSuccess: () => void
+  onSuccess: (orderProducts: Partial<OrderProductInfo>[]) => void
 ) => {
   const mutation = useMutation({
     mutationFn: (data: Partial<OrderProductInfo>[]) =>
       apiClient.orders.updateOrderProducts({ id: orderId, data }),
+    onSuccess: (_data, variables) => {
+      onSuccess(variables);
+      return queryClient.invalidateQueries({
+        queryKey: [QUERY_KEY.ORDER, orderId],
+      });
+    },
+  });
+
+  return mutation;
+};
+
+export const useUpdateOrder = (orderId: number) => {
+  const mutation = useMutation({
+    mutationFn: (data: Partial<OrderInfo>) =>
+      apiClient.orders.updateOrder({ id: orderId, data }),
     onSuccess: () => {
-      onSuccess();
       return queryClient.invalidateQueries({
         queryKey: [QUERY_KEY.ORDER, orderId],
       });

@@ -24,12 +24,12 @@ import styles from "./Summary.module.scss";
 import {
   usePostOrderExpanses,
   usePostOrderTransportCost,
-  useUpdateStatus,
 } from "../../../../../lib/api/hooks/calcs";
 import router from "next/router";
 
 import { TransportPostInfo } from "../../../../../lib/types";
 import { mapAxiosErrorToLabel } from "../../../../../lib/server/BackendError/BackendError";
+import { useUpdateOrder } from "../../../../../lib/api/hooks/orders";
 
 interface SummaryProps {
   orderId: number;
@@ -86,7 +86,7 @@ export const Summary = ({
     isError: isUpdateOrderError,
     isSuccess: isUpdateOrderSuccess,
     isLoading: isUpdateOrderLoading,
-  } = useUpdateStatus(orderId);
+  } = useUpdateOrder(orderId);
 
   const transportCostInEur =
     transportCostCurrency === CURRENCY.EUR

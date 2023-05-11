@@ -197,7 +197,8 @@
         "documents": "Dokumenty",
         "file": "Plik",
         "download": "Pobierz",
-        "download-all": "Pobierz wszystkie"
+        "download-all": "Pobierz wszystkie",
+        "status-change": "Zmiana statusu"
       },
       "buttons": {
         "new": "Nowe"

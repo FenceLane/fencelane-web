@@ -76,7 +76,7 @@ export const ChangeStatusModal = ({
       <Modal isOpen={isOpen} onClose={handleModalClose}>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>Zmiana statusu</ModalHeader>
+          <ModalHeader>{t("pages.orders.order.status-change")}</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
             <RadioGroup onChange={(value: ORDER_STATUS) => handleChange(value)}>
@@ -105,10 +105,10 @@ export const ChangeStatusModal = ({
               onClick={handleUpdateStatus}
               mr={3}
             >
-              Zmień
+              {t("buttons.confirm")}
             </Button>
             <Button colorScheme="red" onClick={handleModalClose}>
-              {t("pages.storage.buttons.cancel")}
+              {t("buttons.cancel")}
             </Button>
           </ModalFooter>
         </ModalContent>
