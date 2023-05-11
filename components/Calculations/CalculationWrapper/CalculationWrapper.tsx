@@ -78,9 +78,10 @@ export const CalculationWrapper = ({
   }
   return (
     <Calculation
-      orderId={3}
+      orderId={orderId}
       transportCost={transportCost}
       expanses={expanses}
+      rate={rate}
     />
   );
 };

@@ -18,7 +18,11 @@ import { useContent } from "../../../lib/hooks/useContent";
 interface CalculationCreatorProps {
   orderId: number;
   orderData: OrderInfo;
-  rate: any;
+  rate: {
+    no: string;
+    effectiveDate: Date;
+    mid: number;
+  };
 }
 
 const initialCosts: InitialCosts = {
@@ -147,7 +151,7 @@ export const CalculationCreator = ({
             handleNextStep={handleNextStep}
             setTransportCostCurrency={setTransportCostCurrency}
             transportCostCurrency={transportCostCurrency}
-            rate={eurRate}
+            rate={Number(eurRate)}
             rateDate={rateDate}
           />
         )}
@@ -168,7 +172,7 @@ export const CalculationCreator = ({
             handleNextStep={handleNextStep}
             currentProduct={currentProduct}
             handlePrevStep={handlePrevStep}
-            rate={eurRate}
+            rate={Number(eurRate)}
             rateDate={rateDate}
           />
         )}
@@ -180,7 +184,7 @@ export const CalculationCreator = ({
             expansesList={expansesList}
             handleRateChange={handleRateChange}
             handlePrevStep={handlePrevStep}
-            rate={eurRate}
+            rate={Number(eurRate)}
             rateDate={rateDate}
             productData={orderData.products}
           />

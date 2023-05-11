@@ -1,0 +1,19 @@
+.spec-table th,
+.spec-table td {
+  text-align: center;
+  font-size: 12px;
+  padding: 10px 5px;
+}
+.profit-text {
+  margin-right: 5px;
+}
+@media only screen and (min-width: 768px) {
+  .spec-table th,
+  .spec-table td {
+    text-align: center;
+    font-size: 15px;
+  }
+  .profit-text {
+    margin-right: 50px;
+  }
+}

@@ -63,7 +63,9 @@ export const Summary = ({
 }: SummaryProps) => {
   const { t } = useContent();
 
-  const [currency, setCurrency] = useState("EUR"); //waluta całego podsumowania
+  const [currency, setCurrency] = useState(CURRENCY.EUR); //waluta całego podsumowania
+
+  const [specType, setSpecType] = useState(QUANTITY_TYPE.PACKAGES);
 
   const {
     mutate: postOrderExpanses,
@@ -134,44 +136,57 @@ export const Summary = ({
     return Number(totalPrice - summaryCost); //zarobek na 1 produkcie (za wszystkie jego paczki)
   }); // jest to tablica przechowująca całkowity profit kolejno na każdym produkcie
 
-  const [profit, setProfit] = useState(initialProfit);
+  const profit = initialProfit.map((profit) => {
+    switch (currency) {
+      case CURRENCY.EUR:
+        return profit;
+      case CURRENCY.PLN:
+        return profit * Number(rate);
+    }
+  });
 
   const handleCurrencyChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     if (currency === CURRENCY.PLN && e.target.value === CURRENCY.EUR) {
       // zmiana z pln na eur
       setCurrency(e.target.value);
-      setProfit(profit.map((profit: number) => profit / rate)); //aktualizowanie całkowitych profitów
-      setSpecTableContent(
-        specTableContent.map((row) => ({
-          ...row,
-          productDifference: row.productDifference / rate, //aktualizowanie różnicy w każdym produkcie
-        }))
-      );
     }
 
     if (currency === CURRENCY.EUR && e.target.value === CURRENCY.PLN) {
       //zmiana z eur na pln
       setCurrency(e.target.value);
-      setProfit(profit.map((profit: number) => profit * rate));
-      setSpecTableContent(
-        specTableContent.map((row) => ({
-          ...row,
-          productDifference: row.productDifference * rate,
-        }))
-      );
     }
   };
 
-  const initialSpecTableContent = productData.map((product, key) => ({
-    productName: product.product.category.name,
-    productDimensions: product.product.dimensions,
-    productQuantity: Number(product.quantity),
-    productDifference: Number(profit[key] / product.quantity),
-  })); // domyślna tabela z podsumowaniem (w paczkach)
+  const specTableContent = productData.map((product, key) => {
+    let quantity;
+    switch (specType) {
+      case QUANTITY_TYPE.PACKAGES:
+        quantity = product.quantity;
+        break;
+      case QUANTITY_TYPE.M3:
+        quantity = product.quantity * Number(product.product.volumePerPackage);
+        break;
 
-  const [specTableContent, setSpecTableContent] = useState<SpecTableTypes[]>(
-    initialSpecTableContent
-  );
+      case QUANTITY_TYPE.PIECES:
+        quantity = product.quantity * Number(product.product.itemsPerPackage);
+        break;
+    }
+    let currencyMultiplier;
+    switch (currency) {
+      case CURRENCY.EUR:
+        currencyMultiplier = 1;
+        break;
+      case CURRENCY.PLN:
+        currencyMultiplier = Number(rate);
+    }
+
+    return {
+      productName: product.product.category.name,
+      productDimensions: product.product.dimensions,
+      productQuantity: quantity,
+      productDifference: Number(profit[key] / quantity) * currencyMultiplier,
+    };
+  }); // domyślna tabela z podsumowaniem (w paczkach)
 
   const displayProfit = profit
     .reduce((sum, value) => sum + value)
@@ -181,39 +196,8 @@ export const Summary = ({
   const handleQuantityTypeChange = (
     e: React.ChangeEvent<HTMLSelectElement>
   ) => {
-    const quantityType = e.target.value as QUANTITY_TYPE;
-    const newSpecTableContent = productData.map((product, key) => {
-      switch (quantityType) {
-        case QUANTITY_TYPE.PIECES:
-          return {
-            productName: product.product.category.name,
-            productDimensions: product.product.dimensions,
-            productQuantity: product.quantity * product.product.itemsPerPackage,
-            productDifference:
-              profit[key] /
-              (product.quantity * product.product.itemsPerPackage),
-          };
-        case QUANTITY_TYPE.PACKAGES:
-          return {
-            productName: product.product.category.name,
-            productDimensions: product.product.dimensions,
-            productQuantity: Number(product.quantity),
-            productDifference: profit[key] / product.quantity,
-          };
-        case QUANTITY_TYPE.M3:
-          return {
-            productName: product.product.category.name,
-            productDimensions: product.product.dimensions,
-            productQuantity:
-              product.quantity * Number(product.product.volumePerPackage),
-            productDifference:
-              profit[key] /
-              (product.quantity * Number(product.product.volumePerPackage)),
-          };
-      }
-    });
-    setSpecTableContent(newSpecTableContent);
-  }; // zmiana zawartości tabeli dla zmiany rodzaju ilości
+    setSpecType(e.target.value as QUANTITY_TYPE);
+  };
 
   const handlePostCalc = () => {
     const orderId = productData[0].orderId;
