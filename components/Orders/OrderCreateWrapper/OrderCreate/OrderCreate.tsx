@@ -246,9 +246,9 @@ export const OrderCreate = ({ clients, products }: OrderCreateProps) => {
           >
             {t("buttons.confirm")}
           </Button>
-          <Button colorScheme="red">
-            <Link href="/orders">{t("buttons.cancel")}</Link>
-          </Button>
+          <Link href="/orders">
+            <Button colorScheme="red">{t("buttons.cancel")}</Button>
+          </Link>
         </Box>
         <IconButton
           aria-label="add product"
