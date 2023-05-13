@@ -183,7 +183,7 @@ model Event {
   endDate DateTime
   order Order? @relation(fields: [orderId], references: [id])
   orderId Int?
-
+  visibility String @default("public")
   creator User @relation(fields: [creatorId], references: [id])
   creatorId String
 

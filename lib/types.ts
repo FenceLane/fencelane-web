@@ -221,3 +221,8 @@ export enum PRODUCT_EXPANSE_TYPE {
   CURRENCY = "currency",
   QUANTITY_TYPE = "quantityType",
 }
+
+export enum EVENT_VISIBILITY {
+  PUBLIC = "public",
+  PRIVATE = "private",
+}
