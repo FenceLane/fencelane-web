@@ -1,10 +1,12 @@
 import axios from "axios";
 import { ClientConfig } from "../AppConfig/ClientConfig";
 import {
+  CategoryInfo,
   ClientPostInfo,
   DestinationPostInfo,
   ExpansePostInfo,
   OrderInfo,
+  OrderPostInfo,
   OrderProductInfo,
   ProductInfo,
   TransportPostInfo,
@@ -92,7 +94,7 @@ const getProducts = async (options?: {
 
 const getProductsCategories = async (options?: {
   authCookie: string;
-}): Promise<ProductInfo[]> => {
+}): Promise<CategoryInfo[]> => {
   const {
     data: { data },
   } = await axiosInstance.get(apiPath("products/categories"), {
@@ -139,7 +141,7 @@ const getOrder = async (id: number): Promise<OrderInfo> => {
   return data;
 };
 
-const postOrder = async (data: any) => {
+const postOrder = async (data: OrderPostInfo) => {
   return axiosInstance.post(apiPath("orders"), data);
 };
 
@@ -217,6 +219,14 @@ const postDestination = async ({ id, data }: DestinationPostInfo) => {
   return axiosInstance.post(apiPath(`clients/${id}/destinations`), data);
 };
 
+const deleteExpanses = async (id: number) => {
+  return axiosInstance.delete(apiPath(`orders/${id}/expanses`));
+};
+
+const deleteTransportCost = async (id: number) => {
+  return axiosInstance.delete(apiPath(`orders/${id}/transport-cost`));
+};
+
 export const apiClient = {
   auth: {
     postLogin,
@@ -251,5 +261,7 @@ export const apiClient = {
     getOrderExpanses,
     postOrderTransportCost,
     postOrderExpanses,
+    deleteExpanses,
+    deleteTransportCost,
   },
 };

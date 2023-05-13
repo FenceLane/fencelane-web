@@ -1,6 +1,9 @@
 import { Flex } from "@chakra-ui/react";
 import { useContent } from "../../../lib/hooks/useContent";
-import { mapAxiosErrorToLabel } from "../../../lib/server/BackendError/BackendError";
+import {
+  BackendErrorLabel,
+  mapAxiosErrorToLabel,
+} from "../../../lib/server/BackendError/BackendError";
 import { LoadingAnimation } from "../../LoadingAnimation/LoadingAnimation";
 import {
   useGetOrderTransportCost,
@@ -13,13 +16,9 @@ import { useGetOrder } from "../../../lib/api/hooks/orders";
 
 interface CalculationWrapperProps {
   orderId: number;
-  rateDate: string;
 }
 
-export const CalculationWrapper = ({
-  orderId,
-  rateDate,
-}: CalculationWrapperProps) => {
+export const CalculationWrapper = ({ orderId }: CalculationWrapperProps) => {
   const { t } = useContent("errors.backendErrorLabel");
 
   const {
@@ -60,7 +59,7 @@ export const CalculationWrapper = ({
   if (
     ((isTransportCostError &&
       mapAxiosErrorToLabel(transportCostError) ===
-        "travel-cost-does-not-exist") ||
+        BackendErrorLabel.TRAVEL_COST_DOES_NOT_EXIST) ||
       Object.keys(expanses).length === 0) &&
     !isOrdersError
   ) {

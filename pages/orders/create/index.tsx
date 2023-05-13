@@ -6,8 +6,7 @@ import { OrderCreateWrapper } from "../../../components/Orders/OrderCreateWrappe
 
 const OrderCreatePage = ({
   user,
-  orders,
-}: InferGetServerSidePropsType<typeof getServerSideProps> & any) => {
+}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   return (
     <Layout user={user}>
       <OrderCreateWrapper />

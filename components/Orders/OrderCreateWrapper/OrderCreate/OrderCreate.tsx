@@ -14,7 +14,7 @@ import React, { useEffect, useState } from "react";
 import { usePostOrder } from "../../../../lib/api/hooks/orders";
 import { useContent } from "../../../../lib/hooks/useContent";
 import { mapAxiosErrorToLabel } from "../../../../lib/server/BackendError/BackendError";
-import { ProductInfo } from "../../../../lib/types";
+import { CURRENCY, ProductInfo } from "../../../../lib/types";
 
 const initialNewProductsData = {
   productId: "",
@@ -116,11 +116,10 @@ export const OrderCreate = ({ clients, products }: OrderCreateProps) => {
     const numberedProducts = newProducts.map((product) => ({
       productId: product.productId,
       quantity: Number(product.quantity),
-      currency: "EUR",
+      currency: CURRENCY.EUR,
       price: String(product.price),
     }));
     postOrder({
-      clientId: orderData.clientId,
       destinationId: orderData.destinationId,
       products: numberedProducts,
     });
@@ -175,7 +174,7 @@ export const OrderCreate = ({ clients, products }: OrderCreateProps) => {
             </option>
           ))
         ) : (
-          <option>Client error</option>
+          <option></option>
         )}
       </Select>
       {newProducts.map((item, index) => (

@@ -11,7 +11,7 @@ interface TransportCostProps {
   setTransportCostCurrency: Function;
   transportCostCurrency: string;
   rate: number;
-  rateDate: string;
+  rateDate: string | null;
 }
 
 export const TransportCost = ({
@@ -63,7 +63,11 @@ export const TransportCost = ({
             <Flex alignItems="center" color="var(--grey)">
               <Flex flexDir="column" mr="10px">
                 <Text fontSize="15px">{t("pages.orders.order.eur-rate")}</Text>
-                {rateDate !== "" && <Text fontSize="11px">{rateDate}</Text>}
+                {rateDate && (
+                  <Text fontSize="11px">{`${t(
+                    "pages.orders.order.from"
+                  )} ${rateDate}`}</Text>
+                )}
               </Flex>
               <Input
                 onChange={handleRateChange}

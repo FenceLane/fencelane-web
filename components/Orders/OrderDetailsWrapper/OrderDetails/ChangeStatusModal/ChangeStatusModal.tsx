@@ -59,9 +59,7 @@ export const ChangeStatusModal = ({
   } = useUpdateStatus(id, handleModalClose);
 
   const handleUpdateStatus = () => {
-    if (newStatus !== oldStatus) {
-      updateStatus({ status: newStatus });
-    }
+    updateStatus({ status: newStatus });
   };
 
   const handleChange = (value: ORDER_STATUS) => {

@@ -229,7 +229,10 @@
         "quantity": "Ilość",
         "difference": "Różnica",
         "total": "Łącznie",
-        "bottom-total": "RAZEM"
+        "bottom-total": "RAZEM",
+        "delete-calculation": "Usuń kalkulację",
+        "confirm-calculation-delete": "Usuwanie kalkulacji",
+        "are-you-sure": "Czy na pewno chcesz usunąć tę kalkulację?"
       },
       "clients": {
         "client-creator": "Dodawanie klienta",

@@ -30,6 +30,7 @@ import router from "next/router";
 import { TransportPostInfo } from "../../../../../lib/types";
 import { mapAxiosErrorToLabel } from "../../../../../lib/server/BackendError/BackendError";
 import { useUpdateOrder } from "../../../../../lib/api/hooks/orders";
+import { calculateProfitsPerProducts } from "../../../../../lib/util/calculationUtils";
 
 interface SummaryProps {
   orderId: number;
@@ -38,16 +39,9 @@ interface SummaryProps {
   handleRateChange: React.ChangeEventHandler<HTMLInputElement>;
   expansesList: InitialCosts[];
   rate: number;
-  rateDate: string;
+  rateDate: string | null;
   transportCost: number;
   transportCostCurrency: string;
-}
-
-interface SpecTableTypes {
-  productName: string;
-  productDimensions: string;
-  productQuantity: number;
-  productDifference: number;
 }
 
 export const Summary = ({
@@ -107,34 +101,12 @@ export const Summary = ({
       0
     ); //koszt jednostkowy za jeden m3
 
-  const initialProfit = [...expansesList].map((item, key: number) => {
-    let summaryCost = 0;
-    Object.entries(item).map((expanse) => {
-      //dodawanie do sumarycznego kosztu jednej paczki wszystkich kosztów cząstkowych:
-      const expanseData = expanse[1];
-      let expanseCost = Number(expanseData.price);
-      if (expanseData.currency === CURRENCY.PLN) {
-        expanseCost = expanseCost / rate;
-      }
-      if (expanseData.quantityType === QUANTITY_TYPE.M3) {
-        expanseCost =
-          expanseCost * Number(productData[key].product.volumePerPackage);
-      }
-      if (expanseData.quantityType === QUANTITY_TYPE.PIECES) {
-        expanseCost =
-          expanseCost * Number(productData[key].product.itemsPerPackage);
-      }
-      summaryCost += expanseCost;
-    });
-    summaryCost +=
-      transportCostPerM3 * Number(productData[key].product.volumePerPackage); // koszty i cena transportu produktu za jedna paczke
-    summaryCost *= productData[key].quantity; // wszystkie koszty tego produktu (za całość)
-    const totalPrice =
-      Number(productData[key].price) *
-      Number(productData[key].product.volumePerPackage) *
-      productData[key].quantity; // całkowita kwota płacona przez klienta, czyli cena za 1m3 razy przelicznik m3 razy ilosc paczek
-    return Number(totalPrice - summaryCost); //zarobek na 1 produkcie (za wszystkie jego paczki)
-  }); // jest to tablica przechowująca całkowity profit kolejno na każdym produkcie
+  const initialProfit = calculateProfitsPerProducts(
+    expansesList,
+    productData,
+    transportCostPerM3,
+    rate
+  );
 
   const profit = initialProfit.map((profit) => {
     switch (currency) {
@@ -146,15 +118,7 @@ export const Summary = ({
   });
 
   const handleCurrencyChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    if (currency === CURRENCY.PLN && e.target.value === CURRENCY.EUR) {
-      // zmiana z pln na eur
-      setCurrency(e.target.value);
-    }
-
-    if (currency === CURRENCY.EUR && e.target.value === CURRENCY.PLN) {
-      //zmiana z eur na pln
-      setCurrency(e.target.value);
-    }
+    setCurrency(e.target.value as CURRENCY);
   };
 
   const specTableContent = productData.map((product, key) => {
@@ -272,7 +236,11 @@ export const Summary = ({
           <Flex alignItems="center" color="var(--grey)">
             <Flex flexDir="column" mr="10px">
               <Text fontSize="15px">{t("pages.orders.order.eur-rate")}</Text>
-              {rateDate !== "" && <Text fontSize="11px">{rateDate}</Text>}
+              {rateDate && (
+                <Text fontSize="11px">{`${t(
+                  "pages.orders.order.from"
+                )} ${rateDate}`}</Text>
+              )}
             </Flex>
             <Input
               onChange={handleRateChange}

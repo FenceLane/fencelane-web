@@ -36,6 +36,7 @@ export const usePostOrderExpanses = (
       return Promise.all([
         queryClient.invalidateQueries({ queryKey: [QUERY_KEY.ORDER, orderId] }),
         queryClient.invalidateQueries({ queryKey: [QUERY_KEY.EXPANSES] }),
+        queryClient.invalidateQueries({ queryKey: [QUERY_KEY.ORDERS] }),
       ]);
     },
   });
@@ -54,9 +55,36 @@ export const usePostOrderTransportCost = (
       return Promise.all([
         queryClient.invalidateQueries({ queryKey: [QUERY_KEY.ORDER, orderId] }),
         queryClient.invalidateQueries({ queryKey: [QUERY_KEY.TRANSPORT_COST] }),
+        queryClient.invalidateQueries({ queryKey: [QUERY_KEY.ORDERS] }),
       ]);
     },
   });
 
+  return mutation;
+};
+
+export const useDeleteExpanses = (orderId: number) => {
+  const mutation = useMutation({
+    mutationFn: () => apiClient.calcs.deleteExpanses(orderId),
+    onSuccess: () => {
+      return Promise.all([
+        queryClient.invalidateQueries({ queryKey: [QUERY_KEY.ORDER, orderId] }),
+        queryClient.invalidateQueries({ queryKey: [QUERY_KEY.EXPANSES] }),
+      ]);
+    },
+  });
+  return mutation;
+};
+
+export const useDeleteTransportCost = (orderId: number) => {
+  const mutation = useMutation({
+    mutationFn: () => apiClient.calcs.deleteTransportCost(orderId),
+    onSuccess: () => {
+      return Promise.all([
+        queryClient.invalidateQueries({ queryKey: [QUERY_KEY.ORDER, orderId] }),
+        queryClient.invalidateQueries({ queryKey: [QUERY_KEY.TRANSPORT_COST] }),
+      ]);
+    },
+  });
   return mutation;
 };

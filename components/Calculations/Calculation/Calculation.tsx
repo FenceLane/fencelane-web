@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   TransportInfo,
   ExpansesInfo,
@@ -17,9 +17,26 @@ import {
   Thead,
   Tbody,
   Select,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalFooter,
+  ModalBody,
+  ModalCloseButton,
+  Button,
+  useDisclosure,
 } from "@chakra-ui/react";
 import { useContent } from "../../../lib/hooks/useContent";
 import styles from "./Calculation.module.scss";
+import {
+  useDeleteExpanses,
+  useDeleteTransportCost,
+} from "../../../lib/api/hooks/calcs";
+import { useUpdateOrder } from "../../../lib/api/hooks/orders";
+import router from "next/router";
+import { mapAxiosErrorToLabel } from "../../../lib/server/BackendError/BackendError";
+import { constructRateDate } from "../../../lib/util/dateUtils";
 
 interface CalculationProps {
   orderId: number;
@@ -46,36 +63,45 @@ export const Calculation = ({
 
   const [specType, setSpecType] = useState(QUANTITY_TYPE.PACKAGES);
 
-  const date = new Date(rate.effectiveDate);
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
-  const [rateDate, setRateDate] = useState(
-    `${t("pages.orders.order.from")} ` +
-      (date.getDate() < 10 ? "0" + date.getDate() : date.getDate()) +
-      "." +
-      (Number(date.getMonth()) + 1 < 10
-        ? "0" + String(Number(date.getMonth()) + 1)
-        : Number(date.getMonth()) + 1) +
-      "." +
-      date.getFullYear()
+  const {
+    mutate: deleteExpanses,
+    error: deleteExpansesError,
+    isError: isDeleteExpansesError,
+    isSuccess: isDeleteExpansesSuccess,
+    isLoading: isDeleteExpansesLoading,
+  } = useDeleteExpanses(orderId);
+
+  const {
+    mutate: deleteTransportCost,
+    error: deleteTransportCostError,
+    isError: isDeleteTransportCostError,
+    isSuccess: isDeleteTransportCostSuccess,
+    isLoading: isDeleteTransportCostLoading,
+  } = useDeleteTransportCost(orderId);
+
+  const {
+    mutate: updateOrder,
+    error: updateOrderError,
+    isError: isUpdateOrderError,
+    isSuccess: isUpdateOrderSuccess,
+    isLoading: isUpdateOrderLoading,
+  } = useUpdateOrder(orderId);
+
+  const [rateDate, setRateDate] = useState<string | null>(
+    constructRateDate(rate)
   );
 
   const id = orderId.toString().padStart(4, "0");
 
   const handleRateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEurRate(e.target.value);
-    setRateDate("");
+    setRateDate(null);
   };
 
   const handleCurrencyChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    if (currency === CURRENCY.PLN && e.target.value === CURRENCY.EUR) {
-      // zmiana z pln na eur
-      setCurrency(CURRENCY.EUR);
-    }
-
-    if (currency === CURRENCY.EUR && e.target.value === CURRENCY.PLN) {
-      //zmiana z eur na pln
-      setCurrency(CURRENCY.PLN);
-    }
+    setCurrency(e.target.value as CURRENCY);
   };
 
   const transportCostPerM3 =
@@ -136,11 +162,33 @@ export const Calculation = ({
     };
   });
 
+  const handleCalculationDelete = () => {
+    onClose();
+    deleteExpanses();
+    deleteTransportCost();
+    updateOrder({ profit: null });
+  };
+
   const handleQuantityTypeChange = (
     e: React.ChangeEvent<HTMLSelectElement>
   ) => {
     setSpecType(e.target.value as QUANTITY_TYPE);
   };
+
+  useEffect(() => {
+    if (
+      isDeleteExpansesSuccess &&
+      isDeleteTransportCostSuccess &&
+      isUpdateOrderSuccess
+    ) {
+      router.push(`/orders/${orderId}`);
+    }
+  }, [
+    isDeleteExpansesSuccess,
+    isDeleteTransportCostSuccess,
+    isUpdateOrderSuccess,
+    orderId,
+  ]);
 
   return (
     <Flex flexDir="column" alignItems="center">
@@ -157,7 +205,6 @@ export const Calculation = ({
           height="calc(100vh - 150px)"
           p="24px"
           flexDir="column"
-          // justifyContent="space-between"
           bg="white"
           maxWidth="1024px"
         >
@@ -175,7 +222,11 @@ export const Calculation = ({
                   <Text fontSize="15px">
                     {t("pages.orders.order.eur-rate")}
                   </Text>
-                  {rateDate !== "" && <Text fontSize="11px">{rateDate}</Text>}
+                  {rateDate && (
+                    <Text fontSize="11px">{`${t(
+                      "pages.orders.order.from"
+                    )} ${rateDate}`}</Text>
+                  )}
                 </Flex>
                 <Input
                   onChange={handleRateChange}
@@ -257,7 +308,60 @@ export const Calculation = ({
               {currency}
             </Text>
           </Box>
+          <Text color="red">
+            {isDeleteExpansesError &&
+              t(
+                `errors.backendErrorLabel.${mapAxiosErrorToLabel(
+                  deleteExpansesError
+                )}`
+              )}
+            {isDeleteTransportCostError &&
+              t(
+                `errors.backendErrorLabel.${mapAxiosErrorToLabel(
+                  deleteTransportCostError
+                )}`
+              )}{" "}
+            {isUpdateOrderError &&
+              t(
+                `errors.backendErrorLabel.${mapAxiosErrorToLabel(
+                  updateOrderError
+                )}`
+              )}
+          </Text>
+          <Flex>
+            <Button
+              isLoading={
+                isDeleteExpansesLoading ||
+                isDeleteTransportCostLoading ||
+                isUpdateOrderLoading
+              }
+              onClick={onOpen}
+              colorScheme={"red"}
+            >
+              {t("pages.orders.order.delete-calculation")}
+            </Button>
+          </Flex>
         </Flex>
+
+        <Modal isOpen={isOpen} onClose={onClose}>
+          <ModalOverlay />
+          <ModalContent>
+            <ModalHeader>
+              {t("pages.orders.order.confirm-calculation-delete")}
+            </ModalHeader>
+            <ModalCloseButton />
+            <ModalBody>{t("pages.orders.order.are-you-sure")}</ModalBody>
+
+            <ModalFooter>
+              <Button colorScheme="red" mr={3} onClick={onClose}>
+                {t("buttons.cancel")}
+              </Button>
+              <Button colorScheme="green" onClick={handleCalculationDelete}>
+                {t("buttons.confirm")}
+              </Button>
+            </ModalFooter>
+          </ModalContent>
+        </Modal>
       </Box>
     </Flex>
   );

@@ -90,6 +90,16 @@ export interface OrderInfo {
   }[];
 }
 
+export interface OrderPostInfo {
+  destinationId: string;
+  products: {
+    productId: string;
+    quantity: number;
+    currency: CURRENCY;
+    price: string;
+  }[];
+}
+
 export interface TransportInfo {
   id: string;
   price: string;
@@ -191,4 +201,10 @@ export enum QUANTITY_TYPE {
   PACKAGES = "packages",
   M3 = "m3",
   PIECES = "pieces",
+}
+
+export enum PRODUCT_EXPANSE_TYPE {
+  PRICE = "price",
+  CURRENCY = "currency",
+  QUANTITY_TYPE = "quantityType",
 }

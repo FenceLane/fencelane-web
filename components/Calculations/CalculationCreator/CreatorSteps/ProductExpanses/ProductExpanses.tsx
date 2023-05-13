@@ -5,6 +5,7 @@ import {
   InitialCosts,
   OrderProductInfo,
   PRODUCT_EXPANSE,
+  PRODUCT_EXPANSE_TYPE,
   QUANTITY_TYPE,
 } from "../../../../../lib/types";
 import { useContent } from "../../../../../lib/hooks/useContent";
@@ -23,7 +24,7 @@ interface ProductExpansesProps {
   handleNextStep: () => void;
   handlePrevStep: () => void;
   rate: number;
-  rateDate: string;
+  rateDate: string | null;
   productsQuantity: number;
 }
 
@@ -72,17 +73,12 @@ export const ProductExpanses = ({
     switch (newQuantityType) {
       case QUANTITY_TYPE.PIECES:
         setQuantity(productData.quantity * productData.product.itemsPerPackage);
-        console.log(productData.quantity * productData.product.itemsPerPackage);
         break;
       case QUANTITY_TYPE.PACKAGES:
         setQuantity(productData.quantity);
-        console.log(productData.quantity);
         break;
       case QUANTITY_TYPE.M3:
         setQuantity(
-          productData.quantity * Number(productData.product.volumePerPackage)
-        );
-        console.log(
           productData.quantity * Number(productData.product.volumePerPackage)
         );
         break;
@@ -93,7 +89,7 @@ export const ProductExpanses = ({
     e:
       | React.ChangeEvent<HTMLSelectElement>
       | React.ChangeEvent<HTMLInputElement>,
-    column: string
+    column: PRODUCT_EXPANSE_TYPE
   ) => {
     const type = e.target.name as keyof typeof initialCosts;
     setExpanses({
@@ -130,10 +126,6 @@ export const ProductExpanses = ({
     setExpansesList(newExpansesList);
     handleNextStep();
   }; // aktualizowanie ilości towarów w głównym expansesList
-
-  const handlePrev = () => {
-    handlePrevStep();
-  };
 
   const handleSpecChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const quantityType = e.target.value;
@@ -195,7 +187,11 @@ export const ProductExpanses = ({
           <Flex alignItems="center" color="var(--grey)">
             <Flex flexDir="column" mr="10px">
               <Text fontSize="15px">{t("pages.orders.order.eur-rate")}</Text>
-              {rateDate !== "" && <Text fontSize="11px">{rateDate}</Text>}
+              {rateDate && (
+                <Text fontSize="11px">{`${t(
+                  "pages.orders.order.from"
+                )} ${rateDate}`}</Text>
+              )}
             </Flex>
             <Input
               onChange={handleRateChange}
@@ -263,7 +259,7 @@ export const ProductExpanses = ({
               defaultValue={
                 expanses.commodity.price === 0 ? "" : expanses.commodity.price
               }
-              onChange={(e) => handleCostsChange(e, "price")}
+              onChange={(e) => handleCostsChange(e, PRODUCT_EXPANSE_TYPE.PRICE)}
               placeholder={t("pages.orders.order.commodity")}
               w="116px"
               p="10px"
@@ -272,7 +268,9 @@ export const ProductExpanses = ({
               w="80px"
               name="commodity"
               defaultValue={expanses.commodity.currency}
-              onChange={(e) => handleCostsChange(e, "currency")}
+              onChange={(e) =>
+                handleCostsChange(e, PRODUCT_EXPANSE_TYPE.CURRENCY)
+              }
             >
               <option value={CURRENCY.EUR}>EUR</option>
               <option value={CURRENCY.PLN}>PLN</option>
@@ -281,7 +279,9 @@ export const ProductExpanses = ({
               w="116px"
               name="commodity"
               defaultValue={expanses.commodity.quantityType}
-              onChange={(e) => handleCostsChange(e, "quantityType")}
+              onChange={(e) =>
+                handleCostsChange(e, PRODUCT_EXPANSE_TYPE.QUANTITY_TYPE)
+              }
             >
               <option value={QUANTITY_TYPE.PIECES}>
                 {t("pages.orders.order.pieces")}
@@ -299,7 +299,7 @@ export const ProductExpanses = ({
               defaultValue={
                 expanses.saturation.price === 0 ? "" : expanses.saturation.price
               }
-              onChange={(e) => handleCostsChange(e, "price")}
+              onChange={(e) => handleCostsChange(e, PRODUCT_EXPANSE_TYPE.PRICE)}
               placeholder={t("pages.orders.order.saturation")}
               w="116px"
               p="10px"
@@ -308,7 +308,9 @@ export const ProductExpanses = ({
               w="80px"
               name="saturation"
               defaultValue={expanses.saturation.currency}
-              onChange={(e) => handleCostsChange(e, "currency")}
+              onChange={(e) =>
+                handleCostsChange(e, PRODUCT_EXPANSE_TYPE.CURRENCY)
+              }
             >
               <option value={CURRENCY.EUR}>EUR</option>
               <option value={CURRENCY.PLN}>PLN</option>
@@ -317,7 +319,9 @@ export const ProductExpanses = ({
               w="116px"
               name="saturation"
               defaultValue={expanses.saturation.quantityType}
-              onChange={(e) => handleCostsChange(e, "quantityType")}
+              onChange={(e) =>
+                handleCostsChange(e, PRODUCT_EXPANSE_TYPE.QUANTITY_TYPE)
+              }
             >
               <option value={QUANTITY_TYPE.PIECES}>
                 {t("pages.orders.order.pieces")}
@@ -335,7 +339,7 @@ export const ProductExpanses = ({
               defaultValue={
                 expanses.marketer.price === 0 ? "" : expanses.marketer.price
               }
-              onChange={(e) => handleCostsChange(e, "price")}
+              onChange={(e) => handleCostsChange(e, PRODUCT_EXPANSE_TYPE.PRICE)}
               placeholder={t("pages.orders.order.marketer")}
               w="116px"
               p="10px"
@@ -344,7 +348,9 @@ export const ProductExpanses = ({
               w="80px"
               name="marketer"
               defaultValue={expanses.marketer.currency}
-              onChange={(e) => handleCostsChange(e, "currency")}
+              onChange={(e) =>
+                handleCostsChange(e, PRODUCT_EXPANSE_TYPE.CURRENCY)
+              }
             >
               <option value={CURRENCY.EUR}>EUR</option>
               <option value={CURRENCY.PLN}>PLN</option>
@@ -353,7 +359,9 @@ export const ProductExpanses = ({
               w="116px"
               name="marketer"
               defaultValue={expanses.marketer.quantityType}
-              onChange={(e) => handleCostsChange(e, "quantityType")}
+              onChange={(e) =>
+                handleCostsChange(e, PRODUCT_EXPANSE_TYPE.QUANTITY_TYPE)
+              }
             >
               <option value={QUANTITY_TYPE.PIECES}>
                 {t("pages.orders.order.pieces")}
@@ -371,7 +379,7 @@ export const ProductExpanses = ({
               defaultValue={
                 expanses.other.price == 0 ? "" : expanses.other.price
               }
-              onChange={(e) => handleCostsChange(e, "price")}
+              onChange={(e) => handleCostsChange(e, PRODUCT_EXPANSE_TYPE.PRICE)}
               placeholder={t("pages.orders.order.other")}
               w="116px"
               p="10px"
@@ -380,7 +388,9 @@ export const ProductExpanses = ({
               w="80px"
               name="other"
               defaultValue={expanses.other.currency}
-              onChange={(e) => handleCostsChange(e, "currency")}
+              onChange={(e) =>
+                handleCostsChange(e, PRODUCT_EXPANSE_TYPE.CURRENCY)
+              }
             >
               <option value={CURRENCY.EUR}>EUR</option>
               <option value={CURRENCY.PLN}>PLN</option>
@@ -389,7 +399,9 @@ export const ProductExpanses = ({
               w="116px"
               name="other"
               defaultValue={expanses.other.quantityType}
-              onChange={(e) => handleCostsChange(e, "quantityType")}
+              onChange={(e) =>
+                handleCostsChange(e, PRODUCT_EXPANSE_TYPE.QUANTITY_TYPE)
+              }
             >
               <option value={QUANTITY_TYPE.PIECES}>
                 {t("pages.orders.order.pieces")}
@@ -433,7 +445,7 @@ export const ProductExpanses = ({
         </Flex>
       </Box>
       <Flex justifyContent="space-between">
-        <Button colorScheme="gray" w="116px" h="40px" onClick={handlePrev}>
+        <Button colorScheme="gray" w="116px" h="40px" onClick={handlePrevStep}>
           {t("buttons.back")}
         </Button>
         <Button colorScheme="green" w="116px" h="40px" onClick={handleNext}>

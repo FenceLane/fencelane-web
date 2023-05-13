@@ -14,6 +14,7 @@ import {
 import { ProductExpanses } from "./CreatorSteps/ProductExpanses/ProductExpanses";
 import { Summary } from "./CreatorSteps/Summary/Summary";
 import { useContent } from "../../../lib/hooks/useContent";
+import { constructRateDate } from "../../../lib/util/dateUtils";
 
 interface CalculationCreatorProps {
   orderId: number;
@@ -85,17 +86,8 @@ export const CalculationCreator = ({
 
   const [eurRate, setEurRate] = useState(rate.mid.toFixed(2));
 
-  const date = new Date(rate.effectiveDate);
-
-  const [rateDate, setRateDate] = useState(
-    `${t("pages.orders.order.from")} ` +
-      (date.getDate() < 10 ? "0" + date.getDate() : date.getDate()) +
-      "." +
-      (Number(date.getMonth()) + 1 < 10
-        ? "0" + String(Number(date.getMonth()) + 1)
-        : Number(date.getMonth()) + 1) +
-      "." +
-      date.getFullYear()
+  const [rateDate, setRateDate] = useState<string | null>(
+    constructRateDate(rate)
   );
 
   const [currentProduct, setCurrentProduct] = useState(0);
@@ -104,7 +96,7 @@ export const CalculationCreator = ({
 
   const handleRateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEurRate(e.target.value);
-    setRateDate("");
+    setRateDate(null);
   };
 
   const handleNextStep = () => {

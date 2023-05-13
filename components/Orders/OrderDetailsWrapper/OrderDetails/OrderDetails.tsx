@@ -40,6 +40,8 @@ import {
   useUpdateOrderProducts,
 } from "../../../../lib/api/hooks/orders";
 import { mapAxiosErrorToLabel } from "../../../../lib/server/BackendError/BackendError";
+import { constructOrderDate } from "../../../../lib/util/dateUtils";
+import { InvalidValueModalText } from "./InvalidValueModalText/InvalidValueModalText";
 
 interface OrderDetailsProps {
   orderData: OrderInfo;
@@ -50,9 +52,9 @@ interface OrderDetailsProps {
 const statusColor = (status: string) => {
   switch (status) {
     case "delivered":
-      return "#339926";
+      return "var(--status-delivered)";
     default:
-      return "#232ccf";
+      return "var(--status)";
   }
 };
 
@@ -83,7 +85,7 @@ export const OrderDetails = ({
 
   const [specType, setSpecType] = useState(QUANTITY_TYPE.PIECES);
 
-  const profit = orderData.profit;
+  const { profit } = orderData;
 
   const initialNewProductDetails = orderData.products.map((product) => ({
     productOrderId: product.productOrderId,
@@ -107,31 +109,6 @@ export const OrderDetails = ({
 
   const currentStatus =
     orderData.statusHistory[orderData.statusHistory.length - 1].status; //branie ostatniego statusu jako obecnego
-
-  const days = [
-    t("days.monday"),
-    t("days.tuesday"),
-    t("days.wednesday"),
-    t("days.thursday"),
-    t("days.friday"),
-    t("days.saturday"),
-    t("days.sunday"),
-  ]; // dni tygodnia do daty
-
-  const displayDate = (rawDate: Date) => {
-    const date = new Date(rawDate);
-    return (
-      (date.getDate() < 10 ? "0" + date.getDate() : date.getDate()) +
-      "." +
-      (Number(date.getMonth()) + 1 < 10
-        ? "0" + String(Number(date.getMonth()) + 1)
-        : Number(date.getMonth()) + 1) +
-      "." +
-      date.getFullYear() +
-      " | " +
-      days[date.getDay()].substring(0, 3)
-    );
-  }; // funkcja robiaca ładną datę
 
   const specTableContent = orderData.products.map((product) => {
     switch (specType) {
@@ -204,26 +181,27 @@ export const OrderDetails = ({
     e: React.ChangeEvent<HTMLInputElement>,
     key: number
   ) => {
-    const column = e.target.dataset.column as string;
-    const value = e.target.value.replace(/,/g, ".");
+    const {
+      dataset: { column },
+      value,
+    } = e.target;
+    const formattedValue = value.replace(/,/g, ".");
     const updatedNewProductDetails = [...newProductDetails];
     updatedNewProductDetails[key] = {
       ...updatedNewProductDetails[key],
-      [column]: Number(value),
+      [column!]: Number(formattedValue),
     };
     setNewProductDetails(updatedNewProductDetails);
   }; // zmiana wartosci w tabeli, ktora aktualizuje ten stan z produktami do wyslania
 
   const handleUpdateSuccess = (orderProducts: Partial<OrderProductInfo>[]) => {
-    console.log("update success");
-
     if (expanses && transportCost) {
       const productOrderIds = Object.keys(expanses);
 
       const products = Object.assign(
         {},
         ...orderProducts.map((product, key) => ({
-          [product.productOrderId || "undefined string"]: {
+          [product.productOrderId!]: {
             price: product.price,
             quantity: product.quantity,
             totalCost:
@@ -350,54 +328,6 @@ export const OrderDetails = ({
     calculatedNewProductDetails.map((product, key) => {
       if (product.quantity !== Math.floor(product.quantity)) {
         invalidValue = true;
-        const invalidQuantity = newProductDetails[key].quantity;
-        const invalidQuantityInPackages = product.quantity;
-        const prefferedNewQuantityInPackages = Math.floor(product.quantity);
-        const quantityType = specType;
-        if (specType === QUANTITY_TYPE.PACKAGES) {
-          setInvalidValueText((prev) => (
-            <span>
-              {prev}
-              <Text fontWeight="500">{`
-                ${t("pages.orders.order.bad-quantity.for")}: ${
-                orderData.products[key].product.category.name
-              } ${orderData.products[key].product.dimensions}`}</Text>
-              <Text>
-                {`${invalidQuantityInPackages.toFixed(2)} ${t(
-                  "pages.orders.order.bad-quantity.packages"
-                )}. ${t(
-                  "pages.orders.order.bad-quantity.did-you-mean"
-                )} ${prefferedNewQuantityInPackages} ${t(
-                  "pages.orders.order.bad-quantity.packages"
-                )}? `}
-              </Text>
-            </span>
-          ));
-        } else {
-          setInvalidValueText((prev) => (
-            <span>
-              {prev}
-              <Text fontWeight="500">{`${t(
-                "pages.orders.order.bad-quantity.for"
-              )}: ${orderData.products[key].product.category.name} ${
-                orderData.products[key].product.dimensions
-              }`}</Text>
-              <Text>
-                {`${invalidQuantity} ${t(
-                  `pages.orders.order.bad-quantity.${quantityType}`
-                )} ${t(
-                  "pages.orders.order.bad-quantity.which-stands-for"
-                )} ${invalidQuantityInPackages.toFixed(2)} ${t(
-                  "pages.orders.order.bad-quantity.packages"
-                )}. ${t(
-                  "pages.orders.order.bad-quantity.did-you-mean"
-                )} ${prefferedNewQuantityInPackages} ${t(
-                  "pages.orders.order.bad-quantity.packages"
-                )}? `}
-              </Text>
-            </span>
-          ));
-        }
       }
     }); //sprawdzanie czy są błędne ilości
     if (invalidValue) {
@@ -453,7 +383,7 @@ export const OrderDetails = ({
                 {t("pages.orders.order.date")}
               </Text>
               <Text className={styles["order-text"]}>
-                {displayDate(orderData.createdAt)}
+                {constructOrderDate(orderData.createdAt)}
               </Text>
             </Box>
             <Box className={styles["text-box"]}>
@@ -482,9 +412,9 @@ export const OrderDetails = ({
             {[...orderData.statusHistory].reverse().map((status) => (
               <Flex key={status.id} flexDir="column" mb="10px" color="grey">
                 <Text>{t(`pages.orders.status.${status.status}`)}</Text>
-                <Text>{`${displayDate(status.date).substring(
+                <Text>{`${constructOrderDate(status.date).substring(
                   0,
-                  displayDate(status.date).length - 5
+                  constructOrderDate(status.date).length - 5
                 )} | ${status.creator.name}`}</Text>
               </Flex>
             ))}
@@ -644,7 +574,13 @@ export const OrderDetails = ({
                 {t("pages.orders.order.bad-quantity.bad-quantity-entered")}
               </AlertDialogHeader>
 
-              <AlertDialogBody>{invalidValueText}</AlertDialogBody>
+              <AlertDialogBody>
+                <InvalidValueModalText
+                  specType={specType}
+                  newProductDetails={newProductDetails}
+                  orderData={orderData}
+                />
+              </AlertDialogBody>
 
               <AlertDialogFooter>
                 <Button ref={cancelRef} onClick={onQuantityConfirmClose}>

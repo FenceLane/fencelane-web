@@ -6,7 +6,7 @@ import { DestinationCreateWrapper } from "../../../components/Orders/OrderCreate
 
 const CreateDestinationPage = ({
   user,
-}: InferGetServerSidePropsType<typeof getServerSideProps> & any) => {
+}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   return (
     <Layout user={user}>
       <DestinationCreateWrapper />

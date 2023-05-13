@@ -6,7 +6,7 @@ import { ClientCreate } from "../../../components/Orders/OrderCreateWrapper/Orde
 
 const CreateClientPage = ({
   user,
-}: InferGetServerSidePropsType<typeof getServerSideProps> & any) => {
+}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   return (
     <Layout user={user}>
       <ClientCreate />

@@ -28,8 +28,7 @@ export const ClientCreate = () => {
   } = usePostClient(() => console.log("success"));
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const name = e.target.name;
-    const value = e.target.value;
+    const { name, value } = e.target;
     setClientData((clientData) => ({
       ...clientData,
       [name]: value,
