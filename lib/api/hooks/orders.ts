@@ -51,9 +51,11 @@ export const useUpdateStatus = (orderId: number, onSuccess: () => void) => {
       apiClient.orders.updateStatus({ id: orderId, data }),
     onSuccess: () => {
       onSuccess();
-      return queryClient.invalidateQueries({
-        queryKey: [QUERY_KEY.ORDER, orderId],
-      });
+
+      return Promise.all([
+        queryClient.invalidateQueries({ queryKey: [QUERY_KEY.ORDERS] }),
+        queryClient.invalidateQueries({ queryKey: [QUERY_KEY.ORDER, orderId] }),
+      ]);
     },
   });
 
@@ -111,9 +113,10 @@ export const usePostDestination = (onSuccess: () => void) => {
     mutationFn: apiClient.orders.postDestination,
     onSuccess: () => {
       onSuccess();
-      queryClient.invalidateQueries({
-        queryKey: [QUERY_KEY.DESTINATIONS, QUERY_KEY.CLIENTS],
-      });
+      return Promise.all([
+        queryClient.invalidateQueries({ queryKey: [QUERY_KEY.CLIENTS] }),
+        queryClient.invalidateQueries({ queryKey: [QUERY_KEY.DESTINATIONS] }),
+      ]);
     },
   });
 

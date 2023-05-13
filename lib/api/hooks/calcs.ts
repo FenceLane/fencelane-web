@@ -25,28 +25,36 @@ export const useGetOrderExpanses = (id: number) => {
 
   return mutation;
 };
-export const usePostOrderExpanses = (onSuccess: () => void) => {
+export const usePostOrderExpanses = (
+  orderId: number,
+  onSuccess?: () => void
+) => {
   const mutation = useMutation({
     mutationFn: apiClient.calcs.postOrderExpanses,
     onSuccess: () => {
-      onSuccess();
-      queryClient.invalidateQueries({
-        queryKey: [QUERY_KEY.ORDER, QUERY_KEY.EXPANSES],
-      });
+      onSuccess?.();
+      return Promise.all([
+        queryClient.invalidateQueries({ queryKey: [QUERY_KEY.ORDER, orderId] }),
+        queryClient.invalidateQueries({ queryKey: [QUERY_KEY.EXPANSES] }),
+      ]);
     },
   });
 
   return mutation;
 };
 
-export const usePostOrderTransportCost = (onSuccess: () => void) => {
+export const usePostOrderTransportCost = (
+  orderId: number,
+  onSuccess?: () => void
+) => {
   const mutation = useMutation({
     mutationFn: apiClient.calcs.postOrderTransportCost,
     onSuccess: () => {
-      onSuccess();
-      queryClient.invalidateQueries({
-        queryKey: [QUERY_KEY.ORDER, QUERY_KEY.TRANSPORT_COST],
-      });
+      onSuccess?.();
+      return Promise.all([
+        queryClient.invalidateQueries({ queryKey: [QUERY_KEY.ORDER, orderId] }),
+        queryClient.invalidateQueries({ queryKey: [QUERY_KEY.TRANSPORT_COST] }),
+      ]);
     },
   });
 

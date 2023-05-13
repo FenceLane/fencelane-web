@@ -73,14 +73,14 @@ export const Summary = ({
     isError: isPostExpansesError,
     isSuccess: isPostExpansesSuccess,
     isLoading: isPostExpansesLoading,
-  } = usePostOrderExpanses(() => console.log("expanses success"));
+  } = usePostOrderExpanses(orderId);
   const {
     mutate: postOrderTransportCost,
     error: postTransportCostError,
     isError: isPostTransportCostError,
     isSuccess: isPostTransportCostSuccess,
     isLoading: isPostTransportCostLoading,
-  } = usePostOrderTransportCost(() => console.log("transport cost success"));
+  } = usePostOrderTransportCost(orderId);
 
   const {
     mutate: updateOrder,
@@ -98,7 +98,7 @@ export const Summary = ({
   const transportCostPerM3 =
     transportCostInEur /
     productData.reduce(
-      (acc, currentProduct: any) =>
+      (acc, currentProduct) =>
         acc +
         Number(
           currentProduct.quantity *
