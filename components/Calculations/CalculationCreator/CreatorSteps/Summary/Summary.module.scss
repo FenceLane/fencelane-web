@@ -1,0 +1,17 @@
+.spec-table th,
+.spec-table td,
+.file-table th,
+.file-table td {
+  text-align: center;
+  font-size: 12px;
+  padding: 10px 5px;
+}
+@media only screen and (min-width: 768px) {
+  .spec-table th,
+  .spec-table td,
+  .file-table th,
+  .file-table td {
+    text-align: center;
+    font-size: 15px;
+  }
+}

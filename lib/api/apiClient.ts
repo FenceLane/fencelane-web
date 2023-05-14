@@ -1,8 +1,20 @@
 import axios from "axios";
 import { ClientConfig } from "../AppConfig/ClientConfig";
-import { ProductInfo, USER_ROLE } from "../types";
+import {
+  CategoryInfo,
+  ClientPostInfo,
+  DestinationPostInfo,
+  ExpansePostInfo,
+  OrderInfo,
+  OrderPostInfo,
+  OrderProductInfo,
+  ProductInfo,
+  TransportPostInfo,
+  USER_ROLE,
+} from "../types";
 import https from "https";
 import { ProductDataCreate, ProductDataUpdate } from "../schema/productData";
+import { OrderStatusData } from "../schema/orderStatusData";
 
 const axiosInstance = axios.create({
   httpsAgent: new https.Agent({
@@ -80,6 +92,18 @@ const getProducts = async (options?: {
   return data;
 };
 
+const getProductsCategories = async (options?: {
+  authCookie: string;
+}): Promise<CategoryInfo[]> => {
+  const {
+    data: { data },
+  } = await axiosInstance.get(apiPath("products/categories"), {
+    headers: { cookie: options?.authCookie },
+  });
+
+  return data;
+};
+
 const deleteProduct = async (id: String) => {
   return axiosInstance.delete(apiPath(`products/${id}`));
 };
@@ -98,12 +122,109 @@ const editProduct = async ({
   return axiosInstance.put(apiPath(`products/${id}`), data);
 };
 
-const getOrders = async (options?: { authCookie: string }) => {
-  const { data } = await axiosInstance.get(apiPath("orders"), {
+const getOrders = async (options?: {
+  authCookie: string;
+}): Promise<OrderInfo[]> => {
+  const {
+    data: { data },
+  } = await axiosInstance.get(apiPath("orders"), {
     headers: { cookie: options?.authCookie },
   });
 
   return data;
+};
+
+const getOrder = async (id: number): Promise<OrderInfo> => {
+  const {
+    data: { data },
+  } = await axiosInstance.get(apiPath(`orders/${id}`));
+  return data;
+};
+
+const postOrder = async (data: OrderPostInfo) => {
+  return axiosInstance.post(apiPath("orders"), data);
+};
+
+const getClients = async (options?: { authCookie: string }) => {
+  const { data } = await axiosInstance.get(apiPath("clients"), {
+    headers: { cookie: options?.authCookie },
+  });
+
+  return data;
+};
+
+const updateStatus = async ({
+  data,
+  id,
+}: {
+  id: number;
+  data: OrderStatusData;
+}) => {
+  return axiosInstance.post(apiPath(`orders/${id}/statuses`), data);
+};
+
+const getEurRate = async () => {
+  const { data } = await axiosInstance.get(
+    "https://api.nbp.pl/api/exchangerates/rates/A/EUR/?format=json"
+  );
+  return data.rates[0];
+};
+
+const getOrderTransportCost = async (id: number) => {
+  const {
+    data: { data },
+  } = await axiosInstance.get(apiPath(`orders/${id}/transport-cost`));
+  return data;
+};
+const getOrderExpanses = async (id: number) => {
+  const {
+    data: { data },
+  } = await axiosInstance.get(apiPath(`orders/${id}/expanses`));
+  return data;
+};
+
+const postOrderTransportCost = async ({ id, data }: TransportPostInfo) => {
+  return axiosInstance.post(apiPath(`orders/${id}/transport-cost`), data);
+};
+
+const postOrderExpanses = async ({ id, data }: ExpansePostInfo) => {
+  return axiosInstance.post(apiPath(`orders/${id}/expanses`), data);
+};
+
+const updateOrder = async ({
+  data,
+  id,
+}: {
+  id: number;
+  data: Partial<OrderInfo>;
+}) => {
+  return axiosInstance.put(apiPath(`orders/${id}`), data);
+};
+
+const updateOrderProducts = async ({
+  data,
+  id,
+}: {
+  id: number;
+  data: Partial<OrderProductInfo>[];
+}) => {
+  return axiosInstance.patch(apiPath(`orders/${id}/products`), data);
+};
+
+const postClient = async ({ data }: ClientPostInfo) => {
+  return axiosInstance.post(apiPath(`clients`), data);
+};
+
+const postDestination = async ({ id, data }: DestinationPostInfo) => {
+  return axiosInstance.post(apiPath(`clients/${id}/destinations`), data);
+};
+
+const deleteExpanses = async (id: number) => {
+  return axiosInstance.delete(apiPath(`orders/${id}/expanses`));
+};
+
+const deleteTransportCost = async (id: number) => {
+  return axiosInstance.delete(apiPath(`orders/${id}/transport-cost`));
 };
 
 export const apiClient = {
@@ -118,11 +239,29 @@ export const apiClient = {
   },
   products: {
     getProducts,
+    getProductsCategories,
     postProduct,
     deleteProduct,
     editProduct,
   },
   orders: {
     getOrders,
+    getOrder,
+    postOrder,
+    getClients,
+    updateStatus,
+    updateOrder,
+    updateOrderProducts,
+    postClient,
+    postDestination,
+  },
+  calcs: {
+    getEurRate,
+    getOrderTransportCost,
+    getOrderExpanses,
+    postOrderTransportCost,
+    postOrderExpanses,
+    deleteExpanses,
+    deleteTransportCost,
   },
 };

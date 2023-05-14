@@ -154,7 +154,8 @@
           "dimensions": "Wymiary",
           "variant": "Wariant",
           "itemsPerPackage": "Pakowanie",
-          "volumePerPackage": "M3",
+          "volumePerPackage": "M3 w paczce",
+          "m3": "M3",
           "stock": "Ilość pakietów",
           "pieces": "Ilość sztuk"
         }
@@ -178,6 +179,132 @@
         "delete": "Usuń",
         "cancel": "Anuluj"
       }
+    },
+    "orders": {
+      "order_history": "Historia zamówień",
+      "calculations_history": "Historia kalkulacji",
+      "order": {
+        "order_id": "Nr zamówienia",
+        "status": "Status",
+        "client": "Klient",
+        "date": "Data",
+        "destination": "Destynacja",
+        "details": "Szczegóły",
+        "change-status": "Zmień status",
+        "pieces": "Sztuki",
+        "packages": "Paczki",
+        "specification": "Specyfikacja",
+        "calculation": "Kalkulacja",
+        "documents": "Dokumenty",
+        "file": "Plik",
+        "download": "Pobierz",
+        "download-all": "Pobierz wszystkie",
+        "status-change": "Zmiana statusu",
+        "profit": "Zysk",
+        "bad-quantity": {
+          "bad-quantity-entered": "Wprowadzono błędną ilość",
+          "entered": "Wprowadzono",
+          "for": "Dla",
+          "which-stands-for": "co daje",
+          "packages": "pakietów",
+          "did-you-mean": "Czy chodziło Ci o ",
+          "pieces": "sztuk",
+          "m3": "m3"
+        },
+        "calculation-to-order": "Kalkulacja do zamówienia ",
+        "transport-cost": "Cena dostawy",
+        "products": "Produkty",
+        "summary": "Podsumowanie",
+        "eur-rate": "Kurs EUR",
+        "from": "Z",
+        "client-price": "Cena u klienta",
+        "packing": "Pakowanie",
+        "costs": "Koszty",
+        "commodity": "Towar",
+        "saturation": "Nasycanie",
+        "marketer": "Handlowiec",
+        "other": "Inne",
+        "currency-and-quantity-type": "Cena i jednostka",
+        "product": "Produkt",
+        "quantity": "Ilość",
+        "difference": "Różnica",
+        "total": "Łącznie",
+        "bottom-total": "RAZEM",
+        "delete-calculation": "Usuń kalkulację",
+        "confirm-calculation-delete": "Usuwanie kalkulacji",
+        "are-you-sure": "Czy na pewno chcesz usunąć tę kalkulację?"
+      },
+      "clients": {
+        "client-creator": "Dodawanie klienta",
+        "name": "Imię i nazwisko",
+        "short-name": "Inicjały",
+        "phone-number": "Numer telefonu"
+      },
+      "destinations": {
+        "destination-creator": "Dodawanie destynacji",
+        "country": "Kraj",
+        "address": "Ulica",
+        "postal-code": "Kod pocztowy",
+        "city": "Miasto"
+      },
+      "buttons": {
+        "new": "Nowe"
+      },
+      "status": {
+        "order-created": "Utworzono zamówienie",
+        "received-in-storage": "Przyjęto na magazynie",
+        "order created": "Utworzono zamówienie",
+        "received in storage": "Przyjęto na magazynie",
+        "dried": "Wysuszono",
+        "impregnated": "Nasycono",
+        "sent": "Wysłano",
+        "delivered": "Dostarczono"
+      },
+      "order-creator": {
+        "order-creator": "Kreator zamówienia",
+        "packages-quantity": "Ilość pakietów",
+        "price-per-m3": "Cena za m3"
+      },
+      "spec-table": {
+        "type": "Rodzaj",
+        "dimensions": "Wymiar",
+        "quantity": "Ilość",
+        "price": "Cena"
+      }
     }
+  },
+  "buttons": {
+    "add": "Dodaj",
+    "modify": "Modyfikuj",
+    "edit": "Edytuj",
+    "delete": "Usuń",
+    "cancel": "Anuluj",
+    "next": "Dalej",
+    "back": "Cofnij",
+    "save": "Zapisz",
+    "confirm": "Zatwierdź",
+    "new": "Nowe"
+  },
+  "main": {
+    "product": "Produkt",
+    "order": "Zamówienie",
+    "status": "Status",
+    "client": "Klient",
+    "date": "Data",
+    "destination": "Destynacja",
+    "details": "Szczegóły",
+    "price": "Cena",
+    "quantity": "Ilość",
+    "history": "Historia"
+  },
+
+  "days": {
+    "monday": "Poniedziałek",
+    "tuesday": "Wtorek",
+    "wednesday": "Środa",
+    "thursday": "Czwartek",
+    "friday": "Piątek",
+    "saturday": "Sobota",
+    "sunday": "Niedziela"
   }
 }

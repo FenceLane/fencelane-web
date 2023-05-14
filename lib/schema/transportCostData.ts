@@ -1,7 +1,7 @@
 import { z } from "zod";
 
 export const TransportCostDataSchema = z.object({
-  price: z.number().min(0),
+  price: z.string().min(1),
   currency: z.string().min(1),
   orderId: z.number().min(0),
 });
