@@ -1,24 +1,26 @@
 import { i18n } from "next-i18next";
 
-const days = i18n
-  ? [
-      i18n.t("days.monday"),
-      i18n.t("days.tuesday"),
-      i18n.t("days.wednesday"),
-      i18n.t("days.thursday"),
-      i18n.t("days.friday"),
-      i18n.t("days.saturday"),
-      i18n.t("days.sunday"),
-    ]
-  : [
-      "Monday",
-      "Tuesday",
-      "Wednesday",
-      "Thursday",
-      "Friday",
-      "Saturday",
-      "Sunday",
-    ];
+const getDayNames = () => {
+  return i18n
+    ? [
+        i18n.t("days.monday"),
+        i18n.t("days.tuesday"),
+        i18n.t("days.wednesday"),
+        i18n.t("days.thursday"),
+        i18n.t("days.friday"),
+        i18n.t("days.saturday"),
+        i18n.t("days.sunday"),
+      ]
+    : [
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday",
+        "Saturday",
+        "Sunday",
+      ];
+};
 
 export const constructRateDate = (rate: {
   no: string;
@@ -49,6 +51,6 @@ export const constructOrderDate = (rawDate: Date) => {
     "." +
     date.getFullYear() +
     " | " +
-    days[date.getDay()].substring(0, 3)
+    getDayNames()[date.getDay()].substring(0, 3)
   );
 };
