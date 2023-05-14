@@ -14,9 +14,9 @@ interface OrderDataProps {
 const statusColor = (status: string) => {
   switch (status) {
     case "delivered":
-      return "#339926";
+      return "var(--status-delivered)";
     default:
-      return "#232ccf";
+      return "var(--status)";
   }
 };
 
