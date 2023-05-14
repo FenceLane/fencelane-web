@@ -52,7 +52,6 @@ export const OrderDetailsWrapper = ({ id }: OrderDetailsWrapperProps) => {
       Object.keys(expanses).length === 0) &&
     !isOrderError
   ) {
-    console.log("without exp i tr");
     return (
       <OrderDetails
         expanses={null}
@@ -72,9 +71,6 @@ export const OrderDetailsWrapper = ({ id }: OrderDetailsWrapperProps) => {
       </>
     );
   }
-  console.log("exp i tr");
-  console.log(expanses);
-  console.log(transportCost);
   return (
     <OrderDetails
       expanses={expanses}

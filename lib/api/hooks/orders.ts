@@ -22,11 +22,10 @@ export const useGetOrder = (id: number) => {
   return mutation;
 };
 
-export const usePostOrder = (onSuccess: () => void) => {
+export const usePostOrder = () => {
   const mutation = useMutation({
     mutationFn: apiClient.orders.postOrder,
     onSuccess: () => {
-      onSuccess();
       return Promise.all([
         queryClient.invalidateQueries({ queryKey: [QUERY_KEY.ORDERS] }),
         queryClient.invalidateQueries({ queryKey: [QUERY_KEY.PRODUCTS] }),
@@ -94,11 +93,10 @@ export const useUpdateOrder = (orderId: number) => {
   return mutation;
 };
 
-export const usePostClient = (onSuccess: () => void) => {
+export const usePostClient = () => {
   const mutation = useMutation({
     mutationFn: apiClient.orders.postClient,
     onSuccess: () => {
-      onSuccess();
       queryClient.invalidateQueries({
         queryKey: [QUERY_KEY.CLIENTS],
       });
@@ -108,11 +106,10 @@ export const usePostClient = (onSuccess: () => void) => {
   return mutation;
 };
 
-export const usePostDestination = (onSuccess: () => void) => {
+export const usePostDestination = () => {
   const mutation = useMutation({
     mutationFn: apiClient.orders.postDestination,
     onSuccess: () => {
-      onSuccess();
       return Promise.all([
         queryClient.invalidateQueries({ queryKey: [QUERY_KEY.CLIENTS] }),
         queryClient.invalidateQueries({ queryKey: [QUERY_KEY.DESTINATIONS] }),

@@ -47,7 +47,7 @@ export const DestinationCreate = ({ clients }: DestinationCreateProps) => {
     isSuccess,
     isError,
     isLoading,
-  } = usePostDestination(() => console.log("success"));
+  } = usePostDestination();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const name = e.target.name;

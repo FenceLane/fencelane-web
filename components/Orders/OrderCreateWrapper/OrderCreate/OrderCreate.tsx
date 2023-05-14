@@ -61,16 +61,13 @@ export const OrderCreate = ({ clients, products }: OrderCreateProps) => {
     isSuccess,
     isError,
     isLoading,
-  } = usePostOrder(() => console.log("success"));
+  } = usePostOrder();
 
   const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const { name } = e.target;
+    const { name, options } = e.target;
     setOrderData((orderData) => ({
       ...orderData,
-      [name]:
-        e.target.options[e.target.options.selectedIndex].getAttribute(
-          "data-key"
-        ),
+      [name]: options[options.selectedIndex].getAttribute("data-key"),
     }));
   };
 
