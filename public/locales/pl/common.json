@@ -272,6 +272,17 @@
         "quantity": "Ilość",
         "price": "Cena"
       }
+    },
+    "schedule": {
+      "modals": {
+        "event_add": {
+          "heading": "Dodawanie wydarzenia",
+          "title": "Tytuł",
+          "description": "Opis",
+          "startDate": "Data rozpoczęcia",
+          "endDate": "Data zakończenia"
+        }
+      }
     }
   },
   "buttons": {

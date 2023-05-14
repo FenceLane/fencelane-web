@@ -3,14 +3,16 @@ import { withServerSideAuth } from "../../lib/server/middlewares/withServerSideA
 import { withTranslationProps } from "../../lib/server/middlewares/withTranslationProps";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import { InferGetServerSidePropsType } from "next";
-import { EventsWrapper } from "../../components/Events/EventsWrapper/EventsWrapper";
+// import { EventsWrapper } from "../../components/Events/EventsWrapper/EventsWrapper";
+import { EventAddModal } from "../../components/Events/EventAddModal/EventAddModal";
 
 const StoragePage = ({
   user,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   return (
     <Layout user={user}>
-      <EventsWrapper />
+      <EventAddModal isOpen={true} onClose={console.log} />
+      {/* <EventsWrapper /> */}
     </Layout>
   );
 };

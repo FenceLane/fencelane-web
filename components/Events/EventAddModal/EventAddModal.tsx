@@ -6,7 +6,6 @@ import {
   ModalHeader,
   ModalCloseButton,
   ModalBody,
-  Select,
   Text,
   Button,
   ModalFooter,
@@ -14,9 +13,10 @@ import {
 import { mapAxiosErrorToLabel } from "../../../lib/server/BackendError/BackendError";
 import React, { useState } from "react";
 import { useContent } from "../../../lib/hooks/useContent";
-import styles from "./ProductAddModal.module.scss";
+
 import { EventDataCreate } from "../../../lib/schema/eventData";
 import { usePostEvent } from "../../../lib/api/hooks/events";
+import { EVENT_VISIBILITY } from "../../../lib/types";
 
 interface ProductAddModalProps {
   onClose: () => void;
@@ -28,27 +28,37 @@ const initialEventData: EventDataCreate = {
   description: "",
   startDate: "",
   endDate: "",
+  visibility: EVENT_VISIBILITY.PUBLIC,
   orderId: undefined,
-};
+} as const;
 
-export const ProductAddModal = ({ onClose, isOpen }: ProductAddModalProps) => {
+export const EventAddModal = ({ onClose, isOpen }: ProductAddModalProps) => {
   const { t } = useContent();
 
   const [eventData, setEventData] = useState<EventDataCreate>(initialEventData);
-
-  const handleModalClose = () => {
-    onClose();
-  };
 
   const {
     mutate: postEvent,
     error,
     isSuccess,
     isLoading,
-  } = usePostEvent(handleModalClose);
+  } = usePostEvent(onClose);
 
   const handlePostEvent = () => {
-    postEvent(eventData);
+    const { startDate, endDate, ...data } = eventData;
+    const [startDateISO, endDateISO] = [startDate, endDate].map((date) =>
+      new Date(date).toISOString()
+    );
+
+    const newEventData = {
+      ...data,
+      startDate: startDateISO,
+      endDate: endDateISO,
+    };
+
+    console.log(newEventData);
+
+    // postEvent(newEventData);
   };
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -67,58 +77,66 @@ export const ProductAddModal = ({ onClose, isOpen }: ProductAddModalProps) => {
   };
 
   return (
-    <Modal isOpen={isAddOpen} onClose={handleModalClose}>
+    <Modal isOpen={isOpen} onClose={onClose}>
       <ModalOverlay />
       <ModalContent>
-        <ModalHeader>{t("pages.storage.modals.commodity_adding")}</ModalHeader>
+        <ModalHeader>
+          {t("pages.schedule.modals.event_add.heading")}
+        </ModalHeader>
         <ModalCloseButton />
-        <ModalBody className={styles["modal-inputs"]}>
+        <ModalBody>
+          <label htmlFor="add-event-modal-title">
+            {t("pages.schedule.modals.event_add.title")}
+          </label>
           <Input
-            name="name"
-            placeholder={t("pages.storage.table.headings.name")}
-            value={String(productData.name)}
+            id="add-event-modal-title"
+            name="title"
+            value={String(eventData.title)}
             onChange={handleChange}
           />
+          <label htmlFor="add-event-modal-description">
+            {t("pages.schedule.modals.event_add.description")}
+          </label>
           <Input
-            name="dimensions"
-            placeholder={t("pages.storage.table.headings.dimensions")}
-            value={String(productData.dimensions)}
+            id="add-event-modal-description"
+            name="description"
+            value={String(eventData.description)}
             onChange={handleChange}
           />
-          <Select
-            placeholder={t("pages.storage.table.headings.variant")}
-            onChange={handleVariantChange}
-            defaultValue={PRODUCT_VARIANT.WHITE_WET}
+          <label
+            id="add-event-modal-startDate"
+            htmlFor="add-event-modal-startDate"
           >
-            <option value={PRODUCT_VARIANT.WHITE_WET}>
-              {t("pages.storage.variants.white_wet")}
-            </option>
-            <option value={PRODUCT_VARIANT.WHITE_DRY}>
-              {t("pages.storage.variants.white_dry")}
-            </option>
-            <option value={PRODUCT_VARIANT.BLACK}>
-              {t("pages.storage.variants.black")}
-            </option>
-          </Select>
+            {t("pages.schedule.modals.event_add.startDate")}
+          </label>
           <Input
-            placeholder={t("pages.storage.table.headings.itemsPerPackage")}
-            type="number"
-            value={String(productData.itemsPerPackage)}
-            name="itemsPerPackage"
+            id="add-event-modal-startDate"
+            type="datetime-local"
+            value={eventData.startDate}
+            name="startDate"
             onChange={handleChange}
           />
+          <label id="add-event-modal-endDate" htmlFor="add-event-modal-endDate">
+            {t("pages.schedule.modals.event_add.endDate")}
+          </label>
           <Input
-            placeholder={t("pages.storage.table.headings.volumePerPackage")}
-            type="number"
-            value={String(productData.volumePerPackage)}
-            name="volumePerPackage"
+            id="add-event-modal-endDate"
+            type="datetime-local"
+            value={eventData.endDate}
+            name="endDate"
             onChange={handleChange}
           />
+          <label
+            id="add-event-modal-visibility"
+            htmlFor="add-event-modal-visibility"
+          >
+            {t("pages.schedule.modals.event_add.visibility")}
+          </label>
           <Input
-            placeholder={t("pages.storage.table.headings.stock")}
-            type="number"
-            value={String(productData.stock)}
-            name="stock"
+            id="add-event-modal-visibility"
+            type="checkbox"
+            checked={eventData.visibility === EVENT_VISIBILITY.PRIVATE}
+            name="visibility"
             onChange={handleChange}
           />
           {!!error && (
@@ -131,12 +149,12 @@ export const ProductAddModal = ({ onClose, isOpen }: ProductAddModalProps) => {
           <Button
             colorScheme="green"
             isLoading={isLoading}
-            onClick={handlePostProduct}
+            onClick={handlePostEvent}
             mr={3}
           >
             {t("pages.storage.buttons.add")}
           </Button>
-          <Button colorScheme="red" onClick={handleModalClose}>
+          <Button colorScheme="red" onClick={onClose}>
             {t("pages.storage.buttons.cancel")}
           </Button>
         </ModalFooter>
