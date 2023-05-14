@@ -79,8 +79,6 @@ export const OrderDetails = ({
 
   const cancelRef = React.useRef(null);
 
-  const [invalidValueText, setInvalidValueText] = useState(<p></p>);
-
   const { t } = useContent();
 
   const [specType, setSpecType] = useState(QUANTITY_TYPE.PIECES);
@@ -322,9 +320,6 @@ export const OrderDetails = ({
       }
     ); // zamiana ilosci na paczki i cen na za metr
     let invalidValue = false;
-    setInvalidValueText(
-      <Text>{t("pages.orders.order.bad-quantity.entered")}:</Text>
-    );
     calculatedNewProductDetails.map((product, key) => {
       if (product.quantity !== Math.floor(product.quantity)) {
         invalidValue = true;

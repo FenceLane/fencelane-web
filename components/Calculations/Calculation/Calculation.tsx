@@ -37,6 +37,10 @@ import { useUpdateOrder } from "../../../lib/api/hooks/orders";
 import router from "next/router";
 import { mapAxiosErrorToLabel } from "../../../lib/server/BackendError/BackendError";
 import { constructRateDate } from "../../../lib/util/dateUtils";
+import {
+  customExpanseDataToCalculation,
+  transportCostPerM3ToCalculation,
+} from "../../../lib/util/calculationUtils";
 
 interface CalculationProps {
   orderId: number;
@@ -104,63 +108,18 @@ export const Calculation = ({
     setCurrency(e.target.value as CURRENCY);
   };
 
-  const transportCostPerM3 =
-    Number(transportCost.price) /
-    Number(
-      Object.values(expanses)
-        .map(
-          (product) =>
-            product[0].productOrder.quantity *
-            Number(product[0].productOrder.product.volumePerPackage)
-        )
-        .reduce((acc, cost) => acc + cost)
-    );
+  const transportCostPerM3 = transportCostPerM3ToCalculation(
+    transportCost,
+    expanses
+  );
 
-  const expanseData = Object.values(expanses).map((product) => {
-    let quantity;
-    switch (specType) {
-      case QUANTITY_TYPE.PACKAGES:
-        quantity = product[0].productOrder.quantity;
-        break;
-      case QUANTITY_TYPE.M3:
-        quantity =
-          product[0].productOrder.quantity *
-          Number(product[0].productOrder.product.volumePerPackage);
-        break;
-
-      case QUANTITY_TYPE.PIECES:
-        quantity =
-          product[0].productOrder.quantity *
-          Number(product[0].productOrder.product.itemsPerPackage);
-        break;
-    }
-    let currencyMultiplier;
-    switch (currency) {
-      case CURRENCY.EUR:
-        currencyMultiplier = 1;
-        break;
-      case CURRENCY.PLN:
-        currencyMultiplier = Number(eurRate);
-    }
-    return {
-      name: product[0].productOrder.product.category.name,
-      dimensions: product[0].productOrder.product.dimensions,
-      quantity: quantity,
-      price: product[0].productOrder.price,
-      vpp: product[0].productOrder.product.volumePerPackage,
-      ipp: product[0].productOrder.product.itemsPerPackage,
-      totalProfitOfProduct:
-        (Number(product[0].productOrder.price) *
-          product[0].productOrder.quantity *
-          Number(product[0].productOrder.product.volumePerPackage) -
-          product.map((value) => Number(value.price)).reduce((a, b) => a + b) *
-            product[0].productOrder.quantity -
-          transportCostPerM3 *
-            Number(product[0].productOrder.product.volumePerPackage) *
-            product[0].productOrder.quantity) *
-        currencyMultiplier,
-    };
-  });
+  const expanseData = customExpanseDataToCalculation(
+    expanses,
+    specType,
+    currency,
+    eurRate,
+    transportCostPerM3
+  );
 
   const handleCalculationDelete = () => {
     onClose();
