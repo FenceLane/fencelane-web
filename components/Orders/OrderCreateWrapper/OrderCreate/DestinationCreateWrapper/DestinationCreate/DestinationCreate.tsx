@@ -39,7 +39,7 @@ export const DestinationCreate = ({ clients }: DestinationCreateProps) => {
   const [destinationData, setDestinationData] = useState(
     initialDestinationData
   );
-  const [clientId, setClientId] = useState(clients[0].id);
+  const [clientId, setClientId] = useState<string | null>(null);
 
   const {
     mutate: postDestination,
@@ -63,7 +63,7 @@ export const DestinationCreate = ({ clients }: DestinationCreateProps) => {
   };
 
   const handlePostDestination = () => {
-    postDestination({ id: clientId, data: destinationData });
+    postDestination({ id: clientId as string, data: destinationData });
   };
 
   useEffect(() => {

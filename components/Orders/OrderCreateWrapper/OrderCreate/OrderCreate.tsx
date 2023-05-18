@@ -46,9 +46,12 @@ export const OrderCreate = ({ clients, products }: OrderCreateProps) => {
   const { t } = useContent();
   const [newProducts, setNewProducts] = useState([initialNewProductsData]);
 
-  const [orderData, setOrderData] = useState({
-    clientId: clients[0].id,
-    destinationId: clients[0].destinations[0].id,
+  const [orderData, setOrderData] = useState<{
+    clientId: string | null;
+    destinationId: string | null;
+  }>({
+    clientId: null,
+    destinationId: null,
   });
 
   const currentClient = clients.find((client) => {
@@ -117,7 +120,7 @@ export const OrderCreate = ({ clients, products }: OrderCreateProps) => {
       price: String(product.price),
     }));
     postOrder({
-      destinationId: orderData.destinationId,
+      destinationId: orderData.destinationId as string,
       products: numberedProducts,
     });
   };
