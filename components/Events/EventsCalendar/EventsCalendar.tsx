@@ -1,27 +1,44 @@
-import React from "react";
-import { Calendar, Views, Event, dayjsLocalizer } from "react-big-calendar";
-import dayjs from "dayjs";
+import React, { useState } from "react";
+import { Calendar, Views, Event, momentLocalizer } from "react-big-calendar";
 import styles from "./EventsCalendar.module.scss";
 import { EventInfo } from "../../../lib/types";
+import { EventAddModal } from "../EventAddModal/EventAddModal";
+import moment from "moment";
+import "moment/locale/pl";
 
-const localizer = dayjsLocalizer(dayjs);
-
+const localizer = momentLocalizer(moment);
 interface EventsCalendarProps {
   events: EventInfo[];
 }
 
 export const EventsCalendar = ({ events }: EventsCalendarProps) => {
+  const [initialDates, setInitialDates] = useState<{
+    start: Date | null;
+    end: Date | null;
+  }>({ start: null, end: null });
+
+  const [isAddEventModalOpen, setIsAddEventModalOpen] = useState(false);
+
   const handleSelectSlot = ({ start, end }: { start: Date; end: Date }) => {
-    const title = window.prompt("New Event name");
-    if (title) {
-      console.log("patryk add event ", { start, end, title });
-    }
+    setInitialDates({ start, end });
+    setIsAddEventModalOpen(true);
+  };
+
+  const handleEventAddModalClose = () => {
+    setInitialDates({ start: null, end: null });
+    setIsAddEventModalOpen(false);
   };
 
   const handleSelectEvent = (event: Event) => console.log(event);
 
   return (
     <div className={styles.wrapper}>
+      <EventAddModal
+        key={initialDates.start?.toString()}
+        initialDates={initialDates}
+        isOpen={isAddEventModalOpen}
+        onClose={handleEventAddModalClose}
+      />
       <Calendar
         localizer={localizer}
         defaultView={Views.MONTH}

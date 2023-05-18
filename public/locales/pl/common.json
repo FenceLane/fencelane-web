@@ -280,7 +280,8 @@
           "title": "Tytuł",
           "description": "Opis",
           "startDate": "Data rozpoczęcia",
-          "endDate": "Data zakończenia"
+          "endDate": "Data zakończenia",
+          "isPrivate": "Ukryj przed innymi użytkownikami"
         }
       }
     }
