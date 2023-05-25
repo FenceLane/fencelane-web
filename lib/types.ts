@@ -11,10 +11,11 @@ export interface ProductInfo {
   dimensions: string;
   variant: PRODUCT_VARIANT;
   itemsPerPackage: number;
-  volumePerPackage: number;
+  volumePerPackage: number; // z bazy dostaje string, troche dziwne
+  categoryId: string;
   stock: number;
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt: Date | string;
+  updatedAt: Date | string; //wyskakiwał błąd typu
   category: CategoryInfo;
 }
 
@@ -157,6 +158,13 @@ export interface ClientPostInfo {
 export interface DestinationPostInfo {
   id: string;
   data: { country: string; address: string; postalCode: string; city: string };
+}
+
+export interface CommissionInfo {
+  id: string;
+  orderId: number | null;
+  quantity: number;
+  productData: ProductInfo;
 }
 
 export enum USER_ROLE {
