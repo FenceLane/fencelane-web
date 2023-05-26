@@ -163,6 +163,7 @@ export interface DestinationPostInfo {
 export interface CommissionInfo {
   id: string;
   orderId: number | null;
+  createDate: Date | string;
   quantity: number;
   productData: ProductInfo;
 }

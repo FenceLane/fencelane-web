@@ -1,5 +1,5 @@
-import React from "react";
-import { Button, Flex, Text } from "@chakra-ui/react";
+import React, { useState } from "react";
+import { Button, Flex, Select, Text } from "@chakra-ui/react";
 import { useContent } from "../../../../lib/hooks/useContent";
 import Link from "next/link";
 import { AddIcon } from "@chakra-ui/icons";
@@ -12,12 +12,25 @@ interface CommissionsProps {
 
 export const Commissions = ({ commissions }: CommissionsProps) => {
   const { t } = useContent();
+
+  const [orderFilter, setOrderFilter] = useState("all");
+
   return (
     <>
       <Text color="var(--dark)" fontSize="20px" fontWeight="500" m="10px">
         Zlecenia
       </Text>
-      <Flex justifyContent="flex-end">
+      <Flex justifyContent="space-between" mb="20px">
+        <Select
+          onChange={(e) => setOrderFilter(e.target.value)}
+          defaultValue="all"
+          bg="white"
+          width="auto"
+        >
+          <option value="all">Wszystkie</option>
+          <option value="orders-only">Do zamówień</option>
+          <option value="non-orders-only">Bez zamówień</option>
+        </Select>
         <Link href="/commissions/create">
           <Button
             color="white"
@@ -31,9 +44,17 @@ export const Commissions = ({ commissions }: CommissionsProps) => {
           </Button>
         </Link>
       </Flex>
-      {commissions.map((commission) => (
-        <CommissionsRow key={commission.id} commissionData={commission} />
-      ))}
+      {commissions.map((commission) => {
+        if (
+          orderFilter === "all" ||
+          (orderFilter === "orders-only" && commission.orderId) ||
+          (orderFilter === "non-orders-only" && !commission.orderId)
+        ) {
+          return (
+            <CommissionsRow key={commission.id} commissionData={commission} />
+          );
+        }
+      })}
     </>
   );
 };

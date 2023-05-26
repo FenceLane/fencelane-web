@@ -151,6 +151,7 @@ export const OrderCreate = ({ clients, products }: OrderCreateProps) => {
         mb="20px"
         name="clientId"
         onChange={handleChange}
+        placeholder={t("main.client")}
       >
         {clients.map((client) => (
           <option data-key={client.id} key={client.id}>
@@ -165,6 +166,7 @@ export const OrderCreate = ({ clients, products }: OrderCreateProps) => {
         mb="20px"
         name="destinationId"
         onChange={handleChange}
+        placeholder={t("main.destination")}
       >
         {orderData.clientId !== "" ? (
           currentClient &&

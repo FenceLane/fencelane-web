@@ -13,6 +13,7 @@ export const CommissionsWrapper = () => {
       id: "23usdj62s",
       orderId: 3,
       quantity: 50,
+      createDate: "2023-05-25T11:34:33.076Z",
       productData: {
         id: "2f58e52e-3f23-4076-beb6-c42b9f9b0d45",
         dimensions: "121x122",
@@ -34,6 +35,7 @@ export const CommissionsWrapper = () => {
       id: "kasdh213jidsf",
       orderId: null,
       quantity: 20,
+      createDate: "2023-05-25T11:34:33.076Z",
       productData: {
         id: "2f58e52e-3f23-4076-beb6-c42b9f9b0d45",
         dimensions: "121x122",
