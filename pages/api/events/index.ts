@@ -11,6 +11,7 @@ import { withApiAuth } from "../../../lib/server/middlewares/withApiAuth";
 import { withApiMethods } from "../../../lib/server/middlewares/withApiMethods";
 import { withValidatedJSONRequestBody } from "../../../lib/server/middlewares/withValidatedJSONRequestBody";
 import { EventDataSchema } from "../../../lib/schema/eventData";
+import { EVENT_VISIBILITY } from "../../../lib/types";
 
 export default withApiMethods({
   POST: withApiAuth(
@@ -50,6 +51,12 @@ export default withApiMethods({
   GET: withApiAuth(async (req, res) => {
     const events = await prismaClient.event.findMany({
       include: { creator: true },
+      where: {
+        OR: [
+          { visibility: EVENT_VISIBILITY.PUBLIC },
+          { creatorId: req.session.userId },
+        ],
+      },
     });
 
     return res.status(BackendResponseStatusCode.SUCCESS).send({ data: events });
