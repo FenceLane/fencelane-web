@@ -283,6 +283,18 @@
           "endDate": "Data zakończenia",
           "isPrivate": "Ukryj przed innymi użytkownikami"
         }
+      },
+      "calendar": {
+        "messages": {
+          "week": "Tydzień",
+          "work_week": "Tydzień roboczy",
+          "day": "Dzień",
+          "month": "Miesiąc",
+          "previous": "Poprzedni",
+          "next": "Następny",
+          "today": "Dzisiaj",
+          "agenda": "Agenda"
+        }
       }
     }
   },

@@ -5,6 +5,7 @@ import { EventInfo } from "../../../lib/types";
 import { EventAddModal } from "../EventAddModal/EventAddModal";
 import moment from "moment";
 import "moment/locale/pl";
+import { useContent } from "../../../lib/hooks/useContent";
 
 const localizer = momentLocalizer(moment);
 interface EventsCalendarProps {
@@ -18,6 +19,8 @@ export const EventsCalendar = ({ events }: EventsCalendarProps) => {
   }>({ start: null, end: null });
 
   const [isAddEventModalOpen, setIsAddEventModalOpen] = useState(false);
+
+  const { t } = useContent("pages.schedule.calendar.messages");
 
   const handleSelectSlot = ({ start, end }: { start: Date; end: Date }) => {
     setInitialDates({ start, end });
@@ -48,6 +51,17 @@ export const EventsCalendar = ({ events }: EventsCalendarProps) => {
           title,
           ...rest,
         }))}
+        messages={{
+          week: t("week"),
+          work_week: t("work_week"),
+          day: t("day"),
+          month: t("month"),
+          previous: t("previous"),
+          next: t("next"),
+          today: t("today"),
+          agenda: t("agenda"),
+        }}
+        views={["day", "week", "month"]}
         onSelectEvent={handleSelectEvent}
         onSelectSlot={handleSelectSlot}
         selectable
