@@ -2,7 +2,7 @@
   width: 100%;
   background-color: white;
   margin-bottom: 10px;
-  text-transform: uppercase;
+  padding: 10px;
   line-height: 1.2;
   font-size: 15px;
   flex-direction: row;
@@ -11,69 +11,45 @@
   position: relative;
   flex-direction: column;
 }
-.commission-info {
-  grid-template-areas:
-    "left right"
-    "left right"
-    "left right";
-  gap: 10px;
-  padding: 10px;
+.product-table {
+  grid-template-areas: "item item item item";
+  border-top: 2px solid grey;
 }
-.grid-1,
-.grid-2,
-.grid-3 {
-  grid-area: "left";
+.product-table-item {
+  align-items: center;
+  height: 60px;
+  padding: 5px;
+  border-bottom: 1px solid rgb(189, 181, 181);
 }
-.grid-4,
-.grid-5,
-.grid-6 {
-  grid-area: "right";
-}
-
-.commission-actions {
-  justify-content: flex-end;
-  padding: 0px 10px 10px 0px;
-  gap: 5px;
-  flex-wrap: wrap;
+.product-table-item:nth-last-child(-n + 4) {
+  border-bottom: none;
 }
 .text-box {
   margin-bottom: 10px;
 }
-.order-header {
+.commission-header {
   color: var(--font-gray);
 }
-.order-text {
+.commission-text {
   font-weight: 500;
+}
+.commission-top {
+  align-items: center;
+}
+
+.more-button {
+  padding: 0;
+}
+.action-button {
+  display: none !important;
 }
 
 @media only screen and (min-width: 768px) {
-  .commission-info {
-    grid-template-areas:
-      "top top top"
-      "bottom bottom bottom";
-    gap: 10px;
+  .commission-container {
     padding: 20px;
   }
-  .grid-1,
-  .grid-2,
-  .grid-3 {
-    grid-area: "top";
-  }
-  .grid-4,
-  .grid-5,
-  .grid-6 {
-    grid-area: "bottom";
-  }
-  .commission-actions {
-    justify-content: flex-end;
-    padding: 0px 20px 20px 0px;
-    gap: 10px;
-  }
-  .commission-actions > div {
-    display: flex;
-    width: auto;
-    gap: 10px;
-    margin: 0;
+  .product-table {
+    font-size: 100%;
   }
 }
 @media only screen and (min-width: 1124px) {

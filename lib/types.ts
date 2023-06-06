@@ -161,11 +161,13 @@ export interface DestinationPostInfo {
 }
 
 export interface CommissionInfo {
-  id: string;
+  id: number;
   orderId: number | null;
   createDate: Date | string;
-  quantity: number;
-  productData: ProductInfo;
+  productData: {
+    commissionQuantity: number;
+    productInfo: ProductInfo;
+  }[];
 }
 
 export enum USER_ROLE {

@@ -271,6 +271,9 @@
         "quantity": "Ilość",
         "price": "Cena"
       }
+    },
+    "commissions": {
+      "commission-id": "Zlecenie nr"
     }
   },
   "buttons": {
