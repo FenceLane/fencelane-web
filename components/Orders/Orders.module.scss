@@ -1,0 +1,12 @@
+.filters-container {
+  flex-direction: column;
+}
+
+@media only screen and (min-width: 1124px) {
+  .filters-container {
+    flex-direction: row !important;
+    gap: 30px;
+    align-items: center;
+    width: 100%;
+  }
+}
