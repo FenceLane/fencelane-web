@@ -36,7 +36,6 @@ export const withValidatedJSONRequestBody =
     }
 
     try {
-      console.log(req.body);
       req.parsedBody = schema.parse(req.body) as T;
     } catch (error) {
       if (error instanceof z.ZodError) {
