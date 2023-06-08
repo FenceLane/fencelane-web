@@ -26,7 +26,10 @@ export function LoadingProvider({ children }: LoadingProviderProps) {
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    const start = () => setIsLoading(true);
+    const start = (_path: string, { shallow }: { shallow: boolean }) => {
+      if (shallow) return;
+      setIsLoading(true);
+    };
     const end = () => setIsLoading(false);
 
     router.events.on("routeChangeStart", start);

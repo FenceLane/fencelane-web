@@ -22,3 +22,27 @@ export const usePostEvent = (onSuccess: () => void) => {
 
   return mutation;
 };
+
+export const useDeleteEvent = (onSuccess: () => void) => {
+  const mutation = useMutation({
+    mutationFn: apiClient.events.deleteEvent,
+    onSuccess: () => {
+      onSuccess();
+      queryClient.invalidateQueries({ queryKey: [QUERY_KEY.EVENTS] });
+    },
+  });
+
+  return mutation;
+};
+
+export const useUpdateEvent = (onSuccess: () => void) => {
+  const mutation = useMutation({
+    mutationFn: apiClient.events.updateEvent,
+    onSuccess: () => {
+      onSuccess();
+      queryClient.invalidateQueries({ queryKey: [QUERY_KEY.EVENTS] });
+    },
+  });
+
+  return mutation;
+};

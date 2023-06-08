@@ -1,11 +1,13 @@
 import React, { useState } from "react";
-import { Calendar, Views, Event, momentLocalizer } from "react-big-calendar";
+import { Calendar, Views, momentLocalizer } from "react-big-calendar";
 import styles from "./EventsCalendar.module.scss";
 import { EventInfo } from "../../../lib/types";
 import { EventAddModal } from "../EventAddModal/EventAddModal";
 import moment from "moment";
 import "moment/locale/pl";
 import { useContent } from "../../../lib/hooks/useContent";
+import { EventDetailsModal } from "../EventDetailsModal/EventDetailsModal";
+import { useRouter } from "next/router";
 
 const localizer = momentLocalizer(moment);
 interface EventsCalendarProps {
@@ -18,7 +20,10 @@ export const EventsCalendar = ({ events }: EventsCalendarProps) => {
     end: Date | null;
   }>({ start: null, end: null });
 
+  const router = useRouter();
+
   const [isAddEventModalOpen, setIsAddEventModalOpen] = useState(false);
+  const [isEventDetailsModalOpen, setIsEventDetailsModalOpen] = useState(false);
 
   const { t } = useContent("pages.schedule.calendar.messages");
 
@@ -32,7 +37,41 @@ export const EventsCalendar = ({ events }: EventsCalendarProps) => {
     setIsAddEventModalOpen(false);
   };
 
-  const handleSelectEvent = (event: Event) => console.log(event);
+  const handleEventDetailsModalClose = () => {
+    const { event: _, ...prevQuery } = router.query;
+    const newQuery = Object.assign(prevQuery, {});
+    router.push(
+      {
+        pathname: router.pathname,
+        query: newQuery,
+      },
+      undefined,
+      { shallow: true }
+    );
+  };
+
+  const handleSelectEvent = (event: EventInfo) => {
+    const eventId = event.id;
+    const { event: _, ...prevQuery } = router.query;
+    const newQuery = Object.assign(
+      prevQuery,
+      eventId ? { event: eventId } : {}
+    );
+    router.push(
+      {
+        pathname: router.pathname,
+        query: newQuery,
+      },
+      undefined,
+      { shallow: true }
+    );
+  };
+
+  const seletedEvent =
+    typeof router.query.event === "string" &&
+    events.find((event) => event.id === router.query.event);
+
+  console.log(seletedEvent);
 
   return (
     <div className={styles.wrapper}>
@@ -42,14 +81,20 @@ export const EventsCalendar = ({ events }: EventsCalendarProps) => {
         isOpen={isAddEventModalOpen}
         onClose={handleEventAddModalClose}
       />
+      {seletedEvent && (
+        <EventDetailsModal
+          key={seletedEvent.id}
+          onClose={handleEventDetailsModalClose}
+          eventData={seletedEvent}
+        />
+      )}
       <Calendar
         localizer={localizer}
         defaultView={Views.MONTH}
-        events={events.map(({ startDate, endDate, title, ...rest }) => ({
-          start: new Date(startDate),
-          end: new Date(endDate),
-          title,
+        events={events.map(({ startDate, endDate, ...rest }) => ({
           ...rest,
+          start: startDate,
+          end: endDate,
         }))}
         messages={{
           week: t("week"),
@@ -62,7 +107,13 @@ export const EventsCalendar = ({ events }: EventsCalendarProps) => {
           agenda: t("agenda"),
         }}
         views={["day", "week", "month"]}
-        onSelectEvent={handleSelectEvent}
+        onSelectEvent={({ start, end, ...event }) =>
+          handleSelectEvent({
+            ...event,
+            startDate: start,
+            endDate: end,
+          })
+        }
         onSelectSlot={handleSelectSlot}
         selectable
         defaultDate={new Date(Date.now())}

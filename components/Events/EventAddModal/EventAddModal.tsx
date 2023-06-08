@@ -22,7 +22,7 @@ import { EVENT_VISIBILITY } from "../../../lib/types";
 import moment from "moment";
 import styles from "./EventAddModal.module.scss";
 
-interface ProductAddModalProps {
+interface EventAddModalProps {
   onClose: () => void;
   isOpen: boolean;
   initialDates: {
@@ -53,7 +53,7 @@ export const EventAddModal = ({
   onClose,
   isOpen,
   initialDates,
-}: ProductAddModalProps) => {
+}: EventAddModalProps) => {
   const { t } = useContent();
 
   const [eventData, setEventData] = useState<EventData>({
@@ -205,10 +205,10 @@ export const EventAddModal = ({
               isLoading={isLoading}
               mr={3}
             >
-              {t("pages.storage.buttons.add")}
+              {t("buttons.add")}
             </Button>
             <Button colorScheme="red" onClick={onClose}>
-              {t("pages.storage.buttons.cancel")}
+              {t("buttons.cancel")}
             </Button>
           </ModalFooter>
         </ModalContent>

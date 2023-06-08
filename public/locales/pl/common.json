@@ -282,6 +282,11 @@
           "startDate": "Data rozpoczęcia",
           "endDate": "Data zakończenia",
           "isPrivate": "Ukryj przed innymi użytkownikami"
+        },
+        "event_details": {
+          "title": "Tytuł",
+          "description": "Opis",
+          "date": "Data"
         }
       },
       "calendar": {
@@ -320,7 +325,12 @@
     "details": "Szczegóły",
     "price": "Cena",
     "quantity": "Ilość",
-    "history": "Historia"
+    "history": "Historia",
+    "dateSince": "Od",
+    "dateTo": "Do",
+    "dateAllDay": "Cały dzień",
+    "createdBy": "Utworzone przez",
+    "event": "Wydarzenie"
   },
   "days": {
     "monday": "Poniedziałek",
