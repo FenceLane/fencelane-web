@@ -24,11 +24,11 @@ export interface EventInfo {
   description: string;
   startDate: string;
   endDate: string;
-  orderId: number;
   creatorId: string;
   createdAt: string;
   updatedAt: string;
   creator: UserInfo;
+  visibility: EVENT_VISIBILITY;
 }
 
 export interface CategoryInfo {

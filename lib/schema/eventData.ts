@@ -6,7 +6,7 @@ export const EventDataSchema = z.object({
   description: z.string().min(1).optional(),
   startDate: z.string().min(1),
   endDate: z.string().min(1),
-  orderId: z.number().optional(),
+  orderId: z.number().nullable().optional(),
   visibility: z.nativeEnum(EVENT_VISIBILITY).optional(),
 });
 

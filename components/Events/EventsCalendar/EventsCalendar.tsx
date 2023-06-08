@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { Calendar, Views, momentLocalizer } from "react-big-calendar";
 import styles from "./EventsCalendar.module.scss";
-import { EventInfo } from "../../../lib/types";
-import { EventAddModal } from "../EventAddModal/EventAddModal";
+import { EVENT_VISIBILITY, EventInfo } from "../../../lib/types";
+import { EventEditModal } from "../EventAddModal/EventEditModal";
 import moment from "moment";
 import "moment/locale/pl";
 import { useContent } from "../../../lib/hooks/useContent";
@@ -23,7 +23,6 @@ export const EventsCalendar = ({ events }: EventsCalendarProps) => {
   const router = useRouter();
 
   const [isAddEventModalOpen, setIsAddEventModalOpen] = useState(false);
-  const [isEventDetailsModalOpen, setIsEventDetailsModalOpen] = useState(false);
 
   const { t } = useContent("pages.schedule.calendar.messages");
 
@@ -71,13 +70,17 @@ export const EventsCalendar = ({ events }: EventsCalendarProps) => {
     typeof router.query.event === "string" &&
     events.find((event) => event.id === router.query.event);
 
-  console.log(seletedEvent);
-
   return (
     <div className={styles.wrapper}>
-      <EventAddModal
+      <EventEditModal
         key={initialDates.start?.toString()}
-        initialDates={initialDates}
+        eventData={{
+          title: "",
+          description: "",
+          startDate: initialDates.start,
+          endDate: initialDates.end,
+          visibility: EVENT_VISIBILITY.PUBLIC,
+        }}
         isOpen={isAddEventModalOpen}
         onClose={handleEventAddModalClose}
       />
@@ -93,8 +96,8 @@ export const EventsCalendar = ({ events }: EventsCalendarProps) => {
         defaultView={Views.MONTH}
         events={events.map(({ startDate, endDate, ...rest }) => ({
           ...rest,
-          start: startDate,
-          end: endDate,
+          start: new Date(startDate),
+          end: new Date(endDate),
         }))}
         messages={{
           week: t("week"),
@@ -110,8 +113,8 @@ export const EventsCalendar = ({ events }: EventsCalendarProps) => {
         onSelectEvent={({ start, end, ...event }) =>
           handleSelectEvent({
             ...event,
-            startDate: start,
-            endDate: end,
+            startDate: start.toISOString(),
+            endDate: end.toISOString(),
           })
         }
         onSelectSlot={handleSelectSlot}

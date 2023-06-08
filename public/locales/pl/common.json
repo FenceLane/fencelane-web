@@ -283,10 +283,14 @@
           "endDate": "Data zakończenia",
           "isPrivate": "Ukryj przed innymi użytkownikami"
         },
+        "event_edit": {
+          "heading": "Edycja wydarzenia"
+        },
         "event_details": {
           "title": "Tytuł",
           "description": "Opis",
-          "date": "Data"
+          "date": "Data",
+          "isPrivate": "To wydarzenie jest prywatne, nie będzie widoczne dla innych użytkowników!"
         }
       },
       "calendar": {

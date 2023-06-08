@@ -17,61 +17,52 @@ import { mapAxiosErrorToLabel } from "../../../lib/server/BackendError/BackendEr
 import React, { useEffect, useState } from "react";
 import { useContent } from "../../../lib/hooks/useContent";
 
-import { usePostEvent } from "../../../lib/api/hooks/events";
+import { usePostEvent, useUpdateEvent } from "../../../lib/api/hooks/events";
 import { EVENT_VISIBILITY } from "../../../lib/types";
 import moment from "moment";
-import styles from "./EventAddModal.module.scss";
+import styles from "./EventEditModal.module.scss";
 
-interface EventAddModalProps {
+interface EventEditModalProps {
   onClose: () => void;
   isOpen: boolean;
-  initialDates: {
-    start: Date | null;
-    end: Date | null;
-  };
+  eventData: EventData;
 }
 
 interface EventData {
+  id?: string;
   title: string;
   description: string;
   startDate: Date | null;
   endDate: Date | null;
   visibility: EVENT_VISIBILITY;
-  orderId?: number;
 }
 
-const initialEventData: EventData = {
-  title: "",
-  description: "",
-  startDate: new Date(Date.now()),
-  endDate: new Date(Date.now()),
-  visibility: EVENT_VISIBILITY.PUBLIC,
-  orderId: undefined,
-} as const;
-
-export const EventAddModal = ({
+export const EventEditModal = ({
   onClose,
   isOpen,
-  initialDates,
-}: EventAddModalProps) => {
+  eventData,
+}: EventEditModalProps) => {
   const { t } = useContent();
 
-  const [eventData, setEventData] = useState<EventData>({
-    ...initialEventData,
-    startDate: initialDates.start,
-    endDate: initialDates.end,
-  });
+  const [localEventData, setLocalEventData] = useState<EventData>(eventData);
 
   const {
     mutate: postEvent,
-    error,
-    isSuccess,
-    isLoading,
+    error: createError,
+    isSuccess: isCreateSuccess,
+    isLoading: isCreateLoading,
   } = usePostEvent(onClose);
+
+  const {
+    mutate: updateEvent,
+    error: updateError,
+    isSuccess: isUpdateSuccess,
+    isLoading: isUpdateLoading,
+  } = useUpdateEvent(onClose);
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const { startDate, endDate, ...data } = eventData;
+    const { startDate, endDate, ...data } = localEventData;
 
     const newEventData = {
       ...data,
@@ -80,36 +71,48 @@ export const EventAddModal = ({
       endDate: endDate!.toISOString(),
     };
 
-    postEvent(newEventData);
+    localEventData.id
+      ? updateEvent({ id: localEventData.id, data: newEventData })
+      : postEvent(newEventData);
   };
 
   useEffect(() => {
-    if (isSuccess) {
+    if (isUpdateSuccess || isCreateSuccess) {
       onClose();
     }
-  }, [isSuccess, onClose]);
+  }, [isUpdateSuccess, isCreateSuccess, onClose]);
 
   const handleChange = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const { name, value } = event.target;
-    setEventData((prev) => ({
+    setLocalEventData((prev) => ({
       ...prev,
       [name]: value,
     }));
   };
 
+  const handleDateChange = (
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    const { name, value } = event.target;
+    setLocalEventData((prev) => ({
+      ...prev,
+      [name]: new Date(value),
+    }));
+  };
+
   const handlePrivacyChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { checked } = event.target;
-    setEventData((prev) => ({
+    setLocalEventData((prev) => ({
       ...prev,
       visibility: checked ? EVENT_VISIBILITY.PRIVATE : EVENT_VISIBILITY.PUBLIC,
     }));
   };
 
   const [formattedStartDate, formattedEndDate] = [
-    eventData.startDate,
-    eventData.endDate,
+    localEventData.startDate,
+    localEventData.endDate,
   ].map((date) => (date ? moment(date).format("YYYY-MM-DD HH:mm") : ""));
 
   return (
@@ -118,7 +121,9 @@ export const EventAddModal = ({
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>
-            {t("pages.schedule.modals.event_add.heading")}
+            {localEventData.id
+              ? t("pages.schedule.modals.event_edit.heading")
+              : t("pages.schedule.modals.event_add.heading")}
           </ModalHeader>
           <ModalCloseButton />
           <ModalBody>
@@ -130,7 +135,7 @@ export const EventAddModal = ({
               className={styles.modalInput}
               id="add-event-modal-title"
               name="title"
-              value={String(eventData.title)}
+              value={String(localEventData.title)}
               onChange={handleChange}
             />
             <label htmlFor="add-event-modal-description">
@@ -140,7 +145,7 @@ export const EventAddModal = ({
               className={styles.modalInput}
               id="add-event-modal-description"
               name="description"
-              value={String(eventData.description)}
+              value={String(localEventData.description)}
               onChange={handleChange}
               rows={7}
               resize={"none"}
@@ -173,14 +178,16 @@ export const EventAddModal = ({
               type="datetime-local"
               value={formattedEndDate}
               name="endDate"
-              onChange={handleChange}
+              onChange={handleDateChange}
             />
 
             <Flex alignItems="center" mb={2}>
               <Checkbox
                 id="add-event-modal-visibility"
                 type="checkbox"
-                checked={eventData.visibility === EVENT_VISIBILITY.PRIVATE}
+                isChecked={
+                  localEventData.visibility === EVENT_VISIBILITY.PRIVATE
+                }
                 name="visibility"
                 onChange={handlePrivacyChange}
               />
@@ -192,20 +199,25 @@ export const EventAddModal = ({
                 {t("pages.schedule.modals.event_add.isPrivate")}
               </label>
             </Flex>
-            {!!error && (
-              <Text color="red">
-                {t(`errors.backendErrorLabel.${mapAxiosErrorToLabel(error)}`)}
-              </Text>
-            )}
+            {!!createError ||
+              (!!updateError && (
+                <Text color="red">
+                  {t(
+                    `errors.backendErrorLabel.${mapAxiosErrorToLabel(
+                      createError || updateError
+                    )}`
+                  )}
+                </Text>
+              ))}
           </ModalBody>
           <ModalFooter alignItems="flex-end">
             <Button
               type="submit"
               colorScheme="green"
-              isLoading={isLoading}
+              isLoading={isUpdateLoading || isCreateLoading}
               mr={3}
             >
-              {t("buttons.add")}
+              {t("buttons.confirm")}
             </Button>
             <Button colorScheme="red" onClick={onClose}>
               {t("buttons.cancel")}

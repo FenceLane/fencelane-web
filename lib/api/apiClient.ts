@@ -8,6 +8,7 @@ import {
   OrderInfo,
   OrderPostInfo,
   OrderProductInfo,
+  ProductInfo,
   TransportPostInfo,
 } from "../types";
 import { EventInfo, USER_ROLE } from "../types";
@@ -82,7 +83,7 @@ const getMe = async () => {
 
 const getProducts = async (options?: {
   authCookie: string;
-}): Promise<EventInfo[]> => {
+}): Promise<ProductInfo[]> => {
   const {
     data: { data },
   } = await axiosInstance.get(apiPath("products"), {
