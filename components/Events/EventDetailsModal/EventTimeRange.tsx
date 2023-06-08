@@ -15,7 +15,7 @@ export const EventTimeRange = ({
     [endDate, endDay, endWeekDay, endTime],
   ] = [event.startDate, event.endDate].map((date) => [
     moment(date).format("LL"),
-    moment(date).format("d"),
+    moment(date).format("DD"),
     moment(date).format("dddd"),
     moment(date).format("HH:mm"),
   ]);
