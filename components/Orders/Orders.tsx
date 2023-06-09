@@ -1,21 +1,23 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { Button, Flex, IconButton, Input, Text } from "@chakra-ui/react";
 import { OrderInfo } from "../../lib/types";
 import { OrdersRow } from "./OrdersRow/OrdersRow";
-import { AddIcon, CloseIcon } from "@chakra-ui/icons";
+import { AddIcon, CalendarIcon, CloseIcon } from "@chakra-ui/icons";
 import { useContent } from "../../lib/hooks/useContent";
 import Link from "next/link";
 import styles from "./Orders.module.scss";
+import { useOnClickOutside } from "../../lib/hooks/useOnClickOutside";
+import { constructOrderDate } from "../../lib/util/dateUtils";
 
 interface OrderProps {
   orders: OrderInfo[];
 }
 
 const initialFilters = {
-  date: "",
-  client: "",
-  destination: "",
-  order_id: "",
+  dateStart: "",
+  dateEnd: "",
+  specificDate: "",
+  search: "",
 };
 
 export const Orders = ({ orders }: OrderProps) => {
@@ -23,20 +25,56 @@ export const Orders = ({ orders }: OrderProps) => {
 
   const [showFilters, setShowFilters] = useState(false);
 
+  const [showDateFilters, setShowDateFilters] = useState(false);
+
   const [filters, setFilters] = useState(initialFilters);
+
+  const ref = useRef<HTMLDivElement | null>(null);
+
+  useOnClickOutside(ref, () => setShowDateFilters(false));
 
   const toggleOpenFilters = () => {
     setShowFilters((prev) => !prev);
   };
 
+  const toggleOpenDateFilters = () => {
+    setShowDateFilters((prev) => !prev);
+  };
+
   const handleChangeFilters = (e: {
     target: { name: string; value: string };
   }) => {
-    setFilters((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+    if (e.target.name === "dateStart" || e.target.name === "dateEnd") {
+      setFilters((prev) => ({
+        ...prev,
+        [e.target.name]: e.target.value,
+        specificDate: "",
+      }));
+    } else {
+      setFilters((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+    }
   };
 
-  const handleDeleteFilterDate = () => {
-    setFilters((prev) => ({ ...prev, date: "" }));
+  const handleChangeSpecificDate = (newSpecificDate: string) => {
+    setFilters((prev) => ({
+      ...prev,
+      specificDate: newSpecificDate,
+      dateStart: "",
+      dateEnd: "",
+    }));
+  };
+
+  const handleDeleteSearch = () => {
+    setFilters((prev) => ({ ...prev, search: "" }));
+  };
+
+  const handleDeleteDate = () => {
+    setFilters((prev) => ({
+      ...prev,
+      dateStart: "",
+      dateEnd: "",
+      specificDate: "",
+    }));
   };
 
   return (
@@ -70,86 +108,228 @@ export const Orders = ({ orders }: OrderProps) => {
       </Flex>
       {showFilters && (
         <Flex className={styles["filters-container"]} flexDirection="column">
+          <Flex flexDirection="column" mb="10px" position="relative">
+            <label>{t("pages.orders.order.date")}</label>
+            <Flex gap="10px">
+              <Button bg="white" onClick={toggleOpenDateFilters}>
+                {t("pages.orders.check-date")} &nbsp; <CalendarIcon />
+              </Button>
+              {((filters.dateStart && filters.dateEnd) ||
+                filters.specificDate) && (
+                <>
+                  <Button
+                    _hover={{ background: "green" }}
+                    cursor="default"
+                    bg="green"
+                    color="white"
+                  >
+                    {filters.dateStart && filters.dateEnd && (
+                      <Text>{`${constructOrderDate(filters.dateStart).slice(
+                        0,
+                        -5
+                      )} - ${constructOrderDate(filters.dateEnd).slice(
+                        0,
+                        -5
+                      )}`}</Text>
+                    )}
+                    {filters.specificDate && (
+                      <Text>{t(`dates.${filters.specificDate}`)}</Text>
+                    )}
+                  </Button>
+                  <IconButton
+                    colorScheme="red"
+                    aria-label="Delete date filter"
+                    icon={<CloseIcon />}
+                    onClick={handleDeleteDate}
+                  />
+                </>
+              )}
+            </Flex>
+            {showDateFilters && (
+              <Flex
+                className={styles["date-filters"]}
+                gap="10px"
+                flexDir="column"
+                ref={ref}
+              >
+                <Flex flexDir="row" alignItems="end" gap="10px">
+                  <Flex flexDir="column">
+                    <label>{t("pages.orders.from")}</label>
+                    <Input
+                      bg="white"
+                      type="date"
+                      name="dateStart"
+                      onChange={handleChangeFilters}
+                      value={filters.dateStart}
+                    />
+                  </Flex>
+                  <Flex flexDir="column">
+                    <label>{t("pages.orders.to")}</label>
+                    <Input
+                      bg="white"
+                      type="date"
+                      name="dateEnd"
+                      onChange={handleChangeFilters}
+                      value={filters.dateEnd}
+                    />
+                  </Flex>
+                </Flex>
+                <Flex flexDir="column" gap="5px">
+                  <Button
+                    variant="outline"
+                    onClick={() => handleChangeSpecificDate("today")}
+                  >
+                    {t(`dates.today`)}
+                  </Button>
+                  <Button
+                    variant="outline"
+                    onClick={() => handleChangeSpecificDate("yesterday")}
+                  >
+                    {t(`dates.yesterday`)}
+                  </Button>
+                  <Button
+                    variant="outline"
+                    onClick={() => handleChangeSpecificDate("this-month")}
+                  >
+                    {t(`dates.this-month`)}
+                  </Button>
+                  <Button
+                    variant="outline"
+                    onClick={() => handleChangeSpecificDate("last-month")}
+                  >
+                    {t(`dates.last-month`)}
+                  </Button>
+                  <Button
+                    variant="outline"
+                    onClick={() =>
+                      handleChangeSpecificDate("last-three-months")
+                    }
+                  >
+                    {t(`dates.last-three-months`)}
+                  </Button>
+                </Flex>
+              </Flex>
+            )}
+          </Flex>
           <Flex flexDirection="column" mb="10px">
-            <label>Data</label>
-            <Flex flexDir="row" gap="10px">
+            <label>{t("pages.orders.search")}</label>
+            <Flex flexDirection="row" gap="10px">
               <Input
                 bg="white"
-                type="date"
-                name="date"
+                type="text"
+                name="search"
                 onChange={handleChangeFilters}
-                value={filters.date}
+                value={filters.search}
               />
-              {filters.date !== "" && (
+              {filters.search !== "" && (
                 <IconButton
                   colorScheme="red"
                   aria-label="Delete date filter"
                   icon={<CloseIcon />}
-                  onClick={handleDeleteFilterDate}
+                  onClick={handleDeleteSearch}
                 />
               )}
             </Flex>
-          </Flex>
-          <Flex flexDirection="column" mb="10px">
-            <label>Klient</label>
-            <Input
-              bg="white"
-              type="text"
-              name="client"
-              onChange={handleChangeFilters}
-            />
-          </Flex>
-          <Flex flexDirection="column" mb="10px">
-            <label>Destynacja</label>
-            <Input
-              bg="white"
-              type="text"
-              name="destination"
-              onChange={handleChangeFilters}
-            />
-          </Flex>
-          <Flex flexDirection="column" mb="10px">
-            <label>Nr zamówienia</label>
-            <Input
-              bg="white"
-              type="number"
-              name="order_id"
-              onChange={handleChangeFilters}
-            />
           </Flex>
         </Flex>
       )}
       <Flex flexDirection="column">
         {orders
           .filter((order) => {
-            const date = new Date(filters.date);
-            const dateBool =
-              Date.parse(String(date)) ===
-                Date.parse(String(order.createdAt).slice(0, 10)) ||
-              filters.date === "";
-            const clientBool =
-              order.destination.client.name
-                .toLowerCase()
-                .includes(filters.client) || filters.client === "";
+            let dateBool = true;
+            const orderDate = new Date(order.createdAt);
+            orderDate.setHours(0, 0, 0, 0);
+
+            if (filters.dateStart && filters.dateEnd) {
+              const dateStart = new Date(filters.dateStart);
+              const dateEnd = new Date(filters.dateEnd);
+              dateStart.setHours(0, 0, 0, 0);
+              dateEnd.setHours(0, 0, 0, 0);
+              if (orderDate < dateStart || orderDate > dateEnd) {
+                dateBool = false;
+              }
+            }
+
+            if (filters.specificDate) {
+              const today = new Date();
+              today.setHours(0, 0, 0, 0);
+              const yesterday = new Date(
+                new Date().setDate(new Date().getDate() - 1)
+              );
+              const firstDayOfThisMonth = new Date(
+                today.getFullYear(),
+                today.getMonth(),
+                1
+              );
+              const firstDayOfLastMonth = new Date(
+                today.getFullYear(),
+                today.getMonth() - 1,
+                1
+              );
+              const lastDayOfLastMonth = new Date(
+                today.getFullYear(),
+                today.getMonth(),
+                0
+              );
+              const threeMonthsAgo = new Date(
+                new Date().setMonth(new Date().getMonth() - 3)
+              );
+              switch (filters.specificDate) {
+                case "today":
+                  if (orderDate !== today) {
+                    dateBool = false;
+                  }
+                  break;
+                case "yesterday":
+                  if (orderDate !== yesterday) {
+                    dateBool = false;
+                  }
+                  break;
+                case "this-month":
+                  if (orderDate < firstDayOfThisMonth) {
+                    dateBool = false;
+                  }
+                  break;
+                case "last-month":
+                  if (
+                    orderDate < firstDayOfLastMonth ||
+                    orderDate > lastDayOfLastMonth
+                  ) {
+                    dateBool = false;
+                  }
+                  break;
+                case "last-three-months":
+                  if (orderDate < threeMonthsAgo) {
+                    dateBool = false;
+                  }
+                  break;
+              }
+            }
+
+            const clientBool = order.destination.client.name
+              .toLowerCase()
+              .includes(filters.search);
 
             const destinationBool =
               order.destination.address
                 .toLowerCase()
-                .includes(filters.destination) ||
-              order.destination.city
-                .toLowerCase()
-                .includes(filters.destination) ||
+                .includes(filters.search) ||
+              order.destination.city.toLowerCase().includes(filters.search) ||
               order.destination.country
                 .toLowerCase()
-                .includes(filters.destination) ||
+                .includes(filters.search) ||
               order.destination.postalCode
                 .toLowerCase()
-                .includes(filters.destination) ||
-              filters.destination === "";
+                .includes(filters.search);
 
-            const orderIdBool =
-              order.id === Number(filters.order_id) || filters.order_id === "";
-            return dateBool && clientBool && destinationBool && orderIdBool;
+            const orderIdBool = order.id === Number(filters.search);
+            return (
+              dateBool &&
+              (clientBool ||
+                destinationBool ||
+                orderIdBool ||
+                filters.search === "")
+            );
           })
           .map((order) => (
             <OrdersRow key={order.id} orderData={order} />

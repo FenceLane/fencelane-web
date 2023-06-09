@@ -270,7 +270,11 @@
         "dimensions": "Wymiar",
         "quantity": "Ilość",
         "price": "Cena"
-      }
+      },
+      "search": "Wyszukiwanie",
+      "check-date": "Wybierz datę",
+      "from": "Od",
+      "to": "Do"
     },
     "commissions": {
       "commission-id": "Zlecenie nr"
@@ -308,5 +312,12 @@
     "friday": "Piątek",
     "saturday": "Sobota",
     "sunday": "Niedziela"
+  },
+  "dates": {
+    "today": "Dzisiaj",
+    "yesterday": "Wczoraj",
+    "this-month": "W tym miesiącu",
+    "last-month": "W zeszłym miesiącu",
+    "last-three-months": "W ostatnich 3 miesiącach"
   }
 }
