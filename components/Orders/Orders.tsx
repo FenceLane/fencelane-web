@@ -107,11 +107,19 @@ export const Orders = ({ orders }: OrderProps) => {
         </Link>
       </Flex>
       {showFilters && (
-        <Flex className={styles["filters-container"]} flexDirection="column">
+        <Flex
+          className={styles["filters-container"]}
+          flexDirection="column"
+          flexWrap="wrap"
+        >
           <Flex flexDirection="column" mb="10px" position="relative">
             <label>{t("pages.orders.order.date")}</label>
             <Flex gap="10px">
-              <Button bg="white" onClick={toggleOpenDateFilters}>
+              <Button
+                bg="white"
+                onClick={toggleOpenDateFilters}
+                className={styles["filter-input"]}
+              >
                 {t("pages.orders.check-date")} &nbsp; <CalendarIcon />
               </Button>
               {((filters.dateStart && filters.dateEnd) ||
@@ -215,6 +223,7 @@ export const Orders = ({ orders }: OrderProps) => {
             <label>{t("pages.orders.search")}</label>
             <Flex flexDirection="row" gap="10px">
               <Input
+                className={styles["filter-input"]}
                 bg="white"
                 type="text"
                 name="search"
@@ -276,12 +285,12 @@ export const Orders = ({ orders }: OrderProps) => {
               );
               switch (filters.specificDate) {
                 case "today":
-                  if (orderDate !== today) {
+                  if (orderDate.getDate() !== today.getDate()) {
                     dateBool = false;
                   }
                   break;
                 case "yesterday":
-                  if (orderDate !== yesterday) {
+                  if (orderDate.getDate() !== yesterday.getDate()) {
                     dateBool = false;
                   }
                   break;
