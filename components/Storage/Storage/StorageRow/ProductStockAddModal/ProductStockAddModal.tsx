@@ -12,9 +12,10 @@ import {
   ModalFooter,
   Input,
   Box,
+  Select,
 } from "@chakra-ui/react";
 import { useEditProduct } from "../../../../../lib/api/hooks/products";
-import { ProductInfo } from "../../../../../lib/types";
+import { PRODUCT_VARIANT, ProductInfo } from "../../../../../lib/types";
 import { useContent } from "../../../../../lib/hooks/useContent";
 
 interface ProductEditModalProps {
@@ -31,6 +32,8 @@ export const ProductStockAddModal = ({
   const { t } = useContent();
 
   const [newStock, setNewStock] = useState(0);
+
+  const [newVariant, setNewVariant] = useState(product.variant);
 
   const handleProductStockAddModalClose = () => {
     onStockAddClose();
@@ -52,14 +55,18 @@ export const ProductStockAddModal = ({
       volumePerPackage,
     } = product;
 
+    const stockAdd = newStock;
+
+    setNewStock(0);
+
     editProduct({
       id: product.id,
       data: {
         dimensions,
         itemsPerPackage: Number(itemsPerPackage),
         categoryId: category.id,
-        stock: Number(stock) + newStock,
-        variant: variant,
+        stock: Number(stock) + stockAdd,
+        variant: newVariant,
         volumePerPackage: Number(volumePerPackage),
       },
     });
@@ -69,21 +76,39 @@ export const ProductStockAddModal = ({
     <Modal isOpen={isStockAddOpen} onClose={handleProductStockAddModalClose}>
       <ModalOverlay />
       <ModalContent>
-        <ModalHeader>Dodawanie towaru</ModalHeader>
+        <ModalHeader>
+          {t("pages.storage.modals.commodity_modifying")}
+        </ModalHeader>
         <ModalCloseButton />
         <ModalBody>
           <Text fontWeight="600">{product.category.name}</Text>
           <Text fontWeight="600">{product.dimensions}</Text>
-          <Text fontWeight="600">
+          <Text fontWeight="600" mb="20px">
             {t(`pages.storage.variants.${product.variant}`)}
           </Text>
           <label>Wprowadź ilość dodawanego towaru</label>
           <Input
+            mb="10px"
             name="stock"
             type="number"
             placeholder="Ilość"
             onChange={(e) => setNewStock(Number(e.target.value))}
           />
+          <label>{t("pages.storage.table.headings.variant")}</label>
+          <Select
+            onChange={(e) => setNewVariant(e.target.value as PRODUCT_VARIANT)}
+            defaultValue={product.variant}
+          >
+            <option value={PRODUCT_VARIANT.WHITE_WET}>
+              {t("pages.storage.variants.white_wet")}
+            </option>
+            <option value={PRODUCT_VARIANT.WHITE_DRY}>
+              {t("pages.storage.variants.white_dry")}
+            </option>
+            <option value={PRODUCT_VARIANT.BLACK}>
+              {t("pages.storage.variants.black")}
+            </option>
+          </Select>
           {!!editError && (
             <Text color="red">
               {t(`errors.backendErrorLabel.${mapAxiosErrorToLabel(editError)}`)}

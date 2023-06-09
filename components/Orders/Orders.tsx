@@ -113,7 +113,6 @@ export const Orders = ({ orders }: OrderProps) => {
           flexWrap="wrap"
         >
           <Flex flexDirection="column" mb="10px" position="relative">
-            <label>{t("pages.orders.order.date")}</label>
             <Flex gap="10px">
               <Button
                 bg="white"
@@ -220,9 +219,9 @@ export const Orders = ({ orders }: OrderProps) => {
             )}
           </Flex>
           <Flex flexDirection="column" mb="10px">
-            <label>{t("pages.orders.search")}</label>
             <Flex flexDirection="row" gap="10px">
               <Input
+                placeholder={t("pages.orders.search")}
                 className={styles["filter-input"]}
                 bg="white"
                 type="text"
