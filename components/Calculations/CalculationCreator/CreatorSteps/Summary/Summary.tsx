@@ -41,6 +41,7 @@ interface SummaryProps {
   rate: number;
   rateDate: string | null;
   transportCost: number;
+  otherCosts: number;
   transportCostCurrency: string;
 }
 
@@ -52,6 +53,7 @@ export const Summary = ({
   expansesList,
   rate,
   rateDate,
+  otherCosts,
   transportCost,
   transportCostCurrency,
 }: SummaryProps) => {
@@ -86,8 +88,8 @@ export const Summary = ({
 
   const transportCostInEur =
     transportCostCurrency === CURRENCY.EUR
-      ? transportCost
-      : transportCost / rate;
+      ? Number(otherCosts / rate) + Number(transportCost)
+      : Number(transportCost / rate) + Number(otherCosts / rate);
 
   const transportCostPerM3 =
     transportCostInEur /
@@ -107,6 +109,12 @@ export const Summary = ({
     transportCostPerM3,
     rate
   );
+
+  console.log(transportCostInEur);
+
+  console.log(transportCostPerM3);
+
+  console.log(otherCosts);
 
   const profit = initialProfit.map((profit) => {
     switch (currency) {

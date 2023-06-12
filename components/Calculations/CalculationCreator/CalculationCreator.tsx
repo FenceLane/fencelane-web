@@ -64,6 +64,8 @@ export const CalculationCreator = ({
 
   const [transportCost, setTransportCost] = useState(0);
 
+  const [otherCosts, setOtherCosts] = useState(0); // always in pln
+
   const [transportCostCurrency, setTransportCostCurrency] = useState("EUR");
 
   const [defaultSaturationCost, setDefaultSaturationCost] = useState({
@@ -138,8 +140,10 @@ export const CalculationCreator = ({
         {currentProduct === 0 && (
           <TransportCost
             transportCost={transportCost}
+            otherCosts={otherCosts}
             handleRateChange={handleRateChange}
             setTransportCost={setTransportCost}
+            setOtherCosts={setOtherCosts}
             handleNextStep={handleNextStep}
             setTransportCostCurrency={setTransportCostCurrency}
             transportCostCurrency={transportCostCurrency}
@@ -173,6 +177,7 @@ export const CalculationCreator = ({
             orderId={orderId}
             transportCostCurrency={transportCostCurrency}
             transportCost={transportCost}
+            otherCosts={otherCosts}
             expansesList={expansesList}
             handleRateChange={handleRateChange}
             handlePrevStep={handlePrevStep}
