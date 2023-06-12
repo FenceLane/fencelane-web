@@ -1,13 +1,14 @@
 import React, { useRef } from "react";
 import { Text, Tr, Td, useDisclosure, IconButton } from "@chakra-ui/react";
 import styles from "./StorageRow.module.scss";
-import { AddIcon, EditIcon } from "@chakra-ui/icons";
+import { AddIcon, EditIcon, StarIcon } from "@chakra-ui/icons";
 import { ProductInfo } from "../../../../lib/types";
 import { useContent } from "../../../../lib/hooks/useContent";
 import { useIsMobile } from "../../../../lib/hooks/useIsMobile";
 import { ProductEditModal } from "./ProductEditModal/ProductEditModal";
 import { ProductDeleteModal } from "./ProductDeleteModal/ProductDeleteModal";
 import { ProductStockAddModal } from "./ProductStockAddModal/ProductStockAddModal";
+import { ProductVariantTransferModal } from "./ProductVariantTransferModal/ProductVariantTransferModal";
 
 interface StorageRowProps {
   product: ProductInfo;
@@ -40,6 +41,12 @@ export const StorageRow = ({ product }: StorageRowProps) => {
     isOpen: isStockAddOpen,
     onOpen: onStockAddOpen,
     onClose: onStockAddClose,
+  } = useDisclosure();
+
+  const {
+    isOpen: isVariantTransferOpen,
+    onOpen: onVariantTransferOpen,
+    onClose: onVariantTransferClose,
   } = useDisclosure();
 
   return (
@@ -84,6 +91,14 @@ export const StorageRow = ({ product }: StorageRowProps) => {
             w="32px"
             color={product.category.color}
           ></IconButton>
+          <IconButton
+            icon={<StarIcon w="28px" h="28px" />}
+            aria-label="Variant transfer"
+            bg="white"
+            onClick={onVariantTransferOpen}
+            w="32px"
+            color={product.category.color}
+          ></IconButton>
         </Td>
       </Tr>
       <ProductEditModal
@@ -100,6 +115,11 @@ export const StorageRow = ({ product }: StorageRowProps) => {
       <ProductStockAddModal
         isStockAddOpen={isStockAddOpen}
         onStockAddClose={onStockAddClose}
+        product={product}
+      />
+      <ProductVariantTransferModal
+        isVariantTransferOpen={isVariantTransferOpen}
+        onVariantTransferClose={onVariantTransferClose}
         product={product}
       />
     </>

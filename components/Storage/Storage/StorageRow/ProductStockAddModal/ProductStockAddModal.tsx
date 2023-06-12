@@ -12,10 +12,9 @@ import {
   ModalFooter,
   Input,
   Box,
-  Select,
 } from "@chakra-ui/react";
 import { useEditProduct } from "../../../../../lib/api/hooks/products";
-import { PRODUCT_VARIANT, ProductInfo } from "../../../../../lib/types";
+import { ProductInfo } from "../../../../../lib/types";
 import { useContent } from "../../../../../lib/hooks/useContent";
 
 interface ProductEditModalProps {
@@ -32,8 +31,6 @@ export const ProductStockAddModal = ({
   const { t } = useContent();
 
   const [newStock, setNewStock] = useState(0);
-
-  const [newVariant, setNewVariant] = useState(product.variant);
 
   const handleProductStockAddModalClose = () => {
     onStockAddClose();
@@ -66,7 +63,7 @@ export const ProductStockAddModal = ({
         itemsPerPackage: Number(itemsPerPackage),
         categoryId: category.id,
         stock: Number(stock) + stockAdd,
-        variant: newVariant,
+        variant: variant,
         volumePerPackage: Number(volumePerPackage),
       },
     });
@@ -94,21 +91,6 @@ export const ProductStockAddModal = ({
             placeholder="Ilość"
             onChange={(e) => setNewStock(Number(e.target.value))}
           />
-          <label>{t("pages.storage.table.headings.variant")}</label>
-          <Select
-            onChange={(e) => setNewVariant(e.target.value as PRODUCT_VARIANT)}
-            defaultValue={product.variant}
-          >
-            <option value={PRODUCT_VARIANT.WHITE_WET}>
-              {t("pages.storage.variants.white_wet")}
-            </option>
-            <option value={PRODUCT_VARIANT.WHITE_DRY}>
-              {t("pages.storage.variants.white_dry")}
-            </option>
-            <option value={PRODUCT_VARIANT.BLACK}>
-              {t("pages.storage.variants.black")}
-            </option>
-          </Select>
           {!!editError && (
             <Text color="red">
               {t(`errors.backendErrorLabel.${mapAxiosErrorToLabel(editError)}`)}
@@ -123,7 +105,7 @@ export const ProductStockAddModal = ({
               mr={3}
               isLoading={isEditLoading}
             >
-              Dodaj
+              {t("buttons.add")}
             </Button>
             <Button
               colorScheme="gray"

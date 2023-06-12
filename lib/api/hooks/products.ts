@@ -44,6 +44,18 @@ export const useEditProduct = (onSuccess: () => void) => {
   return mutation;
 };
 
+export const useTransferVariant = (onSuccess: () => void) => {
+  const mutation = useMutation({
+    mutationFn: apiClient.products.transferVariant,
+    onSuccess: () => {
+      onSuccess();
+      queryClient.invalidateQueries({ queryKey: [QUERY_KEY.PRODUCTS] });
+    },
+  });
+
+  return mutation;
+};
+
 export const useDeleteProduct = (onSuccess: () => void) => {
   const mutation = useMutation({
     mutationFn: apiClient.products.deleteProduct,

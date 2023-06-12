@@ -169,7 +169,10 @@
         "commodity_modifying": "Modyfikowanie towaru",
         "commodity_deleting": "Usuwanie towaru",
         "commodity_adding": "Dodawanie towaru",
-        "are_you_sure": "Czy na pewno chcesz usunąć ten towar?"
+        "are_you_sure": "Czy na pewno chcesz usunąć ten towar?",
+        "variant_transfer": "Zmiana wariantu części produktu",
+        "choose_new_variant": "Wybierz nowy wariant",
+        "quantity": "Ilość pakietów"
       },
       "buttons": {
         "add": "Dodaj",

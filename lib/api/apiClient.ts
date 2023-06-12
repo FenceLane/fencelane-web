@@ -8,6 +8,7 @@ import {
   OrderInfo,
   OrderPostInfo,
   OrderProductInfo,
+  PRODUCT_VARIANT,
   ProductInfo,
   TransportPostInfo,
   USER_ROLE,
@@ -120,6 +121,16 @@ const editProduct = async ({
   data: ProductDataUpdate;
 }) => {
   return axiosInstance.put(apiPath(`products/${id}`), data);
+};
+
+const transferVariant = async ({
+  id,
+  data,
+}: {
+  id: string;
+  data: { amount: number; variant: PRODUCT_VARIANT };
+}) => {
+  return axiosInstance.post(apiPath(`products/${id}/variant-transfer`), data);
 };
 
 const getOrders = async (options?: {
@@ -243,6 +254,7 @@ export const apiClient = {
     postProduct,
     deleteProduct,
     editProduct,
+    transferVariant,
   },
   orders: {
     getOrders,
