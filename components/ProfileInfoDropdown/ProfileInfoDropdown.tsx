@@ -78,6 +78,7 @@ export default function ProfileInfoDropdown({
               h="32px"
               onClick={toggleShowDropdown}
               mr="20px"
+              m="0px 25px 0px 10px"
             >
               {name}
               <TriangleDownIcon w="10px" ml="15px" />
@@ -91,7 +92,7 @@ export default function ProfileInfoDropdown({
 
         <Box
           bg="white"
-          p="10px 0 0 0 "
+          p="10px"
           borderRadius="5px"
           position="absolute"
           top="45px"
