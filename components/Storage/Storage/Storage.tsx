@@ -118,6 +118,12 @@ export const Storage = ({ products }: StorageProps) => {
             {products
               .filter((product) => variantFilters[product.variant])
               .sort((a, b) => {
+                if (a.category.name < b.category.name) {
+                  return -1;
+                }
+                if (a.category.name > b.category.name) {
+                  return 1;
+                }
                 if (a.dimensions < b.dimensions) {
                   return -1;
                 }
