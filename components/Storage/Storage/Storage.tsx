@@ -26,7 +26,7 @@ interface StorageProps {
 const initialVariantFilters = {
   [PRODUCT_VARIANT.WHITE_WET]: true,
   [PRODUCT_VARIANT.WHITE_DRY]: true,
-  [PRODUCT_VARIANT.BLACK]: false,
+  [PRODUCT_VARIANT.BLACK]: true,
 };
 
 export const Storage = ({ products }: StorageProps) => {

@@ -113,7 +113,7 @@ export const Orders = ({ orders }: OrderProps) => {
           flexWrap="wrap"
         >
           <Flex flexDirection="column" mb="10px" position="relative">
-            <Flex gap="10px">
+            <Flex gap="10px" flexWrap="wrap">
               <Button
                 bg="white"
                 onClick={toggleOpenDateFilters}
@@ -124,31 +124,33 @@ export const Orders = ({ orders }: OrderProps) => {
               {((filters.dateStart && filters.dateEnd) ||
                 filters.specificDate) && (
                 <>
-                  <Button
-                    _hover={{ background: "green" }}
-                    cursor="default"
-                    bg="green"
-                    color="white"
-                  >
-                    {filters.dateStart && filters.dateEnd && (
-                      <Text>{`${constructOrderDate(filters.dateStart).slice(
-                        0,
-                        -5
-                      )} - ${constructOrderDate(filters.dateEnd).slice(
-                        0,
-                        -5
-                      )}`}</Text>
-                    )}
-                    {filters.specificDate && (
-                      <Text>{t(`dates.${filters.specificDate}`)}</Text>
-                    )}
-                  </Button>
-                  <IconButton
-                    colorScheme="red"
-                    aria-label="Delete date filter"
-                    icon={<CloseIcon />}
-                    onClick={handleDeleteDate}
-                  />
+                  <Flex gap="10px">
+                    <Button
+                      _hover={{ background: "green" }}
+                      cursor="default"
+                      bg="green"
+                      color="white"
+                    >
+                      {filters.dateStart && filters.dateEnd && (
+                        <Text>{`${constructOrderDate(filters.dateStart).slice(
+                          0,
+                          -5
+                        )} - ${constructOrderDate(filters.dateEnd).slice(
+                          0,
+                          -5
+                        )}`}</Text>
+                      )}
+                      {filters.specificDate && (
+                        <Text>{t(`dates.${filters.specificDate}`)}</Text>
+                      )}
+                    </Button>
+                    <IconButton
+                      colorScheme="red"
+                      aria-label="Delete date filter"
+                      icon={<CloseIcon />}
+                      onClick={handleDeleteDate}
+                    />
+                  </Flex>
                 </>
               )}
             </Flex>
@@ -158,12 +160,13 @@ export const Orders = ({ orders }: OrderProps) => {
                 gap="10px"
                 flexDir="column"
                 ref={ref}
+                bg="gray.200"
               >
                 <Flex flexDir="row" alignItems="end" gap="10px">
                   <Flex flexDir="column">
                     <label>{t("pages.orders.from")}</label>
                     <Input
-                      bg="white"
+                      bg="gray.50"
                       type="date"
                       name="dateStart"
                       onChange={handleChangeFilters}
@@ -173,7 +176,7 @@ export const Orders = ({ orders }: OrderProps) => {
                   <Flex flexDir="column">
                     <label>{t("pages.orders.to")}</label>
                     <Input
-                      bg="white"
+                      bg="gray.50"
                       type="date"
                       name="dateEnd"
                       onChange={handleChangeFilters}
@@ -183,30 +186,35 @@ export const Orders = ({ orders }: OrderProps) => {
                 </Flex>
                 <Flex flexDir="column" gap="5px">
                   <Button
+                    bg="gray.50"
                     variant="outline"
                     onClick={() => handleChangeSpecificDate("today")}
                   >
                     {t(`dates.today`)}
                   </Button>
                   <Button
+                    bg="gray.50"
                     variant="outline"
                     onClick={() => handleChangeSpecificDate("yesterday")}
                   >
                     {t(`dates.yesterday`)}
                   </Button>
                   <Button
+                    bg="gray.50"
                     variant="outline"
                     onClick={() => handleChangeSpecificDate("this-month")}
                   >
                     {t(`dates.this-month`)}
                   </Button>
                   <Button
+                    bg="gray.50"
                     variant="outline"
                     onClick={() => handleChangeSpecificDate("last-month")}
                   >
                     {t(`dates.last-month`)}
                   </Button>
                   <Button
+                    bg="gray.50"
                     variant="outline"
                     onClick={() =>
                       handleChangeSpecificDate("last-three-months")
