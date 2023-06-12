@@ -16,6 +16,15 @@ export const ProductDataCreateSchema = ProductDataSchema.omit({ orders: true });
 
 export const ProductDataUpdateSchema = ProductDataCreateSchema.partial();
 
+export const ProductVariantTransferDataSchema = ProductDataSchema.pick({
+  variant: true,
+}).extend({
+  amount: z.number().min(1),
+});
+
 export type ProductData = z.infer<typeof ProductDataSchema>;
 export type ProductDataCreate = z.infer<typeof ProductDataCreateSchema>;
 export type ProductDataUpdate = z.infer<typeof ProductDataUpdateSchema>;
+export type ProductVariantTransfer = z.infer<
+  typeof ProductVariantTransferDataSchema
+>;
