@@ -43,6 +43,7 @@
       "destination-does-not-exist": "Destynacja o podanym id nie istnieje!",
       "cannot-delete-product-with-orders": "Nie można usunąć produktu, który ma istniejące zamówienia!",
       "unauthorized": "Brak uprawnień!",
+      "event-does-not-exist": "Wydarzenie o podanym id nie istnieje!",
       "product-already-exists": "Podany produkt istnieje!",
       "product-order-does-not-exist": "Produkt nie istnieje w zamówieniu!",
       "product-category-already-exists": "Podana kategoria produktu już istnieje!",
@@ -271,6 +272,39 @@
         "quantity": "Ilość",
         "price": "Cena"
       }
+    },
+    "schedule": {
+      "modals": {
+        "event_add": {
+          "heading": "Dodawanie wydarzenia",
+          "title": "Tytuł",
+          "description": "Opis",
+          "startDate": "Data rozpoczęcia",
+          "endDate": "Data zakończenia",
+          "isPrivate": "Ukryj przed innymi użytkownikami"
+        },
+        "event_edit": {
+          "heading": "Edycja wydarzenia"
+        },
+        "event_details": {
+          "title": "Tytuł",
+          "description": "Opis",
+          "date": "Data",
+          "isPrivate": "To wydarzenie jest prywatne, nie będzie widoczne dla innych użytkowników!"
+        }
+      },
+      "calendar": {
+        "messages": {
+          "week": "Tydzień",
+          "work_week": "Tydzień roboczy",
+          "day": "Dzień",
+          "month": "Miesiąc",
+          "previous": "Poprzedni",
+          "next": "Następny",
+          "today": "Dzisiaj",
+          "agenda": "Agenda"
+        }
+      }
     }
   },
   "buttons": {
@@ -295,7 +329,12 @@
     "details": "Szczegóły",
     "price": "Cena",
     "quantity": "Ilość",
-    "history": "Historia"
+    "history": "Historia",
+    "dateSince": "Od",
+    "dateTo": "Do",
+    "dateAllDay": "Cały dzień",
+    "createdBy": "Utworzone przez",
+    "event": "Wydarzenie"
   },
   "days": {
     "monday": "Poniedziałek",
