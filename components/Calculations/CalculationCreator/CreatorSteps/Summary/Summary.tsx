@@ -110,12 +110,6 @@ export const Summary = ({
     rate
   );
 
-  console.log(transportCostInEur);
-
-  console.log(transportCostPerM3);
-
-  console.log(otherCosts);
-
   const profit = initialProfit.map((profit) => {
     switch (currency) {
       case CURRENCY.EUR:
