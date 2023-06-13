@@ -101,7 +101,6 @@ export default withApiMethods({
         } catch (error) {
           if (error instanceof PrismaClientKnownRequestError) {
             if (error.code === PrismaErrorCode.RECORD_NOT_FOUND_OR_RESTRICTED) {
-              console.log("dupa");
               return sendBackendError(res, {
                 code: BackendResponseStatusCode.NOT_FOUND,
                 label: BackendErrorLabel.TRAVEL_COST_DOES_NOT_EXIST,

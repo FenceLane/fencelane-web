@@ -21,6 +21,7 @@ export const Nav = ({
   menuItems,
 }: NavProps) => {
   const { t } = useContent("general");
+
   return (
     <>
       {!hideSidebar && (isMenuActive || !isMobile) && (
