@@ -1,8 +1,10 @@
 import { Box, Link, Image, Text } from "@chakra-ui/react";
+
 import React from "react";
 import styles from "./Nav.module.scss";
 import NextLink from "next/link";
 import { useContent } from "../../lib/hooks/useContent";
+import { useRouter } from "next/router";
 
 export interface NavProps {
   hideSidebar: boolean;
@@ -21,6 +23,9 @@ export const Nav = ({
   menuItems,
 }: NavProps) => {
   const { t } = useContent("general");
+  const router = useRouter();
+  const page = router.pathname.substring(1).split("/")[0];
+  // console.log(window.location.pathname);
   return (
     <>
       {!hideSidebar && (isMenuActive || !isMobile) && (
@@ -41,8 +46,16 @@ export const Nav = ({
                     textDecoration: "none",
                   }}
                 >
-                  <Box className={styles["nav-item"]}>
+                  <Box
+                    className={`${styles[`nav-item`]} ${
+                      page == item.name ? styles["active"] : ""
+                    }`}
+                    color={page == item.name ? "white" : "var(--unactive)"}
+                  >
                     <Image
+                      filter={
+                        page == item.name ? "brightness(0) invert(1)" : "none"
+                      }
                       width="20px"
                       src={`/images/navicons/${item.icon}.svg`}
                       alt=""
