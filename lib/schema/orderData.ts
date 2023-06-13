@@ -5,8 +5,8 @@ import { OrderFileDataSchema } from "./orderFileData";
 
 export const OrderDataSchema = z.object({
   destinationId: z.string().min(1),
-  date: z.date().optional(),
   profit: z.number().nullable().optional(),
+  date: z.string().min(1).optional(),
   status: z.nativeEnum(ORDER_STATUS).optional(),
   files: z.array(OrderFileDataSchema),
   products: z.array(

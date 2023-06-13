@@ -11,11 +11,12 @@ import {
   PRODUCT_VARIANT,
   ProductInfo,
   TransportPostInfo,
-  USER_ROLE,
 } from "../types";
+import { EventInfo, USER_ROLE } from "../types";
 import https from "https";
 import { ProductDataCreate, ProductDataUpdate } from "../schema/productData";
 import { OrderStatusData } from "../schema/orderStatusData";
+import { EventDataCreate, EventDataUpdate } from "../schema/eventData";
 
 const axiosInstance = axios.create({
   httpsAgent: new https.Agent({
@@ -160,6 +161,17 @@ const getClients = async (options?: { authCookie: string }) => {
   const { data } = await axiosInstance.get(apiPath("clients"), {
     headers: { cookie: options?.authCookie },
   });
+  return data;
+};
+
+const getEvents = async (options?: {
+  authCookie: string;
+}): Promise<EventInfo[]> => {
+  const {
+    data: { data },
+  } = await axiosInstance.get(apiPath("events"), {
+    headers: { cookie: options?.authCookie },
+  });
 
   return data;
 };
@@ -238,6 +250,24 @@ const deleteTransportCost = async (id: number) => {
   return axiosInstance.delete(apiPath(`orders/${id}/transport-cost`));
 };
 
+const postEvent = async (data: EventDataCreate) => {
+  return axiosInstance.post(apiPath("events"), data);
+};
+
+const updateEvent = async ({
+  id,
+  data,
+}: {
+  id: string;
+  data: EventDataUpdate;
+}) => {
+  return axiosInstance.put(apiPath(`events/${id}`), data);
+};
+
+const deleteEvent = async (id: string) => {
+  return axiosInstance.delete(apiPath(`events/${id}`));
+};
+
 export const apiClient = {
   auth: {
     postLogin,
@@ -275,5 +305,11 @@ export const apiClient = {
     postOrderExpanses,
     deleteExpanses,
     deleteTransportCost,
+  },
+  events: {
+    getEvents,
+    postEvent,
+    deleteEvent,
+    updateEvent,
   },
 };

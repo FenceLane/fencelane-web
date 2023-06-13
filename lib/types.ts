@@ -19,6 +19,19 @@ export interface ProductInfo {
   category: CategoryInfo;
 }
 
+export interface EventInfo {
+  id: string;
+  title: string;
+  description: string;
+  startDate: string;
+  endDate: string;
+  creatorId: string;
+  createdAt: string;
+  updatedAt: string;
+  creator: UserInfo;
+  visibility: EVENT_VISIBILITY;
+}
+
 export interface CategoryInfo {
   id: string;
   name: string;
@@ -218,4 +231,9 @@ export enum PRODUCT_EXPANSE_TYPE {
   PRICE = "price",
   CURRENCY = "currency",
   QUANTITY_TYPE = "quantityType",
+}
+
+export enum EVENT_VISIBILITY {
+  PUBLIC = "public",
+  PRIVATE = "private",
 }

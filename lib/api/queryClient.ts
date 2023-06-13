@@ -25,4 +25,5 @@ export const QUERY_KEY = {
   STATUS: "status",
   EXPANSES: "expanses",
   TRANSPORT_COST: "transport/cost",
+  EVENTS: "events",
 };
