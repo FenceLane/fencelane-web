@@ -307,7 +307,7 @@ export const Summary = ({
                   <br />
                   {row.productDimensions}
                 </Td>
-                <Td>{row.productQuantity}</Td>
+                <Td>{row.productQuantity.toFixed(2).replace(/\.00$/, "")}</Td>
                 <Td>{row.productDifference.toFixed(2).replace(/\.00$/, "")}</Td>
                 <Td>{profit[index].toFixed(2).replace(/\.00$/, "")}</Td>
               </Tr>
