@@ -283,7 +283,6 @@
     },
     "commissions": {
       "commission-id": "Zlecenie nr"
-      }
     },
     "schedule": {
       "modals": {
@@ -319,6 +318,7 @@
       }
     }
   },
+
   "buttons": {
     "add": "Dodaj",
     "modify": "Modyfikuj",
