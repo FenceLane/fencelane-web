@@ -396,7 +396,8 @@ export const OrderDetails = ({
         </Flex>
         {profit && (
           <Text className={styles["profit"]}>
-            {t("pages.orders.order.profit")}: +{profit}€
+            {t("pages.orders.order.profit")}: +
+            {Number(profit).toFixed(2).replace(/\.00$/, "")}€
           </Text>
         )}
         <Flex className={styles["history-container"]} flexDir="row">
