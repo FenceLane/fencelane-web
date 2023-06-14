@@ -7,9 +7,6 @@ import {
   IconButton,
   Input,
   Select,
-  Alert,
-  AlertIcon,
-  AlertTitle,
 } from "@chakra-ui/react";
 import Link from "next/link";
 import { useRouter } from "next/router";
@@ -17,11 +14,7 @@ import React, { useEffect, useState } from "react";
 import { usePostOrder } from "../../../../lib/api/hooks/orders";
 import { useContent } from "../../../../lib/hooks/useContent";
 import { mapAxiosErrorToLabel } from "../../../../lib/server/BackendError/BackendError";
-
-const initialOrderData = {
-  clientId: "",
-  destinationId: "",
-};
+import { CURRENCY, ProductInfo } from "../../../../lib/types";
 
 const initialNewProductsData = {
   productId: "",
@@ -29,30 +22,55 @@ const initialNewProductsData = {
   price: "",
 };
 
-export const OrderCreate = ({ clients, destinations, products }: any) => {
+interface OrderCreateProps {
+  clients: {
+    destinations: {
+      id: string;
+      country: string;
+      address: string;
+      postalCode: string;
+      city: string;
+      clientId: string;
+    }[];
+    id: string;
+    name: string;
+    shortName: string;
+    email: string;
+    phone: string;
+  }[];
+  products: ProductInfo[];
+}
+
+export const OrderCreate = ({ clients, products }: OrderCreateProps) => {
   const router = useRouter();
-  const { t } = useContent("errors.backendErrorLabel");
+  const { t } = useContent();
   const [newProducts, setNewProducts] = useState([initialNewProductsData]);
 
-  const [orderData, setOrderData] = useState(initialOrderData);
+  const [orderData, setOrderData] = useState<{
+    clientId: string | null;
+    destinationId: string | null;
+  }>({
+    clientId: null,
+    destinationId: null,
+  });
 
-  const [errorAlert, setErrorAlert] = useState(false);
+  const currentClient = clients.find((client) => {
+    return client.id === orderData.clientId;
+  });
 
   const {
     mutate: postOrder,
     error,
     isSuccess,
+    isError,
     isLoading,
-  } = usePostOrder(() => console.log("success"));
+  } = usePostOrder();
 
   const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const { name } = e.target;
+    const { name, options } = e.target;
     setOrderData((orderData) => ({
       ...orderData,
-      [name]:
-        e.target.options[e.target.options.selectedIndex].getAttribute(
-          "data-key"
-        ),
+      [name]: options[options.selectedIndex].getAttribute("data-key"),
     }));
   };
 
@@ -98,17 +116,11 @@ export const OrderCreate = ({ clients, destinations, products }: any) => {
     const numberedProducts = newProducts.map((product) => ({
       productId: product.productId,
       quantity: Number(product.quantity),
-      price: Number(product.price),
+      currency: CURRENCY.EUR,
+      price: String(product.price),
     }));
-    console.log();
-    console.log({
-      clientId: orderData.clientId,
-      destinationId: orderData.destinationId,
-      products: numberedProducts,
-    });
     postOrder({
-      clientId: orderData.clientId,
-      destinationId: orderData.destinationId,
+      destinationId: orderData.destinationId as string,
       products: numberedProducts,
     });
   };
@@ -120,44 +132,58 @@ export const OrderCreate = ({ clients, destinations, products }: any) => {
   }, [router, isSuccess]);
 
   return (
-    <>
+    <Flex width="100%" maxWidth="980px" flexDir="column">
       <Text color="var(--dark)" fontSize="20px" fontWeight="500" m="10px">
-        Kreator zamówienia
+        {t("pages.orders.order-creator.order-creator")}
       </Text>
-      <label>Klient</label>
+      <Flex gap="20px" mb="20px">
+        <Link href="/orders/create-client">
+          <Button colorScheme="blue">Dodaj klienta</Button>
+        </Link>
+        <Link href="/orders/create-destination">
+          <Button colorScheme="gray">Dodaj destynację</Button>
+        </Link>
+      </Flex>
+      <label>{t("main.client")}</label>
       <Select
         required
         bg="white"
-        placeholder="Klient"
         mb="20px"
         name="clientId"
         onChange={handleChange}
+        placeholder={t("main.client")}
       >
-        {clients.data.map((client: any) => (
+        {clients.map((client) => (
           <option data-key={client.id} key={client.id}>
             {client.name}
           </option>
         ))}
       </Select>
-      <label>Destynacja</label>
+      <label>{t("main.destination")}</label>
       <Select
         required
         bg="white"
-        placeholder="Destynacja"
         mb="20px"
         name="destinationId"
         onChange={handleChange}
       >
-        {destinations.data.map((destination: any) => (
-          <option data-key={destination.id} key={destination.id}>
-            {`${destination.address}, ${destination.postalCode} ${destination.city}`}
-          </option>
-        ))}
+        {orderData.clientId !== "" ? (
+          currentClient &&
+          currentClient.destinations.map((destination) => (
+            <option data-key={destination.id} key={destination.id}>
+              {`${destination.address}, ${destination.postalCode} ${destination.city}`}
+            </option>
+          ))
+        ) : (
+          <option></option>
+        )}
       </Select>
       {newProducts.map((item, index) => (
-        <>
+        <span key={item.productId}>
           <Flex justifyContent="space-between" alignItems="center">
-            <label>Produkt {index + 1}</label>
+            <label>
+              {t("main.product")} {index + 1}
+            </label>
             <IconButton
               colorScheme="red"
               aria-label="delete product"
@@ -169,30 +195,23 @@ export const OrderCreate = ({ clients, destinations, products }: any) => {
             required
             bg="white"
             mb="20px"
-            placeholder="Produkt"
+            placeholder={t("main.product")}
             data-index={index}
             onChange={handleProductChange}
+            defaultValue={newProducts[index].productId}
           >
             {products &&
-              products.map(
-                (product: {
-                  id: string | null | undefined;
-                  category: {
-                    name: string;
-                  };
-                  dimensions: string;
-                }) => (
-                  <option
-                    data-key={product.id}
-                    key={product.id}
-                    selected={product.id === newProducts[index].productId}
-                  >
-                    {product.category.name + " " + product.dimensions}
-                  </option>
-                )
-              )}
+              products.map((product) => (
+                <option
+                  data-key={product.id}
+                  key={product.id}
+                  value={product.id}
+                >
+                  {product.category.name + " " + product.dimensions}
+                </option>
+              ))}
           </Select>
-          <label>Ilość pakietów</label>
+          <label>{t("pages.orders.order-creator.packages-quantity")}</label>
           <Input
             required
             value={newProducts[index].quantity}
@@ -200,22 +219,22 @@ export const OrderCreate = ({ clients, destinations, products }: any) => {
             bg="white"
             mb="20px"
             type="number"
-            placeholder="Ilość"
+            placeholder={t("main.quantity")}
             data-index={index}
             onChange={handleProductDetailsChange}
           />
-          <label>Cena</label>
+          <label>{t("pages.orders.order-creator.price-per-m3")} [€]</label>
           <Input
             value={newProducts[index].price}
             name="price"
             bg="white"
             mb="20px"
             type="number"
-            placeholder="Cena"
+            placeholder={t("pages.orders.order-creator.price-per-m3")}
             data-index={index}
             onChange={handleProductDetailsChange}
           />
-        </>
+        </span>
       ))}
       <Flex gap="30px" justifyContent="space-between">
         <Box>
@@ -225,11 +244,11 @@ export const OrderCreate = ({ clients, destinations, products }: any) => {
             onClick={handlePostOrder}
             mr="20px"
           >
-            Zatwierdź
+            {t("buttons.confirm")}
           </Button>
-          <Button colorScheme="red">
-            <Link href="/orders">Anuluj</Link>
-          </Button>
+          <Link href="/orders">
+            <Button colorScheme="red">{t("buttons.cancel")}</Button>
+          </Link>
         </Box>
         <IconButton
           aria-label="add product"
@@ -238,12 +257,11 @@ export const OrderCreate = ({ clients, destinations, products }: any) => {
           onClick={handleAddProduct}
         ></IconButton>
       </Flex>
-      {error && (
-        <Alert status="error">
-          <AlertIcon />
-          <AlertTitle>{t(mapAxiosErrorToLabel(error))}</AlertTitle>
-        </Alert>
+      {isError && (
+        <Text color="red" fontWeight="600" fontSize="18px">
+          {t(`errors.backendErrorLabel.${mapAxiosErrorToLabel(error)}`)}
+        </Text>
       )}
-    </>
+    </Flex>
   );
 };

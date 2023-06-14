@@ -43,11 +43,19 @@
       "destination-does-not-exist": "Destynacja o podanym id nie istnieje!",
       "cannot-delete-product-with-orders": "Nie można usunąć produktu, który ma istniejące zamówienia!",
       "unauthorized": "Brak uprawnień!",
+      "event-does-not-exist": "Wydarzenie o podanym id nie istnieje!",
       "product-already-exists": "Podany produkt istnieje!",
+      "product-order-does-not-exist": "Produkt nie istnieje w zamówieniu!",
       "product-category-already-exists": "Podana kategoria produktu już istnieje!",
       "product-category-does-not-exist": "Kategoria produktu o podanym id nie istnieje!",
       "product-does-not-exist": "Produkt o podanym id nie istnieje!",
-      "cannot-delete-product-category-with-products": "Nie można usunąć kategorii produktu, która ma produkty!"
+      "cannot-delete-product-category-with-products": "Nie można usunąć kategorii produktu, która ma produkty!",
+      "expanse-does-not-exist": "Koszt o podanym id nie istnieje!",
+      "travel-cost-already-exists": "Koszt transportu dla tego zamówienia już istnieje!",
+      "travel-cost-does-not-exist": "Koszt transportu dla danego zamówienia nie istnieje!",
+      "file-upload-error": "Wystąpił błąd podczas przesyłania pliku!",
+      "file-delete-error": "Wystąpił błąd podczas usuwania pliku!",
+      "order-file-does-not-exist": "Plik o podanej nazwie nie istnieje w danym zamówieniu!"
     }
   },
   "success": {
@@ -147,7 +155,8 @@
           "dimensions": "Wymiary",
           "variant": "Wariant",
           "itemsPerPackage": "Pakowanie",
-          "volumePerPackage": "M3",
+          "volumePerPackage": "M3 w paczce",
+          "m3": "M3",
           "stock": "Ilość pakietów",
           "pieces": "Ilość sztuk"
         }
@@ -174,27 +183,159 @@
     },
     "orders": {
       "order_history": "Historia zamówień",
+      "calculations_history": "Historia kalkulacji",
       "order": {
         "order_id": "Nr zamówienia",
         "status": "Status",
         "client": "Klient",
         "date": "Data",
         "destination": "Destynacja",
-        "details": "Szczegóły"
+        "details": "Szczegóły",
+        "change-status": "Zmień status",
+        "pieces": "Sztuki",
+        "packages": "Paczki",
+        "specification": "Specyfikacja",
+        "calculation": "Kalkulacja",
+        "documents": "Dokumenty",
+        "file": "Plik",
+        "download": "Pobierz",
+        "download-all": "Pobierz wszystkie",
+        "status-change": "Zmiana statusu",
+        "profit": "Zysk",
+        "bad-quantity": {
+          "bad-quantity-entered": "Wprowadzono błędną ilość",
+          "entered": "Wprowadzono",
+          "for": "Dla",
+          "which-stands-for": "co daje",
+          "packages": "pakietów",
+          "did-you-mean": "Czy chodziło Ci o ",
+          "pieces": "sztuk",
+          "m3": "m3"
+        },
+        "calculation-to-order": "Kalkulacja do zamówienia ",
+        "transport-cost": "Cena dostawy",
+        "products": "Produkty",
+        "summary": "Podsumowanie",
+        "eur-rate": "Kurs EUR",
+        "from": "Z",
+        "client-price": "Cena u klienta",
+        "packing": "Pakowanie",
+        "costs": "Koszty",
+        "commodity": "Towar",
+        "saturation": "Nasycanie",
+        "marketer": "Handlowiec",
+        "other": "Inne",
+        "currency-and-quantity-type": "Cena i jednostka",
+        "product": "Produkt",
+        "quantity": "Ilość",
+        "difference": "Różnica",
+        "total": "Łącznie",
+        "bottom-total": "RAZEM",
+        "delete-calculation": "Usuń kalkulację",
+        "confirm-calculation-delete": "Usuwanie kalkulacji",
+        "are-you-sure": "Czy na pewno chcesz usunąć tę kalkulację?"
+      },
+      "clients": {
+        "client-creator": "Dodawanie klienta",
+        "name": "Imię i nazwisko",
+        "short-name": "Inicjały",
+        "phone-number": "Numer telefonu"
+      },
+      "destinations": {
+        "destination-creator": "Dodawanie destynacji",
+        "country": "Kraj",
+        "address": "Ulica",
+        "postal-code": "Kod pocztowy",
+        "city": "Miasto"
       },
       "buttons": {
         "new": "Nowe"
       },
       "status": {
-        "created": "Utworzono zamówienie",
-        "preparing": "W przygotowaniu",
-        "packed": "Zapakowane",
-        "delivery": "W drodze",
-        "finished": "Dostarczono"
+        "order-created": "Utworzono zamówienie",
+        "received-in-storage": "Przyjęto na magazynie",
+        "order created": "Utworzono zamówienie",
+        "received in storage": "Przyjęto na magazynie",
+        "dried": "Wysuszono",
+        "impregnated": "Nasycono",
+        "sent": "Wysłano",
+        "delivered": "Dostarczono"
+      },
+      "order-creator": {
+        "order-creator": "Kreator zamówienia",
+        "packages-quantity": "Ilość pakietów",
+        "price-per-m3": "Cena za m3"
+      },
+      "spec-table": {
+        "type": "Rodzaj",
+        "dimensions": "Wymiar",
+        "quantity": "Ilość",
+        "price": "Cena"
+      }
+    },
+    "schedule": {
+      "modals": {
+        "event_add": {
+          "heading": "Dodawanie wydarzenia",
+          "title": "Tytuł",
+          "description": "Opis",
+          "startDate": "Data rozpoczęcia",
+          "endDate": "Data zakończenia",
+          "isPrivate": "Ukryj przed innymi użytkownikami"
+        },
+        "event_edit": {
+          "heading": "Edycja wydarzenia"
+        },
+        "event_details": {
+          "title": "Tytuł",
+          "description": "Opis",
+          "date": "Data",
+          "isPrivate": "To wydarzenie jest prywatne, nie będzie widoczne dla innych użytkowników!"
+        }
+      },
+      "calendar": {
+        "messages": {
+          "week": "Tydzień",
+          "work_week": "Tydzień roboczy",
+          "day": "Dzień",
+          "month": "Miesiąc",
+          "previous": "Poprzedni",
+          "next": "Następny",
+          "today": "Dzisiaj",
+          "agenda": "Agenda"
+        }
       }
     }
   },
-
+  "buttons": {
+    "add": "Dodaj",
+    "modify": "Modyfikuj",
+    "edit": "Edytuj",
+    "delete": "Usuń",
+    "cancel": "Anuluj",
+    "next": "Dalej",
+    "back": "Cofnij",
+    "save": "Zapisz",
+    "confirm": "Zatwierdź",
+    "new": "Nowe"
+  },
+  "main": {
+    "product": "Produkt",
+    "order": "Zamówienie",
+    "status": "Status",
+    "client": "Klient",
+    "date": "Data",
+    "destination": "Destynacja",
+    "details": "Szczegóły",
+    "price": "Cena",
+    "quantity": "Ilość",
+    "history": "Historia",
+    "dateSince": "Od",
+    "dateTo": "Do",
+    "dateAllDay": "Cały dzień",
+    "createdBy": "Utworzone przez",
+    "event": "Wydarzenie"
+  },
   "days": {
     "monday": "Poniedziałek",
     "tuesday": "Wtorek",

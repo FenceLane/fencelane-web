@@ -1,6 +1,8 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
+import { OrderStatusData } from "../../schema/orderStatusData";
 import { apiClient } from "../apiClient";
 import { queryClient, QUERY_KEY } from "../queryClient";
+import { OrderInfo, OrderProductInfo } from "../../types";
 
 export const useGetOrders = () => {
   const mutation = useQuery({
@@ -11,21 +13,23 @@ export const useGetOrders = () => {
   return mutation;
 };
 
-export const useGetOrder = (id: String) => {
+export const useGetOrder = (id: number) => {
   const mutation = useQuery({
     queryFn: () => apiClient.orders.getOrder(id),
-    queryKey: [QUERY_KEY.ORDERS],
+    queryKey: [QUERY_KEY.ORDER, id],
   });
 
   return mutation;
 };
 
-export const usePostOrder = (onSuccess: () => void) => {
+export const usePostOrder = () => {
   const mutation = useMutation({
     mutationFn: apiClient.orders.postOrder,
     onSuccess: () => {
-      onSuccess();
-      queryClient.invalidateQueries([QUERY_KEY.ORDERS, QUERY_KEY.PRODUCTS]);
+      return Promise.all([
+        queryClient.invalidateQueries({ queryKey: [QUERY_KEY.ORDERS] }),
+        queryClient.invalidateQueries({ queryKey: [QUERY_KEY.PRODUCTS] }),
+      ]);
     },
   });
 
@@ -40,11 +44,77 @@ export const useGetClients = () => {
 
   return mutation;
 };
+export const useUpdateStatus = (orderId: number, onSuccess: () => void) => {
+  const mutation = useMutation({
+    mutationFn: (data: OrderStatusData) =>
+      apiClient.orders.updateStatus({ id: orderId, data }),
+    onSuccess: () => {
+      onSuccess();
 
-export const useGetDestinations = () => {
-  const mutation = useQuery({
-    queryFn: () => apiClient.orders.getDestinations(),
-    queryKey: [QUERY_KEY.DESTINATIONS],
+      return Promise.all([
+        queryClient.invalidateQueries({ queryKey: [QUERY_KEY.ORDERS] }),
+        queryClient.invalidateQueries({ queryKey: [QUERY_KEY.ORDER, orderId] }),
+      ]);
+    },
+  });
+
+  return mutation;
+};
+
+export const useUpdateOrderProducts = (
+  orderId: number,
+  onSuccess: (orderProducts: Partial<OrderProductInfo>[]) => void
+) => {
+  const mutation = useMutation({
+    mutationFn: (data: Partial<OrderProductInfo>[]) =>
+      apiClient.orders.updateOrderProducts({ id: orderId, data }),
+    onSuccess: (_data, variables) => {
+      onSuccess(variables);
+      return queryClient.invalidateQueries({
+        queryKey: [QUERY_KEY.ORDER, orderId],
+      });
+    },
+  });
+
+  return mutation;
+};
+
+export const useUpdateOrder = (orderId: number) => {
+  const mutation = useMutation({
+    mutationFn: (data: Partial<OrderInfo>) =>
+      apiClient.orders.updateOrder({ id: orderId, data }),
+    onSuccess: () => {
+      return queryClient.invalidateQueries({
+        queryKey: [QUERY_KEY.ORDER, orderId],
+      });
+    },
+  });
+
+  return mutation;
+};
+
+export const usePostClient = () => {
+  const mutation = useMutation({
+    mutationFn: apiClient.orders.postClient,
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: [QUERY_KEY.CLIENTS],
+      });
+    },
+  });
+
+  return mutation;
+};
+
+export const usePostDestination = () => {
+  const mutation = useMutation({
+    mutationFn: apiClient.orders.postDestination,
+    onSuccess: () => {
+      return Promise.all([
+        queryClient.invalidateQueries({ queryKey: [QUERY_KEY.CLIENTS] }),
+        queryClient.invalidateQueries({ queryKey: [QUERY_KEY.DESTINATIONS] }),
+      ]);
+    },
   });
 
   return mutation;

@@ -6,8 +6,7 @@ import { OrdersWrapper } from "../../components/Orders/OrdersWrapper/OrdersWrapp
 
 const OrdersPage = ({
   user,
-  orders,
-}: InferGetServerSidePropsType<typeof getServerSideProps> & any) => {
+}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   return (
     <Layout user={user}>
       <OrdersWrapper />

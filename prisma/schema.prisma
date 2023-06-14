@@ -22,6 +22,7 @@ model User {
   passwordResetTokens  PasswordResetToken[]
   orders Order[]
   orderStatuses OrderStatus[]
+  events Event[]
 }
 
 model Session {
@@ -50,7 +51,7 @@ model Client {
   shortName String
   email String @unique
   phone String @unique
-  orders Order[]
+  destinations Destination[]
 }
 
 
@@ -61,6 +62,8 @@ model Destination {
   postalCode String
   city String
   orders Order[]
+  client Client @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  clientId String
 
   @@unique([country, city, postalCode, address])
 }
@@ -102,16 +105,39 @@ model OrderStatus {
 
 model Order{
   id Int  @id @default(autoincrement())
-  client Client @relation(fields: [clientId], references: [id])
-  clientId String
   destination Destination @relation(fields: [destinationId], references: [id])
   destinationId String
   date DateTime @default(now())
   statusHistory OrderStatus[]
-  files String[] @default([])
+  events Event[]
+  files OrderFile[]
   products ProductOrder[]
   creator User @relation(fields: [creatorId], references: [id])
   creatorId String
+  profit Decimal?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  transportCost TransportCost?
+}
+
+model OrderFile {
+  key String @id @unique
+  url String
+  order Order @relation(fields: [orderId], references: [id])
+  orderId Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model TransportCost {
+  id String  @id @default(uuid())
+  price Decimal
+  currency String
+
+  order Order @relation(fields: [orderId], references: [id])
+  orderId Int @unique
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -123,8 +149,43 @@ model ProductOrder {
   orderId Int
   product Product @relation(fields: [productId], references: [id])
   productId String
+
   quantity Int
   price Decimal
+  currency String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  productExpanses ProductExpanse[]
+}
+
+model ProductExpanse {
+  id String  @id @default(uuid())
+
+  price Decimal
+  currency String
+
+  type String //type of expanses (commodity costs, saturation, wood finishing, marketer, other...)
+
+  productOrder ProductOrder @relation(fields: [productOrderId], references: [id], onDelete: Cascade)
+  productOrderId String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Event {
+  id String  @id @default(uuid())
+  title String
+  description String?
+  startDate DateTime
+  endDate DateTime
+  order Order? @relation(fields: [orderId], references: [id])
+  orderId Int?
+  visibility String @default("public")
+  creator User @relation(fields: [creatorId], references: [id])
+  creatorId String
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

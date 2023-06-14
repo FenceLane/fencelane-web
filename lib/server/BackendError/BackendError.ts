@@ -17,12 +17,20 @@ export const BackendErrorLabel = {
   DESTINATION_DOES_NOT_EXIST: "destination-does-not-exist",
   UNAUTHORIZED: "unauthorized",
   ORDER_DOES_NOT_EXIST: "order-does-not-exist",
+  EVENT_DOES_NOT_EXIST: "event-does-not-exist",
+  TRAVEL_COST_ALREADY_EXISTS: "travel-cost-already-exists",
+  TRAVEL_COST_DOES_NOT_EXIST: "travel-cost-does-not-exist",
+  EXPANSE_DOES_NOT_EXIST: "expanse-does-not-exist",
+  PRODUCT_ORDER_DOES_NOT_EXIST: "product-order-does-not-exist",
   PRODUCT_DOES_NOT_EXIST: "product-does-not-exist",
   PRODUCT_CATEGORY_DOES_NOT_EXIST: "product-category-does-not-exist",
   CANNOT_DELETE_PRODUCT_WITH_ORDERS: "cannot-delete-product-with-orders",
   CANNOT_DELETE_PRODUCT_CATEGORY_WITH_PRODUCTS:
     "cannot-delete-product-category-with-products",
   CLIENT_DOES_NOT_EXIST: "client-does-not-exist",
+  FILE_UPLOAD_ERROR: "file-upload-error",
+  FILE_DELETE_ERROR: "file-delete-error",
+  ORDER_FILE_DOES_NOT_EXIST: "order-file-does-not-exist",
 } as const;
 
 export const PrismaErrorCode = {

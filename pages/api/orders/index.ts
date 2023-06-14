@@ -1,7 +1,7 @@
 import { User } from "@prisma/client";
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime";
 import { prismaClient } from "../../../lib/prisma/prismaClient";
-import { OrderDataSchema } from "../../../lib/schema/orderData";
+import { OrderDataCreateSchema } from "../../../lib/schema/orderData";
 import {
   BackendErrorLabel,
   BackendResponseStatusCode,
@@ -15,7 +15,7 @@ import { ORDER_STATUS } from "../../../lib/types";
 
 export default withApiMethods({
   POST: withApiAuth(
-    withValidatedJSONRequestBody(OrderDataSchema)(async (req, res) => {
+    withValidatedJSONRequestBody(OrderDataCreateSchema)(async (req, res) => {
       //FIXME: improve types for req.session.user
       const creator = (req as typeof req & { session: { user: User } }).session
         .user;
@@ -38,22 +38,34 @@ export default withApiMethods({
               ...orderData,
               products: { createMany: { data: requestedProducts } },
               statusHistory: {
-                create: { status: ORDER_STATUS.CREATED, creatorId: creator.id },
+                create: {
+                  status: ORDER_STATUS.ORDER_CREATED,
+                  creatorId: creator.id,
+                },
               },
               creatorId: creator.id,
             },
             include: {
-              products: true,
-              client: true,
-              destination: true,
+              products: {
+                include: { product: { include: { category: true } } },
+              },
+              destination: { include: { client: true } },
               creator: true,
-              statusHistory: true,
+              statusHistory: { include: { creator: true } },
             },
           });
 
+          const orderResponse = {
+            ...createdOrder,
+            products: createdOrder.products.map(({ id, ...product }) => ({
+              ...product,
+              productOrderId: id,
+            })),
+          };
+
           return res
             .status(BackendResponseStatusCode.SUCCESS)
-            .send({ data: createdOrder });
+            .send({ data: orderResponse });
         });
       } catch (error) {
         if (error instanceof PrismaClientKnownRequestError) {
@@ -82,14 +94,22 @@ export default withApiMethods({
   GET: withApiAuth(async (_req, res) => {
     const orders = await prismaClient.order.findMany({
       include: {
-        client: true,
-        destination: true,
-        statusHistory: true,
-        products: { select: { productId: true, quantity: true, price: true } },
+        destination: { include: { client: true } },
+        statusHistory: { include: { creator: true } },
+        products: { include: { product: { include: { category: true } } } },
       },
+      orderBy: { createdAt: "desc" },
     });
 
-    return res.status(BackendResponseStatusCode.SUCCESS).send({ data: orders });
+    return res.status(BackendResponseStatusCode.SUCCESS).send({
+      data: orders.map((order) => ({
+        ...order,
+        products: order.products.map(({ id, ...product }) => ({
+          ...product,
+          productOrderId: id,
+        })),
+      })),
+    });
   }),
 });
 

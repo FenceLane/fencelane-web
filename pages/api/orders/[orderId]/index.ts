@@ -14,6 +14,7 @@ import { withValidatedJSONRequestBody } from "../../../../lib/server/middlewares
 export default withApiMethods({
   GET: withApiAuth(async (req, res) => {
     const { orderId } = req.query;
+
     if (typeof orderId !== "string") {
       throw Error('"orderId" was not passed in dynamic api path.');
     }
@@ -21,10 +22,9 @@ export default withApiMethods({
     const order = await prismaClient.order.findUnique({
       where: { id: Number(orderId) },
       include: {
-        client: true,
-        destination: true,
-        products: true,
-        statusHistory: true,
+        destination: { include: { client: true } },
+        products: { include: { product: { include: { category: true } } } },
+        statusHistory: { include: { creator: true } },
       },
     });
 
@@ -35,7 +35,17 @@ export default withApiMethods({
       });
     }
 
-    return res.status(BackendResponseStatusCode.SUCCESS).send({ data: order });
+    const orderResponse = {
+      ...order,
+      products: order.products.map(({ id, ...product }) => ({
+        ...product,
+        productOrderId: id,
+      })),
+    };
+
+    return res
+      .status(BackendResponseStatusCode.SUCCESS)
+      .send({ data: orderResponse });
   }),
 
   PUT: withApiAuth(
@@ -45,20 +55,12 @@ export default withApiMethods({
         throw Error('"orderId" was not passed in dynamic api path.');
       }
 
-      const { products, ...orderData } = req.parsedBody;
+      const orderData = req.parsedBody;
 
       try {
         const updatedOrder = await prismaClient.order.update({
           where: { id: Number(orderId) },
-          data: {
-            ...orderData,
-            products: {
-              connectOrCreate: products?.map((p) => ({
-                where: { id: p.productId },
-                create: p,
-              })),
-            },
-          },
+          data: orderData,
         });
 
         return res

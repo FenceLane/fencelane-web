@@ -115,7 +115,7 @@ export const ProductAddModal = ({
             onChange={handleNameChange}
           >
             {productsCategories &&
-              productsCategories.map((category: any) => (
+              productsCategories.map((category) => (
                 <option value={category.id} key={category.id}>
                   {category.name}
                 </option>

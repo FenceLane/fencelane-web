@@ -7,13 +7,15 @@ import { OrderDetailsWrapper } from "../../../components/Orders/OrderDetailsWrap
 
 const OrderDetailsPage = ({
   user,
-  orders,
-}: InferGetServerSidePropsType<typeof getServerSideProps> & any) => {
+}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const router = useRouter();
   const { id } = router.query;
+
+  if (typeof id !== "string") return null;
+
   return (
     <Layout user={user}>
-      <OrderDetailsWrapper id={id} />
+      <OrderDetailsWrapper id={Number(id)} />
     </Layout>
   );
 };

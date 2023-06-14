@@ -10,36 +10,44 @@ import {
 import { withApiAuth } from "../../../../lib/server/middlewares/withApiAuth";
 import { withApiMethods } from "../../../../lib/server/middlewares/withApiMethods";
 import { withValidatedJSONRequestBody } from "../../../../lib/server/middlewares/withValidatedJSONRequestBody";
+import { z } from "zod";
 
 export default withApiMethods({
   POST: withApiAuth(
-    withValidatedJSONRequestBody(ProductCategoryDataCreateSchema)(
-      async (req, res) => {
-        const newProductCategoryData = req.parsedBody;
+    withValidatedJSONRequestBody(
+      z.union([
+        ProductCategoryDataCreateSchema,
+        z.array(ProductCategoryDataCreateSchema),
+      ])
+    )(async (req, res) => {
+      const newProductCategoryData = req.parsedBody;
 
-        try {
-          const createdProductCategory =
-            await prismaClient.productCategory.create({
-              data: newProductCategoryData,
+      const newProductCategories = Array.isArray(newProductCategoryData)
+        ? newProductCategoryData
+        : [newProductCategoryData];
+
+      try {
+        const createdProductCategories =
+          await prismaClient.productCategory.createMany({
+            data: newProductCategories,
+          });
+
+        return res
+          .status(BackendResponseStatusCode.SUCCESS)
+          .send({ data: createdProductCategories });
+      } catch (error) {
+        if (error instanceof PrismaClientKnownRequestError) {
+          if (error.code === PrismaErrorCode.UNIQUE_CONSTRAINT_FAILED) {
+            return sendBackendError(res, {
+              code: BackendResponseStatusCode.CONFLICT,
+              label: BackendErrorLabel.PRODUCT_CATEGORY_ALREADY_EXISTS,
+              message: error.message,
             });
-
-          return res
-            .status(BackendResponseStatusCode.SUCCESS)
-            .send({ data: createdProductCategory });
-        } catch (error) {
-          if (error instanceof PrismaClientKnownRequestError) {
-            if (error.code === PrismaErrorCode.UNIQUE_CONSTRAINT_FAILED) {
-              return sendBackendError(res, {
-                code: BackendResponseStatusCode.CONFLICT,
-                label: BackendErrorLabel.PRODUCT_CATEGORY_ALREADY_EXISTS,
-                message: error.message,
-              });
-            }
           }
-          throw error;
         }
+        throw error;
       }
-    )
+    })
   ),
 
   GET: withApiAuth(async (_req, res) => {
