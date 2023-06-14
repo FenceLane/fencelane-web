@@ -1,17 +1,17 @@
 import ReactApexChart from "react-apexcharts";
-import { Box, Text, Stack } from "@chakra-ui/react";
+import { Text, Stack, Flex, Box } from "@chakra-ui/react";
 import { TotalRevenueOptions } from "./chart.config";
 import { ArrowDownIcon } from "@chakra-ui/icons";
 import { FinancesSeries } from "../../Constants";
 
 const BarChart = () => {
   return (
-    <Box
+    <Flex
+      minHeight="400px"
       p={6}
-      flex={1}
       id="chart"
+      flex="1"
       bgColor={"#fcfcfc"}
-      display={"flex"}
       flexDirection={"column"}
       borderRadius={"10px"}
     >
@@ -37,14 +37,15 @@ const BarChart = () => {
           </Stack>
         </Stack>
       </Stack>
-
-      <ReactApexChart
-        series={FinancesSeries}
-        type="bar"
-        height={310}
-        options={TotalRevenueOptions}
-      />
-    </Box>
+      <Box flex="1">
+        <ReactApexChart
+          series={FinancesSeries}
+          type="bar"
+          height="100%"
+          options={TotalRevenueOptions}
+        />
+      </Box>
+    </Flex>
   );
 };
 

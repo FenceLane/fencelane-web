@@ -2,13 +2,28 @@ import React from "react";
 import ProductTypes from "../../../components/Stats/Charts/ProductsTypes/ProductTypes";
 import { ChevronDownIcon } from "@chakra-ui/icons";
 import { productTypesInfo } from "../../../components/Stats/Constants";
-import { Box, Text } from "@chakra-ui/react";
-import DonutChartCard from "../Charts/DonutChartCard/DonutChartCard";
-import BarChart from "../Charts/BarChart/BarChart";
+import { Box, Flex, Heading, Text } from "@chakra-ui/react";
+import styles from "./Stats.module.scss";
+import dynamic from "next/dynamic";
+import { OrderInfo } from "../../../lib/types";
 
-export const Stats = () => {
+const DonutChartCard = dynamic(
+  () =>
+    import("../../../components/Stats/Charts/DonutChartCard/DonutChartCard"),
+  { ssr: false }
+);
+const BarChart = dynamic(
+  () => import("../../../components/Stats/Charts/BarChart/BarChart"),
+  { ssr: false }
+);
+
+interface StatsProps {
+  orders: OrderInfo[];
+}
+
+export const Stats = ({ orders }: StatsProps) => {
   return (
-    <Box width={"100%"}>
+    <Flex width={"100%"} minHeight="100%" flexDirection="column">
       <Box
         fontSize={"20px"}
         display={"inline-flex"}
@@ -57,14 +72,42 @@ export const Stats = () => {
           unit={"m³"}
         />
       </Box>
-      <Box mt={3} borderRadius={4} display={["block", "flex"]} gap={4}>
+      <Flex
+        className={styles["main-content"]}
+        mt={3}
+        borderRadius={4}
+        gap={4}
+        flex="1"
+      >
         <BarChart />
         <Box bgColor={"#fcfcfc"} borderRadius={"10px"} p={6}>
+          <Heading size="lg">Ostatnie załadunki</Heading>
+          {orders
+            .filter((order) => order.profit)
+            .slice(0, 10)
+            .map((order) => (
+              <Flex
+                key={order.id}
+                justifyContent="space-between"
+                p="20px 0px"
+                borderBottom="2px solid gray"
+              >
+                <Text fontSize="16px">
+                  {order.id.toString().padStart(4, "0")}
+                </Text>
+                <Text fontSize="16px">
+                  + {Number(order.profit).toFixed(2)} €
+                </Text>
+              </Flex>
+            ))}
+        </Box>
+        <Box bgColor={"#fcfcfc"} borderRadius={"10px"} p={6}>
+          <Heading size="lg">Magazyn</Heading>
           {productTypesInfo.map((bar) => (
             <ProductTypes key={bar.title} {...bar} />
           ))}
         </Box>
-      </Box>
-    </Box>
+      </Flex>
+    </Flex>
   );
 };
