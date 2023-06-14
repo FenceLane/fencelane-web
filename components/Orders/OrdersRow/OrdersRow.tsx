@@ -82,7 +82,11 @@ export const OrdersRow = ({ orderData }: OrderDataProps) => {
         </Box>
       </Flex>
       <Box className={styles["right-bottom"]}>
-        {profit && <Text className={styles["price"]}>{profit}€</Text>}
+        {profit && (
+          <Text className={styles["price"]}>
+            {Number(profit).toFixed(2).replace(/\.00$/, "")}€
+          </Text>
+        )}
         <Link
           className={styles["details-link"]}
           href={`/orders/${orderData.id}`}

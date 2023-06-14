@@ -43,10 +43,10 @@ const menuItems = [
     name: "calculations",
     icon: "kalkulacje",
   },
-  {
-    name: "chat",
-    icon: "czat",
-  },
+  // {
+  //   name: "chat",
+  //   icon: "czat",
+  // },
   {
     name: "employees",
     icon: "pracownicy",
