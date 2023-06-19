@@ -1,11 +1,11 @@
 import React from "react";
 import ProductTypes from "../../../components/Stats/Charts/ProductsTypes/ProductTypes";
 import { ChevronDownIcon } from "@chakra-ui/icons";
-import { productTypesInfo } from "../../../components/Stats/Constants";
 import { Box, Flex, Heading, Text } from "@chakra-ui/react";
 import styles from "./Stats.module.scss";
 import dynamic from "next/dynamic";
-import { OrderInfo } from "../../../lib/types";
+import { CategoryInfo, OrderInfo, ProductInfo } from "../../../lib/types";
+import getCategoriesPercentages from "../../../lib/util/getCategoriesPercentages";
 
 const DonutChartCard = dynamic(
   () =>
@@ -19,9 +19,11 @@ const BarChart = dynamic(
 
 interface StatsProps {
   orders: OrderInfo[];
+  products: ProductInfo[];
+  categories: CategoryInfo[];
 }
 
-export const Stats = ({ orders }: StatsProps) => {
+export const Stats = ({ orders, products, categories }: StatsProps) => {
   return (
     <Flex width={"100%"} minHeight="100%" flexDirection="column">
       <Box
@@ -103,7 +105,7 @@ export const Stats = ({ orders }: StatsProps) => {
         </Box>
         <Box bgColor={"#fcfcfc"} borderRadius={"10px"} p={6}>
           <Heading size="lg">Magazyn</Heading>
-          {productTypesInfo.map((bar) => (
+          {getCategoriesPercentages(products, categories).map((bar) => (
             <ProductTypes key={bar.title} {...bar} />
           ))}
         </Box>
