@@ -16,6 +16,10 @@ import https from "https";
 import { ProductDataCreate, ProductDataUpdate } from "../schema/productData";
 import { OrderStatusData } from "../schema/orderStatusData";
 import { EventDataCreate, EventDataUpdate } from "../schema/eventData";
+import {
+  closeWebSocketClient,
+  initialiseWebSocketClient,
+} from "./websocketClient";
 
 const axiosInstance = axios.create({
   httpsAgent: new https.Agent({
@@ -258,6 +262,10 @@ const deleteEvent = async (id: string) => {
 };
 
 export const apiClient = {
+  socket: {
+    listen: initialiseWebSocketClient,
+    close: closeWebSocketClient,
+  },
   auth: {
     postLogin,
     postRegister,
