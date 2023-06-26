@@ -25,18 +25,14 @@ export const TotalRevenueOptions: ApexOptions = {
     colors: ["transparent"],
     width: 4,
   },
-  xaxis: {
-    categories: [
-      "Styczeń",
-      "Luty",
-      "Marzec",
-      "Kwiecień",
-      "Maj",
-      "Czerwiec",
-      "Lipiec",
-    ],
-  },
   yaxis: {
+    forceNiceScale: true,
+    min: 0.1,
+    labels: {
+      formatter: function (value: number) {
+        return Math.round(value).toString();
+      },
+    },
     title: {
       text: "€ ( tys. )",
     },

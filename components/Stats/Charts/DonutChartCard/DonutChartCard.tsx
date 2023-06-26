@@ -3,14 +3,15 @@ import ReactApexChart from "react-apexcharts";
 
 export interface DonutChartCardProps {
   title: string;
-  value: number;
+  value: number | string;
   series: Array<number>;
   colors: Array<string>;
   unit: any;
+  labels: Array<string>;
 }
 
-function formatter(num: number, unit: string) {
-  const formatted = num.toLocaleString("en-US");
+function formatter(num: number | string, unit: string) {
+  const formatted = num.toLocaleString("pl-PL");
   return unit != undefined ? `${formatted} ${unit}` : formatted;
 }
 
@@ -20,6 +21,7 @@ const DonutChartCard = ({
   series,
   colors,
   unit,
+  labels,
 }: DonutChartCardProps) => {
   return (
     <Box
@@ -49,6 +51,7 @@ const DonutChartCard = ({
           colors,
           legend: { show: false },
           dataLabels: { enabled: false },
+          labels: labels,
         }}
         series={series}
         type={"donut"}
