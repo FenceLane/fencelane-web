@@ -148,6 +148,17 @@
         }
       }
     },
+    "my_profile": {
+      "my_profile": "Mój profil",
+      "user_data": "Dane użytkownika",
+      "username": "Nazwa użytkownika",
+      "phone": "Telefon",
+      "role": "Rola",
+      "logout": "Wyloguj się",
+      "delete_account": "Usuń konto",
+      "account_deletion": "Usuwanie konta",
+      "are_you_sure": "Czy na pewno chcesz usunąć konto?"
+    },
     "storage": {
       "table": {
         "headings": {

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Flex, Grid, Text } from "@chakra-ui/react";
+import { Box, Flex, Grid, Text } from "@chakra-ui/react";
 import { CommissionInfo } from "../../../../../lib/types";
 import { useContent } from "../../../../../lib/hooks/useContent";
 import styles from "./CommissionsRow.module.scss";
@@ -31,13 +31,13 @@ export const CommissionsRow = ({ commissionData }: CommissionRowProps) => {
         justifyContent="space-between"
         gap="5"
       >
-        <Text className={styles["commission-text"]}>
+        <Text className={styles["commission-text"]} flexGrow="1">
           {`${t("pages.commissions.commission-id")} ${commissionData.id}`}
         </Text>
-        <Text className={styles["commission-text"]}>
+        <Text className={styles["commission-text"]} flexGrow="1">
           {constructOrderDate(String(commissionData.createDate)).slice(0, -5)}
         </Text>
-        <Text className={styles["commission-text"]}>
+        <Text className={styles["commission-text"]} flexGrow="1" width="10%">
           {commissionData.orderId
             ? isMobile
               ? t("main.order").slice(0, 5) +
@@ -46,7 +46,7 @@ export const CommissionsRow = ({ commissionData }: CommissionRowProps) => {
               : t("main.order") +
                 " " +
                 commissionData.orderId.toString().padStart(4, "0")
-            : ""}
+            : " "}
         </Text>
         <IconButton
           className={styles["more-button"]}
@@ -56,10 +56,11 @@ export const CommissionsRow = ({ commissionData }: CommissionRowProps) => {
           icon={showProducts ? <TriangleUpIcon /> : <TriangleDownIcon />}
         />
       </Flex>
+
       {showProducts && (
-        <Grid className={styles["product-table"]}>
+        <Box>
           {commissionData.productData.map((product, id) => (
-            <>
+            <Grid key={id} className={styles["product-table"]}>
               <Flex className={styles["product-table-item"]} textAlign="left">
                 {product.productInfo.category.name}
               </Flex>
@@ -77,9 +78,9 @@ export const CommissionsRow = ({ commissionData }: CommissionRowProps) => {
               >
                 <ActionsButtons />
               </Flex>
-            </>
+            </Grid>
           ))}
-        </Grid>
+        </Box>
       )}
     </Flex>
   );
