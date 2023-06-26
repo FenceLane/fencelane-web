@@ -73,7 +73,7 @@ export default function ProfileInfoDropdown({
         {variant === "name" ? (
           <>
             <Button
-              colorScheme="teal"
+              colorScheme="black"
               variant="outline"
               h="32px"
               onClick={toggleShowDropdown}
