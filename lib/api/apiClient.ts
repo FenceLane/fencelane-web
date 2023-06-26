@@ -19,6 +19,7 @@ import { EventDataCreate, EventDataUpdate } from "../schema/eventData";
 import {
   closeWebSocketClient,
   initialiseWebSocketClient,
+  sendWebsocketMessage,
 } from "./websocketClient";
 
 const axiosInstance = axios.create({
@@ -265,6 +266,7 @@ export const apiClient = {
   socket: {
     listen: initialiseWebSocketClient,
     close: closeWebSocketClient,
+    send: sendWebsocketMessage,
   },
   auth: {
     postLogin,

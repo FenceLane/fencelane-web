@@ -1,6 +1,6 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { apiClient } from "../apiClient";
-import { QUERY_KEY, queryClient } from "../queryClient";
+import { QUERY_KEY, invalidateQueriesWithWebsocket } from "../queryClient";
 
 export const useGetEurRate = () => {
   const mutation = useQuery({
@@ -34,9 +34,11 @@ export const usePostOrderExpanses = (
     onSuccess: () => {
       onSuccess?.();
       return Promise.all([
-        queryClient.invalidateQueries({ queryKey: [QUERY_KEY.ORDER, orderId] }),
-        queryClient.invalidateQueries({ queryKey: [QUERY_KEY.EXPANSES] }),
-        queryClient.invalidateQueries({ queryKey: [QUERY_KEY.ORDERS] }),
+        invalidateQueriesWithWebsocket({
+          queryKey: [QUERY_KEY.ORDER, orderId],
+        }),
+        invalidateQueriesWithWebsocket({ queryKey: [QUERY_KEY.EXPANSES] }),
+        invalidateQueriesWithWebsocket({ queryKey: [QUERY_KEY.ORDERS] }),
       ]);
     },
   });
@@ -53,9 +55,13 @@ export const usePostOrderTransportCost = (
     onSuccess: () => {
       onSuccess?.();
       return Promise.all([
-        queryClient.invalidateQueries({ queryKey: [QUERY_KEY.ORDER, orderId] }),
-        queryClient.invalidateQueries({ queryKey: [QUERY_KEY.TRANSPORT_COST] }),
-        queryClient.invalidateQueries({ queryKey: [QUERY_KEY.ORDERS] }),
+        invalidateQueriesWithWebsocket({
+          queryKey: [QUERY_KEY.ORDER, orderId],
+        }),
+        invalidateQueriesWithWebsocket({
+          queryKey: [QUERY_KEY.TRANSPORT_COST],
+        }),
+        invalidateQueriesWithWebsocket({ queryKey: [QUERY_KEY.ORDERS] }),
       ]);
     },
   });
@@ -68,8 +74,10 @@ export const useDeleteExpanses = (orderId: number) => {
     mutationFn: () => apiClient.calcs.deleteExpanses(orderId),
     onSuccess: () => {
       return Promise.all([
-        queryClient.invalidateQueries({ queryKey: [QUERY_KEY.ORDER, orderId] }),
-        queryClient.invalidateQueries({ queryKey: [QUERY_KEY.EXPANSES] }),
+        invalidateQueriesWithWebsocket({
+          queryKey: [QUERY_KEY.ORDER, orderId],
+        }),
+        invalidateQueriesWithWebsocket({ queryKey: [QUERY_KEY.EXPANSES] }),
       ]);
     },
   });
@@ -81,8 +89,12 @@ export const useDeleteTransportCost = (orderId: number) => {
     mutationFn: () => apiClient.calcs.deleteTransportCost(orderId),
     onSuccess: () => {
       return Promise.all([
-        queryClient.invalidateQueries({ queryKey: [QUERY_KEY.ORDER, orderId] }),
-        queryClient.invalidateQueries({ queryKey: [QUERY_KEY.TRANSPORT_COST] }),
+        invalidateQueriesWithWebsocket({
+          queryKey: [QUERY_KEY.ORDER, orderId],
+        }),
+        invalidateQueriesWithWebsocket({
+          queryKey: [QUERY_KEY.TRANSPORT_COST],
+        }),
       ]);
     },
   });

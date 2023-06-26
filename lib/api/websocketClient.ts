@@ -2,6 +2,7 @@ import ReconnectingWebSocket, {
   CloseEvent,
   ErrorEvent,
   Event,
+  Message,
 } from "reconnecting-websocket";
 import { ClientConfig } from "../AppConfig/ClientConfig";
 
@@ -37,5 +38,11 @@ export const getWebSocketClient = () => {
 export const closeWebSocketClient = () => {
   if (rwsClient) {
     rwsClient.close();
+  }
+};
+
+export const sendWebsocketMessage = (message: Message) => {
+  if (rwsClient) {
+    rwsClient.send(message);
   }
 };

@@ -39,6 +39,15 @@ export const createWebSocketServer = (server: HttpsServer) => {
         webSocketServer.clients.size
       );
     };
+
+    ws.onmessage = (event) => {
+      webSocketServer.clients.forEach((client) => {
+        console.log({ ws, client }, ws === client);
+        if (client !== ws && client.readyState === WebSocket.OPEN) {
+          client.send(event.data);
+        }
+      });
+    };
   });
 
   server.on("upgrade", (req, socket, head) => {

@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { apiClient } from "../api/apiClient";
+import { queryClient } from "../api/queryClient";
 
 const socketLogger = {
   info: (message: string, obj?: any) =>
@@ -25,12 +26,9 @@ export const useReactQueryWebsocketSocketSubscription = (userId?: string) => {
         socketLogger.info("FenceLane Socket established:", event);
       },
       onMessage: (event) => {
-        socketLogger.info("FenceLane Socket message:", event.data);
-        // websocket.onmessage = (event) => {
-        //   const data = JSON.parse(event.data);
-        //   const queryKey = [...data.entity, data.id].filter(Boolean);
-        //   queryClient.invalidateQueries({ queryKey });
-        // };
+        const queryKey = JSON.parse(event.data);
+        socketLogger.info("FenceLane Socket query updated:", queryKey);
+        queryClient.invalidateQueries({ queryKey });
       },
       onClose: (event) => {
         socketLogger.info("FenceLane Socket closed:", event);
