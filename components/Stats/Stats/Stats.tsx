@@ -70,24 +70,19 @@ export const Stats = ({ orders, products, categories }: StatsProps) => {
         <BarChart month={selectedMonth} selectedDate={date} orders={orders} />
         <Box bgColor={"#fcfcfc"} borderRadius={"10px"} p={6}>
           <Heading size="lg">{t("pages.stats.last_loadings")}</Heading>
-          {orders
-            .filter((order) => order.profit)
-            .slice(0, 10)
-            .map((order) => (
-              <Flex
-                key={order.id}
-                justifyContent="space-between"
-                p="20px 0px"
-                borderBottom="2px solid gray"
-              >
-                <Text fontSize="16px">
-                  {order.id.toString().padStart(4, "0")}
-                </Text>
-                <Text fontSize="16px">
-                  + {Number(order.profit).toFixed(2)} €
-                </Text>
-              </Flex>
-            ))}
+          {orders.slice(0, 10).map((order) => (
+            <Flex
+              key={order.id}
+              justifyContent="space-between"
+              p="20px 0px"
+              borderBottom="2px solid gray"
+            >
+              <Text fontSize="16px">
+                {order.id.toString().padStart(4, "0")}
+              </Text>
+              <Text fontSize="16px">+ {Number(order.profit).toFixed(2)} €</Text>
+            </Flex>
+          ))}
         </Box>
         <Box bgColor={"#fcfcfc"} borderRadius={"10px"} p={6}>
           <Heading size="lg">{t("main.storage")}</Heading>
