@@ -10,6 +10,7 @@
         "menu": {
           "stats": { "label": "Statystyki" },
           "storage": { "label": "Magazyn" },
+          "loads": { "label": "Załadunki" },
           "orders": { "label": "Zamówienia" },
           "commissions": { "label": "Zlecenia" },
           "schedule": { "label": "Harmonogram" },

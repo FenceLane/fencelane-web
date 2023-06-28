@@ -28,6 +28,10 @@ const menuItems = [
     icon: "magazyn",
   },
   {
+    name: "loads",
+    icon: "załadunki",
+  },
+  {
     name: "orders",
     icon: "zamówienia",
   },
@@ -43,10 +47,6 @@ const menuItems = [
     name: "calculations",
     icon: "kalkulacje",
   },
-  // {
-  //   name: "chat",
-  //   icon: "czat",
-  // },
   {
     name: "employees",
     icon: "pracownicy",

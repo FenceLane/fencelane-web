@@ -25,7 +25,6 @@ export const Nav = ({
   const { t } = useContent("general");
   const router = useRouter();
   const page = router.pathname.substring(1).split("/")[0];
-  // console.log(window.location.pathname);
   return (
     <>
       {!hideSidebar && (isMenuActive || !isMobile) && (
