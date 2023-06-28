@@ -1,6 +1,6 @@
 import { Box, Button, Wrap, WrapItem, Image } from "@chakra-ui/react";
 import React, { useRef, useState } from "react";
-import { TriangleDownIcon } from "@chakra-ui/icons";
+import { TriangleDownIcon, TriangleUpIcon } from "@chakra-ui/icons";
 import { useOnClickOutside } from "../../lib/hooks/useOnClickOutside";
 import { apiClient } from "../../lib/api/apiClient";
 import { useContent } from "../../lib/hooks/useContent";
@@ -73,7 +73,8 @@ export default function ProfileInfoDropdown({
         {variant === "name" ? (
           <>
             <Button
-              colorScheme="black"
+              borderColor="var(--dark)"
+              color="var(--dark)"
               variant="outline"
               h="32px"
               onClick={toggleShowDropdown}
@@ -81,7 +82,8 @@ export default function ProfileInfoDropdown({
               m="0px 25px 0px 10px"
             >
               {name}
-              <TriangleDownIcon w="10px" ml="15px" />
+              {!showDropdown && <TriangleDownIcon w="10px" ml="15px" />}
+              {showDropdown && <TriangleUpIcon w="10px" ml="15px" />}
             </Button>
           </>
         ) : (
@@ -107,7 +109,8 @@ export default function ProfileInfoDropdown({
               <Button
                 href="/profile"
                 as={Link}
-                colorScheme="teal"
+                borderColor="var(--dark)"
+                color="var(--dark)"
                 variant="outline"
                 width="100%"
                 h="32px"
@@ -118,7 +121,8 @@ export default function ProfileInfoDropdown({
             <WrapItem w="100%">
               <Button
                 onClick={handleLogout}
-                colorScheme="teal"
+                borderColor="var(--dark)"
+                color="var(--dark)"
                 variant="outline"
                 width="100%"
                 h="32px"
