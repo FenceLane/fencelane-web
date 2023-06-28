@@ -400,7 +400,7 @@ export const OrderDetails = ({
             {Number(profit).toFixed(2).replace(/\.00$/, "")}€
           </Text>
         )}
-        <Flex className={styles["history-container"]} flexDir="row">
+        <Flex className={styles["history-container"]} flexDir="row" gap="20px">
           <Flex flexDir="column" className={styles["order-history"]}>
             <Heading size="sm" mb="10px">
               {t("main.history")}
@@ -501,7 +501,12 @@ export const OrderDetails = ({
             </Tbody>
           </Table>
         </Box>
-        <Flex justifyContent="space-around" mt="10px">
+        <Flex
+          justifyContent="flex-end"
+          gap="20px"
+          p="20px 20px 20px 0px"
+          borderBottom="5px solid var(--light-content)"
+        >
           <Button
             color="white"
             bg="var(--button-orange)"
@@ -525,18 +530,10 @@ export const OrderDetails = ({
         {isUpdateOrderError && (
           <Text color="red">{t(mapAxiosErrorToLabel(updateOrderError))}</Text>
         )}
-        <Flex m="40px 0px" justifyContent="space-between" alignItems="center">
+        <Flex m="40px 0px" justifyContent="flex-start" alignItems="center">
           <Heading size="sm" mb="10px" ml="40px">
             {t("pages.orders.order.documents")}
           </Heading>
-          <Button
-            color="white"
-            bg="var(--button-dark-orange)"
-            fontWeight="400"
-            mr="40px"
-          >
-            {t("buttons.add")}
-          </Button>
         </Flex>
         <Table className={styles["file-table"]}>
           <Thead>
@@ -546,7 +543,15 @@ export const OrderDetails = ({
             </Tr>
           </Thead>
         </Table>
-        <Flex mr="20px" justifyContent="flex-end" m="20px 20px 20px 0px">
+        <Flex
+          pr="20px"
+          justifyContent="flex-end"
+          m="20px 0px 20px 0px"
+          gap="20px"
+        >
+          <Button color="white" bg="var(--button-dark-orange)" fontWeight="400">
+            {t("buttons.add")}
+          </Button>
           <Button bg="var(--button-green)" color="white" fontWeight="400">
             {t("pages.orders.order.download-all")}
           </Button>
