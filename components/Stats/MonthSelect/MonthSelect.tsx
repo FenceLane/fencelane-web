@@ -37,7 +37,7 @@ export const MonthSelect = ({
   const createMonthSelect = (monthsArray: string[], selectedMonth: number) => {
     return monthsArray.map((month, index) => (
       <option key={index} value={index}>
-        {t(`months.${month}`)}
+        {t(`months.${month}`).toLowerCase()}
       </option>
     ));
   };

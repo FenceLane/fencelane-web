@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import ProductTypes from "../../../components/Stats/Charts/ProductsTypes/ProductTypes";
-import { Box, Flex, Heading, Text } from "@chakra-ui/react";
+import { Box, Flex, Text } from "@chakra-ui/react";
 import styles from "./Stats.module.scss";
 import dynamic from "next/dynamic";
 import { CategoryInfo, OrderInfo, ProductInfo } from "../../../lib/types";
@@ -69,7 +69,9 @@ export const Stats = ({ orders, products, categories }: StatsProps) => {
       >
         <BarChart month={selectedMonth} selectedDate={date} orders={orders} />
         <Box bgColor={"#fcfcfc"} borderRadius={"10px"} p={6}>
-          <Heading size="lg">{t("pages.stats.last_loadings")}</Heading>
+          <Text fontWeight={500} color={"#333333"} fontSize="20px" mb="20px">
+            {t("pages.stats.last_loadings")}
+          </Text>
           {orders.slice(0, 10).map((order) => (
             <Flex
               key={order.id}
@@ -85,7 +87,9 @@ export const Stats = ({ orders, products, categories }: StatsProps) => {
           ))}
         </Box>
         <Box bgColor={"#fcfcfc"} borderRadius={"10px"} p={6}>
-          <Heading size="lg">{t("main.storage")}</Heading>
+          <Text fontWeight={500} color={"#333333"} fontSize="20px" mb="30px">
+            {t("main.storage")}
+          </Text>
           {sumStockByCategory(products, categories).map((bar) => (
             <ProductTypes key={bar.title} {...bar} />
           ))}

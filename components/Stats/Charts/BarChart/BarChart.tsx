@@ -200,7 +200,8 @@ const BarChart = ({ month, selectedDate, orders }: BarChartProps) => {
       <Stack direction="row" gap={4} flexWrap="wrap">
         <Stack>
           <Text fontSize={"16px"} fontWeight="500">
-            {t("pages.stats.overview")} {t(`months.${getMonthByNumber(month)}`)}
+            {t("pages.stats.overview")}{" "}
+            {t(`months.${getMonthByNumber(month)}`).toLowerCase()}
           </Text>
           <Text fontSize={38} fontWeight={600} color="#11142d">
             {profit} €
@@ -212,16 +213,15 @@ const BarChart = ({ month, selectedDate, orders }: BarChartProps) => {
             <>
               <ArrowUpIcon
                 border={"1px"}
-                color={"red.500"}
+                color={"green.500"}
                 borderRadius={"50%"}
-                borderColor={"black"}
                 boxSize={5}
               />
               <Stack>
                 <Text>{percentageRatio} %</Text>
                 <Text>
                   {t("pages.stats.more_than_in")}{" "}
-                  {t(`months.${getMonthByNumber(monthBefore)}`)}
+                  {t(`months.${getMonthByNumber(monthBefore)}`).toLowerCase()}
                 </Text>
               </Stack>
             </>
@@ -232,14 +232,13 @@ const BarChart = ({ month, selectedDate, orders }: BarChartProps) => {
                 border={"1px"}
                 color={"red.500"}
                 borderRadius={"50%"}
-                borderColor={"black"}
                 boxSize={5}
               />
               <Stack>
                 <Text>{percentageRatio} %</Text>
                 <Text>
                   {t("pages.stats.less_than_in")}{" "}
-                  {getMonthByNumber(monthBefore)}
+                  {t(`months.${getMonthByNumber(monthBefore)}`).toLowerCase()}
                 </Text>
               </Stack>
             </>
