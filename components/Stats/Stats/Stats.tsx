@@ -8,6 +8,7 @@ import { sumStockByCategory } from "../../../lib/util/statsFunctions";
 import { DonutCharts } from "../DonutCharts/DonutCharts";
 import { MonthSelect } from "../MonthSelect/MonthSelect";
 import { useContent } from "../../../lib/hooks/useContent";
+import Link from "next/link";
 
 const BarChart = dynamic(
   () => import("../../../components/Stats/Charts/BarChart/BarChart"),
@@ -73,17 +74,20 @@ export const Stats = ({ orders, products, categories }: StatsProps) => {
             {t("pages.stats.last_loadings")}
           </Text>
           {orders.slice(0, 10).map((order) => (
-            <Flex
-              key={order.id}
-              justifyContent="space-between"
-              p="20px 0px"
-              borderBottom="2px solid gray"
-            >
-              <Text fontSize="16px">
-                {order.id.toString().padStart(4, "0")}
-              </Text>
-              <Text fontSize="16px">+ {Number(order.profit).toFixed(2)} €</Text>
-            </Flex>
+            <Link key={order.id} href={`/orders/${order.id}`}>
+              <Flex
+                justifyContent="space-between"
+                p="20px 0px"
+                borderBottom="2px solid gray"
+              >
+                <Text fontSize="16px">
+                  {order.id.toString().padStart(4, "0")}
+                </Text>
+                <Text fontSize="16px">
+                  + {Number(order.profit).toFixed(2)} €
+                </Text>
+              </Flex>
+            </Link>
           ))}
         </Box>
         <Box bgColor={"#fcfcfc"} borderRadius={"10px"} p={6}>
