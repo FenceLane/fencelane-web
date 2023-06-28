@@ -10,6 +10,7 @@ import {
   Button,
   useDisclosure,
   Flex,
+  Box,
 } from "@chakra-ui/react";
 import { useContent } from "../../../lib/hooks/useContent";
 import styles from "./Storage.module.scss";
@@ -46,7 +47,7 @@ export const Storage = ({ products }: StorageProps) => {
   };
 
   return (
-    <>
+    <Box position="relative">
       <Flex className={styles["buttons"]}>
         <Flex className={styles["add-button"]}>
           <Button
@@ -142,6 +143,6 @@ export const Storage = ({ products }: StorageProps) => {
         </Table>
       </TableContainer>
       <ProductAddModal onAddClose={onAddClose} isAddOpen={isAddOpen} />
-    </>
+    </Box>
   );
 };
