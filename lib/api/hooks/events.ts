@@ -1,6 +1,6 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { apiClient } from "../apiClient";
-import { QUERY_KEY, queryClient } from "../queryClient";
+import { QUERY_KEY, invalidateQueriesWithWebsocket } from "../queryClient";
 
 export const useGetEvents = () => {
   const mutation = useQuery({
@@ -16,7 +16,7 @@ export const usePostEvent = (onSuccess: () => void) => {
     mutationFn: apiClient.events.postEvent,
     onSuccess: () => {
       onSuccess();
-      queryClient.invalidateQueries({ queryKey: [QUERY_KEY.EVENTS] });
+      invalidateQueriesWithWebsocket({ queryKey: [QUERY_KEY.EVENTS] });
     },
   });
 
@@ -28,7 +28,7 @@ export const useDeleteEvent = (onSuccess: () => void) => {
     mutationFn: apiClient.events.deleteEvent,
     onSuccess: () => {
       onSuccess();
-      queryClient.invalidateQueries({ queryKey: [QUERY_KEY.EVENTS] });
+      invalidateQueriesWithWebsocket({ queryKey: [QUERY_KEY.EVENTS] });
     },
   });
 
@@ -40,7 +40,7 @@ export const useUpdateEvent = (onSuccess: () => void) => {
     mutationFn: apiClient.events.updateEvent,
     onSuccess: () => {
       onSuccess();
-      queryClient.invalidateQueries({ queryKey: [QUERY_KEY.EVENTS] });
+      invalidateQueriesWithWebsocket({ queryKey: [QUERY_KEY.EVENTS] });
     },
   });
 
