@@ -1,13 +1,13 @@
 .commodity-table {
   overflow-x: hidden;
 }
-
 .commodity-table th,
 .commodity-table td {
   text-align: center;
 }
 .commodity-table-thead tr {
   position: relative;
+  border-bottom: 3px solid var(--light-content);
 }
 .commodity-table-thead th {
   position: sticky;

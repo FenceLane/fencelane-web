@@ -68,28 +68,27 @@ export const Storage = ({ products }: StorageProps) => {
             colorScheme={variantFilters.white_dry ? "green" : "white"}
             variant={variantFilters.white_dry ? "solid" : "outline"}
           >
-            Biały suchy
+            {t("pages.storage.variants.white_dry")}
           </Button>
           <Button
             onClick={() => handleVariantFilterChange(PRODUCT_VARIANT.WHITE_WET)}
             colorScheme={variantFilters.white_wet ? "green" : "white"}
             variant={variantFilters.white_wet ? "solid" : "outline"}
           >
-            Biały mokry
+            {t("pages.storage.variants.white_wet")}
           </Button>
           <Button
             onClick={() => handleVariantFilterChange(PRODUCT_VARIANT.BLACK)}
             colorScheme={variantFilters.black ? "green" : "white"}
             variant={variantFilters.black ? "solid" : "outline"}
           >
-            Czarny
+            {t("pages.storage.variants.black")}
           </Button>
         </Flex>
       </Flex>
       <TableContainer className={styles.container}>
         <Table
           variant="simple"
-          colorScheme="teal"
           bg="white"
           className={styles["commodity-table"]}
         >

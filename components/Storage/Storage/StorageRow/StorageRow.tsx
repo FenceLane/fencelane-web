@@ -52,15 +52,17 @@ export const StorageRow = ({ product }: StorageRowProps) => {
   return (
     <>
       <Tr className={styles["commodity-table-row"]} key={product.id}>
-        <Td>
+        <Td
+          display="flex"
+          alignItems="center"
+          className={styles["commodity-table-first-cell"]}
+        >
           <Text
-            mt="5px"
-            as="span"
             bg={product.category.color}
             color="white"
             p="3px 6px"
+            ml="10px"
             borderRadius="6px"
-            textAlign="center"
           >
             {product.category.name}
           </Text>
