@@ -86,11 +86,20 @@ model Product {
 
   stock Int
   orders ProductOrder[]
+  commissions ProductCommission[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   @@unique([categoryId, dimensions, variant, itemsPerPackage])
+}
+
+model Commission {
+  id Int  @id @default(autoincrement())
+  products ProductCommission[]
+  date DateTime @default(now())
+  order Order? @relation(fields: [orderId], references: [id])
+  orderId Int @unique
 }
 
 model OrderStatus {
@@ -116,6 +125,8 @@ model Order{
   creatorId String
   profit Decimal?
   parentOrderId String @default("")
+  commission Commission?
+  commissionId Int?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -159,6 +170,17 @@ model ProductOrder {
   updatedAt DateTime @updatedAt
 
   productExpanses ProductExpanse[]
+}
+
+model ProductCommission {
+  id String  @id @default(uuid())
+  commission Commission @relation(fields: [commissionId], references: [id])
+  commissionId Int
+  product Product @relation(fields: [productId], references: [id])
+  productId String
+  quantity Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model ProductExpanse {
