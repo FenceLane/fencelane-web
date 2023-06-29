@@ -74,6 +74,7 @@ export interface OrderInfo {
   createdAt: Date;
   updatedAt: Date;
   files: string[];
+  parentOrderId: string;
   destination: {
     id: string;
     country: string;
@@ -175,6 +176,10 @@ export interface DestinationPostInfo {
 export enum USER_ROLE {
   ADMIN = 0,
   USER = 1,
+  BOSS = 2,
+  VICE_BOSS = 3,
+  SATURATOR = 4,
+  MARKETER = 5,
 }
 
 export enum PRODUCT_VARIANT {
