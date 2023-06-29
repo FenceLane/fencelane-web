@@ -1,0 +1,14 @@
+.employees-table td,
+.employees-table th {
+  padding: 5px;
+}
+.border-span {
+  border-bottom: 1px solid rgb(207, 180, 180);
+  display: block;
+}
+@media only screen and (min-width: 768px) {
+  .employees-table td,
+  .employees-table th {
+    padding: 10px 20px;
+  }
+}

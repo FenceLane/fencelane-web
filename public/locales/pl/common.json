@@ -329,6 +329,24 @@
           "agenda": "Agenda"
         }
       }
+    },
+    "employees": {
+      "role_change": "Zmiana roli",
+      "roles": {
+        "admin": "Administrator",
+        "user": "Użytkownik",
+        "boss": "Szef",
+        "vice_boss": "Zastępca szefa",
+        "saturator": "Pracownik nasycalni",
+        "marketer": "Handlowiec"
+      },
+      "table": {
+        "name": "Imię i nazwisko",
+        "role": "Rola",
+        "phone": "Nr telefonu",
+        "change_role": "Zmiana roli",
+        "change_role_button": "Zmień rolę"
+      }
     }
   },
 

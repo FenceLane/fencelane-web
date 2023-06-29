@@ -9,6 +9,7 @@ export const OrderDataSchema = z.object({
   date: z.string().min(1).optional(),
   status: z.nativeEnum(ORDER_STATUS).optional(),
   files: z.array(OrderFileDataSchema),
+  parentOrderId: z.string().optional(),
   products: z.array(
     ProductOrderDataSchema.omit({ orderId: true }).extend({
       quantity: z.number().min(1),

@@ -115,6 +115,7 @@ model Order{
   creator User @relation(fields: [creatorId], references: [id])
   creatorId String
   profit Decimal?
+  parentOrderId String @default("")
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
