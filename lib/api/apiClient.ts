@@ -262,6 +262,23 @@ const deleteEvent = async (id: string) => {
   return axiosInstance.delete(apiPath(`events/${id}`));
 };
 
+const getEmployees = async (options?: { authCookie: string }) => {
+  const { data } = await axiosInstance.get(apiPath("users"), {
+    headers: { cookie: options?.authCookie },
+  });
+  return data.data;
+};
+
+const changeRole = async ({
+  id,
+  data,
+}: {
+  id: string;
+  data: { role: USER_ROLE };
+}) => {
+  return axiosInstance.put(apiPath(`users/${id}`), data);
+};
+
 export const apiClient = {
   socket: {
     listen: initialiseWebSocketClient,
@@ -309,5 +326,9 @@ export const apiClient = {
     postEvent,
     deleteEvent,
     updateEvent,
+  },
+  employees: {
+    getEmployees,
+    changeRole,
   },
 };
