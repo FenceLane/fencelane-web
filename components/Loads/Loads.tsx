@@ -1,16 +1,16 @@
 import React, { useRef, useState } from "react";
 import { Button, Flex, IconButton, Input, Text } from "@chakra-ui/react";
 import { OrderInfo } from "../../lib/types";
-import { OrdersRow } from "./OrdersRow/OrdersRow";
+import { LoadsRow } from "./LoadsRow/LoadsRow";
 import { AddIcon, CalendarIcon, CloseIcon } from "@chakra-ui/icons";
 import { useContent } from "../../lib/hooks/useContent";
 import Link from "next/link";
-import styles from "./Orders.module.scss";
+import styles from "./Loads.module.scss";
 import { useOnClickOutside } from "../../lib/hooks/useOnClickOutside";
-import { constructOrderDate } from "../../lib/util/dateUtils";
+import { constructLoadDate } from "../../lib/util/dateUtils";
 
-interface OrderProps {
-  orders: OrderInfo[];
+interface LoadsProps {
+  loads: OrderInfo[];
 }
 
 const initialFilters = {
@@ -20,7 +20,7 @@ const initialFilters = {
   search: "",
 };
 
-export const Orders = ({ orders }: OrderProps) => {
+export const Loads = ({ loads }: LoadsProps) => {
   const { t } = useContent();
 
   const [showFilters, setShowFilters] = useState(false);
@@ -80,7 +80,7 @@ export const Orders = ({ orders }: OrderProps) => {
   return (
     <>
       <Text color="var(--dark)" fontSize="20px" fontWeight="500" m="10px">
-        {t("pages.orders.order_history")}
+        {t("pages.loads.load_history")}
       </Text>
       <Flex justifyContent="space-between">
         <Button
@@ -93,7 +93,7 @@ export const Orders = ({ orders }: OrderProps) => {
         >
           Filtry
         </Button>
-        <Link href="/orders/create">
+        <Link href="/loads/create">
           <Button
             color="white"
             backgroundColor="var(--add-button-color)"
@@ -101,7 +101,7 @@ export const Orders = ({ orders }: OrderProps) => {
             h="32px"
             m="0 10px 10px 0"
           >
-            {t("pages.orders.buttons.new")}
+            {t("pages.loads.buttons.new")}
             <AddIcon ml="10px" />
           </Button>
         </Link>
@@ -119,7 +119,7 @@ export const Orders = ({ orders }: OrderProps) => {
                 onClick={toggleOpenDateFilters}
                 className={styles["filter-input"]}
               >
-                {t("pages.orders.check-date")} &nbsp; <CalendarIcon />
+                {t("pages.loads.check-date")} &nbsp; <CalendarIcon />
               </Button>
               {((filters.dateStart && filters.dateEnd) ||
                 filters.specificDate) && (
@@ -132,10 +132,10 @@ export const Orders = ({ orders }: OrderProps) => {
                       color="white"
                     >
                       {filters.dateStart && filters.dateEnd && (
-                        <Text>{`${constructOrderDate(filters.dateStart).slice(
+                        <Text>{`${constructLoadDate(filters.dateStart).slice(
                           0,
                           -5
-                        )} - ${constructOrderDate(filters.dateEnd).slice(
+                        )} - ${constructLoadDate(filters.dateEnd).slice(
                           0,
                           -5
                         )}`}</Text>
@@ -164,7 +164,7 @@ export const Orders = ({ orders }: OrderProps) => {
               >
                 <Flex flexDir="row" alignItems="end" gap="10px">
                   <Flex flexDir="column">
-                    <label>{t("pages.orders.from")}</label>
+                    <label>{t("pages.loads.from")}</label>
                     <Input
                       bg="gray.50"
                       type="date"
@@ -174,7 +174,7 @@ export const Orders = ({ orders }: OrderProps) => {
                     />
                   </Flex>
                   <Flex flexDir="column">
-                    <label>{t("pages.orders.to")}</label>
+                    <label>{t("pages.loads.to")}</label>
                     <Input
                       bg="gray.50"
                       type="date"
@@ -229,7 +229,7 @@ export const Orders = ({ orders }: OrderProps) => {
           <Flex flexDirection="column" mb="10px">
             <Flex flexDirection="row" gap="10px">
               <Input
-                placeholder={t("pages.orders.search")}
+                placeholder={t("pages.loads.search")}
                 className={styles["filter-input"]}
                 bg="white"
                 type="text"
@@ -250,18 +250,18 @@ export const Orders = ({ orders }: OrderProps) => {
         </Flex>
       )}
       <Flex flexDirection="column">
-        {orders
-          .filter((order) => {
+        {loads
+          .filter((load) => {
             let dateBool = true;
-            const orderDate = new Date(order.createdAt);
-            orderDate.setHours(0, 0, 0, 0);
+            const loadDate = new Date(load.createdAt);
+            loadDate.setHours(0, 0, 0, 0);
 
             if (filters.dateStart && filters.dateEnd) {
               const dateStart = new Date(filters.dateStart);
               const dateEnd = new Date(filters.dateEnd);
               dateStart.setHours(0, 0, 0, 0);
               dateEnd.setHours(0, 0, 0, 0);
-              if (orderDate < dateStart || orderDate > dateEnd) {
+              if (loadDate < dateStart || loadDate > dateEnd) {
                 dateBool = false;
               }
             }
@@ -292,63 +292,59 @@ export const Orders = ({ orders }: OrderProps) => {
               );
               switch (filters.specificDate) {
                 case "today":
-                  if (orderDate.getDate() !== today.getDate()) {
+                  if (loadDate.getDate() !== today.getDate()) {
                     dateBool = false;
                   }
                   break;
                 case "yesterday":
-                  if (orderDate.getDate() !== yesterday.getDate()) {
+                  if (loadDate.getDate() !== yesterday.getDate()) {
                     dateBool = false;
                   }
                   break;
                 case "this-month":
-                  if (orderDate < firstDayOfThisMonth) {
+                  if (loadDate < firstDayOfThisMonth) {
                     dateBool = false;
                   }
                   break;
                 case "last-month":
                   if (
-                    orderDate < firstDayOfLastMonth ||
-                    orderDate > lastDayOfLastMonth
+                    loadDate < firstDayOfLastMonth ||
+                    loadDate > lastDayOfLastMonth
                   ) {
                     dateBool = false;
                   }
                   break;
                 case "last-three-months":
-                  if (orderDate < threeMonthsAgo) {
+                  if (loadDate < threeMonthsAgo) {
                     dateBool = false;
                   }
                   break;
               }
             }
 
-            const clientBool = order.destination.client.name
+            const clientBool = load.destination.client.name
               .toLowerCase()
               .includes(filters.search);
 
             const destinationBool =
-              order.destination.address
-                .toLowerCase()
-                .includes(filters.search) ||
-              order.destination.city.toLowerCase().includes(filters.search) ||
-              order.destination.country
-                .toLowerCase()
-                .includes(filters.search) ||
-              order.destination.postalCode
+              load.destination.address.toLowerCase().includes(filters.search) ||
+              load.destination.city.toLowerCase().includes(filters.search) ||
+              load.destination.country.toLowerCase().includes(filters.search) ||
+              load.destination.postalCode
                 .toLowerCase()
                 .includes(filters.search);
 
-            const orderIdBool = order.id === Number(filters.search);
+            const loadIdBool = load.id === Number(filters.search);
             return (
               dateBool &&
               (clientBool ||
                 destinationBool ||
-                orderIdBool ||
+                loadIdBool ||
                 filters.search === "")
             );
           })
-          .map((order) => (
-            <OrdersRow key={order.id} orderData={order} />
+          .map((load) => (
+            <LoadsRow key={load.id} loadData={load} />
           ))}
       </Flex>
     </>

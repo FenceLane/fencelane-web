@@ -17,8 +17,8 @@ import { useContent } from "../../../lib/hooks/useContent";
 import { constructRateDate } from "../../../lib/util/dateUtils";
 
 interface CalculationCreatorProps {
-  orderId: number;
-  orderData: OrderInfo;
+  loadId: number;
+  loadData: OrderInfo;
   rate: {
     no: string;
     effectiveDate: Date;
@@ -54,13 +54,13 @@ const initialCosts: InitialCosts = {
 } as const;
 
 export const CalculationCreator = ({
-  orderId,
-  orderData,
+  loadId,
+  loadData,
   rate,
 }: CalculationCreatorProps) => {
   const { t } = useContent();
 
-  const productsQuantity = orderData.products.length;
+  const productsQuantity = loadData.products.length;
 
   const [transportCost, setTransportCost] = useState(0);
 
@@ -94,7 +94,7 @@ export const CalculationCreator = ({
 
   const [currentProduct, setCurrentProduct] = useState(0);
 
-  const id = orderId.toString().padStart(4, "0");
+  const id = loadId.toString().padStart(4, "0");
 
   const handleRateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEurRate(e.target.value);
@@ -124,7 +124,7 @@ export const CalculationCreator = ({
           <Link as={NextLink} href={`/loads/${orderId}`} w="32px">
             <IconButton
               icon={<ArrowBackIcon w="32px" h="32px" />}
-              aria-label="go back to order"
+              aria-label="go back to load"
               w="32px"
               bg="white"
             />
@@ -135,7 +135,7 @@ export const CalculationCreator = ({
             fontSize="18px"
             fontWeight="500"
             m="10px"
-          >{`${t("pages.orders.order.calculation-to-order")} ${id}`}</Text>
+          >{`${t("pages.loads.load.calculation-to-load")} ${id}`}</Text>
         </Flex>
         {currentProduct === 0 && (
           <TransportCost
@@ -164,7 +164,7 @@ export const CalculationCreator = ({
             expansesList={expansesList}
             setExpansesList={setExpansesList}
             handleRateChange={handleRateChange}
-            productData={orderData.products[currentProduct - 1]}
+            productData={loadData.products[currentProduct - 1]}
             handleNextStep={handleNextStep}
             currentProduct={currentProduct}
             handlePrevStep={handlePrevStep}
@@ -174,7 +174,7 @@ export const CalculationCreator = ({
         )}
         {currentProduct > productsQuantity && (
           <Summary
-            orderId={orderId}
+            loadId={loadId}
             transportCostCurrency={transportCostCurrency}
             transportCost={transportCost}
             otherCosts={otherCosts}
@@ -183,7 +183,7 @@ export const CalculationCreator = ({
             handlePrevStep={handlePrevStep}
             rate={Number(eurRate)}
             rateDate={rateDate}
-            productData={orderData.products}
+            productData={loadData.products}
           />
         )}
       </Box>

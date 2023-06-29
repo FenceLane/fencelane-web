@@ -15,7 +15,7 @@ const OrderDetailsPage = ({
 
   return (
     <Layout user={user}>
-      <CalculationWrapper orderId={Number(id)} />
+      <CalculationWrapper loadId={Number(id)} />
     </Layout>
   );
 };

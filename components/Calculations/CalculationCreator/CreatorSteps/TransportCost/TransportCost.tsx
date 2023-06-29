@@ -67,14 +67,14 @@ export const TransportCost = ({
               fontSize="18px"
               fontWeight="600"
             >
-              1. {t("pages.orders.order.transport-cost")}
+              1. {t("pages.loads.load.transport-cost")}
             </Text>
             <Flex alignItems="center" color="var(--grey)">
               <Flex flexDir="column" mr="10px">
-                <Text fontSize="15px">{t("pages.orders.order.eur-rate")}</Text>
+                <Text fontSize="15px">{t("pages.loads.load.eur-rate")}</Text>
                 {rateDate && (
                   <Text fontSize="11px">{`${t(
-                    "pages.orders.order.from"
+                    "pages.loads.load.from"
                   )} ${rateDate}`}</Text>
                 )}
               </Flex>
@@ -112,7 +112,7 @@ export const TransportCost = ({
             <Input
               defaultValue={otherCosts == 0 ? "" : otherCosts}
               width="150px"
-              placeholder={t("pages.orders.order.other-costs")}
+              placeholder={t("pages.loads.load.other-costs")}
               type="number"
               onInput={handleChangeOtherCosts}
             />

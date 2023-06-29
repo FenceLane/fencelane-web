@@ -1,11 +1,11 @@
 import { Flex } from "@chakra-ui/react";
+import { useGetOrders } from "../../../lib/api/hooks/orders";
 import { useContent } from "../../../lib/hooks/useContent";
 import { mapAxiosErrorToLabel } from "../../../lib/server/BackendError/BackendError";
 import { LoadingAnimation } from "../../LoadingAnimation/LoadingAnimation";
-import { Calculations } from "../Calculations";
-import { useGetOrders } from "../../../lib/api/hooks/orders";
+import { Loads } from "../Loads";
 
-export const CalculationsWrapper = () => {
+export const LoadsWrapper = () => {
   const { t } = useContent("errors.backendErrorLabel");
 
   const { isError, error, isLoading, data } = useGetOrders();
@@ -19,5 +19,5 @@ export const CalculationsWrapper = () => {
 
   if (isError) return <p>{t(mapAxiosErrorToLabel(error))}</p>;
 
-  return <Calculations loadData={data} />;
+  return <Loads loads={data} />;
 };

@@ -28,8 +28,8 @@ export const Commissions = ({ commissions }: CommissionsProps) => {
           width="auto"
         >
           <option value="all">Wszystkie</option>
-          <option value="orders-only">Do zamówień</option>
-          <option value="non-orders-only">Bez zamówień</option>
+          <option value="orders-only">Do załadunków</option>
+          <option value="non-orders-only">Bez załadunków</option>
         </Select>
         <Link href="/commissions/create">
           <Button
@@ -39,7 +39,7 @@ export const Commissions = ({ commissions }: CommissionsProps) => {
             h="32px"
             m="0 10px 10px 0"
           >
-            {t("pages.orders.buttons.new")}
+            {t("pages.loads.buttons.new")}
             <AddIcon ml="10px" />
           </Button>
         </Link>

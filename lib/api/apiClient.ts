@@ -220,8 +220,8 @@ const postOrderExpanses = async ({ id, data }: ExpansePostInfo) => {
 };
 
 const updateOrder = async ({
-  data,
   id,
+  data,
 }: {
   id: number;
   data: Partial<OrderInfo>;
