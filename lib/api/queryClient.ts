@@ -38,4 +38,5 @@ export const QUERY_KEY = {
   EXPANSES: "expanses",
   TRANSPORT_COST: "transport/cost",
   EVENTS: "events",
+  EMPLOYEES: "employees",
 };
