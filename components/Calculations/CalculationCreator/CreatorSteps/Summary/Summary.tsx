@@ -234,14 +234,14 @@ export const Summary = ({
             fontSize="18px"
             fontWeight="600"
           >
-            3. {t("pages.loads.load.summary")}
+            3. {t("pages.orders.order.summary")}
           </Text>
           <Flex alignItems="center" color="var(--grey)">
             <Flex flexDir="column" mr="10px">
-              <Text fontSize="15px">{t("pages.loads.load.eur-rate")}</Text>
+              <Text fontSize="15px">{t("pages.orders.order.eur-rate")}</Text>
               {rateDate && (
                 <Text fontSize="11px">{`${t(
-                  "pages.loads.load.from"
+                  "pages.orders.order.from"
                 )} ${rateDate}`}</Text>
               )}
             </Flex>
@@ -265,7 +265,7 @@ export const Summary = ({
           fontWeight="600"
           mb="10px"
         >
-          {t("pages.loads.load.currency-and-quantity-type")}
+          {t("pages.orders.order.currency-and-quantity-type")}
         </Text>
         <Flex gap="10px" mb="10px">
           <Select
@@ -282,11 +282,11 @@ export const Summary = ({
             onChange={handleQuantityTypeChange}
           >
             <option value={QUANTITY_TYPE.PACKAGES}>
-              {t("pages.loads.load.packages")}
+              {t("pages.orders.order.packages")}
             </option>
             <option value={QUANTITY_TYPE.M3}>M3</option>
             <option value={QUANTITY_TYPE.PIECES}>
-              {t("pages.loads.load.pieces")}
+              {t("pages.orders.order.pieces")}
             </option>
           </Select>
         </Flex>
@@ -294,10 +294,10 @@ export const Summary = ({
         <Table className={styles["spec-table"]}>
           <Thead>
             <Tr>
-              <Th>{t("pages.loads.load.product")}</Th>
-              <Th>{t("pages.loads.load.quantity")}</Th>
-              <Th>{t("pages.loads.load.difference")}</Th>
-              <Th>{t("pages.loads.load.total")}</Th>
+              <Th>{t("pages.orders.order.product")}</Th>
+              <Th>{t("pages.orders.order.quantity")}</Th>
+              <Th>{t("pages.orders.order.difference")}</Th>
+              <Th>{t("pages.orders.order.total")}</Th>
             </Tr>
           </Thead>
           <Tbody>
@@ -316,7 +316,7 @@ export const Summary = ({
           </Tbody>
         </Table>
         <Text mr="50px" fontWeight={500} textAlign="right">
-          {t("pages.loads.load.bottom-total")}: {displayProfit} {currency}
+          {t("pages.orders.order.bottom-total")}: {displayProfit} {currency}
         </Text>
       </Box>
       <Flex justifyContent="space-between">

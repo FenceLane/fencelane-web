@@ -182,14 +182,14 @@ export const ProductExpanses = ({
             fontSize="18px"
             fontWeight="600"
           >
-            2. {t("pages.loads.load.products")}
+            2. {t("pages.orders.order.products")}
           </Text>
           <Flex alignItems="center" color="var(--grey)">
             <Flex flexDir="column" mr="10px">
-              <Text fontSize="15px">{t("pages.loads.load.eur-rate")}</Text>
+              <Text fontSize="15px">{t("pages.orders.order.eur-rate")}</Text>
               {rateDate && (
                 <Text fontSize="11px">{`${t(
-                  "pages.loads.load.from"
+                  "pages.orders.order.from"
                 )} ${rateDate}`}</Text>
               )}
             </Flex>
@@ -215,7 +215,7 @@ export const ProductExpanses = ({
         >{`${currentProduct}. ${productData.product.category.name} ${productData.product.dimensions}`}</Text>
         <Flex alignItems="flex-end" justifyContent="space-between" mb="20px">
           <Flex flexDir="column">
-            <label>{t("pages.loads.load.packing")}</label>
+            <label>{t("pages.orders.order.packing")}</label>
             <Input
               w="116px"
               defaultValue={`${productData.product.itemsPerPackage} szt.`}
@@ -223,7 +223,7 @@ export const ProductExpanses = ({
             />
           </Flex>
           <Flex flexDir="column">
-            <label>{t("pages.loads.load.quantity")}</label>
+            <label>{t("pages.orders.order.quantity")}</label>
             <Input
               w="80px"
               readOnly
@@ -241,16 +241,16 @@ export const ProductExpanses = ({
             defaultValue={quantityType}
           >
             <option value={QUANTITY_TYPE.PIECES}>
-              {t("pages.loads.load.pieces")}
+              {t("pages.orders.order.pieces")}
             </option>
             <option value={QUANTITY_TYPE.PACKAGES}>
-              {t("pages.loads.load.packages")}
+              {t("pages.orders.order.packages")}
             </option>
             <option value={QUANTITY_TYPE.M3}>M3</option>
           </Select>
         </Flex>
         <Box mb="20px">
-          <Text>{t("pages.loads.load.costs")}:</Text>
+          <Text>{t("pages.orders.order.costs")}:</Text>
           <Flex justifyContent="space-between" mb="5px">
             <Input
               autoFocus
@@ -260,7 +260,7 @@ export const ProductExpanses = ({
                 expanses.commodity.price === 0 ? "" : expanses.commodity.price
               }
               onChange={(e) => handleCostsChange(e, PRODUCT_EXPANSE_TYPE.PRICE)}
-              placeholder={t("pages.loads.load.commodity")}
+              placeholder={t("pages.orders.order.commodity")}
               w="116px"
               p="10px"
             />
@@ -284,10 +284,10 @@ export const ProductExpanses = ({
               }
             >
               <option value={QUANTITY_TYPE.PIECES}>
-                {t("pages.loads.load.pieces")}
+                {t("pages.orders.order.pieces")}
               </option>
               <option value={QUANTITY_TYPE.PACKAGES}>
-                {t("pages.loads.load.packages")}
+                {t("pages.orders.order.packages")}
               </option>
               <option value={QUANTITY_TYPE.M3}>M3</option>
             </Select>
@@ -300,7 +300,7 @@ export const ProductExpanses = ({
                 expanses.saturation.price === 0 ? "" : expanses.saturation.price
               }
               onChange={(e) => handleCostsChange(e, PRODUCT_EXPANSE_TYPE.PRICE)}
-              placeholder={t("pages.loads.load.saturation")}
+              placeholder={t("pages.orders.order.saturation")}
               w="116px"
               p="10px"
             />
@@ -324,10 +324,10 @@ export const ProductExpanses = ({
               }
             >
               <option value={QUANTITY_TYPE.PIECES}>
-                {t("pages.loads.load.pieces")}
+                {t("pages.orders.order.pieces")}
               </option>
               <option value={QUANTITY_TYPE.PACKAGES}>
-                {t("pages.loads.load.packages")}
+                {t("pages.orders.order.packages")}
               </option>
               <option value={QUANTITY_TYPE.M3}>M3</option>
             </Select>
@@ -340,7 +340,7 @@ export const ProductExpanses = ({
                 expanses.marketer.price === 0 ? "" : expanses.marketer.price
               }
               onChange={(e) => handleCostsChange(e, PRODUCT_EXPANSE_TYPE.PRICE)}
-              placeholder={t("pages.loads.load.marketer")}
+              placeholder={t("pages.orders.order.marketer")}
               w="116px"
               p="10px"
             />
@@ -364,10 +364,10 @@ export const ProductExpanses = ({
               }
             >
               <option value={QUANTITY_TYPE.PIECES}>
-                {t("pages.loads.load.pieces")}
+                {t("pages.orders.order.pieces")}
               </option>
               <option value={QUANTITY_TYPE.PACKAGES}>
-                {t("pages.loads.load.packages")}
+                {t("pages.orders.order.packages")}
               </option>
               <option value={QUANTITY_TYPE.M3}>M3</option>
             </Select>
@@ -380,7 +380,7 @@ export const ProductExpanses = ({
                 expanses.other.price == 0 ? "" : expanses.other.price
               }
               onChange={(e) => handleCostsChange(e, PRODUCT_EXPANSE_TYPE.PRICE)}
-              placeholder={t("pages.loads.load.other")}
+              placeholder={t("pages.orders.order.other")}
               w="116px"
               p="10px"
             />
@@ -404,16 +404,16 @@ export const ProductExpanses = ({
               }
             >
               <option value={QUANTITY_TYPE.PIECES}>
-                {t("pages.loads.load.pieces")}
+                {t("pages.orders.order.pieces")}
               </option>
               <option value={QUANTITY_TYPE.PACKAGES}>
-                {t("pages.loads.load.packages")}
+                {t("pages.orders.order.packages")}
               </option>
               <option value={QUANTITY_TYPE.M3}>M3</option>
             </Select>
           </Flex>
         </Box>
-        <Text>{t("pages.loads.load.client-price")}: </Text>
+        <Text>{t("pages.orders.order.client-price")}: </Text>
         <Flex justifyContent="space-between" mb="20px">
           <Input
             readOnly
@@ -435,10 +435,10 @@ export const ProductExpanses = ({
             defaultValue={specType}
           >
             <option value={QUANTITY_TYPE.PIECES}>
-              {t("pages.loads.load.pieces")}
+              {t("pages.orders.order.pieces")}
             </option>
             <option value={QUANTITY_TYPE.PACKAGES}>
-              {t("pages.loads.load.packages")}
+              {t("pages.orders.order.packages")}
             </option>
             <option value={QUANTITY_TYPE.M3}>M3</option>
           </Select>

@@ -135,7 +135,7 @@ export const CalculationCreator = ({
             fontSize="18px"
             fontWeight="500"
             m="10px"
-          >{`${t("pages.loads.load.calculation-to-load")} ${id}`}</Text>
+          >{`${t("pages.orders.order.calculation-to-order")} ${id}`}</Text>
         </Flex>
         {currentProduct === 0 && (
           <TransportCost
