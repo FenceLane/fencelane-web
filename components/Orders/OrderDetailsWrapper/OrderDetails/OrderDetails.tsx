@@ -333,7 +333,7 @@ export const OrderDetails = ({
   }; // aktualizowanie ilosci i cen produktow
 
   return (
-    <Flex flexDir="column" alignItems="center" minHeight="100vh">
+    <Flex flexDir="column" alignItems="center">
       <Flex className={styles.container} flexDir="column">
         <Link as={NextLink} href="/loads" w="32px">
           <IconButton
