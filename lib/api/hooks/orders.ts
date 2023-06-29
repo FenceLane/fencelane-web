@@ -81,12 +81,12 @@ export const useUpdateOrderProducts = (
   return mutation;
 };
 
-export const useUpdateOrder = (loadId: number) => {
+export const useUpdateOrder = (orderId: number) => {
   const mutation = useMutation({
     mutationFn: (data: Partial<OrderInfo>) =>
-      apiClient.orders.updateOrder({ id: loadId, data }),
+      apiClient.orders.updateOrder({ id: orderId, data }),
     onSuccess: () => {
-      return queryClient.invalidateQueries({
+      return invalidateQueriesWithWebsocket({
         queryKey: [QUERY_KEY.ORDER, orderId],
       });
     },
