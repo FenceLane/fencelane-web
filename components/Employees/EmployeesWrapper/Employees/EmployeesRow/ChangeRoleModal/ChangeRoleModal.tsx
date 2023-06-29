@@ -65,48 +65,46 @@ export const ChangeRoleModal = ({
   };
 
   return (
-    <div>
-      <Modal isOpen={isOpen} onClose={handleModalClose}>
-        <ModalOverlay />
-        <ModalContent>
-          <ModalHeader>{t("pages.employees.role_change")}</ModalHeader>
-          <ModalCloseButton />
-          <ModalBody>
-            <RadioGroup
-              defaultValue={String(newRole)}
-              onChange={(value) => handleChange(value)}
-            >
-              <Stack direction="column">
-                {Object.entries(roleLabels).map(([role, label]) => {
-                  return (
-                    <Radio key={role} value={role}>
-                      {label}
-                    </Radio>
-                  );
-                })}
-              </Stack>
-            </RadioGroup>
-            {!!error && (
-              <Text color="red">
-                {t(`errors.backendErrorLabel.${mapAxiosErrorToLabel(error)}`)}
-              </Text>
-            )}
-          </ModalBody>
-          <ModalFooter alignItems="flex-end">
-            <Button
-              colorScheme="green"
-              isLoading={isLoading}
-              onClick={handleChangeRole}
-              mr={3}
-            >
-              {t("buttons.confirm")}
-            </Button>
-            <Button colorScheme="red" onClick={handleModalClose}>
-              {t("buttons.cancel")}
-            </Button>
-          </ModalFooter>
-        </ModalContent>
-      </Modal>
-    </div>
+    <Modal isOpen={isOpen} onClose={handleModalClose}>
+      <ModalOverlay />
+      <ModalContent>
+        <ModalHeader>{t("pages.employees.role_change")}</ModalHeader>
+        <ModalCloseButton />
+        <ModalBody>
+          <RadioGroup
+            defaultValue={String(newRole)}
+            onChange={(value) => handleChange(value)}
+          >
+            <Stack direction="column">
+              {Object.entries(roleLabels).map(([role, label]) => {
+                return (
+                  <Radio key={role} value={role}>
+                    {label}
+                  </Radio>
+                );
+              })}
+            </Stack>
+          </RadioGroup>
+          {!!error && (
+            <Text color="red">
+              {t(`errors.backendErrorLabel.${mapAxiosErrorToLabel(error)}`)}
+            </Text>
+          )}
+        </ModalBody>
+        <ModalFooter alignItems="flex-end">
+          <Button
+            colorScheme="green"
+            isLoading={isLoading}
+            onClick={handleChangeRole}
+            mr={3}
+          >
+            {t("buttons.confirm")}
+          </Button>
+          <Button colorScheme="red" onClick={handleModalClose}>
+            {t("buttons.cancel")}
+          </Button>
+        </ModalFooter>
+      </ModalContent>
+    </Modal>
   );
 };

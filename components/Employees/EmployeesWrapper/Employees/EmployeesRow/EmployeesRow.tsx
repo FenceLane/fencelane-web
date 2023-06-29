@@ -1,5 +1,5 @@
 import React from "react";
-import { UserInfo } from "../../../../../lib/types";
+import { USER_ROLE, UserInfo } from "../../../../../lib/types";
 import { Button, Tr, Td, useDisclosure } from "@chakra-ui/react";
 import { useIsMobile } from "../../../../../lib/hooks/useIsMobile";
 import { ChangeRoleModal } from "./ChangeRoleModal/ChangeRoleModal";
@@ -9,7 +9,7 @@ interface EmployeesRowProps {
   employee: UserInfo;
 }
 
-const getRoleByNumber = (role: number) => {
+const getRoleByNumber = (role: USER_ROLE) => {
   switch (role) {
     case 0:
       return "admin";
