@@ -1,9 +1,11 @@
 //custom server based on https://nextjs.org/docs/advanced-features/custom-server
 //added local ssl cert config
-const { createServer } = require("https");
-const { parse } = require("url");
-const next = require("next");
-const fs = require("fs");
+
+import { createServer } from "https";
+import { parse } from "url";
+import next from "next";
+import fs from "fs";
+import { createWebSocketServer } from "./lib/server/websocketServer";
 
 // Load environment variables from .env, .env.local, etc. This explicit call
 // into `@next/env` allows using environment variables before next() is called.
@@ -23,17 +25,25 @@ const httpsOptions = {
 };
 
 app.prepare().then(() => {
-  createServer(httpsOptions, async (req, res) => {
+  const server = createServer(httpsOptions, async (req, res) => {
     try {
-      const parsedUrl = parse(req.url, true);
+      const { url } = req;
+      if (!url) {
+        return;
+      }
+      const parsedUrl = parse(url, true);
       await handle(req, res, parsedUrl);
     } catch (err) {
       console.error("Error occurred handling", req.url, err);
       res.statusCode = 500;
       res.end("internal server error");
     }
-  }).listen(port, (err) => {
-    if (err) throw err;
-    console.log(`> FenceLane ready on ${hostname}`);
+  });
+
+  createWebSocketServer(server); // Initialize the WebSocket server
+
+  server.listen(port, () => {
+    console.log(`> FenceLane Server ready on ${hostname}`);
+    return;
   });
 });

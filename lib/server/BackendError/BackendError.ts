@@ -8,6 +8,7 @@ export const BackendErrorLabel = {
   INVALID_REQUEST_BODY: "invalid-request-body",
   UNEXPECTED_ERROR: "unexpected-error",
   METHOD_NOT_ALLOWED: "method-not-allowed",
+  FORBIDDEN_ADMIN_ONLY: "forbidden-admin-only",
   INVALID_CREDENTIALS: "invalid-credentials",
   INVALID_PASSWORD_RESET_TOKEN: "invalid-password-reset-token",
   PRODUCT_ALREADY_EXISTS: "product-already-exists",

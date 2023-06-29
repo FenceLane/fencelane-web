@@ -7,6 +7,8 @@ import { queryClient } from "../lib/api/queryClient";
 import { ToastContainer } from "react-toastify";
 import { LoadingProvider } from "../lib/hooks/loadingContext";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import { UserInfo } from "../lib/types";
+import { useReactQueryWebsocketSocketSubscription } from "../lib/hooks/useReactQuerySubscription";
 
 const theme = extendTheme({
   fonts: {
@@ -15,7 +17,10 @@ const theme = extendTheme({
   },
 });
 
-function App({ Component, pageProps }: AppProps) {
+function App({ Component, pageProps }: AppProps<{ user?: UserInfo }>) {
+  const userId = pageProps.user?.id;
+  useReactQueryWebsocketSocketSubscription(userId);
+
   return (
     <QueryClientProvider client={queryClient}>
       <ReactQueryDevtools initialIsOpen={false} />
