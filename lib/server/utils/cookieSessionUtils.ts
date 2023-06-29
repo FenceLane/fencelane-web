@@ -89,3 +89,22 @@ export const deleteCookieSession = async (
 
   return true;
 };
+
+export const parseCookieHeader = (
+  cookieHeader: string
+): Record<string, string> => {
+  const cookies: Record<string, string> = {};
+
+  // Split the cookie header string by semicolons
+  const cookieParts = cookieHeader.split(";");
+
+  for (const part of cookieParts) {
+    // Split each part by the first occurrence of '=' to separate the cookie name and value
+    const [name, value] = part.trim().split("=");
+
+    // Assign the name and value to the cookies object
+    cookies[name] = value;
+  }
+
+  return cookies;
+};
