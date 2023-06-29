@@ -198,10 +198,10 @@
       }
     },
     "orders": {
-      "order_history": "Historia zamówień",
+      "order_history": "Historia załadunków",
       "calculations_history": "Historia kalkulacji",
       "order": {
-        "order_id": "Nr zamówienia",
+        "order_id": "Nr załadunku",
         "status": "Status",
         "client": "Klient",
         "date": "Data",
@@ -228,7 +228,7 @@
           "pieces": "sztuk",
           "m3": "m3"
         },
-        "calculation-to-order": "Kalkulacja do zamówienia ",
+        "calculation-to-order": "Kalkulacja do załadunku ",
         "transport-cost": "Cena dostawy",
         "other-costs": "Inne koszty",
         "products": "Produkty",
@@ -269,9 +269,9 @@
         "new": "Nowe"
       },
       "status": {
-        "order-created": "Utworzono zamówienie",
+        "order-created": "Utworzono załadunek",
         "received-in-storage": "Przyjęto na magazynie",
-        "order created": "Utworzono zamówienie",
+        "order created": "Utworzono załadunek",
         "received in storage": "Przyjęto na magazynie",
         "dried": "Wysuszono",
         "impregnated": "Nasycono",
@@ -279,7 +279,7 @@
         "delivered": "Dostarczono"
       },
       "order-creator": {
-        "order-creator": "Kreator zamówienia",
+        "order-creator": "Kreator załadunku",
         "packages-quantity": "Ilość pakietów",
         "price-per-m3": "Cena za m3"
       },

@@ -121,7 +121,7 @@ export const CalculationCreator = ({
         boxShadow="0px 4px 4px rgba(0, 0, 0, 0.15)"
       >
         <Flex alignItems="center" gap="10px">
-          <Link as={NextLink} href={`/orders/${orderId}`} w="32px">
+          <Link as={NextLink} href={`/loads/${orderId}`} w="32px">
             <IconButton
               icon={<ArrowBackIcon w="32px" h="32px" />}
               aria-label="go back to order"

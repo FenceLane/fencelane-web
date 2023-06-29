@@ -5,7 +5,7 @@ import { InferGetServerSidePropsType } from "next";
 import { useRouter } from "next/router";
 import { OrderDetailsWrapper } from "../../../components/Orders/OrderDetailsWrapper/OrderDetailsWrapper";
 
-const OrderDetailsPage = ({
+const LoadDetailsPage = ({
   user,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const router = useRouter();
@@ -20,7 +20,7 @@ const OrderDetailsPage = ({
   );
 };
 
-export default OrderDetailsPage;
+export default LoadDetailsPage;
 
 export const getServerSideProps = withTranslationProps(
   withServerSideAuth(async (ctx) => {

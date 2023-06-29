@@ -335,7 +335,7 @@ export const OrderDetails = ({
   return (
     <Flex flexDir="column" alignItems="center" minHeight="100vh">
       <Flex className={styles.container} flexDir="column">
-        <Link as={NextLink} href="/orders" w="32px">
+        <Link as={NextLink} href="/loads" w="32px">
           <IconButton
             icon={<ArrowBackIcon w="32px" h="32px" />}
             aria-label="go back to orders"
@@ -501,10 +501,18 @@ export const OrderDetails = ({
             </Tbody>
           </Table>
         </Box>
+        {isUpdateOrderProductsError && (
+          <Text color="red">
+            {t(mapAxiosErrorToLabel(updateOrderProductsError))}
+          </Text>
+        )}
+        {isUpdateOrderError && (
+          <Text color="red">{t(mapAxiosErrorToLabel(updateOrderError))}</Text>
+        )}
         <Flex
           justifyContent="flex-end"
           gap="20px"
-          p="20px 20px 20px 0px"
+          p="20px"
           borderBottom="5px solid var(--light-content)"
         >
           <Button
@@ -522,33 +530,26 @@ export const OrderDetails = ({
             </Button>
           </Link>
         </Flex>
-        {isUpdateOrderProductsError && (
-          <Text color="red">
-            {t(mapAxiosErrorToLabel(updateOrderProductsError))}
-          </Text>
-        )}
-        {isUpdateOrderError && (
-          <Text color="red">{t(mapAxiosErrorToLabel(updateOrderError))}</Text>
-        )}
-        <Flex m="40px 0px" justifyContent="flex-start" alignItems="center">
-          <Heading size="sm" mb="10px" ml="40px">
-            {t("pages.orders.order.documents")}
-          </Heading>
-        </Flex>
-        <Table className={styles["file-table"]}>
-          <Thead>
-            <Tr>
-              <Th>{t("pages.orders.order.file")}</Th>
-              <Th>{t("pages.orders.order.download")}</Th>
-            </Tr>
-          </Thead>
-        </Table>
         <Flex
-          pr="20px"
-          justifyContent="flex-end"
-          m="20px 0px 20px 0px"
-          gap="20px"
+          flexDir="column"
+          gap="10px"
+          className={styles["documents-container"]}
         >
+          <Flex alignItems="center">
+            <Heading size="sm" mb="10px">
+              {t("pages.orders.order.documents")}
+            </Heading>
+          </Flex>
+          <Table className={styles["file-table"]}>
+            <Thead>
+              <Tr>
+                <Th>{t("pages.orders.order.file")}</Th>
+                <Th>{t("pages.orders.order.download")}</Th>
+              </Tr>
+            </Thead>
+          </Table>
+        </Flex>
+        <Flex justifyContent="flex-end" m="20px " gap="20px">
           <Button color="white" bg="var(--button-dark-orange)" fontWeight="400">
             {t("buttons.add")}
           </Button>

@@ -93,7 +93,7 @@ export const Orders = ({ orders }: OrderProps) => {
         >
           Filtry
         </Button>
-        <Link href="/orders/create">
+        <Link href="/loads/create">
           <Button
             color="white"
             backgroundColor="var(--add-button-color)"

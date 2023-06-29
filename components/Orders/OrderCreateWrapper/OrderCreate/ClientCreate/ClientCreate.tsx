@@ -41,7 +41,7 @@ export const ClientCreate = () => {
 
   useEffect(() => {
     if (isSuccess) {
-      router.push("/orders/create");
+      router.push("/loads/create");
     }
   }, [router, isSuccess]);
 
@@ -84,7 +84,7 @@ export const ClientCreate = () => {
         placeholder={t("pages.orders.clients.phone-number")}
       />
       <Flex justifyContent="flex-end" gap="50px" mt="20px">
-        <Link href="/orders/create">
+        <Link href="/loads/create">
           <Button colorScheme="red">{t("buttons.cancel")}</Button>
         </Link>
         <Button

@@ -89,7 +89,7 @@ export const OrdersRow = ({ orderData }: OrderDataProps) => {
         )}
         <Link
           className={styles["details-link"]}
-          href={`/orders/${orderData.id}`}
+          href={`/loads/${orderData.id}`}
         >
           {t("pages.orders.order.details")}
           <ArrowForwardIcon boxSize="4" />

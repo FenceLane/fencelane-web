@@ -208,7 +208,7 @@ export const Summary = ({
       isPostTransportCostSuccess &&
       isUpdateOrderSuccess
     ) {
-      router.push(`/orders`);
+      router.push(`/loads`);
     }
   }, [
     isPostExpansesSuccess,

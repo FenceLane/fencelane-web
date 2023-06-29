@@ -4,7 +4,7 @@ import { withTranslationProps } from "../../../lib/server/middlewares/withTransl
 import { InferGetServerSidePropsType } from "next";
 import { OrderCreateWrapper } from "../../../components/Orders/OrderCreateWrapper/OrderCreateWrapper";
 
-const OrderCreatePage = ({
+const LoadCreatePage = ({
   user,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   return (
@@ -14,7 +14,7 @@ const OrderCreatePage = ({
   );
 };
 
-export default OrderCreatePage;
+export default LoadCreatePage;
 
 export const getServerSideProps = withTranslationProps(
   withServerSideAuth(async (ctx) => {

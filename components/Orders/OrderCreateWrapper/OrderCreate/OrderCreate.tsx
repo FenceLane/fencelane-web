@@ -127,7 +127,7 @@ export const OrderCreate = ({ clients, products }: OrderCreateProps) => {
 
   useEffect(() => {
     if (isSuccess) {
-      router.push("/orders");
+      router.push("/loads");
     }
   }, [router, isSuccess]);
 
@@ -137,10 +137,10 @@ export const OrderCreate = ({ clients, products }: OrderCreateProps) => {
         {t("pages.orders.order-creator.order-creator")}
       </Text>
       <Flex gap="20px" mb="20px">
-        <Link href="/orders/create-client">
+        <Link href="/loads/create-client">
           <Button colorScheme="blue">Dodaj klienta</Button>
         </Link>
-        <Link href="/orders/create-destination">
+        <Link href="/loads/create-destination">
           <Button colorScheme="gray">Dodaj destynację</Button>
         </Link>
       </Flex>
@@ -247,7 +247,7 @@ export const OrderCreate = ({ clients, products }: OrderCreateProps) => {
           >
             {t("buttons.confirm")}
           </Button>
-          <Link href="/orders">
+          <Link href="/loads">
             <Button colorScheme="red">{t("buttons.cancel")}</Button>
           </Link>
         </Box>
