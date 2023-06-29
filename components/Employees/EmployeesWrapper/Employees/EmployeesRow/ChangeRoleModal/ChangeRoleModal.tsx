@@ -50,14 +50,14 @@ export const ChangeRoleModal = ({
   };
 
   const {
-    mutate: updateStatus,
+    mutate: changeRole,
     error,
     isSuccess,
     isLoading,
   } = useChangeRole(id, () => onClose());
 
-  const handleUpdateStatus = () => {
-    updateStatus({ role: newRole });
+  const handleChangeRole = () => {
+    changeRole({ role: newRole });
   };
 
   const handleChange = (value: string) => {
@@ -96,7 +96,7 @@ export const ChangeRoleModal = ({
             <Button
               colorScheme="green"
               isLoading={isLoading}
-              onClick={handleUpdateStatus}
+              onClick={handleChangeRole}
               mr={3}
             >
               {t("buttons.confirm")}
