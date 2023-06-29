@@ -42,8 +42,6 @@ export default withApiMethods({
       const selfUser = (req as typeof req & { session: { user: User } }).session
         .user;
 
-      console.log(selfUser);
-
       const { userId } = req.query;
       if (typeof userId !== "string") {
         throw Error('"userId" was not passed in dynamic api path.');
