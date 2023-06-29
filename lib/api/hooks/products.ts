@@ -1,6 +1,6 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { apiClient } from "../apiClient";
-import { queryClient, QUERY_KEY } from "../queryClient";
+import { QUERY_KEY, invalidateQueriesWithWebsocket } from "../queryClient";
 
 export const useGetProducts = () => {
   const mutation = useQuery({
@@ -25,7 +25,7 @@ export const usePostProduct = (onSuccess: () => void) => {
     mutationFn: apiClient.products.postProduct,
     onSuccess: () => {
       onSuccess();
-      queryClient.invalidateQueries({ queryKey: [QUERY_KEY.PRODUCTS] });
+      invalidateQueriesWithWebsocket({ queryKey: [QUERY_KEY.PRODUCTS] });
     },
   });
 
@@ -37,7 +37,7 @@ export const useEditProduct = (onSuccess: () => void) => {
     mutationFn: apiClient.products.editProduct,
     onSuccess: () => {
       onSuccess();
-      queryClient.invalidateQueries({ queryKey: [QUERY_KEY.PRODUCTS] });
+      invalidateQueriesWithWebsocket({ queryKey: [QUERY_KEY.PRODUCTS] });
     },
   });
 
@@ -61,7 +61,7 @@ export const useDeleteProduct = (onSuccess: () => void) => {
     mutationFn: apiClient.products.deleteProduct,
     onSuccess: () => {
       onSuccess();
-      queryClient.invalidateQueries({ queryKey: [QUERY_KEY.PRODUCTS] });
+      invalidateQueriesWithWebsocket({ queryKey: [QUERY_KEY.PRODUCTS] });
     },
   });
   return mutation;

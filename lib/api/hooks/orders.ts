@@ -1,7 +1,7 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { OrderStatusData } from "../../schema/orderStatusData";
 import { apiClient } from "../apiClient";
-import { queryClient, QUERY_KEY } from "../queryClient";
+import { QUERY_KEY, invalidateQueriesWithWebsocket } from "../queryClient";
 import { OrderInfo, OrderProductInfo } from "../../types";
 
 export const useGetOrders = () => {
@@ -27,8 +27,8 @@ export const usePostOrder = () => {
     mutationFn: apiClient.orders.postOrder,
     onSuccess: () => {
       return Promise.all([
-        queryClient.invalidateQueries({ queryKey: [QUERY_KEY.ORDERS] }),
-        queryClient.invalidateQueries({ queryKey: [QUERY_KEY.PRODUCTS] }),
+        invalidateQueriesWithWebsocket({ queryKey: [QUERY_KEY.ORDERS] }),
+        invalidateQueriesWithWebsocket({ queryKey: [QUERY_KEY.PRODUCTS] }),
       ]);
     },
   });
@@ -52,8 +52,10 @@ export const useUpdateStatus = (orderId: number, onSuccess: () => void) => {
       onSuccess();
 
       return Promise.all([
-        queryClient.invalidateQueries({ queryKey: [QUERY_KEY.ORDERS] }),
-        queryClient.invalidateQueries({ queryKey: [QUERY_KEY.ORDER, orderId] }),
+        invalidateQueriesWithWebsocket({ queryKey: [QUERY_KEY.ORDERS] }),
+        invalidateQueriesWithWebsocket({
+          queryKey: [QUERY_KEY.ORDER, orderId],
+        }),
       ]);
     },
   });
@@ -70,7 +72,7 @@ export const useUpdateOrderProducts = (
       apiClient.orders.updateOrderProducts({ id: orderId, data }),
     onSuccess: (_data, variables) => {
       onSuccess(variables);
-      return queryClient.invalidateQueries({
+      return invalidateQueriesWithWebsocket({
         queryKey: [QUERY_KEY.ORDER, orderId],
       });
     },
@@ -85,7 +87,7 @@ export const useUpdateOrder = (loadId: number) => {
       apiClient.orders.updateOrder({ id: loadId, data }),
     onSuccess: () => {
       return queryClient.invalidateQueries({
-        queryKey: [QUERY_KEY.ORDER, loadId],
+        queryKey: [QUERY_KEY.ORDER, orderId],
       });
     },
   });
@@ -97,7 +99,7 @@ export const usePostClient = () => {
   const mutation = useMutation({
     mutationFn: apiClient.orders.postClient,
     onSuccess: () => {
-      queryClient.invalidateQueries({
+      invalidateQueriesWithWebsocket({
         queryKey: [QUERY_KEY.CLIENTS],
       });
     },
@@ -111,8 +113,8 @@ export const usePostDestination = () => {
     mutationFn: apiClient.orders.postDestination,
     onSuccess: () => {
       return Promise.all([
-        queryClient.invalidateQueries({ queryKey: [QUERY_KEY.CLIENTS] }),
-        queryClient.invalidateQueries({ queryKey: [QUERY_KEY.DESTINATIONS] }),
+        invalidateQueriesWithWebsocket({ queryKey: [QUERY_KEY.CLIENTS] }),
+        invalidateQueriesWithWebsocket({ queryKey: [QUERY_KEY.DESTINATIONS] }),
       ]);
     },
   });
