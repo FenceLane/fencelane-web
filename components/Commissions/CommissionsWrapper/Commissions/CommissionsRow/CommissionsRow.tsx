@@ -3,7 +3,7 @@ import { Box, Flex, Grid, Text } from "@chakra-ui/react";
 import { CommissionInfo } from "../../../../../lib/types";
 import { useContent } from "../../../../../lib/hooks/useContent";
 import styles from "./CommissionsRow.module.scss";
-import { constructLoadDate } from "../../../../../lib/util/dateUtils";
+import { constructOrderDate } from "../../../../../lib/util/dateUtils";
 import { IconButton } from "@chakra-ui/react";
 import { TriangleDownIcon, TriangleUpIcon } from "@chakra-ui/icons";
 import { useIsMobile } from "../../../../../lib/hooks/useIsMobile";
@@ -35,7 +35,7 @@ export const CommissionsRow = ({ commissionData }: CommissionRowProps) => {
           {`${t("pages.commissions.commission-id")} ${commissionData.id}`}
         </Text>
         <Text className={styles["commission-text"]} flexGrow="1">
-          {constructLoadDate(String(commissionData.createDate)).slice(0, -5)}
+          {constructOrderDate(String(commissionData.createDate)).slice(0, -5)}
         </Text>
         <Text className={styles["commission-text"]} flexGrow="1" width="10%">
           {commissionData.orderId

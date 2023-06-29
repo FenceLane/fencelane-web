@@ -43,7 +43,7 @@ import {
 } from "../../../lib/util/calculationUtils";
 
 interface CalculationProps {
-  loadId: number;
+  orderId: number;
   transportCost: TransportInfo;
   expanses: ExpansesInfo;
   rate: {
@@ -54,7 +54,7 @@ interface CalculationProps {
 }
 
 export const Calculation = ({
-  loadId,
+  orderId,
   transportCost,
   expanses,
   rate,
@@ -75,7 +75,7 @@ export const Calculation = ({
     isError: isDeleteExpansesError,
     isSuccess: isDeleteExpansesSuccess,
     isLoading: isDeleteExpansesLoading,
-  } = useDeleteExpanses(loadId);
+  } = useDeleteExpanses(orderId);
 
   const {
     mutate: deleteTransportCost,
@@ -83,7 +83,7 @@ export const Calculation = ({
     isError: isDeleteTransportCostError,
     isSuccess: isDeleteTransportCostSuccess,
     isLoading: isDeleteTransportCostLoading,
-  } = useDeleteTransportCost(loadId);
+  } = useDeleteTransportCost(orderId);
 
   const {
     mutate: updateOrder,
@@ -91,13 +91,13 @@ export const Calculation = ({
     isError: isUpdateOrderError,
     isSuccess: isUpdateOrderSuccess,
     isLoading: isUpdateOrderLoading,
-  } = useUpdateOrder(loadId);
+  } = useUpdateOrder(orderId);
 
   const [rateDate, setRateDate] = useState<string | null>(
     constructRateDate(rate)
   );
 
-  const id = loadId.toString().padStart(4, "0");
+  const id = orderId.toString().padStart(4, "0");
 
   const handleRateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEurRate(e.target.value);
@@ -140,13 +140,13 @@ export const Calculation = ({
       isDeleteTransportCostSuccess &&
       isUpdateOrderSuccess
     ) {
-      router.push(`/loads/${loadId}`);
+      router.push(`/loads/${orderId}`);
     }
   }, [
     isDeleteExpansesSuccess,
     isDeleteTransportCostSuccess,
     isUpdateOrderSuccess,
-    loadId,
+    orderId,
   ]);
 
   return (
@@ -173,15 +173,17 @@ export const Calculation = ({
             fontSize="18px"
             fontWeight="500"
             mb="20px"
-          >{`${t("pages.loads.load.calculation-to-load")} ${id}`}</Text>
+          >{`${t("pages.orders.order.calculation-to-order")} ${id}`}</Text>
           <Box>
             <Flex justifyContent="flex-end" alignItems="center" mb="10px">
               <Flex alignItems="center" color="var(--grey)">
                 <Flex flexDir="column" mr="10px">
-                  <Text fontSize="15px">{t("pages.loads.load.eur-rate")}</Text>
+                  <Text fontSize="15px">
+                    {t("pages.orders.order.eur-rate")}
+                  </Text>
                   {rateDate && (
                     <Text fontSize="11px">{`${t(
-                      "pages.loads.load.from"
+                      "pages.orders.order.from"
                     )} ${rateDate}`}</Text>
                   )}
                 </Flex>
@@ -212,21 +214,21 @@ export const Calculation = ({
                 onChange={handleQuantityTypeChange}
               >
                 <option value={QUANTITY_TYPE.PACKAGES}>
-                  {t("pages.loads.load.packages")}
+                  {t("pages.orders.order.packages")}
                 </option>
                 <option value={QUANTITY_TYPE.M3}>M3</option>
                 <option value={QUANTITY_TYPE.PIECES}>
-                  {t("pages.loads.load.pieces")}
+                  {t("pages.orders.order.pieces")}
                 </option>
               </Select>
             </Flex>
             <Table className={styles["spec-table"]}>
               <Thead>
                 <Tr>
-                  <Th>{t("pages.loads.load.product")}</Th>
-                  <Th>{t("pages.loads.load.quantity")}</Th>
-                  <Th>{t("pages.loads.load.difference")}</Th>
-                  <Th>{t("pages.loads.load.total")}</Th>
+                  <Th>{t("pages.orders.order.product")}</Th>
+                  <Th>{t("pages.orders.order.quantity")}</Th>
+                  <Th>{t("pages.orders.order.difference")}</Th>
+                  <Th>{t("pages.orders.order.total")}</Th>
                 </Tr>
               </Thead>
               <Tbody>
@@ -256,7 +258,7 @@ export const Calculation = ({
               textAlign="right"
               mt="20px"
             >
-              {t("pages.loads.load.bottom-total")}:{" "}
+              {t("pages.orders.order.bottom-total")}:{" "}
               {expanseData
                 .map((product) => product.totalProfitOfProduct)
                 .reduce((acc, profit) => acc + profit)
@@ -295,7 +297,7 @@ export const Calculation = ({
               onClick={onOpen}
               colorScheme={"red"}
             >
-              {t("pages.loads.load.delete-calculation")}
+              {t("pages.orders.order.delete-calculation")}
             </Button>
           </Flex>
         </Flex>
@@ -304,10 +306,10 @@ export const Calculation = ({
           <ModalOverlay />
           <ModalContent>
             <ModalHeader>
-              {t("pages.loads.load.confirm-calculation-delete")}
+              {t("pages.orders.order.confirm-calculation-delete")}
             </ModalHeader>
             <ModalCloseButton />
-            <ModalBody>{t("pages.loads.load.are-you-sure")}</ModalBody>
+            <ModalBody>{t("pages.orders.order.are-you-sure")}</ModalBody>
 
             <ModalFooter>
               <Button colorScheme="red" mr={3} onClick={onClose}>

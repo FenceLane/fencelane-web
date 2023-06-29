@@ -17,8 +17,8 @@ import { useContent } from "../../../lib/hooks/useContent";
 import { constructRateDate } from "../../../lib/util/dateUtils";
 
 interface CalculationCreatorProps {
-  loadId: number;
-  loadData: OrderInfo;
+  orderId: number;
+  orderData: OrderInfo;
   rate: {
     no: string;
     effectiveDate: Date;
@@ -54,13 +54,13 @@ const initialCosts: InitialCosts = {
 } as const;
 
 export const CalculationCreator = ({
-  loadId,
-  loadData,
+  orderId,
+  orderData,
   rate,
 }: CalculationCreatorProps) => {
   const { t } = useContent();
 
-  const productsQuantity = loadData.products.length;
+  const productsQuantity = orderData.products.length;
 
   const [transportCost, setTransportCost] = useState(0);
 
@@ -94,7 +94,7 @@ export const CalculationCreator = ({
 
   const [currentProduct, setCurrentProduct] = useState(0);
 
-  const id = loadId.toString().padStart(4, "0");
+  const id = orderId.toString().padStart(4, "0");
 
   const handleRateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEurRate(e.target.value);
@@ -164,7 +164,7 @@ export const CalculationCreator = ({
             expansesList={expansesList}
             setExpansesList={setExpansesList}
             handleRateChange={handleRateChange}
-            productData={loadData.products[currentProduct - 1]}
+            productData={orderData.products[currentProduct - 1]}
             handleNextStep={handleNextStep}
             currentProduct={currentProduct}
             handlePrevStep={handlePrevStep}
@@ -174,7 +174,7 @@ export const CalculationCreator = ({
         )}
         {currentProduct > productsQuantity && (
           <Summary
-            loadId={loadId}
+            orderId={orderId}
             transportCostCurrency={transportCostCurrency}
             transportCost={transportCost}
             otherCosts={otherCosts}
@@ -183,7 +183,7 @@ export const CalculationCreator = ({
             handlePrevStep={handlePrevStep}
             rate={Number(eurRate)}
             rateDate={rateDate}
-            productData={loadData.products}
+            productData={orderData.products}
           />
         )}
       </Box>

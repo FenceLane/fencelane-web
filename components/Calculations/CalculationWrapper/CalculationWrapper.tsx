@@ -15,32 +15,32 @@ import { CalculationCreator } from "../CalculationCreator/CalculationCreator";
 import { useGetOrder } from "../../../lib/api/hooks/orders";
 
 interface CalculationWrapperProps {
-  loadId: number;
+  orderId: number;
 }
 
-export const CalculationWrapper = ({ loadId }: CalculationWrapperProps) => {
+export const CalculationWrapper = ({ orderId }: CalculationWrapperProps) => {
   const { t } = useContent("errors.backendErrorLabel");
 
   const {
     isError: isLoadsError,
     error: loadsError,
     isLoading: isLoadsLoading,
-    data: loadData,
-  } = useGetOrder(loadId);
+    data: orderData,
+  } = useGetOrder(orderId);
 
   const {
     isError: isTransportCostError,
     error: transportCostError,
     isLoading: isTransportCostLoading,
     data: transportCost,
-  } = useGetOrderTransportCost(loadId);
+  } = useGetOrderTransportCost(orderId);
 
   const {
     isError: isExpansesError,
     error: expansesError,
     isLoading: isExpansesLoading,
     data: expanses,
-  } = useGetOrderExpanses(loadId);
+  } = useGetOrderExpanses(orderId);
 
   const {
     isError: isRateError,
@@ -64,7 +64,7 @@ export const CalculationWrapper = ({ loadId }: CalculationWrapperProps) => {
     !isLoadsError
   ) {
     return (
-      <CalculationCreator loadId={loadId} loadData={loadData} rate={rate} />
+      <CalculationCreator orderId={orderId} orderData={orderData} rate={rate} />
     );
   }
   if (isTransportCostError || isExpansesError) {
@@ -77,7 +77,7 @@ export const CalculationWrapper = ({ loadId }: CalculationWrapperProps) => {
   }
   return (
     <Calculation
-      loadId={loadId}
+      orderId={orderId}
       transportCost={transportCost}
       expanses={expanses}
       rate={rate}

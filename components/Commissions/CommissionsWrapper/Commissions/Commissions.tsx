@@ -39,7 +39,7 @@ export const Commissions = ({ commissions }: CommissionsProps) => {
             h="32px"
             m="0 10px 10px 0"
           >
-            {t("pages.loads.buttons.new")}
+            {t("pages.orders.buttons.new")}
             <AddIcon ml="10px" />
           </Button>
         </Link>

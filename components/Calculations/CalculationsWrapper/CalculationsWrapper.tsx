@@ -19,5 +19,5 @@ export const CalculationsWrapper = () => {
 
   if (isError) return <p>{t(mapAxiosErrorToLabel(error))}</p>;
 
-  return <Calculations loadData={data} />;
+  return <Calculations orderData={data} />;
 };

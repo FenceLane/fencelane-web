@@ -33,7 +33,7 @@ import { useUpdateOrder } from "../../../../../lib/api/hooks/orders";
 import { calculateProfitsPerProducts } from "../../../../../lib/util/calculationUtils";
 
 interface SummaryProps {
-  loadId: number;
+  orderId: number;
   productData: OrderProductInfo[];
   handlePrevStep: React.MouseEventHandler<HTMLButtonElement>;
   handleRateChange: React.ChangeEventHandler<HTMLInputElement>;
@@ -46,7 +46,7 @@ interface SummaryProps {
 }
 
 export const Summary = ({
-  loadId,
+  orderId,
   productData,
   handlePrevStep,
   handleRateChange,
@@ -69,14 +69,14 @@ export const Summary = ({
     isError: isPostExpansesError,
     isSuccess: isPostExpansesSuccess,
     isLoading: isPostExpansesLoading,
-  } = usePostOrderExpanses(loadId);
+  } = usePostOrderExpanses(orderId);
   const {
     mutate: postLoadTransportCost,
     error: postTransportCostError,
     isError: isPostTransportCostError,
     isSuccess: isPostTransportCostSuccess,
     isLoading: isPostTransportCostLoading,
-  } = usePostOrderTransportCost(loadId);
+  } = usePostOrderTransportCost(orderId);
 
   const {
     mutate: updateLoad,
@@ -84,7 +84,7 @@ export const Summary = ({
     isError: isUpdateLoadError,
     isSuccess: isUpdateLoadSuccess,
     isLoading: isUpdateLoadLoading,
-  } = useUpdateOrder(loadId);
+  } = useUpdateOrder(orderId);
 
   const transportCostInEur =
     transportCostCurrency === CURRENCY.EUR
@@ -166,7 +166,7 @@ export const Summary = ({
   };
 
   const handlePostCalc = () => {
-    const loadId = productData[0].orderId;
+    const orderId = productData[0].orderId;
     const postExpansesList = expansesList.flatMap((expanses, key: number) => {
       return Object.values(expanses).map(
         (expanse: InitialCosts["commodity"]) => {
@@ -197,9 +197,9 @@ export const Summary = ({
     if (currency === CURRENCY.PLN) {
       postProfit = Number(Number(displayProfit) / rate);
     }
-    console.log(loadId);
-    postLoadExpanses({ id: loadId, data: postExpansesList });
-    postLoadTransportCost({ id: loadId, data: postTransportData });
+    console.log(orderId);
+    postLoadExpanses({ id: orderId, data: postExpansesList });
+    postLoadTransportCost({ id: orderId, data: postTransportData });
     updateLoad({ profit: postProfit });
   }; // wysyłanie kosztów do bazy (expansy w bazie za paczke, transportcost calkowity)
 
