@@ -3,9 +3,9 @@ import { withServerSideAuth } from "../../../lib/server/middlewares/withServerSi
 import { withTranslationProps } from "../../../lib/server/middlewares/withTranslationProps";
 import { InferGetServerSidePropsType } from "next";
 import { useRouter } from "next/router";
-import { CalculationWrapper } from "../../../components/Calculations/CalculationWrapper/CalculationWrapper";
+import { LoadDetailsWrapper } from "../../../components/Loads/LoadDetailsWrapper/LoadDetailsWrapper";
 
-const OrderDetailsPage = ({
+const LoadDetailsPage = ({
   user,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   const router = useRouter();
@@ -15,12 +15,12 @@ const OrderDetailsPage = ({
 
   return (
     <Layout user={user}>
-      <CalculationWrapper loadId={Number(id)} />
+      <LoadDetailsWrapper id={Number(id)} />
     </Layout>
   );
 };
 
-export default OrderDetailsPage;
+export default LoadDetailsPage;
 
 export const getServerSideProps = withTranslationProps(
   withServerSideAuth(async (ctx) => {

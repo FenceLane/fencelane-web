@@ -2,25 +2,19 @@ import { Layout } from "../../../components/Layout/Layout";
 import { withServerSideAuth } from "../../../lib/server/middlewares/withServerSideAuth";
 import { withTranslationProps } from "../../../lib/server/middlewares/withTranslationProps";
 import { InferGetServerSidePropsType } from "next";
-import { useRouter } from "next/router";
-import { CalculationWrapper } from "../../../components/Calculations/CalculationWrapper/CalculationWrapper";
+import { ClientCreate } from "../../../components/Loads/LoadCreateWrapper/LoadCreate/ClientCreate/ClientCreate";
 
-const OrderDetailsPage = ({
+const CreateClientPage = ({
   user,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
-  const router = useRouter();
-  const { id } = router.query;
-
-  if (typeof id !== "string") return null;
-
   return (
     <Layout user={user}>
-      <CalculationWrapper loadId={Number(id)} />
+      <ClientCreate />
     </Layout>
   );
 };
 
-export default OrderDetailsPage;
+export default CreateClientPage;
 
 export const getServerSideProps = withTranslationProps(
   withServerSideAuth(async (ctx) => {

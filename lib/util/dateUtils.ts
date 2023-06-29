@@ -40,7 +40,7 @@ export const constructRateDate = (rate: {
   return displayDate;
 };
 
-export const constructOrderDate = (rawDate: Date | string) => {
+export const constructLoadDate = (rawDate: Date | string) => {
   const date = new Date(rawDate);
   return (
     (date.getDate() < 10 ? "0" + date.getDate() : date.getDate()) +

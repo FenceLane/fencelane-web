@@ -33,7 +33,7 @@ import { useUpdateOrder } from "../../../../../lib/api/hooks/orders";
 import { calculateProfitsPerProducts } from "../../../../../lib/util/calculationUtils";
 
 interface SummaryProps {
-  orderId: number;
+  loadId: number;
   productData: OrderProductInfo[];
   handlePrevStep: React.MouseEventHandler<HTMLButtonElement>;
   handleRateChange: React.ChangeEventHandler<HTMLInputElement>;
@@ -46,7 +46,7 @@ interface SummaryProps {
 }
 
 export const Summary = ({
-  orderId,
+  loadId,
   productData,
   handlePrevStep,
   handleRateChange,
@@ -64,27 +64,27 @@ export const Summary = ({
   const [specType, setSpecType] = useState(QUANTITY_TYPE.PACKAGES);
 
   const {
-    mutate: postOrderExpanses,
+    mutate: postLoadExpanses,
     error: postExpansesError,
     isError: isPostExpansesError,
     isSuccess: isPostExpansesSuccess,
     isLoading: isPostExpansesLoading,
-  } = usePostOrderExpanses(orderId);
+  } = usePostOrderExpanses(loadId);
   const {
-    mutate: postOrderTransportCost,
+    mutate: postLoadTransportCost,
     error: postTransportCostError,
     isError: isPostTransportCostError,
     isSuccess: isPostTransportCostSuccess,
     isLoading: isPostTransportCostLoading,
-  } = usePostOrderTransportCost(orderId);
+  } = usePostOrderTransportCost(loadId);
 
   const {
-    mutate: updateOrder,
-    error: updateOrderError,
-    isError: isUpdateOrderError,
-    isSuccess: isUpdateOrderSuccess,
-    isLoading: isUpdateOrderLoading,
-  } = useUpdateOrder(orderId);
+    mutate: updateLoad,
+    error: updateLoadError,
+    isError: isUpdateLoadError,
+    isSuccess: isUpdateLoadSuccess,
+    isLoading: isUpdateLoadLoading,
+  } = useUpdateOrder(loadId);
 
   const transportCostInEur =
     transportCostCurrency === CURRENCY.EUR
@@ -166,7 +166,7 @@ export const Summary = ({
   };
 
   const handlePostCalc = () => {
-    const orderId = productData[0].orderId;
+    const loadId = productData[0].orderId;
     const postExpansesList = expansesList.flatMap((expanses, key: number) => {
       return Object.values(expanses).map(
         (expanse: InitialCosts["commodity"]) => {
@@ -195,27 +195,28 @@ export const Summary = ({
     };
     let postProfit = Number(displayProfit);
     if (currency === CURRENCY.PLN) {
-      postProfit = Number(displayProfit) / rate;
+      postProfit = Number(Number(displayProfit) / rate);
     }
-    postOrderExpanses({ id: orderId, data: postExpansesList });
-    postOrderTransportCost({ id: orderId, data: postTransportData });
-    updateOrder({ profit: postProfit });
+    console.log(loadId);
+    postLoadExpanses({ id: loadId, data: postExpansesList });
+    postLoadTransportCost({ id: loadId, data: postTransportData });
+    updateLoad({ profit: postProfit });
   }; // wysyłanie kosztów do bazy (expansy w bazie za paczke, transportcost calkowity)
 
   useEffect(() => {
     if (
       isPostExpansesSuccess &&
       isPostTransportCostSuccess &&
-      isUpdateOrderSuccess
+      isUpdateLoadSuccess
     ) {
-      router.push(`/orders`);
+      router.push(`/loads`);
     }
   }, [
     isPostExpansesSuccess,
     isPostTransportCostSuccess,
-    isUpdateOrderSuccess,
+    isUpdateLoadSuccess,
     productData,
-  ]); //przy successie dodawania produktów przechodzenie do podstrony orderu
+  ]); //przy successie dodawania produktów przechodzenie do podstrony loadu
 
   return (
     <Flex
@@ -233,14 +234,14 @@ export const Summary = ({
             fontSize="18px"
             fontWeight="600"
           >
-            3. {t("pages.orders.order.summary")}
+            3. {t("pages.loads.load.summary")}
           </Text>
           <Flex alignItems="center" color="var(--grey)">
             <Flex flexDir="column" mr="10px">
-              <Text fontSize="15px">{t("pages.orders.order.eur-rate")}</Text>
+              <Text fontSize="15px">{t("pages.loads.load.eur-rate")}</Text>
               {rateDate && (
                 <Text fontSize="11px">{`${t(
-                  "pages.orders.order.from"
+                  "pages.loads.load.from"
                 )} ${rateDate}`}</Text>
               )}
             </Flex>
@@ -264,7 +265,7 @@ export const Summary = ({
           fontWeight="600"
           mb="10px"
         >
-          {t("pages.orders.order.currency-and-quantity-type")}
+          {t("pages.loads.load.currency-and-quantity-type")}
         </Text>
         <Flex gap="10px" mb="10px">
           <Select
@@ -281,11 +282,11 @@ export const Summary = ({
             onChange={handleQuantityTypeChange}
           >
             <option value={QUANTITY_TYPE.PACKAGES}>
-              {t("pages.orders.order.packages")}
+              {t("pages.loads.load.packages")}
             </option>
             <option value={QUANTITY_TYPE.M3}>M3</option>
             <option value={QUANTITY_TYPE.PIECES}>
-              {t("pages.orders.order.pieces")}
+              {t("pages.loads.load.pieces")}
             </option>
           </Select>
         </Flex>
@@ -293,10 +294,10 @@ export const Summary = ({
         <Table className={styles["spec-table"]}>
           <Thead>
             <Tr>
-              <Th>{t("pages.orders.order.product")}</Th>
-              <Th>{t("pages.orders.order.quantity")}</Th>
-              <Th>{t("pages.orders.order.difference")}</Th>
-              <Th>{t("pages.orders.order.total")}</Th>
+              <Th>{t("pages.loads.load.product")}</Th>
+              <Th>{t("pages.loads.load.quantity")}</Th>
+              <Th>{t("pages.loads.load.difference")}</Th>
+              <Th>{t("pages.loads.load.total")}</Th>
             </Tr>
           </Thead>
           <Tbody>
@@ -315,7 +316,7 @@ export const Summary = ({
           </Tbody>
         </Table>
         <Text mr="50px" fontWeight={500} textAlign="right">
-          {t("pages.orders.order.bottom-total")}: {displayProfit} {currency}
+          {t("pages.loads.load.bottom-total")}: {displayProfit} {currency}
         </Text>
       </Box>
       <Flex justifyContent="space-between">
@@ -331,7 +332,7 @@ export const Summary = ({
           isLoading={
             isPostExpansesLoading ||
             isPostTransportCostLoading ||
-            isUpdateOrderLoading
+            isUpdateLoadLoading
           }
         >
           {t("buttons.save")}
@@ -339,7 +340,7 @@ export const Summary = ({
       </Flex>
       {(isPostExpansesError ||
         isPostTransportCostError ||
-        isUpdateOrderError) && (
+        isUpdateLoadError) && (
         <Text color="red" fontWeight="600" fontSize="18px">
           {isPostExpansesError &&
             t(
@@ -353,10 +354,10 @@ export const Summary = ({
                 postTransportCostError
               )}`
             )}
-          {isUpdateOrderError &&
+          {isUpdateLoadError &&
             t(
               `errors.backendErrorLabel.${mapAxiosErrorToLabel(
-                updateOrderError
+                updateLoadError
               )}`
             )}
         </Text>

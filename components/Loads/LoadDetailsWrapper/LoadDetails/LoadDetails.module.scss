@@ -1,0 +1,142 @@
+.container {
+  background-color: white;
+  width: 100%;
+  min-height: calc(100vh - 150px);
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.15);
+}
+.order-container {
+  width: 100%;
+  background-color: white;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+  line-height: 1.2;
+  font-size: 15px;
+  flex-direction: row;
+  gap: 20px;
+  position: relative;
+}
+.left,
+.right {
+  flex-direction: column;
+  width: 50%;
+}
+.left {
+  margin: 0 0 20px 30px;
+}
+.right,
+.profit {
+  margin: 0 30px 20px 0;
+}
+.text-box {
+  margin-bottom: 10px;
+}
+.order-header {
+  color: var(--font-gray);
+}
+.order-text {
+  font-weight: 500;
+}
+.right-bottom {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+}
+.profit {
+  color: var(--dark);
+  font-weight: 700;
+  font-size: 16px;
+  text-align: right;
+}
+.details-link {
+  font-size: 13px;
+  color: var(--font-gray);
+}
+.order-history div:nth-child(2) {
+  font-weight: 600;
+  color: black;
+}
+.order-history div p:first-child {
+  text-transform: uppercase;
+}
+.order-history div p:first-child::before {
+  content: "> ";
+}
+.spec-table th,
+.spec-table td,
+.file-table th,
+.file-table td {
+  text-align: center;
+  font-size: 12px;
+  padding: 10px 5px;
+}
+.history-container {
+  justify-content: space-between;
+  padding: 30px;
+  border-bottom: 5px solid var(--light-content);
+  border-top: 5px solid var(--light-content);
+}
+.spec-header {
+  margin-left: 30px;
+}
+
+@media only screen and (min-width: 768px) {
+  .left,
+  .right {
+    flex-direction: row;
+    justify-content: space-between;
+    gap: 30px;
+    font-size: 15px;
+    width: 100%;
+    margin: 10px 40px 10px 40px;
+    padding: 0;
+  }
+  .order-container {
+    gap: 0px;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    padding-bottom: 20px;
+  }
+  .spec-table th,
+  .spec-table td,
+  .file-table th,
+  .file-table td {
+    text-align: center;
+    font-size: 15px;
+  }
+  .history-container {
+    justify-content: space-between;
+    padding: 30px 40px;
+  }
+  .change-status-button {
+    width: 120px;
+    height: 60px;
+    font-size: 20px;
+  }
+  .spec-header {
+    margin-left: 40px;
+  }
+}
+@media only screen and (min-width: 1024px) {
+  .container {
+    max-width: 1290px;
+    min-height: calc(100vh - 130px);
+  }
+  .left {
+    flex-direction: row;
+    justify-content: space-between;
+    margin: 10px 0px 10px 40px;
+    gap: 40px;
+    font-size: 15px;
+    width: 50%;
+  }
+  .right {
+    flex-direction: row;
+    justify-content: space-around;
+    gap: 40px;
+    font-size: 15px;
+    width: 40%;
+  }
+  .order-container {
+    flex-wrap: nowrap;
+  }
+}

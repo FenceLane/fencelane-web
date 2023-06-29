@@ -2,25 +2,19 @@ import { Layout } from "../../../components/Layout/Layout";
 import { withServerSideAuth } from "../../../lib/server/middlewares/withServerSideAuth";
 import { withTranslationProps } from "../../../lib/server/middlewares/withTranslationProps";
 import { InferGetServerSidePropsType } from "next";
-import { useRouter } from "next/router";
-import { CalculationWrapper } from "../../../components/Calculations/CalculationWrapper/CalculationWrapper";
+import { DestinationCreateWrapper } from "../../../components/Loads/LoadCreateWrapper/LoadCreate/DestinationCreateWrapper/DestinationCreateWrapper";
 
-const OrderDetailsPage = ({
+const CreateDestinationPage = ({
   user,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
-  const router = useRouter();
-  const { id } = router.query;
-
-  if (typeof id !== "string") return null;
-
   return (
     <Layout user={user}>
-      <CalculationWrapper loadId={Number(id)} />
+      <DestinationCreateWrapper />
     </Layout>
   );
 };
 
-export default OrderDetailsPage;
+export default CreateDestinationPage;
 
 export const getServerSideProps = withTranslationProps(
   withServerSideAuth(async (ctx) => {

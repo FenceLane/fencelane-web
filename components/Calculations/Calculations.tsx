@@ -7,44 +7,44 @@ import Link from "next/link";
 import { ArrowForwardIcon } from "@chakra-ui/icons";
 
 interface CalculationsProps {
-  orderData: OrderInfo[];
+  loadData: OrderInfo[];
 }
 
-export const Calculations = ({ orderData }: CalculationsProps) => {
+export const Calculations = ({ loadData }: CalculationsProps) => {
   const { t } = useContent();
   return (
     <>
       <Text color="var(--dark)" fontSize="20px" fontWeight="500" m="10px">
-        {t("pages.orders.calculations_history")}
+        {t("pages.loads.calculations_history")}
       </Text>
       <Box className={styles.container}>
         <Table className={styles["calc-table"]}>
           <Tr>
-            <Th textAlign="center">{t("pages.orders.order.order_id")}</Th>
-            <Th textAlign="center">{t("pages.orders.order.profit")} [€]</Th>
+            <Th textAlign="center">{t("pages.loads.load.load_id")}</Th>
+            <Th textAlign="center">{t("pages.loads.load.profit")} [€]</Th>
             <Th textAlign="center"></Th>
           </Tr>
-          {orderData
-            .filter((order) => order.profit !== null)
-            .map((order) => (
-              <Tr key={order.id} textAlign="center">
+          {loadData
+            .filter((load) => load.profit !== null)
+            .map((load) => (
+              <Tr key={load.id} textAlign="center">
                 <Td textAlign="center">
-                  {order.id.toString().padStart(4, "0")}
+                  {load.id.toString().padStart(4, "0")}
                 </Td>
                 <Td textAlign="center">
-                  {Number(order.profit).toFixed(2).replace(/\.00$/, "")} €
+                  {Number(load.profit).toFixed(2).replace(/\.00$/, "")} €
                 </Td>
                 <Td>
                   <Link
                     className={styles["details-link"]}
-                    href={`/calculations/${order.id}`}
+                    href={`/calculations/${load.id}`}
                   >
                     <Button
                       color="white"
                       bg=""
                       className={styles["calc-button"]}
                     >
-                      {t("pages.orders.order.calculation")}
+                      {t("pages.loads.load.calculation")}
                       <ArrowForwardIcon />
                     </Button>
                   </Link>
