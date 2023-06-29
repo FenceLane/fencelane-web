@@ -74,6 +74,7 @@ export interface OrderInfo {
   createdAt: Date;
   updatedAt: Date;
   files: string[];
+  parentOrderId: string;
   destination: {
     id: string;
     country: string;
