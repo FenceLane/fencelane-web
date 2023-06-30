@@ -43,6 +43,7 @@
       "destination-does-not-exist": "Destynacja o podanym id nie istnieje!",
       "cannot-delete-product-with-orders": "Nie można usunąć produktu, który ma istniejące zamówienia!",
       "unauthorized": "Brak uprawnień!",
+      "forbidden-admin-only": "Operacja dostępna tylko dla administratora!",
       "event-does-not-exist": "Wydarzenie o podanym id nie istnieje!",
       "product-already-exists": "Podany produkt istnieje!",
       "product-order-does-not-exist": "Produkt nie istnieje w zamówieniu!",
@@ -323,6 +324,24 @@
       "costs": "Koszty",
       "profit": "Zysk",
       "last_loadings": "Ostatnie załadunki"
+    },
+    "employees": {
+      "role_change": "Zmiana roli",
+      "roles": {
+        "admin": "Administrator",
+        "user": "Użytkownik",
+        "boss": "Szef",
+        "vice_boss": "Zastępca szefa",
+        "saturator": "Pracownik nasycalni",
+        "marketer": "Handlowiec"
+      },
+      "table": {
+        "name": "Imię i nazwisko",
+        "role": "Rola",
+        "phone": "Nr telefonu",
+        "change_role": "Zmiana roli",
+        "change_role_button": "Zmień rolę"
+      }
     }
   },
   "buttons": {

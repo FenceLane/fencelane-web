@@ -16,6 +16,11 @@ import https from "https";
 import { ProductDataCreate, ProductDataUpdate } from "../schema/productData";
 import { OrderStatusData } from "../schema/orderStatusData";
 import { EventDataCreate, EventDataUpdate } from "../schema/eventData";
+import {
+  closeWebSocketClient,
+  initialiseWebSocketClient,
+  sendWebsocketMessage,
+} from "./websocketClient";
 
 const axiosInstance = axios.create({
   httpsAgent: new https.Agent({
@@ -257,7 +262,29 @@ const deleteEvent = async (id: string) => {
   return axiosInstance.delete(apiPath(`events/${id}`));
 };
 
+const getEmployees = async (options?: { authCookie: string }) => {
+  const { data } = await axiosInstance.get(apiPath("users"), {
+    headers: { cookie: options?.authCookie },
+  });
+  return data.data;
+};
+
+const changeRole = async ({
+  id,
+  data,
+}: {
+  id: string;
+  data: { role: USER_ROLE };
+}) => {
+  return axiosInstance.put(apiPath(`users/${id}`), data);
+};
+
 export const apiClient = {
+  socket: {
+    listen: initialiseWebSocketClient,
+    close: closeWebSocketClient,
+    send: sendWebsocketMessage,
+  },
   auth: {
     postLogin,
     postRegister,
@@ -299,5 +326,9 @@ export const apiClient = {
     postEvent,
     deleteEvent,
     updateEvent,
+  },
+  employees: {
+    getEmployees,
+    changeRole,
   },
 };

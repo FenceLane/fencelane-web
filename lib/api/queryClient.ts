@@ -1,8 +1,9 @@
-import { QueryClient } from "@tanstack/react-query";
+import { QueryClient, QueryKey } from "@tanstack/react-query";
+import { apiClient } from "./apiClient";
 
 const MINUTE_IN_MS = 1000 * 60;
 
-const queryClient = new QueryClient({
+export const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
       retry: 3,
@@ -13,7 +14,18 @@ const queryClient = new QueryClient({
     },
   },
 });
-export { queryClient };
+
+export const invalidateQueriesWithWebsocket = ({
+  queryKey,
+}: {
+  queryKey: QueryKey;
+}) => {
+  try {
+    const data = JSON.stringify(queryKey);
+    apiClient.socket.send(data);
+  } catch {}
+  return queryClient.invalidateQueries(queryKey);
+};
 
 export const QUERY_KEY = {
   PRODUCTS: "products",
@@ -26,4 +38,5 @@ export const QUERY_KEY = {
   EXPANSES: "expanses",
   TRANSPORT_COST: "transport/cost",
   EVENTS: "events",
+  EMPLOYEES: "employees",
 };
