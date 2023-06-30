@@ -326,6 +326,10 @@ export const Orders = ({ orders }: OrderProps) => {
               .toLowerCase()
               .includes(filters.search);
 
+            const parentOrderBool = String(order.parentOrderId)
+              .toLowerCase()
+              .includes(filters.search);
+
             const destinationBool =
               order.destination.address
                 .toLowerCase()
@@ -343,6 +347,7 @@ export const Orders = ({ orders }: OrderProps) => {
               dateBool &&
               (clientBool ||
                 destinationBool ||
+                parentOrderBool ||
                 orderIdBool ||
                 filters.search === "")
             );

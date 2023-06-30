@@ -80,6 +80,14 @@ export const OrdersRow = ({ orderData }: OrderDataProps) => {
             {orderData.destination.country}
           </Text>
         </Box>
+        <Box className={styles["text-box"]}>
+          <Text className={styles["order-header"]}>
+            {t("pages.orders.order.parent_order_id")}
+          </Text>
+          <Text className={styles["order-text"]}>
+            {orderData.parentOrderId}
+          </Text>
+        </Box>
       </Flex>
       <Box className={styles["right-bottom"]}>
         {profit && (

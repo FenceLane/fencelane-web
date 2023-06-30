@@ -206,6 +206,7 @@
         "client": "Klient",
         "date": "Data",
         "destination": "Destynacja",
+        "parent_order_id": "Nr zamówienia",
         "details": "Szczegóły",
         "change-status": "Zmień status",
         "pieces": "Sztuki",
