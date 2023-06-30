@@ -15,13 +15,12 @@ export const Employees = ({ employees }: EmployeesProps) => {
 
   return (
     <Table
-      variant="striped"
       bg="white "
       colorScheme="gray"
       width="100%"
       className={styles["employees-table"]}
       wordBreak="break-word"
-      borderRadius="10px"
+      borderRadius="3px"
     >
       <Thead>
         {!isMobile && (
@@ -35,7 +34,7 @@ export const Employees = ({ employees }: EmployeesProps) => {
         )}
         {isMobile && (
           <>
-            <Tr bg="gray.100">
+            <Tr>
               <Th>{t("pages.employees.table.name")}</Th>
               <Th>{t("pages.employees.table.role")}</Th>
               <Th>{t("pages.employees.table.change_role")}</Th>

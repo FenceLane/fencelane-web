@@ -83,8 +83,6 @@ export const OrderDetails = ({
 
   const [specType, setSpecType] = useState(QUANTITY_TYPE.PIECES);
 
-  const [newParentOrder, setNewParentOrder] = useState(orderData.parentOrderId);
-
   const { profit } = orderData;
 
   const initialNewProductDetails = orderData.products.map((product) => ({
@@ -334,10 +332,6 @@ export const OrderDetails = ({
     }
   }; // aktualizowanie ilosci i cen produktow
 
-  const handleChangeParentOrder = () => {
-    updateOrder({ parentOrderId: newParentOrder });
-  };
-
   return (
     <Flex flexDir="column" alignItems="center">
       <Flex className={styles.container} flexDir="column">
@@ -406,18 +400,9 @@ export const OrderDetails = ({
               <Text className={styles["order-header"]}>
                 {t("pages.orders.order.parent_order_id")}
               </Text>
-              <Input
-                mb="10px"
-                className={styles["order-text"]}
-                defaultValue={orderData.parentOrderId}
-                onChange={(e) => setNewParentOrder(e.target.value)}
-              />
-              <Button
-                isLoading={isUpdateOrderLoading}
-                onClick={handleChangeParentOrder}
-              >
-                {t("buttons.change")}
-              </Button>
+              <Text className={styles["order-text"]}>
+                {orderData.parentOrderId}
+              </Text>
             </Flex>
           </Flex>
           <Box className={styles["right-bottom"]}>

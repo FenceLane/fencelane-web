@@ -66,6 +66,8 @@ export const OrderCreate = ({ clients, products }: OrderCreateProps) => {
     isLoading,
   } = usePostOrder();
 
+  const [newParentOrder, setNewParentOrder] = useState("");
+
   const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const { name, options } = e.target;
     setOrderData((orderData) => ({
@@ -120,6 +122,7 @@ export const OrderCreate = ({ clients, products }: OrderCreateProps) => {
       price: String(product.price),
     }));
     postOrder({
+      parentOrderId: newParentOrder,
       destinationId: orderData.destinationId as string,
       products: numberedProducts,
     });
@@ -144,6 +147,15 @@ export const OrderCreate = ({ clients, products }: OrderCreateProps) => {
           <Button colorScheme="gray">Dodaj destynację</Button>
         </Link>
       </Flex>
+      <label>{t("pages.orders.order-creator.parent_order_id")}</label>
+      <Input
+        required
+        value={newParentOrder}
+        bg="white"
+        mb="20px"
+        placeholder={t("pages.orders.order-creator.parent_order_id")}
+        onChange={(e) => setNewParentOrder(e.target.value)}
+      />
       <label>{t("main.client")}</label>
       <Select
         required

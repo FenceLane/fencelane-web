@@ -281,6 +281,7 @@
       },
       "order-creator": {
         "order-creator": "Kreator załadunku",
+        "parent_order_id": "Nr zamówienia",
         "packages-quantity": "Ilość pakietów",
         "price-per-m3": "Cena za m3"
       },

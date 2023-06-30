@@ -106,6 +106,7 @@ export interface OrderInfo {
 }
 
 export interface OrderPostInfo {
+  parentOrderId: string;
   destinationId: string;
   products: {
     productId: string;
