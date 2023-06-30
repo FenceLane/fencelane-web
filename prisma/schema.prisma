@@ -99,7 +99,7 @@ model Commission {
   products ProductCommission[]
   date DateTime @default(now())
   order Order? @relation(fields: [orderId], references: [id])
-  orderId Int @unique
+  orderId Int? @unique
 }
 
 model OrderStatus {
