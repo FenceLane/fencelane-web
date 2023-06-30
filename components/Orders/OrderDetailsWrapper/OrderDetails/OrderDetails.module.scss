@@ -14,6 +14,7 @@
   flex-direction: row;
   gap: 20px;
   position: relative;
+  padding-bottom: 30px !important;
 }
 .left,
 .right {
@@ -23,12 +24,25 @@
 .left {
   margin: 0 0 20px 30px;
 }
-.right,
+
 .profit {
-  margin: 0 30px 20px 0;
+  color: var(--dark);
+  font-weight: 700;
+  font-size: 16px;
+}
+.profit::before {
+  content: "+ ";
+}
+
+.right-bottom {
+  position: absolute;
+  bottom: 0px;
+  right: 20px;
+  width: auto;
 }
 .text-box {
   margin-bottom: 10px;
+  flex: 1;
 }
 .order-header {
   color: var(--font-gray);
@@ -89,9 +103,9 @@
     justify-content: space-between;
     gap: 30px;
     font-size: 15px;
-    width: 100%;
     margin: 10px 40px 10px 40px;
     padding: 0;
+    flex: 1;
   }
   .order-container {
     gap: 0px;
@@ -134,16 +148,16 @@
     margin: 10px 0px 10px 40px;
     gap: 40px;
     font-size: 15px;
-    width: 50%;
   }
   .right {
     flex-direction: row;
     justify-content: space-around;
     gap: 40px;
     font-size: 15px;
-    width: 40%;
+    margin-left: 0px;
   }
   .order-container {
     flex-wrap: nowrap;
+    gap: 20px;
   }
 }

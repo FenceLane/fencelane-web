@@ -83,6 +83,8 @@ export const OrderDetails = ({
 
   const [specType, setSpecType] = useState(QUANTITY_TYPE.PIECES);
 
+  const [newParentOrder, setNewParentOrder] = useState(orderData.parentOrderId);
+
   const { profit } = orderData;
 
   const initialNewProductDetails = orderData.products.map((product) => ({
@@ -332,6 +334,10 @@ export const OrderDetails = ({
     }
   }; // aktualizowanie ilosci i cen produktow
 
+  const handleChangeParentOrder = () => {
+    updateOrder({ parentOrderId: newParentOrder });
+  };
+
   return (
     <Flex flexDir="column" alignItems="center">
       <Flex className={styles.container} flexDir="column">
@@ -392,14 +398,36 @@ export const OrderDetails = ({
                 {orderData.destination.country}
               </Text>
             </Box>
+            <Flex
+              className={styles["text-box"]}
+              flexDirection="column"
+              mr="30px"
+            >
+              <Text className={styles["order-header"]}>
+                {t("pages.orders.order.parent_order_id")}
+              </Text>
+              <Input
+                mb="10px"
+                className={styles["order-text"]}
+                defaultValue={orderData.parentOrderId}
+                onChange={(e) => setNewParentOrder(e.target.value)}
+              />
+              <Button
+                isLoading={isUpdateOrderLoading}
+                onClick={handleChangeParentOrder}
+              >
+                {t("buttons.change")}
+              </Button>
+            </Flex>
           </Flex>
+          <Box className={styles["right-bottom"]}>
+            {profit && (
+              <Text className={styles["profit"]}>
+                {Number(profit).toFixed(2).replace(/\.00$/, "")}€
+              </Text>
+            )}
+          </Box>
         </Flex>
-        {profit && (
-          <Text className={styles["profit"]}>
-            {t("pages.orders.order.profit")}: +
-            {Number(profit).toFixed(2).replace(/\.00$/, "")}€
-          </Text>
-        )}
         <Flex className={styles["history-container"]} flexDir="row" gap="20px">
           <Flex flexDir="column" className={styles["order-history"]}>
             <Heading size="sm" mb="10px">

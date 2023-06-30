@@ -86,9 +86,12 @@ export const useUpdateOrder = (orderId: number) => {
     mutationFn: (data: Partial<OrderInfo>) =>
       apiClient.orders.updateOrder({ id: orderId, data }),
     onSuccess: () => {
-      return invalidateQueriesWithWebsocket({
-        queryKey: [QUERY_KEY.ORDER, orderId],
-      });
+      return Promise.all([
+        invalidateQueriesWithWebsocket({ queryKey: [QUERY_KEY.ORDERS] }),
+        invalidateQueriesWithWebsocket({
+          queryKey: [QUERY_KEY.ORDER, orderId],
+        }),
+      ]);
     },
   });
 
