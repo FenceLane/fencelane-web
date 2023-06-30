@@ -17,6 +17,7 @@ export const BackendErrorLabel = {
   DESTINATION_ALREADY_EXISTS: "destination-already-exists",
   DESTINATION_DOES_NOT_EXIST: "destination-does-not-exist",
   UNAUTHORIZED: "unauthorized",
+  COMMISSION_DOES_NOT_EXIST: "commission-does-not-exist",
   ORDER_DOES_NOT_EXIST: "order-does-not-exist",
   EVENT_DOES_NOT_EXIST: "event-does-not-exist",
   TRAVEL_COST_ALREADY_EXISTS: "travel-cost-already-exists",
