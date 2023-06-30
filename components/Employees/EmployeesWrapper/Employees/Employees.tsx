@@ -17,7 +17,7 @@ export const Employees = ({ employees }: EmployeesProps) => {
     <Table
       variant="striped"
       bg="white "
-      colorScheme="twitter"
+      colorScheme="gray"
       width="100%"
       className={styles["employees-table"]}
       wordBreak="break-word"
@@ -35,7 +35,7 @@ export const Employees = ({ employees }: EmployeesProps) => {
         )}
         {isMobile && (
           <>
-            <Tr bg="twitter.100">
+            <Tr bg="gray.100">
               <Th>{t("pages.employees.table.name")}</Th>
               <Th>{t("pages.employees.table.role")}</Th>
               <Th>{t("pages.employees.table.change_role")}</Th>
