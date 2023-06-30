@@ -21,6 +21,7 @@ export default withApiMethods({
 
     const commission = await prismaClient.commission.findUnique({
       where: { id: Number(commissionId) },
+      include: { products: true, order: true },
     });
 
     if (!commission) {
@@ -82,6 +83,8 @@ export default withApiMethods({
     if (typeof commissionId !== "string") {
       throw Error('"commissionId" was not passed in dynamic api path.');
     }
+
+    console.log("patryk", commissionId);
 
     try {
       const deletedCommission = await prismaClient.commission.delete({

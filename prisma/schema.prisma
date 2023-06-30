@@ -98,7 +98,7 @@ model Commission {
   id Int  @id @default(autoincrement())
   products ProductCommission[]
   date DateTime @default(now())
-  order Order? @relation(fields: [orderId], references: [id])
+  order Order? @relation(fields: [orderId], references: [id], onDelete: Cascade)
   orderId Int? @unique
 }
 
@@ -174,7 +174,7 @@ model ProductOrder {
 
 model ProductCommission {
   id String  @id @default(uuid())
-  commission Commission @relation(fields: [commissionId], references: [id])
+  commission Commission @relation(fields: [commissionId], references: [id], onDelete: Cascade)
   commissionId Int
   product Product @relation(fields: [productId], references: [id])
   productId String
