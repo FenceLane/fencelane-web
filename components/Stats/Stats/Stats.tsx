@@ -74,7 +74,7 @@ export const Stats = ({ orders, products, categories }: StatsProps) => {
             {t("pages.stats.last_loadings")}
           </Text>
           {orders.slice(0, 10).map((order) => (
-            <Link key={order.id} href={`/orders/${order.id}`}>
+            <Link key={order.id} href={`/loads/${order.id}`}>
               <Flex
                 justifyContent="space-between"
                 p="20px 0px"
