@@ -99,7 +99,6 @@ const BarChart = ({ month, selectedDate, orders }: BarChartProps) => {
 
   const sixMonthsOrders = orders
     .filter((order) => {
-      console.log(order.createdAt);
       return (
         new Date(order.createdAt) > dateMin &&
         new Date(order.createdAt) < dateMax
