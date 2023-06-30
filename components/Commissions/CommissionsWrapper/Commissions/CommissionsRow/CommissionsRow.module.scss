@@ -12,7 +12,6 @@
   flex-direction: column;
 }
 .product-table {
-  grid-template-areas: "item item item item";
   border-top: 2px solid var(--light-content);
 }
 .product-table-item {
@@ -20,6 +19,15 @@
   height: 60px;
   padding: 5px;
   border-bottom: 1px solid rgb(189, 181, 181);
+}
+.product-table-item:first-child {
+  flex: 2;
+  font-weight: 500;
+}
+.product-table-item:nth-child(2),
+.product-table-item:nth-child(3),
+.product-table-item:nth-child(4) {
+  flex: 1;
 }
 .product-table-item:nth-last-child(-n + 4) {
   border-bottom: none;
@@ -54,17 +62,8 @@
 }
 @media only screen and (min-width: 1124px) {
   .commission-info {
-    grid-template-areas: "line line line line line line";
     gap: 10px;
     padding: 20px 30px;
-  }
-  .grid-1,
-  .grid-2,
-  .grid-3,
-  .grid-4,
-  .grid-5,
-  .grid-6 {
-    grid-area: "line";
   }
   .commission-actions {
     justify-content: flex-end;

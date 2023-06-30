@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Box, Flex, Grid, Text } from "@chakra-ui/react";
+import { Box, Flex, Text } from "@chakra-ui/react";
 import { CommissionInfo } from "../../../../../lib/types";
 import { useContent } from "../../../../../lib/hooks/useContent";
 import styles from "./CommissionsRow.module.scss";
@@ -60,7 +60,7 @@ export const CommissionsRow = ({ commissionData }: CommissionRowProps) => {
       {showProducts && (
         <Box>
           {commissionData.productData.map((product, id) => (
-            <Grid key={id} className={styles["product-table"]}>
+            <Flex key={id} className={styles["product-table"]}>
               <Flex className={styles["product-table-item"]} textAlign="left">
                 {product.productInfo.category.name}
               </Flex>
@@ -78,7 +78,7 @@ export const CommissionsRow = ({ commissionData }: CommissionRowProps) => {
               >
                 <ActionsButtons />
               </Flex>
-            </Grid>
+            </Flex>
           ))}
         </Box>
       )}
