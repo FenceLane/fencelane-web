@@ -84,8 +84,6 @@ export default withApiMethods({
       throw Error('"commissionId" was not passed in dynamic api path.');
     }
 
-    console.log("patryk", commissionId);
-
     try {
       const deletedCommission = await prismaClient.commission.delete({
         where: { id: Number(commissionId) },
