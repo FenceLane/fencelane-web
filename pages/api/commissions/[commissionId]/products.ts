@@ -57,14 +57,15 @@ export default withApiMethods({
                 productCommissionId,
                 filledQuantity: filledQuantity,
               }) => {
-                const productCommission = await tx.productCommission.findUnique(
-                  {
-                    where: { id: productCommissionId },
-                    include: {
-                      product: true,
-                    },
-                  }
-                );
+                const productCommission = await tx.productCommission.findFirst({
+                  where: {
+                    id: productCommissionId,
+                    commissionId: Number(commissionId),
+                  },
+                  include: {
+                    product: true,
+                  },
+                });
 
                 if (!productCommission) {
                   throw new BackendError({
