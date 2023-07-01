@@ -6,10 +6,7 @@ export const ProductCommissionDataSchema = z.object({
   quantity: z.number().min(0),
 });
 
-export const ProductCommissionDataUpdateSchema =
-  ProductCommissionDataSchema.omit({
-    commissionId: true,
-    productId: true,
-  })
-    .partial()
-    .extend({ productCommissionId: z.string().min(1) });
+export const ProductCommissionDataFillSchema = z.object({
+  productCommissionId: z.string().min(1),
+  filledQuantity: z.number().min(0),
+});

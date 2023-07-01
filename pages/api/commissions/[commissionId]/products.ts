@@ -10,7 +10,7 @@ import {
 import { withApiAuth } from "../../../../lib/server/middlewares/withApiAuth";
 import { withApiMethods } from "../../../../lib/server/middlewares/withApiMethods";
 import { withValidatedJSONRequestBody } from "../../../../lib/server/middlewares/withValidatedJSONRequestBody";
-import { ProductCommissionDataUpdateSchema } from "../../../../lib/schema/productCommissionData";
+import { ProductCommissionDataFillSchema } from "../../../../lib/schema/productCommissionData";
 import { z } from "zod";
 
 export default withApiMethods({
@@ -37,8 +37,8 @@ export default withApiMethods({
   PATCH: withApiAuth(
     withValidatedJSONRequestBody(
       z.union([
-        z.array(ProductCommissionDataUpdateSchema),
-        ProductCommissionDataUpdateSchema,
+        z.array(ProductCommissionDataFillSchema),
+        ProductCommissionDataFillSchema,
       ])
     )(async (req, res) => {
       const { commissionId } = req.query;
@@ -53,11 +53,10 @@ export default withApiMethods({
         await prismaClient.$transaction(async (tx) => {
           await Promise.all(
             productCommissionData.map(
-              async ({ productCommissionId, quantity: newQuantity }) => {
-                if (newQuantity === undefined) {
-                  return;
-                }
-
+              async ({
+                productCommissionId,
+                filledQuantity: filledQuantity,
+              }) => {
                 const productCommission = await tx.productCommission.findUnique(
                   {
                     where: { id: productCommissionId },
@@ -74,18 +73,14 @@ export default withApiMethods({
                   });
                 }
 
-                if (newQuantity >= productCommission.quantity) {
+                if (filledQuantity > productCommission.quantity) {
                   throw new BackendError({
                     code: BackendResponseStatusCode.BAD_REQUEST,
                     label:
                       BackendErrorLabel.QUANTITY_EXCEEDS_PRODUCT_COMMISSION_QUANTITY,
-                    message: `Quantity exceeds product commission quantity. Product commission quantity: ${productCommission.quantity}, new quantity: ${newQuantity}, product-commission id: ${productCommission.productId}`,
+                    message: `Quantity exceeds product commission quantity. Product commission quantity: ${productCommission.quantity}, filled quantity: ${filledQuantity}, product-commission id: ${productCommission.productId}`,
                   });
                 }
-
-                const filledQuantity = Math.abs(
-                  newQuantity - productCommission.quantity
-                );
 
                 //update stock
                 await tx.product.update({
