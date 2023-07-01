@@ -1,4 +1,4 @@
-import { User } from "@prisma/client";
+import { Product, User } from "@prisma/client";
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime";
 import { prismaClient } from "../../../lib/prisma/prismaClient";
 import { OrderDataCreateSchema } from "../../../lib/schema/orderData";
@@ -12,6 +12,17 @@ import { withApiAuth } from "../../../lib/server/middlewares/withApiAuth";
 import { withApiMethods } from "../../../lib/server/middlewares/withApiMethods";
 import { withValidatedJSONRequestBody } from "../../../lib/server/middlewares/withValidatedJSONRequestBody";
 import { ORDER_STATUS } from "../../../lib/types";
+import { getLabelFromPrismaError } from "../../../lib/server/utils/getLabelFromPrismaError";
+
+const productsToStockMap = (products: Product[]) => {
+  return products.reduce<Record<string, number>>(
+    (acc, product) => ({
+      ...acc,
+      [product.id]: product.stock,
+    }),
+    {}
+  );
+};
 
 export default withApiMethods({
   POST: withApiAuth(
@@ -23,8 +34,15 @@ export default withApiMethods({
 
       try {
         return await prismaClient.$transaction(async (tx) => {
+          const currentProducts = await tx.product.findMany({
+            where: {
+              id: { in: requestedProducts.map(({ productId }) => productId) },
+            },
+          });
+          const currentProductsStockMap = productsToStockMap(currentProducts);
+
           //reduce stock value of requested products
-          await Promise.all(
+          const updatedProducts = await Promise.all(
             requestedProducts.map(async (requestedProduct) =>
               tx.product.update({
                 where: { id: requestedProduct.productId },
@@ -32,6 +50,7 @@ export default withApiMethods({
               })
             )
           );
+          const updatedProductStockMap = productsToStockMap(updatedProducts);
 
           const createdOrder = await tx.order.create({
             data: {
@@ -54,6 +73,42 @@ export default withApiMethods({
               statusHistory: { include: { creator: true } },
             },
           });
+
+          //create commissions for the products which stock went below 0
+          const commissionProductData = requestedProducts
+            .map(({ productId, quantity: requestedQuantity }) => {
+              const updatedProductStock = updatedProductStockMap[productId];
+              if (updatedProductStock < 0) {
+                // if stock goes below 0, create a commission
+                const currentProductStock = currentProductsStockMap[productId];
+
+                const base = currentProductStock < 0 ? 0 : currentProductStock;
+
+                const neededQuantity = Math.abs(base - requestedQuantity);
+
+                return {
+                  productId,
+                  quantity: neededQuantity,
+                };
+              }
+            })
+            .filter((item): item is { productId: string; quantity: number } =>
+              Boolean(item)
+            );
+
+          if (commissionProductData.length > 0) {
+            // do not create commission if not needed (empty list of needed products)
+            await tx.commission.create({
+              data: {
+                orderId: createdOrder.id,
+                products: {
+                  createMany: {
+                    data: commissionProductData,
+                  },
+                },
+              },
+            });
+          }
 
           const orderResponse = {
             ...createdOrder,
@@ -112,20 +167,3 @@ export default withApiMethods({
     });
   }),
 });
-
-const getLabelFromPrismaError = (error: PrismaClientKnownRequestError) => {
-  const fieldName = error.meta?.field_name;
-  if (!fieldName || typeof fieldName !== "string") {
-    throw error;
-  }
-
-  if (fieldName.includes("clientId")) {
-    return BackendErrorLabel.CLIENT_DOES_NOT_EXIST;
-  }
-
-  if (fieldName.includes("destinationId")) {
-    return BackendErrorLabel.DESTINATION_DOES_NOT_EXIST;
-  }
-
-  throw error;
-};
