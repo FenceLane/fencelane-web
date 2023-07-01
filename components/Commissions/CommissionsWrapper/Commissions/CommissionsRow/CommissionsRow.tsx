@@ -63,7 +63,7 @@ export const CommissionsRow = ({ commissionData }: CommissionRowProps) => {
                 onClick={handleCompleteCommission}
                 isLoading={isUpdateCommissionLoading}
               >
-                Zrealizuj
+                {t("buttons.complete")}
               </Button>
             </Flex>
           )}
@@ -122,7 +122,7 @@ export const CommissionsRow = ({ commissionData }: CommissionRowProps) => {
                   onClick={handleCompleteCommission}
                   isLoading={isUpdateCommissionLoading}
                 >
-                  Zrealizuj
+                  {t("buttons.complete")}
                 </Button>
               </Flex>
             )}
@@ -139,30 +139,43 @@ export const CommissionsRow = ({ commissionData }: CommissionRowProps) => {
 
       {showProducts && (
         <Box>
-          {commissionData.products.map((product, id) => (
-            <Flex key={id} className={styles["product-table"]}>
-              <Flex className={styles["product-table-item"]} textAlign="left">
-                {product.product.category.name}
+          {commissionData.products
+            .sort((a, b) => {
+              const idA = a.id.toUpperCase();
+              const idB = b.id.toUpperCase();
+              if (idA < idB) {
+                return -1;
+              }
+              if (idA > idB) {
+                return 1;
+              }
+
+              return 0;
+            })
+            .map((product, id) => (
+              <Flex key={id} className={styles["product-table"]}>
+                <Flex className={styles["product-table-item"]} textAlign="left">
+                  {product.product.category.name}
+                </Flex>
+                <Flex className={styles["product-table-item"]}>
+                  {product.product.dimensions}
+                </Flex>
+                <Flex className={styles["product-table-item"]}>
+                  {product.quantity} p.
+                </Flex>
+                <Flex
+                  display="flex"
+                  className={styles["product-table-item"]}
+                  justifyContent="flex-end"
+                  gap="10px"
+                >
+                  <ActionsButtons
+                    product={product}
+                    commissionId={commissionData.id}
+                  />
+                </Flex>
               </Flex>
-              <Flex className={styles["product-table-item"]}>
-                {product.product.dimensions}
-              </Flex>
-              <Flex className={styles["product-table-item"]}>
-                {product.quantity} p.
-              </Flex>
-              <Flex
-                display="flex"
-                className={styles["product-table-item"]}
-                justifyContent="flex-end"
-                gap="10px"
-              >
-                <ActionsButtons
-                  product={product}
-                  commissionId={commissionData.id}
-                />
-              </Flex>
-            </Flex>
-          ))}
+            ))}
         </Box>
       )}
       {isUpdateCommissionError &&

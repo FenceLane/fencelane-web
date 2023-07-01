@@ -300,7 +300,15 @@
       "to": "Do"
     },
     "commissions": {
-      "commission-id": "Zlecenie nr"
+      "commission-id": "Zlecenie nr",
+      "commission-creator": "Kreator zlecenia",
+      "filters": {
+        "all": "Wszystkie",
+        "orders-only": "Do załadunków",
+        "non-orders-only": "Bez załadunków"
+      },
+      "product_completing": "Realizowanie produktu",
+      "insert_completing_product_quantity": "Podaj ilość realizowanego produktu"
     },
     "schedule": {
       "modals": {
@@ -384,7 +392,9 @@
     "save": "Zapisz",
     "confirm": "Zatwierdź",
     "new": "Nowe",
-    "change": "Zmień"
+    "change": "Zmień",
+    "complete": "Realizuj",
+    "complete_part": "Realizuj częściowo"
   },
   "main": {
     "storage": "Magazyn",

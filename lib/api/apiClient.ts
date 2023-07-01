@@ -313,6 +313,12 @@ const updateCommissionProducts = async ({
   return axiosInstance.patch(apiPath(`commissions/${id}/products`), data);
 };
 
+const postCommission = async (data: {
+  products: { productId: string; quantity: number }[];
+}) => {
+  return axiosInstance.post(apiPath("commissions"), data);
+};
+
 export const apiClient = {
   socket: {
     listen: initialiseWebSocketClient,
@@ -369,5 +375,6 @@ export const apiClient = {
   commissions: {
     getCommissions,
     updateCommissionProducts,
+    postCommission,
   },
 };

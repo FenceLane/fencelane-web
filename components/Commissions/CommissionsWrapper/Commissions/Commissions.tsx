@@ -27,9 +27,13 @@ export const Commissions = ({ commissions }: CommissionsProps) => {
           bg="white"
           width="auto"
         >
-          <option value="all">Wszystkie</option>
-          <option value="orders-only">Do załadunków</option>
-          <option value="non-orders-only">Bez załadunków</option>
+          <option value="all">{t("pages.commissions.filters.all")}</option>
+          <option value="orders-only">
+            {t("pages.commissions.filters.orders-only")}
+          </option>
+          <option value="non-orders-only">
+            {t("pages.commissions.filters.non-orders-only")}
+          </option>
         </Select>
         <Link href="/commissions/create">
           <Button

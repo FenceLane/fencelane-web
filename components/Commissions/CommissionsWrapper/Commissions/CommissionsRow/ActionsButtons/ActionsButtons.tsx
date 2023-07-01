@@ -44,7 +44,7 @@ export const ActionsButtons = ({
 
   useOnClickOutside(ref, () => setShowDropdown(false));
 
-  const { isOpen: isOpen, onOpen: onOpen, onClose: onClose } = useDisclosure();
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   const [showDropdown, setShowDropdown] = useState(false);
 
@@ -110,7 +110,7 @@ export const ActionsButtons = ({
             <Flex w="100%" gap="10px" flexDir="column" p="5px">
               <WrapItem w="100%">
                 <Button colorScheme="blue" variant="outline" onClick={onOpen}>
-                  Zrealizuj częściowo
+                  {t("buttons.complete_part")}
                 </Button>
               </WrapItem>
               <WrapItem w="100%">
@@ -120,7 +120,7 @@ export const ActionsButtons = ({
                   onClick={handleCompleteProduct}
                   isLoading={isUpdateCommissionLoading}
                 >
-                  Zrealizuj
+                  {t("buttons.complete")}
                 </Button>
               </WrapItem>
             </Flex>
@@ -131,14 +131,14 @@ export const ActionsButtons = ({
       {!isMobile && (
         <>
           <Button colorScheme="blue" variant="outline">
-            Zrealizuj częściowo
+            {t("buttons.complete_part")}
           </Button>
           <Button
             colorScheme="blue"
             onClick={onOpen}
             isLoading={isUpdateCommissionLoading}
           >
-            Zrealizuj
+            {t("buttons.complete")}
           </Button>
         </>
       )}
@@ -146,13 +146,14 @@ export const ActionsButtons = ({
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>Realizowanie produktu</ModalHeader>
+          <ModalHeader>{t("pages.commissions.product_completing")}</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            Podaj ilość realizowanego produktu:
+            {t("pages.commissions.insert_completing_product_quantity")}
             <Input
               placeholder="Paczki"
               type="number"
+              mt="20px"
               onChange={(e) => setCompletedQuantity(Number(e.target.value))}
             />
             {isUpdateCommissionError && (

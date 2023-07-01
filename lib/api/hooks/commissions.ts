@@ -31,3 +31,14 @@ export const useUpdateCommissionProducts = (orderId: number) => {
 
   return mutation;
 };
+
+export const usePostCommission = () => {
+  const mutation = useMutation({
+    mutationFn: apiClient.commissions.postCommission,
+    onSuccess: () => {
+      invalidateQueriesWithWebsocket({ queryKey: [QUERY_KEY.COMMISSIONS] });
+    },
+  });
+
+  return mutation;
+};
