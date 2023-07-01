@@ -146,7 +146,9 @@ export default withApiMethods({
     })
   ),
 
-  GET: withApiAuth(async (_req, res) => {
+  GET: withApiAuth(async (req, res) => {
+    const { parentOrderId } = req.query;
+
     const orders = await prismaClient.order.findMany({
       include: {
         destination: { include: { client: true } },
@@ -154,6 +156,7 @@ export default withApiMethods({
         products: { include: { product: { include: { category: true } } } },
       },
       orderBy: { createdAt: "desc" },
+      where: typeof parentOrderId === "string" ? { parentOrderId } : undefined,
     });
 
     return res.status(BackendResponseStatusCode.SUCCESS).send({
