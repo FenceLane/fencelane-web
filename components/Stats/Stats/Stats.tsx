@@ -4,7 +4,11 @@ import { Box, Flex, Text } from "@chakra-ui/react";
 import styles from "./Stats.module.scss";
 import dynamic from "next/dynamic";
 import { CategoryInfo, OrderInfo, ProductInfo } from "../../../lib/types";
-import { sumStockByCategory } from "../../../lib/util/statsFunctions";
+import {
+  monthOrdersFunction,
+  statsDateFunction,
+  sumStockByCategory,
+} from "../../../lib/util/statsFunctions";
 import { DonutCharts } from "../DonutCharts/DonutCharts";
 import { MonthSelect } from "../MonthSelect/MonthSelect";
 import { useContent } from "../../../lib/hooks/useContent";
@@ -24,21 +28,10 @@ interface StatsProps {
 export const Stats = ({ orders, products, categories }: StatsProps) => {
   const { t } = useContent();
 
-  const date = new Date();
-  const currentDate = new Date();
-  const [selectedMonth, setSelectedMonth] = useState(date.getMonth());
-  date.setMonth(selectedMonth);
-  if (date.getMonth() > currentDate.getMonth()) {
-    date.setFullYear(new Date().getFullYear() - 1);
-  } else {
-    date.setFullYear(new Date().getFullYear());
-  }
+  const [selectedMonth, setSelectedMonth] = useState(new Date().getMonth());
 
-  date.setDate(1);
-  const monthOrders = orders.filter((order) => {
-    const orderDate = new Date(order.createdAt);
-    return orderDate.getMonth() === date.getMonth();
-  });
+  const date = statsDateFunction(selectedMonth);
+  const monthOrders = monthOrdersFunction(orders, date);
 
   return (
     <Flex width={"100%"} minHeight="100%" flexDirection="column">

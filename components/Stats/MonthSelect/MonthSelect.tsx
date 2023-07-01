@@ -1,21 +1,9 @@
 import { Select } from "@chakra-ui/react";
 import React from "react";
 import { useContent } from "../../../lib/hooks/useContent";
+import { months as globalMonths } from "../../../lib/util/statsFunctions";
 
-const months = [
-  "january",
-  "february",
-  "march",
-  "april",
-  "may",
-  "june",
-  "july",
-  "august",
-  "september",
-  "october",
-  "november",
-  "december",
-];
+const months = globalMonths;
 
 interface MonthSelectProps {
   selectedMonth: number;

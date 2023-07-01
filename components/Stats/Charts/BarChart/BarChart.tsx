@@ -2,8 +2,19 @@ import ReactApexChart from "react-apexcharts";
 import { Text, Stack, Flex, Box } from "@chakra-ui/react";
 import { TotalRevenueOptions } from "./chart.config";
 import { ArrowDownIcon, ArrowUpIcon } from "@chakra-ui/icons";
-import { getMonthByNumber } from "../../../../lib/util/statsFunctions";
-import { OrderInfo, OrderProductInfo } from "../../../../lib/types";
+import {
+  dateMaxFunction,
+  dateMinFunction,
+  getMonthByNumber,
+  groupDataByMonthFunction,
+  monthBeforeFunction,
+  percentageRatioFunction,
+  profitFunction,
+  profitMonthBeforeFunction,
+  sixMonthsOrdersFunction,
+  stonksFunction,
+} from "../../../../lib/util/statsFunctions";
+import { OrderInfo } from "../../../../lib/types";
 import { useContent } from "../../../../lib/hooks/useContent";
 
 interface BarChartProps {
@@ -11,179 +22,35 @@ interface BarChartProps {
   month: number;
   selectedDate: Date;
 }
-interface DataObject {
-  created: number;
-  incomes: number;
-  profit: number;
-}
-
-interface GroupedData {
-  [month: number]: {
-    incomes: number;
-    costs: number;
-    profit: number;
-  };
-}
 
 const BarChart = ({ month, selectedDate, orders }: BarChartProps) => {
   const { t } = useContent();
 
-  const dateMax = new Date(selectedDate);
-  dateMax.setMonth(dateMax.getMonth() + 1);
-  dateMax.setDate(0);
+  const dateMax = dateMaxFunction(selectedDate);
 
-  const dateMin = new Date(dateMax);
-  dateMin.setMonth(dateMin.getMonth() - 5);
-  dateMin.setDate(1);
+  const dateMin = dateMinFunction(dateMax);
 
-  const profitMonthBefore = Number(
-    orders
-      .filter((order) => {
-        const orderDate = new Date(order.createdAt);
-        if (selectedDate.getMonth() === 0) {
-          return (
-            orderDate.getMonth() === 11 &&
-            orderDate.getFullYear() === selectedDate.getFullYear() - 1
-          );
-        } else {
-          return (
-            orderDate.getMonth() === selectedDate.getMonth() - 1 &&
-            orderDate.getFullYear() === selectedDate.getFullYear()
-          );
-        }
-      })
-      .reduce((acc, current) => {
-        if (current.profit) {
-          return (acc += Number(current.profit));
-        } else {
-          return acc;
-        }
-      }, 0)
-      .toFixed(2)
-  );
+  const profitMonthBefore = profitMonthBeforeFunction(orders, selectedDate);
 
-  const profit = Number(
-    orders
-      .filter((order) => {
-        const orderDate = new Date(order.createdAt);
-        return (
-          orderDate.getMonth() === selectedDate.getMonth() &&
-          orderDate.getFullYear() === selectedDate.getFullYear()
-        );
-      })
-      .reduce((acc, current) => {
-        if (current.profit) {
-          return (acc += Number(current.profit));
-        } else {
-          return acc;
-        }
-      }, 0)
-      .toFixed(2)
-  );
+  const profit = profitFunction(orders, selectedDate);
 
-  let percentageRatio =
-    profitMonthBefore !== 0
-      ? Number(((profit / profitMonthBefore) * 100 - 100).toFixed(2))
-      : profit === 0
-      ? 0
-      : Infinity;
+  let percentageRatio = percentageRatioFunction(profitMonthBefore, profit);
 
-  let stonks = true;
+  const stonks = stonksFunction(percentageRatio);
 
-  if (percentageRatio < 0) {
-    stonks = false;
+  if (stonks === false) {
     percentageRatio = Math.abs(percentageRatio);
   }
+  const monthBefore = monthBeforeFunction(month);
 
-  const monthBefore = month - 1 >= 0 ? month - 1 : 11;
+  const sixMonthsOrders = sixMonthsOrdersFunction(orders, dateMin, dateMax);
 
-  const sixMonthsOrders = orders
-    .filter((order) => {
-      return (
-        new Date(order.createdAt) > dateMin &&
-        new Date(order.createdAt) < dateMax
-      );
-    })
-    .map((order) => {
-      const calcIncome = (product: OrderProductInfo) => {
-        return (
-          product.quantity *
-          Number(product.product.volumePerPackage) *
-          Number(product.price)
-        );
-      };
-      return {
-        created: new Date(order.createdAt).getMonth(),
-        incomes: order.products.reduce(
-          (acc, product) => acc + calcIncome(product),
-          0
-        ),
-        profit: order.profit ? Number(order.profit) : 0,
-      };
-    });
-
-  const groupDataByMonth = (data: DataObject[], selectedDate: number) => {
-    const groupedData: GroupedData = {};
-
-    for (let i = 5; i >= 0; i--) {
-      let month: number = selectedDate - i;
-      groupedData[month] = { incomes: 0, costs: 0, profit: 0 };
-    }
-
-    for (const obj of data) {
-      const { created, incomes, profit } = obj;
-
-      if (created >= selectedDate - 6 && created <= selectedDate) {
-        if (!groupedData[created]) {
-          groupedData[created] = { incomes: 0, costs: 0, profit: 0 };
-        }
-
-        groupedData[created].incomes += incomes;
-        groupedData[created].costs =
-          groupedData[created].incomes - groupedData[created].profit;
-        groupedData[created].profit += profit;
-      }
-    }
-
-    let sortedEntries = Object.entries(groupedData).sort(
-      ([a], [b]) => Number(a) - Number(b)
-    );
-
-    sortedEntries = sortedEntries.map((entry) => {
-      let newEntry = Number(entry[0]);
-      if (newEntry < 0) {
-        newEntry += 12;
-      }
-      return [String(newEntry), entry[1]];
-    });
-
-    const FinancesSeries = [
-      {
-        name: t("pages.stats.incomes"),
-        data: sortedEntries.map(([_, { incomes }]) =>
-          Number((incomes / 1000 + 0.01).toFixed(2))
-        ),
-      },
-      {
-        name: t("pages.stats.costs"),
-        data: sortedEntries.map(([_, { costs }]) =>
-          Number((costs / 1000 + 0.01).toFixed(2))
-        ),
-      },
-      {
-        name: t("pages.stats.profit"),
-        data: sortedEntries.map(([_, { profit }]) =>
-          Number((profit / 1000 + 0.01).toFixed(2))
-        ),
-      },
-    ];
-
-    return FinancesSeries;
-  };
-
-  const groupedData = groupDataByMonth(
+  const groupedData = groupDataByMonthFunction(
     sixMonthsOrders,
-    selectedDate.getMonth()
+    selectedDate.getMonth(),
+    t("pages.stats.incomes"),
+    t("pages.stats.costs"),
+    t("pages.stats.profit")
   );
 
   return (
