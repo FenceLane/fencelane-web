@@ -197,7 +197,6 @@ export const Summary = ({
     if (currency === CURRENCY.PLN) {
       postProfit = Number(Number(displayProfit) / rate);
     }
-    console.log(orderId);
     postLoadExpanses({ id: orderId, data: postExpansesList });
     postLoadTransportCost({ id: orderId, data: postTransportData });
     updateLoad({ profit: postProfit });
