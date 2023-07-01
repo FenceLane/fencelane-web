@@ -3,6 +3,7 @@ import { ClientConfig } from "../AppConfig/ClientConfig";
 import {
   CategoryInfo,
   ClientPostInfo,
+  CommissionInfo,
   DestinationPostInfo,
   ExpansePostInfo,
   OrderInfo,
@@ -290,6 +291,18 @@ const changeRole = async ({
   return axiosInstance.put(apiPath(`users/${id}`), data);
 };
 
+const getCommissions = async (options?: {
+  authCookie: string;
+}): Promise<CommissionInfo[]> => {
+  const {
+    data: { data },
+  } = await axiosInstance.get(apiPath("commissions"), {
+    headers: { cookie: options?.authCookie },
+  });
+
+  return data;
+};
+
 export const apiClient = {
   socket: {
     listen: initialiseWebSocketClient,
@@ -342,5 +355,8 @@ export const apiClient = {
   employees: {
     getEmployees,
     changeRole,
+  },
+  commissions: {
+    getCommissions,
   },
 };

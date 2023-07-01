@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Box, Flex, Text } from "@chakra-ui/react";
+import { Box, Flex, Text, Button } from "@chakra-ui/react";
 import { CommissionInfo } from "../../../../../lib/types";
 import { useContent } from "../../../../../lib/hooks/useContent";
 import styles from "./CommissionsRow.module.scss";
@@ -29,46 +29,96 @@ export const CommissionsRow = ({ commissionData }: CommissionRowProps) => {
       <Flex
         className={styles["commission-top"]}
         justifyContent="space-between"
-        gap="5"
+        gap="5px"
       >
-        <Text className={styles["commission-text"]} flexGrow="1">
-          {`${t("pages.commissions.commission-id")} ${commissionData.id}`}
-        </Text>
-        <Text className={styles["commission-text"]} flexGrow="1">
-          {constructOrderDate(String(commissionData.createDate)).slice(0, -5)}
-        </Text>
-        <Text className={styles["commission-text"]} flexGrow="1" width="10%">
-          {commissionData.orderId
-            ? isMobile
-              ? t("main.order").slice(0, 5) +
-                " " +
-                commissionData.orderId.toString().padStart(4, "0")
-              : t("main.order") +
-                " " +
-                commissionData.orderId.toString().padStart(4, "0")
-            : " "}
-        </Text>
-        <IconButton
-          className={styles["more-button"]}
-          aria-label="more button"
-          bg="white"
-          onClick={toggleShowDropdown}
-          icon={showProducts ? <TriangleUpIcon /> : <TriangleDownIcon />}
-        />
+        <Flex className={styles["commission-top-item"]}>
+          <Text className={styles["commission-text"]} flexGrow="1">
+            {`${t("pages.commissions.commission-id")} ${commissionData.id}`}
+          </Text>
+          <Text className={styles["commission-text"]} flexGrow="1">
+            {constructOrderDate(String(commissionData.date)).slice(0, -5)}
+          </Text>
+          {isMobile && (
+            <Flex justifyContent="flex-end" flex="1">
+              <Button colorScheme="green">Zrealizuj</Button>
+            </Flex>
+          )}
+        </Flex>
+        <Flex className={styles["commission-top-item"]}>
+          {commissionData.orderId ? (
+            isMobile ? (
+              <>
+                <Text
+                  className={styles["commission-text"]}
+                  flexGrow="1"
+                  width="10%"
+                >
+                  {t("main.order").slice(0, 5) +
+                    " " +
+                    commissionData.orderId.toString().padStart(4, "0")}
+                </Text>
+                <Text
+                  className={styles["commission-text"]}
+                  flexGrow="1"
+                  width="10%"
+                >
+                  {t("main.load").slice(0, 5) +
+                    " " +
+                    commissionData.order.parentOrderId}
+                </Text>
+              </>
+            ) : (
+              <>
+                <Text
+                  className={styles["commission-text"]}
+                  flexGrow="1"
+                  width="10%"
+                >
+                  {t("main.order") +
+                    " " +
+                    commissionData.orderId.toString().padStart(4, "0")}
+                </Text>
+                <Text
+                  className={styles["commission-text"]}
+                  flexGrow="1"
+                  width="10%"
+                >
+                  {t("main.load") + " " + commissionData.order.parentOrderId}
+                </Text>
+              </>
+            )
+          ) : (
+            <></>
+          )}
+          <Flex flex="1" justifyContent="flex-end" gap="30px">
+            {!isMobile && (
+              <Flex justifyContent="flex-end" flex="1">
+                <Button colorScheme="green">Zrealizuj</Button>
+              </Flex>
+            )}
+            <IconButton
+              className={styles["more-button"]}
+              aria-label="more button"
+              bg="white"
+              onClick={toggleShowDropdown}
+              icon={showProducts ? <TriangleUpIcon /> : <TriangleDownIcon />}
+            />
+          </Flex>
+        </Flex>
       </Flex>
 
       {showProducts && (
         <Box>
-          {commissionData.productData.map((product, id) => (
+          {commissionData.products.map((product, id) => (
             <Flex key={id} className={styles["product-table"]}>
               <Flex className={styles["product-table-item"]} textAlign="left">
-                {product.productInfo.category.name}
+                {/* {product.productInfo.category.name} */}nazwa
               </Flex>
               <Flex className={styles["product-table-item"]}>
-                {product.productInfo.dimensions}
+                {/* {product.productInfo.dimensions} */}wymiary
               </Flex>
               <Flex className={styles["product-table-item"]}>
-                {product.commissionQuantity} p.
+                {product.quantity} p.
               </Flex>
               <Flex
                 display="flex"

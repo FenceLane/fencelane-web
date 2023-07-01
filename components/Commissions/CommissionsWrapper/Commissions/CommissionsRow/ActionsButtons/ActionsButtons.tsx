@@ -1,7 +1,6 @@
 import React, { useRef, useState } from "react";
-import { Box, Button, Flex, IconButton, WrapItem } from "@chakra-ui/react";
+import { Box, Button, Flex, WrapItem } from "@chakra-ui/react";
 import { useOnClickOutside } from "../../../../../../lib/hooks/useOnClickOutside";
-import { CalendarIcon, CheckIcon, TriangleDownIcon } from "@chakra-ui/icons";
 import { useContent } from "../../../../../../lib/hooks/useContent";
 import { useIsMobile } from "../../../../../../lib/hooks/useIsMobile";
 
@@ -37,29 +36,28 @@ export const ActionsButtons = () => {
           display={showDropdown ? "block" : "none"}
           zIndex="10"
         >
-          <Flex w="100%" gap="10px" flexDir="column">
+          <Flex w="100%" gap="10px" flexDir="column" p="5px">
             <WrapItem w="100%">
-              <IconButton aria-label="more button" icon={<CheckIcon />} />
+              <Button colorScheme="blue" variant="outline">
+                Zrealizuj częściowo
+              </Button>
             </WrapItem>
             <WrapItem w="100%">
-              <IconButton
-                aria-label="more button"
-                icon={<TriangleDownIcon />}
-              />
-            </WrapItem>
-            <WrapItem w="100%">
-              <IconButton aria-label="more button" icon={<CalendarIcon />} />
+              <Button colorScheme="blue" w="100%">
+                Zrealizuj
+              </Button>
             </WrapItem>
           </Flex>
-        </Box>{" "}
+        </Box>
       </Box>
     );
   } else {
     return (
       <>
-        <IconButton aria-label="more button" icon={<CheckIcon />} />
-        <IconButton aria-label="more button" icon={<TriangleDownIcon />} />
-        <IconButton aria-label="more button" icon={<CalendarIcon />} />
+        <Button colorScheme="blue" variant="outline">
+          Zrealizuj częściowo
+        </Button>
+        <Button colorScheme="blue">Zrealizuj </Button>
       </>
     );
   }

@@ -178,11 +178,27 @@ export interface DestinationPostInfo {
 export interface CommissionInfo {
   id: number;
   orderId: number | null;
-  createDate: Date | string;
-  productData: {
-    commissionQuantity: number;
+  date: Date | string;
+  products: {
+    id: string;
+    commissionId: number;
+    productId: string;
+    quantity: number;
+    createdAt: Date;
+    updatedAt: Date;
     productInfo: ProductInfo;
   }[];
+  order: {
+    id: number;
+    destinationId: string;
+    date: Date;
+    creatorId: string;
+    profit: number | null;
+    createdAt: Date;
+    updatedAt: Date;
+    parentOrderId: string;
+    commissionId: string;
+  };
 }
 
 export enum USER_ROLE {

@@ -390,6 +390,7 @@
     "storage": "Magazyn",
     "product": "Produkt",
     "order": "Zamówienie",
+    "load": "Załadunek",
     "status": "Status",
     "client": "Klient",
     "date": "Data",
