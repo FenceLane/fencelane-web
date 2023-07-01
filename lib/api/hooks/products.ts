@@ -1,6 +1,10 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { apiClient } from "../apiClient";
-import { QUERY_KEY, invalidateQueriesWithWebsocket } from "../queryClient";
+import {
+  QUERY_KEY,
+  invalidateQueriesWithWebsocket,
+  queryClient,
+} from "../queryClient";
 
 export const useGetProducts = () => {
   const mutation = useQuery({
