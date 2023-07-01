@@ -84,6 +84,7 @@ export const DestinationCreate = ({ clients }: DestinationCreateProps) => {
         mb="20px"
         name="clientId"
         onChange={handleClientChange}
+        placeholder={t("main.client")}
       >
         {clients.map((client) => (
           <option value={client.id} key={client.id}>
