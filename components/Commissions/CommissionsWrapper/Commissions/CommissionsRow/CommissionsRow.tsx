@@ -8,6 +8,8 @@ import { IconButton } from "@chakra-ui/react";
 import { TriangleDownIcon, TriangleUpIcon } from "@chakra-ui/icons";
 import { useIsMobile } from "../../../../../lib/hooks/useIsMobile";
 import { ActionsButtons } from "./ActionsButtons/ActionsButtons";
+import { useUpdateCommissionProducts } from "../../../../../lib/api/hooks/commissions";
+import { mapAxiosErrorToLabel } from "../../../../../lib/server/BackendError/BackendError";
 
 interface CommissionRowProps {
   commissionData: CommissionInfo;
@@ -18,10 +20,26 @@ export const CommissionsRow = ({ commissionData }: CommissionRowProps) => {
 
   const isMobile = useIsMobile();
 
+  const {
+    mutate: updateCommission,
+    error: updateCommissionError,
+    isError: isUpdateCommissionError,
+    isSuccess: isUpdateCommissionSuccess,
+    isLoading: isUpdateCommissionLoading,
+  } = useUpdateCommissionProducts(commissionData.id);
+
   const [showProducts, setShowProducts] = useState(false);
 
   const toggleShowDropdown = () => {
     setShowProducts((prev) => !prev);
+  };
+
+  const handleCompleteCommission = () => {
+    const productData = commissionData.products.map((product) => ({
+      filledQuantity: product.quantity,
+      productCommissionId: product.id,
+    }));
+    updateCommission(productData);
   };
 
   return (
@@ -40,7 +58,13 @@ export const CommissionsRow = ({ commissionData }: CommissionRowProps) => {
           </Text>
           {isMobile && (
             <Flex justifyContent="flex-end" flex="1">
-              <Button colorScheme="green">Zrealizuj</Button>
+              <Button
+                colorScheme="green"
+                onClick={handleCompleteCommission}
+                isLoading={isUpdateCommissionLoading}
+              >
+                Zrealizuj
+              </Button>
             </Flex>
           )}
         </Flex>
@@ -93,7 +117,13 @@ export const CommissionsRow = ({ commissionData }: CommissionRowProps) => {
           <Flex flex="1" justifyContent="flex-end" gap="30px">
             {!isMobile && (
               <Flex justifyContent="flex-end" flex="1">
-                <Button colorScheme="green">Zrealizuj</Button>
+                <Button
+                  colorScheme="green"
+                  onClick={handleCompleteCommission}
+                  isLoading={isUpdateCommissionLoading}
+                >
+                  Zrealizuj
+                </Button>
               </Flex>
             )}
             <IconButton
@@ -112,10 +142,10 @@ export const CommissionsRow = ({ commissionData }: CommissionRowProps) => {
           {commissionData.products.map((product, id) => (
             <Flex key={id} className={styles["product-table"]}>
               <Flex className={styles["product-table-item"]} textAlign="left">
-                {/* {product.productInfo.category.name} */}nazwa
+                {product.product.category.name}
               </Flex>
               <Flex className={styles["product-table-item"]}>
-                {/* {product.productInfo.dimensions} */}wymiary
+                {product.product.dimensions}
               </Flex>
               <Flex className={styles["product-table-item"]}>
                 {product.quantity} p.
@@ -126,12 +156,21 @@ export const CommissionsRow = ({ commissionData }: CommissionRowProps) => {
                 justifyContent="flex-end"
                 gap="10px"
               >
-                <ActionsButtons />
+                <ActionsButtons
+                  product={product}
+                  commissionId={commissionData.id}
+                />
               </Flex>
             </Flex>
           ))}
         </Box>
       )}
+      {isUpdateCommissionError &&
+        t(
+          `errors.backendErrorLabel.${mapAxiosErrorToLabel(
+            updateCommissionError
+          )}`
+        )}
     </Flex>
   );
 };

@@ -186,7 +186,7 @@ export interface CommissionInfo {
     quantity: number;
     createdAt: Date;
     updatedAt: Date;
-    productInfo: ProductInfo;
+    product: ProductInfo;
   }[];
   order: {
     id: number;
