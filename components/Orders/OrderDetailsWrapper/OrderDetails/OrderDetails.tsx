@@ -353,6 +353,14 @@ export const OrderDetails = ({
             </Box>
             <Box className={styles["text-box"]}>
               <Text className={styles["order-header"]}>
+                {t("pages.orders.order.parent_order_id")}
+              </Text>
+              <Text className={styles["order-text"]}>
+                {orderData.parentOrderId}
+              </Text>
+            </Box>
+            <Box className={styles["text-box"]}>
+              <Text className={styles["order-header"]}>
                 {t("pages.orders.order.status")}
               </Text>
               <Text
@@ -361,14 +369,6 @@ export const OrderDetails = ({
                 color={statusColor(currentStatus)}
               >
                 {t(`pages.orders.status.${currentStatus}`)}
-              </Text>
-            </Box>
-            <Box className={styles["text-box"]}>
-              <Text className={styles["order-header"]}>
-                {t("pages.orders.order.client")}
-              </Text>
-              <Text className={styles["order-text"]}>
-                {orderData.destination.client.name}
               </Text>
             </Box>
           </Flex>
@@ -383,6 +383,14 @@ export const OrderDetails = ({
             </Box>
             <Box className={styles["text-box"]}>
               <Text className={styles["order-header"]}>
+                {t("pages.orders.order.client")}
+              </Text>
+              <Text className={styles["order-text"]}>
+                {orderData.destination.client.name}
+              </Text>
+            </Box>
+            <Flex className={styles["text-box"]} flexDirection="column">
+              <Text className={styles["order-header"]}>
                 {t("pages.orders.order.destination")}
               </Text>
               <Text className={styles["order-text"]}>
@@ -390,18 +398,6 @@ export const OrderDetails = ({
               </Text>
               <Text className={styles["order-text"]}>
                 {orderData.destination.country}
-              </Text>
-            </Box>
-            <Flex
-              className={styles["text-box"]}
-              flexDirection="column"
-              mr="30px"
-            >
-              <Text className={styles["order-header"]}>
-                {t("pages.orders.order.parent_order_id")}
-              </Text>
-              <Text className={styles["order-text"]}>
-                {orderData.parentOrderId}
               </Text>
             </Flex>
           </Flex>

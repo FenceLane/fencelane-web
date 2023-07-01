@@ -41,6 +41,14 @@ export const OrdersRow = ({ orderData }: OrderDataProps) => {
         </Box>
         <Box className={styles["text-box"]}>
           <Text className={styles["order-header"]}>
+            {t("pages.orders.order.parent_order_id")}
+          </Text>
+          <Text className={styles["order-text"]}>
+            {orderData.parentOrderId}
+          </Text>
+        </Box>
+        <Box className={styles["text-box"]}>
+          <Text className={styles["order-header"]}>
             {t("pages.orders.order.status")}
           </Text>
           <Text
@@ -49,14 +57,6 @@ export const OrdersRow = ({ orderData }: OrderDataProps) => {
             color={statusColor(status)}
           >
             {t(`pages.orders.status.${status}`)}
-          </Text>
-        </Box>
-        <Box className={styles["text-box"]}>
-          <Text className={styles["order-header"]}>
-            {t("pages.orders.order.client")}
-          </Text>
-          <Text className={styles["order-text"]}>
-            {orderData.destination.client.name}
           </Text>
         </Box>
       </Flex>
@@ -71,6 +71,14 @@ export const OrdersRow = ({ orderData }: OrderDataProps) => {
         </Box>
         <Box className={styles["text-box"]}>
           <Text className={styles["order-header"]}>
+            {t("pages.orders.order.client")}
+          </Text>
+          <Text className={styles["order-text"]}>
+            {orderData.destination.client.name}
+          </Text>
+        </Box>
+        <Box className={styles["text-box"]}>
+          <Text className={styles["order-header"]}>
             {t("pages.orders.order.destination")}
           </Text>
           <Text className={styles["order-text"]}>
@@ -78,14 +86,6 @@ export const OrdersRow = ({ orderData }: OrderDataProps) => {
           </Text>
           <Text className={styles["order-text"]}>
             {orderData.destination.country}
-          </Text>
-        </Box>
-        <Box className={styles["text-box"]}>
-          <Text className={styles["order-header"]}>
-            {t("pages.orders.order.parent_order_id")}
-          </Text>
-          <Text className={styles["order-text"]}>
-            {orderData.parentOrderId}
           </Text>
         </Box>
       </Flex>
