@@ -156,6 +156,8 @@ export const CommissionsRow = ({ commissionData }: CommissionRowProps) => {
               <Flex key={id} className={styles["product-table"]}>
                 <Flex className={styles["product-table-item"]} textAlign="left">
                   {product.product.category.name}
+                  <br />[
+                  {t(`pages.storage.variants.${product.product.variant}`)}]
                 </Flex>
                 <Flex className={styles["product-table-item"]}>
                   {product.product.dimensions}
