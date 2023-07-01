@@ -48,7 +48,10 @@ export default withApiMethods({
 
   GET: withApiAuth(async (req, res) => {
     const commissions = await prismaClient.commission.findMany({
-      include: { products: { include: { product: true } }, order: true },
+      include: {
+        products: { include: { product: { include: { category: true } } } },
+        order: true,
+      },
     });
 
     return res
