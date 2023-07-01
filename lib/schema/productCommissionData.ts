@@ -10,4 +10,6 @@ export const ProductCommissionDataUpdateSchema =
   ProductCommissionDataSchema.omit({
     commissionId: true,
     productId: true,
-  });
+  })
+    .partial()
+    .extend({ productCommissionId: z.string().min(1) });

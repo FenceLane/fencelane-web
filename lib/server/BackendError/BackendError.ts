@@ -24,6 +24,9 @@ export const BackendErrorLabel = {
   TRAVEL_COST_DOES_NOT_EXIST: "travel-cost-does-not-exist",
   EXPANSE_DOES_NOT_EXIST: "expanse-does-not-exist",
   PRODUCT_ORDER_DOES_NOT_EXIST: "product-order-does-not-exist",
+  PRODUCT_COMMISSION_DOES_NOT_EXIST: "product-commission-does-not-exist",
+  QUANTITY_EXCEEDS_PRODUCT_COMMISSION_QUANTITY:
+    "quantity-exceeds-product-commission-quantity",
   PRODUCT_DOES_NOT_EXIST: "product-does-not-exist",
   PRODUCT_CATEGORY_DOES_NOT_EXIST: "product-category-does-not-exist",
   CANNOT_DELETE_PRODUCT_WITH_ORDERS: "cannot-delete-product-with-orders",
