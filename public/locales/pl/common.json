@@ -45,9 +45,12 @@
       "cannot-delete-product-with-orders": "Nie można usunąć produktu, który ma istniejące zamówienia!",
       "unauthorized": "Brak uprawnień!",
       "forbidden-admin-only": "Operacja dostępna tylko dla administratora!",
+      "commission-does-not-exist": "Zlecenie o podanym id nie istnieje!",
       "event-does-not-exist": "Wydarzenie o podanym id nie istnieje!",
       "product-already-exists": "Podany produkt istnieje!",
       "product-order-does-not-exist": "Produkt nie istnieje w zamówieniu!",
+      "product-commission-does-not-exist": "Produkt nie istnieje w zleceniu!",
+      "quantity-exceeds-product-commission-quantity": "Podana ilość przekracza ilość produktu w zleceniu!",
       "product-category-already-exists": "Podana kategoria produktu już istnieje!",
       "product-category-does-not-exist": "Kategoria produktu o podanym id nie istnieje!",
       "product-does-not-exist": "Produkt o podanym id nie istnieje!",
@@ -332,6 +335,24 @@
         }
       }
     },
+    "stats": {
+      "overview": "Przegląd",
+      "number_of_completed_orders": "Ilość zrealizowanych zamówień",
+      "expected_number_of_completed_orders": "Oczekiwana ilość zrealizowanych zamówień",
+      "average_profit_per_order": "Średni zysk z zamówienia",
+      "expected_average_profit_per_order": "Oczekiwany średni zysk z zamówienia",
+      "number_of_clients": "Ilość klientów",
+      "expected_number_of_clients": "Oczekiwana ilość klientów",
+      "volume_of_sold_commodities": "Objętość sprzedanego towaru",
+      "expected_volume_of_sold_commodities": "Oczekiwana objętość sprzedanego towaru",
+      "profit_in": "Dochód w ",
+      "more_than_in": "Więcej niż w ",
+      "less_than_in": "Mniej niż w ",
+      "incomes": "Przychody",
+      "costs": "Koszty",
+      "profit": "Zysk",
+      "last_loadings": "Ostatnie załadunki"
+    },
     "employees": {
       "role_change": "Zmiana roli",
       "roles": {
@@ -366,6 +387,7 @@
     "change": "Zmień"
   },
   "main": {
+    "storage": "Magazyn",
     "product": "Produkt",
     "order": "Zamówienie",
     "status": "Status",
@@ -390,6 +412,20 @@
     "friday": "Piątek",
     "saturday": "Sobota",
     "sunday": "Niedziela"
+  },
+  "months": {
+    "january": "Styczeń",
+    "february": "Luty",
+    "march": "Marzec",
+    "april": "Kwiecień",
+    "may": "Maj",
+    "june": "Czerwiec",
+    "july": "Lipiec",
+    "august": "Sierpień",
+    "september": "Wrzesień",
+    "october": "Październik",
+    "november": "Listopad",
+    "december": "Grudzień"
   },
   "dates": {
     "today": "Dzisiaj",
