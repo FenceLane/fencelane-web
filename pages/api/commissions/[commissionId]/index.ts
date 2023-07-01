@@ -21,7 +21,10 @@ export default withApiMethods({
 
     const commission = await prismaClient.commission.findUnique({
       where: { id: Number(commissionId) },
-      include: { products: { include: { product: true } }, order: true },
+      include: {
+        products: { include: { product: { include: { category: true } } } },
+        order: true,
+      },
     });
 
     if (!commission) {
