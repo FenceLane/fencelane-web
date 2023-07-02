@@ -215,19 +215,17 @@ export const OrderCreate = ({ clients, products }: OrderCreateProps) => {
             defaultValue={newProducts[index].productId}
           >
             {products &&
-              products
-                .sort((a, b) => sortProducts(a, b))
-                .map((product) => (
-                  <option
-                    data-key={product.id}
-                    key={product.id}
-                    value={product.id}
-                  >
-                    {`${product.category.name}  ${product.dimensions} [${t(
-                      `pages.storage.variants.${product.variant}`
-                    ).toLowerCase()}]`}
-                  </option>
-                ))}
+              products.sort(sortProducts).map((product) => (
+                <option
+                  data-key={product.id}
+                  key={product.id}
+                  value={product.id}
+                >
+                  {`${product.category.name}  ${product.dimensions} [${t(
+                    `pages.storage.variants.${product.variant}`
+                  ).toLowerCase()}]`}
+                </option>
+              ))}
           </Select>
           <label>{t("pages.orders.order-creator.packages-quantity")}</label>
           <Input

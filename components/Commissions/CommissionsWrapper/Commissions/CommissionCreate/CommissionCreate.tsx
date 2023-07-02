@@ -51,7 +51,7 @@ export const CommissionCreate = ({ products }: CommissionCreateProps) => {
         productId: productId,
         quantity: prev[index].quantity,
       };
-      return prev;
+      return newArr;
     });
   };
 
@@ -67,18 +67,28 @@ export const CommissionCreate = ({ products }: CommissionCreateProps) => {
         ...prev[index],
         [name]: e.target.value,
       };
-      return prev;
+      return newArr;
     });
   };
 
   const handleAddProduct = () => {
-    setNewProducts([...newProducts, initialNewProductsData]);
+    setNewProducts((prev) => [...prev, initialNewProductsData]);
   };
 
-  const handleDeleteProduct = (globalIndex: number) => {
+  // const handleDeleteProduct = (globalIndex: number) => {
+  //   newProducts.length > 1 &&
+  //     setNewProducts((prev) =>
+  //       prev.filter((item, index) => index !== globalIndex)
+  //     );
+  // };
+
+  const handleDeleteProduct = (itemToDelete: {
+    productId: string;
+    quantity: string;
+  }) => {
     newProducts.length > 1 &&
-      setNewProducts(
-        newProducts.filter((item, index) => index !== globalIndex)
+      setNewProducts((prev) =>
+        prev.filter((item) => item.productId !== itemToDelete.productId)
       );
   };
 
@@ -98,6 +108,8 @@ export const CommissionCreate = ({ products }: CommissionCreateProps) => {
     }
   }, [router, isSuccess]);
 
+  console.log(newProducts);
+
   return (
     <Flex width="100%" maxWidth="980px" flexDir="column">
       <Text color="var(--dark)" fontSize="20px" fontWeight="500" m="10px">
@@ -113,7 +125,7 @@ export const CommissionCreate = ({ products }: CommissionCreateProps) => {
               colorScheme="red"
               aria-label="delete product"
               icon={<CloseIcon />}
-              onClick={() => handleDeleteProduct(index)}
+              onClick={() => handleDeleteProduct(item)}
             />
           </Flex>
           <Select
@@ -126,19 +138,17 @@ export const CommissionCreate = ({ products }: CommissionCreateProps) => {
             defaultValue={newProducts[index].productId}
           >
             {products &&
-              products
-                .sort((a, b) => sortProducts(a, b))
-                .map((product) => (
-                  <option
-                    data-key={product.id}
-                    key={product.id}
-                    value={product.id}
-                  >
-                    {`${product.category.name}  ${product.dimensions} [${t(
-                      `pages.storage.variants.${product.variant}`
-                    ).toLowerCase()}]`}
-                  </option>
-                ))}
+              products.sort(sortProducts).map((product) => (
+                <option
+                  data-key={product.id}
+                  key={product.id}
+                  value={product.id}
+                >
+                  {`${product.category.name}  ${product.dimensions} [${t(
+                    `pages.storage.variants.${product.variant}`
+                  ).toLowerCase()}]`}
+                </option>
+              ))}
           </Select>
           <label>{t("pages.orders.order-creator.packages-quantity")}</label>
           <Input

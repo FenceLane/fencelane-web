@@ -6,7 +6,7 @@ import { QUERY_KEY, invalidateQueriesWithWebsocket } from "../queryClient";
 export const useGetCommissions = () => {
   const mutation = useQuery({
     queryFn: () => apiClient.commissions.getCommissions(),
-    queryKey: [QUERY_KEY.COMMISSIONS, QUERY_KEY.ORDERS],
+    queryKey: [QUERY_KEY.COMMISSIONS],
   });
 
   return mutation;

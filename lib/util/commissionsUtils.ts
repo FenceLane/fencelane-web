@@ -40,5 +40,3 @@ export const sortProducts = (a: ProductInfo, b: ProductInfo) => {
     }
   }
 };
-
-// .sort((a, b) => sortProducts(a, b))

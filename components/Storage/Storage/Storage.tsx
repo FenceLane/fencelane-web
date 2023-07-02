@@ -118,7 +118,7 @@ export const Storage = ({ products }: StorageProps) => {
           <Tbody>
             {products
               .filter((product) => variantFilters[product.variant])
-              .sort((a, b) => sortProducts(a, b))
+              .sort(sortProducts)
               .map((product: ProductInfo) => (
                 <StorageRow key={product.id} product={product}></StorageRow>
               ))}

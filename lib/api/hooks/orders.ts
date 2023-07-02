@@ -29,6 +29,7 @@ export const usePostOrder = () => {
       return Promise.all([
         invalidateQueriesWithWebsocket({ queryKey: [QUERY_KEY.ORDERS] }),
         invalidateQueriesWithWebsocket({ queryKey: [QUERY_KEY.PRODUCTS] }),
+        invalidateQueriesWithWebsocket({ queryKey: [QUERY_KEY.COMMISSIONS] }),
       ]);
     },
   });
@@ -72,9 +73,12 @@ export const useUpdateOrderProducts = (
       apiClient.orders.updateOrderProducts({ id: orderId, data }),
     onSuccess: (_data, variables) => {
       onSuccess(variables);
-      return invalidateQueriesWithWebsocket({
-        queryKey: [QUERY_KEY.ORDER, orderId],
-      });
+      return Promise.all([
+        invalidateQueriesWithWebsocket({ queryKey: [QUERY_KEY.ORDERS] }),
+        invalidateQueriesWithWebsocket({
+          queryKey: [QUERY_KEY.ORDER, orderId],
+        }),
+      ]);
     },
   });
 
@@ -88,6 +92,7 @@ export const useUpdateOrder = (orderId: number) => {
     onSuccess: () => {
       return Promise.all([
         invalidateQueriesWithWebsocket({ queryKey: [QUERY_KEY.ORDERS] }),
+        invalidateQueriesWithWebsocket({ queryKey: [QUERY_KEY.COMMISSIONS] }),
         invalidateQueriesWithWebsocket({
           queryKey: [QUERY_KEY.ORDER, orderId],
         }),
