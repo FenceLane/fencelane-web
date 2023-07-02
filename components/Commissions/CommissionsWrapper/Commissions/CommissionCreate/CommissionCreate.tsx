@@ -16,6 +16,7 @@ import { useContent } from "../../../../../lib/hooks/useContent";
 import { AddIcon, CloseIcon } from "@chakra-ui/icons";
 import { mapAxiosErrorToLabel } from "../../../../../lib/server/BackendError/BackendError";
 import { usePostCommission } from "../../../../../lib/api/hooks/commissions";
+import { sortProducts } from "../../../../../lib/util/commissionsUtils";
 
 interface CommissionCreateProps {
   products: ProductInfo[];
@@ -44,12 +45,14 @@ export const CommissionCreate = ({ products }: CommissionCreateProps) => {
       e.target.options[e.target.options.selectedIndex].getAttribute("data-key")
     );
     const index = Number(e.target.getAttribute("data-index"));
-    const newArr = [...newProducts];
-    newArr[index] = {
-      productId: productId,
-      quantity: newProducts[index].quantity,
-    };
-    setNewProducts(newArr);
+    setNewProducts((prev) => {
+      const newArr = [...prev];
+      newArr[index] = {
+        productId: productId,
+        quantity: prev[index].quantity,
+      };
+      return prev;
+    });
   };
 
   const handleProductDetailsChange = (
@@ -57,12 +60,15 @@ export const CommissionCreate = ({ products }: CommissionCreateProps) => {
   ) => {
     const index = Number(e.target.getAttribute("data-index"));
     const name = e.target.name;
-    const newArr = [...newProducts];
-    newArr[index] = {
-      ...newProducts[index],
-      [name]: e.target.value,
-    };
-    setNewProducts(newArr);
+
+    setNewProducts((prev) => {
+      const newArr = [...prev];
+      newArr[index] = {
+        ...prev[index],
+        [name]: e.target.value,
+      };
+      return prev;
+    });
   };
 
   const handleAddProduct = () => {
@@ -121,25 +127,7 @@ export const CommissionCreate = ({ products }: CommissionCreateProps) => {
           >
             {products &&
               products
-                .sort((a, b) => {
-                  if (a.category.name < b.category.name) {
-                    return -1;
-                  }
-                  if (a.category.name > b.category.name) {
-                    return 1;
-                  }
-                  if (a.dimensions < b.dimensions) {
-                    return -1;
-                  }
-                  if (a.dimensions > b.dimensions) {
-                    return 1;
-                  }
-                  if (a.variant > b.variant) {
-                    return -1;
-                  } else {
-                    return 1;
-                  }
-                })
+                .sort((a, b) => sortProducts(a, b))
                 .map((product) => (
                   <option
                     data-key={product.id}

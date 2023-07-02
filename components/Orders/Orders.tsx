@@ -20,6 +20,14 @@ const initialFilters = {
   search: "",
 };
 
+const enum DATES {
+  TODAY = "today",
+  YESTERDAY = "yesterday",
+  THIS_MONTH = "this-month",
+  LAST_MONTH = "last-month",
+  LAST_THREE_MONTHS = "last-three-months",
+}
+
 export const Orders = ({ orders }: OrderProps) => {
   const { t } = useContent();
 
@@ -55,7 +63,7 @@ export const Orders = ({ orders }: OrderProps) => {
     }
   };
 
-  const handleChangeSpecificDate = (newSpecificDate: string) => {
+  const handleChangeSpecificDate = (newSpecificDate: DATES) => {
     setFilters((prev) => ({
       ...prev,
       specificDate: newSpecificDate,
@@ -188,28 +196,28 @@ export const Orders = ({ orders }: OrderProps) => {
                   <Button
                     bg="gray.50"
                     variant="outline"
-                    onClick={() => handleChangeSpecificDate("today")}
+                    onClick={() => handleChangeSpecificDate(DATES.TODAY)}
                   >
                     {t(`dates.today`)}
                   </Button>
                   <Button
                     bg="gray.50"
                     variant="outline"
-                    onClick={() => handleChangeSpecificDate("yesterday")}
+                    onClick={() => handleChangeSpecificDate(DATES.YESTERDAY)}
                   >
                     {t(`dates.yesterday`)}
                   </Button>
                   <Button
                     bg="gray.50"
                     variant="outline"
-                    onClick={() => handleChangeSpecificDate("this-month")}
+                    onClick={() => handleChangeSpecificDate(DATES.THIS_MONTH)}
                   >
                     {t(`dates.this-month`)}
                   </Button>
                   <Button
                     bg="gray.50"
                     variant="outline"
-                    onClick={() => handleChangeSpecificDate("last-month")}
+                    onClick={() => handleChangeSpecificDate(DATES.LAST_MONTH)}
                   >
                     {t(`dates.last-month`)}
                   </Button>
@@ -217,7 +225,7 @@ export const Orders = ({ orders }: OrderProps) => {
                     bg="gray.50"
                     variant="outline"
                     onClick={() =>
-                      handleChangeSpecificDate("last-three-months")
+                      handleChangeSpecificDate(DATES.LAST_THREE_MONTHS)
                     }
                   >
                     {t(`dates.last-three-months`)}

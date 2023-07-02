@@ -1,4 +1,4 @@
-import { CommissionInfo } from "../types";
+import { CommissionInfo, ProductInfo } from "../types";
 
 export function sumQuantityByCategory(commissionInfo: CommissionInfo): {
   [categoryName: string]: number;
@@ -18,3 +18,27 @@ export function sumQuantityByCategory(commissionInfo: CommissionInfo): {
 
   return quantityByCategory;
 }
+
+export const sortProducts = (a: ProductInfo, b: ProductInfo) => {
+  {
+    if (a.category.name < b.category.name) {
+      return -1;
+    }
+    if (a.category.name > b.category.name) {
+      return 1;
+    }
+    if (a.dimensions < b.dimensions) {
+      return -1;
+    }
+    if (a.dimensions > b.dimensions) {
+      return 1;
+    }
+    if (a.variant > b.variant) {
+      return -1;
+    } else {
+      return 1;
+    }
+  }
+};
+
+// .sort((a, b) => sortProducts(a, b))
