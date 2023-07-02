@@ -75,21 +75,17 @@ export const CommissionCreate = ({ products }: CommissionCreateProps) => {
     setNewProducts((prev) => [...prev, initialNewProductsData]);
   };
 
-  // const handleDeleteProduct = (globalIndex: number) => {
-  //   newProducts.length > 1 &&
-  //     setNewProducts((prev) =>
-  //       prev.filter((item, index) => index !== globalIndex)
-  //     );
-  // };
-
   const handleDeleteProduct = (itemToDelete: {
     productId: string;
     quantity: string;
   }) => {
-    newProducts.length > 1 &&
-      setNewProducts((prev) =>
-        prev.filter((item) => item.productId !== itemToDelete.productId)
-      );
+    setNewProducts((prev) => {
+      if (newProducts.length > 1) {
+        return prev.filter((item) => item.productId !== itemToDelete.productId);
+      } else {
+        return prev;
+      }
+    });
   };
 
   const handlePostCommission = () => {
@@ -107,8 +103,6 @@ export const CommissionCreate = ({ products }: CommissionCreateProps) => {
       router.push("/commissions");
     }
   }, [router, isSuccess]);
-
-  console.log(newProducts);
 
   return (
     <Flex width="100%" maxWidth="980px" flexDir="column">
