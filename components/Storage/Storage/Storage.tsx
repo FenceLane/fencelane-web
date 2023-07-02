@@ -19,6 +19,7 @@ import { AddIcon } from "@chakra-ui/icons";
 import { PRODUCT_VARIANT, ProductInfo } from "../../../lib/types";
 import { useIsMobile } from "../../../lib/hooks/useIsMobile";
 import { ProductAddModal } from "./ProductAddModal/ProductAddModal";
+import { sortProducts } from "../../../lib/util/commissionsUtils";
 
 interface StorageProps {
   products: ProductInfo[];
@@ -117,25 +118,7 @@ export const Storage = ({ products }: StorageProps) => {
           <Tbody>
             {products
               .filter((product) => variantFilters[product.variant])
-              .sort((a, b) => {
-                if (a.category.name < b.category.name) {
-                  return -1;
-                }
-                if (a.category.name > b.category.name) {
-                  return 1;
-                }
-                if (a.dimensions < b.dimensions) {
-                  return -1;
-                }
-                if (a.dimensions > b.dimensions) {
-                  return 1;
-                }
-                if (a.variant > b.variant) {
-                  return -1;
-                } else {
-                  return 1;
-                }
-              })
+              .sort((a, b) => sortProducts(a, b))
               .map((product: ProductInfo) => (
                 <StorageRow key={product.id} product={product}></StorageRow>
               ))}

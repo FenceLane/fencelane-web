@@ -83,7 +83,7 @@ export const ProductStockAddModal = ({
           <Text fontWeight="600" mb="20px">
             {t(`pages.storage.variants.${product.variant}`)}
           </Text>
-          <label>Wprowadź ilość dodawanego towaru</label>
+          <label>{t("pages.storage.modals.insert_product_quantity")}</label>
           <Input
             mb="10px"
             name="stock"

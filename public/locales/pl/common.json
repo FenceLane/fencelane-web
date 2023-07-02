@@ -189,7 +189,8 @@
         "are_you_sure": "Czy na pewno chcesz usunąć ten towar?",
         "variant_transfer": "Zmiana wariantu części produktu",
         "choose_new_variant": "Wybierz nowy wariant",
-        "quantity": "Ilość pakietów"
+        "quantity": "Ilość pakietów",
+        "insert_product_quantity": "Wprowadź ilość dodawanego towaru"
       },
       "buttons": {
         "add": "Dodaj",
