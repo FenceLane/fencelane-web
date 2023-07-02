@@ -41,6 +41,14 @@ export const OrdersRow = ({ orderData }: OrderDataProps) => {
         </Box>
         <Box className={styles["text-box"]}>
           <Text className={styles["order-header"]}>
+            {t("pages.orders.order.parent_order_id")}
+          </Text>
+          <Text className={styles["order-text"]}>
+            {orderData.parentOrderId}
+          </Text>
+        </Box>
+        <Box className={styles["text-box"]}>
+          <Text className={styles["order-header"]}>
             {t("pages.orders.order.status")}
           </Text>
           <Text
@@ -51,14 +59,6 @@ export const OrdersRow = ({ orderData }: OrderDataProps) => {
             {t(`pages.orders.status.${status}`)}
           </Text>
         </Box>
-        <Box className={styles["text-box"]}>
-          <Text className={styles["order-header"]}>
-            {t("pages.orders.order.client")}
-          </Text>
-          <Text className={styles["order-text"]}>
-            {orderData.destination.client.name}
-          </Text>
-        </Box>
       </Flex>
       <Flex className={styles["right"]}>
         <Box className={styles["text-box"]}>
@@ -67,6 +67,14 @@ export const OrdersRow = ({ orderData }: OrderDataProps) => {
           </Text>
           <Text className={styles["order-text"]}>
             {constructOrderDate(orderData.createdAt)}
+          </Text>
+        </Box>
+        <Box className={styles["text-box"]}>
+          <Text className={styles["order-header"]}>
+            {t("pages.orders.order.client")}
+          </Text>
+          <Text className={styles["order-text"]}>
+            {orderData.destination.client.name}
           </Text>
         </Box>
         <Box className={styles["text-box"]}>
@@ -82,10 +90,14 @@ export const OrdersRow = ({ orderData }: OrderDataProps) => {
         </Box>
       </Flex>
       <Box className={styles["right-bottom"]}>
-        {profit && <Text className={styles["price"]}>{profit}€</Text>}
+        {profit && (
+          <Text className={styles["price"]}>
+            {Number(profit).toFixed(2).replace(/\.00$/, "")}€
+          </Text>
+        )}
         <Link
           className={styles["details-link"]}
-          href={`/orders/${orderData.id}`}
+          href={`/loads/${orderData.id}`}
         >
           {t("pages.orders.order.details")}
           <ArrowForwardIcon boxSize="4" />

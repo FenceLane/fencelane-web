@@ -10,6 +10,7 @@
         "menu": {
           "stats": { "label": "Statystyki" },
           "storage": { "label": "Magazyn" },
+          "loads": { "label": "Załadunki" },
           "orders": { "label": "Zamówienia" },
           "commissions": { "label": "Zlecenia" },
           "schedule": { "label": "Harmonogram" },
@@ -152,6 +153,17 @@
         }
       }
     },
+    "my_profile": {
+      "my_profile": "Mój profil",
+      "user_data": "Dane użytkownika",
+      "username": "Nazwa użytkownika",
+      "phone": "Telefon",
+      "role": "Rola",
+      "logout": "Wyloguj się",
+      "delete_account": "Usuń konto",
+      "account_deletion": "Usuwanie konta",
+      "are_you_sure": "Czy na pewno chcesz usunąć konto?"
+    },
     "storage": {
       "table": {
         "headings": {
@@ -174,7 +186,11 @@
         "commodity_modifying": "Modyfikowanie towaru",
         "commodity_deleting": "Usuwanie towaru",
         "commodity_adding": "Dodawanie towaru",
-        "are_you_sure": "Czy na pewno chcesz usunąć ten towar?"
+        "are_you_sure": "Czy na pewno chcesz usunąć ten towar?",
+        "variant_transfer": "Zmiana wariantu części produktu",
+        "choose_new_variant": "Wybierz nowy wariant",
+        "quantity": "Ilość pakietów",
+        "insert_product_quantity": "Wprowadź ilość dodawanego towaru"
       },
       "buttons": {
         "add": "Dodaj",
@@ -186,14 +202,15 @@
       }
     },
     "orders": {
-      "order_history": "Historia zamówień",
+      "order_history": "Historia załadunków",
       "calculations_history": "Historia kalkulacji",
       "order": {
-        "order_id": "Nr zamówienia",
+        "order_id": "Nr załadunku",
         "status": "Status",
         "client": "Klient",
         "date": "Data",
         "destination": "Destynacja",
+        "parent_order_id": "Nr zamówienia",
         "details": "Szczegóły",
         "change-status": "Zmień status",
         "pieces": "Sztuki",
@@ -216,8 +233,9 @@
           "pieces": "sztuk",
           "m3": "m3"
         },
-        "calculation-to-order": "Kalkulacja do zamówienia ",
+        "calculation-to-order": "Kalkulacja do załadunku ",
         "transport-cost": "Cena dostawy",
+        "other-costs": "Inne koszty",
         "products": "Produkty",
         "summary": "Podsumowanie",
         "eur-rate": "Kurs EUR",
@@ -256,9 +274,9 @@
         "new": "Nowe"
       },
       "status": {
-        "order-created": "Utworzono zamówienie",
+        "order-created": "Utworzono załadunek",
         "received-in-storage": "Przyjęto na magazynie",
-        "order created": "Utworzono zamówienie",
+        "order created": "Utworzono załadunek",
         "received in storage": "Przyjęto na magazynie",
         "dried": "Wysuszono",
         "impregnated": "Nasycono",
@@ -266,7 +284,8 @@
         "delivered": "Dostarczono"
       },
       "order-creator": {
-        "order-creator": "Kreator zamówienia",
+        "order-creator": "Kreator załadunku",
+        "parent_order_id": "Nr zamówienia",
         "packages-quantity": "Ilość pakietów",
         "price-per-m3": "Cena za m3"
       },
@@ -275,7 +294,22 @@
         "dimensions": "Wymiar",
         "quantity": "Ilość",
         "price": "Cena"
-      }
+      },
+      "search": "Szukaj",
+      "check-date": "Wybierz datę",
+      "from": "Od",
+      "to": "Do"
+    },
+    "commissions": {
+      "commission-id": "Zlecenie nr",
+      "commission-creator": "Kreator zlecenia",
+      "filters": {
+        "all": "Wszystkie",
+        "orders-only": "Do załadunków",
+        "non-orders-only": "Bez załadunków"
+      },
+      "product_completing": "Realizowanie produktu",
+      "insert_completing_product_quantity": "Podaj ilość realizowanego produktu"
     },
     "schedule": {
       "modals": {
@@ -347,6 +381,7 @@
       }
     }
   },
+
   "buttons": {
     "add": "Dodaj",
     "modify": "Modyfikuj",
@@ -357,12 +392,17 @@
     "back": "Cofnij",
     "save": "Zapisz",
     "confirm": "Zatwierdź",
-    "new": "Nowe"
+    "new": "Nowe",
+    "change": "Zmień",
+    "complete": "Realizuj",
+    "complete_part": "Realizuj częściowo"
   },
   "main": {
     "storage": "Magazyn",
     "product": "Produkt",
     "order": "Zamówienie",
+    "load": "Załadunek",
+    "commissions": "Zlecenia",
     "status": "Status",
     "client": "Klient",
     "date": "Data",
@@ -399,5 +439,12 @@
     "october": "Październik",
     "november": "Listopad",
     "december": "Grudzień"
+  },
+  "dates": {
+    "today": "Dzisiaj",
+    "yesterday": "Wczoraj",
+    "this-month": "W tym miesiącu",
+    "last-month": "W zeszłym miesiącu",
+    "last-three-months": "W ostatnich 3 miesiącach"
   }
 }

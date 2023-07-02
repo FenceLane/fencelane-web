@@ -41,6 +41,7 @@ interface SummaryProps {
   rate: number;
   rateDate: string | null;
   transportCost: number;
+  otherCosts: number;
   transportCostCurrency: string;
 }
 
@@ -52,6 +53,7 @@ export const Summary = ({
   expansesList,
   rate,
   rateDate,
+  otherCosts,
   transportCost,
   transportCostCurrency,
 }: SummaryProps) => {
@@ -62,14 +64,14 @@ export const Summary = ({
   const [specType, setSpecType] = useState(QUANTITY_TYPE.PACKAGES);
 
   const {
-    mutate: postOrderExpanses,
+    mutate: postLoadExpanses,
     error: postExpansesError,
     isError: isPostExpansesError,
     isSuccess: isPostExpansesSuccess,
     isLoading: isPostExpansesLoading,
   } = usePostOrderExpanses(orderId);
   const {
-    mutate: postOrderTransportCost,
+    mutate: postLoadTransportCost,
     error: postTransportCostError,
     isError: isPostTransportCostError,
     isSuccess: isPostTransportCostSuccess,
@@ -77,17 +79,17 @@ export const Summary = ({
   } = usePostOrderTransportCost(orderId);
 
   const {
-    mutate: updateOrder,
-    error: updateOrderError,
-    isError: isUpdateOrderError,
-    isSuccess: isUpdateOrderSuccess,
-    isLoading: isUpdateOrderLoading,
+    mutate: updateLoad,
+    error: updateLoadError,
+    isError: isUpdateLoadError,
+    isSuccess: isUpdateLoadSuccess,
+    isLoading: isUpdateLoadLoading,
   } = useUpdateOrder(orderId);
 
   const transportCostInEur =
     transportCostCurrency === CURRENCY.EUR
-      ? transportCost
-      : transportCost / rate;
+      ? Number(otherCosts / rate) + Number(transportCost)
+      : Number(transportCost / rate) + Number(otherCosts / rate);
 
   const transportCostPerM3 =
     transportCostInEur /
@@ -193,27 +195,27 @@ export const Summary = ({
     };
     let postProfit = Number(displayProfit);
     if (currency === CURRENCY.PLN) {
-      postProfit = Number(displayProfit) / rate;
+      postProfit = Number(Number(displayProfit) / rate);
     }
-    postOrderExpanses({ id: orderId, data: postExpansesList });
-    postOrderTransportCost({ id: orderId, data: postTransportData });
-    updateOrder({ profit: postProfit });
+    postLoadExpanses({ id: orderId, data: postExpansesList });
+    postLoadTransportCost({ id: orderId, data: postTransportData });
+    updateLoad({ profit: postProfit });
   }; // wysyłanie kosztów do bazy (expansy w bazie za paczke, transportcost calkowity)
 
   useEffect(() => {
     if (
       isPostExpansesSuccess &&
       isPostTransportCostSuccess &&
-      isUpdateOrderSuccess
+      isUpdateLoadSuccess
     ) {
-      router.push(`/orders`);
+      router.push(`/loads`);
     }
   }, [
     isPostExpansesSuccess,
     isPostTransportCostSuccess,
-    isUpdateOrderSuccess,
+    isUpdateLoadSuccess,
     productData,
-  ]); //przy successie dodawania produktów przechodzenie do podstrony orderu
+  ]); //przy successie dodawania produktów przechodzenie do podstrony loadu
 
   return (
     <Flex
@@ -305,7 +307,7 @@ export const Summary = ({
                   <br />
                   {row.productDimensions}
                 </Td>
-                <Td>{row.productQuantity}</Td>
+                <Td>{row.productQuantity.toFixed(2).replace(/\.00$/, "")}</Td>
                 <Td>{row.productDifference.toFixed(2).replace(/\.00$/, "")}</Td>
                 <Td>{profit[index].toFixed(2).replace(/\.00$/, "")}</Td>
               </Tr>
@@ -329,7 +331,7 @@ export const Summary = ({
           isLoading={
             isPostExpansesLoading ||
             isPostTransportCostLoading ||
-            isUpdateOrderLoading
+            isUpdateLoadLoading
           }
         >
           {t("buttons.save")}
@@ -337,7 +339,7 @@ export const Summary = ({
       </Flex>
       {(isPostExpansesError ||
         isPostTransportCostError ||
-        isUpdateOrderError) && (
+        isUpdateLoadError) && (
         <Text color="red" fontWeight="600" fontSize="18px">
           {isPostExpansesError &&
             t(
@@ -351,10 +353,10 @@ export const Summary = ({
                 postTransportCostError
               )}`
             )}
-          {isUpdateOrderError &&
+          {isUpdateLoadError &&
             t(
               `errors.backendErrorLabel.${mapAxiosErrorToLabel(
-                updateOrderError
+                updateLoadError
               )}`
             )}
         </Text>

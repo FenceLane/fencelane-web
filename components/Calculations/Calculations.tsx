@@ -31,7 +31,9 @@ export const Calculations = ({ orderData }: CalculationsProps) => {
                 <Td textAlign="center">
                   {order.id.toString().padStart(4, "0")}
                 </Td>
-                <Td textAlign="center">{order.profit} €</Td>
+                <Td textAlign="center">
+                  {Number(order.profit).toFixed(2).replace(/\.00$/, "")} €
+                </Td>
                 <Td>
                   <Link
                     className={styles["details-link"]}

@@ -1,13 +1,14 @@
 .commodity-table {
   overflow-x: hidden;
 }
-
 .commodity-table th,
 .commodity-table td {
   text-align: center;
 }
+
 .commodity-table-thead tr {
   position: relative;
+  border-bottom: 3px solid var(--light-content);
 }
 .commodity-table-thead th {
   position: sticky;
@@ -28,11 +29,27 @@
   left: 0;
   z-index: 2;
 }
+.variant-filters {
+  justify-content: flex-start;
+}
+.buttons {
+  flex-direction: column;
+}
+.add-button {
+  justify-content: flex-start;
+}
 @media only screen and (min-width: 768px) {
   .container {
-    margin: 0px 30px 30px 30px;
+    margin: 0px 20px 20px 20px;
   }
   .add-button {
-    margin-left: 30px;
+    margin-left: 20px;
+  }
+  .variant-filters {
+    margin-left: 20px;
+    justify-content: flex-start;
+  }
+  .buttons {
+    flex-direction: row;
   }
 }

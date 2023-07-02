@@ -3,11 +3,13 @@ import { ClientConfig } from "../AppConfig/ClientConfig";
 import {
   CategoryInfo,
   ClientPostInfo,
+  CommissionInfo,
   DestinationPostInfo,
   ExpansePostInfo,
   OrderInfo,
   OrderPostInfo,
   OrderProductInfo,
+  PRODUCT_VARIANT,
   ProductInfo,
   TransportPostInfo,
 } from "../types";
@@ -128,6 +130,16 @@ const editProduct = async ({
   return axiosInstance.put(apiPath(`products/${id}`), data);
 };
 
+const transferVariant = async ({
+  id,
+  data,
+}: {
+  id: string;
+  data: { amount: number; variant: PRODUCT_VARIANT };
+}) => {
+  return axiosInstance.post(apiPath(`products/${id}/variant-transfer`), data);
+};
+
 const getOrders = async (options?: {
   authCookie: string;
 }): Promise<OrderInfo[]> => {
@@ -209,8 +221,8 @@ const postOrderExpanses = async ({ id, data }: ExpansePostInfo) => {
 };
 
 const updateOrder = async ({
-  data,
   id,
+  data,
 }: {
   id: number;
   data: Partial<OrderInfo>;
@@ -279,6 +291,34 @@ const changeRole = async ({
   return axiosInstance.put(apiPath(`users/${id}`), data);
 };
 
+const getCommissions = async (options?: {
+  authCookie: string;
+}): Promise<CommissionInfo[]> => {
+  const {
+    data: { data },
+  } = await axiosInstance.get(apiPath("commissions"), {
+    headers: { cookie: options?.authCookie },
+  });
+
+  return data;
+};
+
+const updateCommissionProducts = async ({
+  data,
+  id,
+}: {
+  id: number;
+  data: { filledQuantity: number; productCommissionId: string }[];
+}) => {
+  return axiosInstance.patch(apiPath(`commissions/${id}/products`), data);
+};
+
+const postCommission = async (data: {
+  products: { productId: string; quantity: number }[];
+}) => {
+  return axiosInstance.post(apiPath("commissions"), data);
+};
+
 export const apiClient = {
   socket: {
     listen: initialiseWebSocketClient,
@@ -300,6 +340,7 @@ export const apiClient = {
     postProduct,
     deleteProduct,
     editProduct,
+    transferVariant,
   },
   orders: {
     getOrders,
@@ -330,5 +371,10 @@ export const apiClient = {
   employees: {
     getEmployees,
     changeRole,
+  },
+  commissions: {
+    getCommissions,
+    updateCommissionProducts,
+    postCommission,
   },
 };

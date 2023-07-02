@@ -68,7 +68,7 @@ export const DestinationCreate = ({ clients }: DestinationCreateProps) => {
 
   useEffect(() => {
     if (isSuccess) {
-      router.push("/orders/create");
+      router.push("/loads/create");
     }
   }, [router, isSuccess]);
 
@@ -126,7 +126,7 @@ export const DestinationCreate = ({ clients }: DestinationCreateProps) => {
         placeholder={t("pages.orders.destinations.country")}
       />
       <Flex justifyContent="flex-end" gap="50px" mt="20px">
-        <Link href="/orders/create">
+        <Link href="/loads/create">
           <Button colorScheme="red">{t("buttons.cancel")}</Button>
         </Link>
         <Button

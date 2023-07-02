@@ -10,6 +10,7 @@ import {
   useDisclosure,
   Heading,
   Text,
+  Flex,
 } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import React from "react";
@@ -58,59 +59,57 @@ export const MyProfile = ({ user }: MyProfileProps) => {
   };
 
   return (
-    <>
-      <main>
-        <Heading as="h3" size="lg" mb={5}>
-          Mój profil
-        </Heading>
-        <Text fontSize={18} mb={2}>
-          Dane użytkownika:
-        </Text>
-        <Text className={styles["profile-item"]}>
-          Nazwa użytkownika: <span>{user.name}</span>
-        </Text>
-        <Text className={styles["profile-item"]}>
-          E-mail: <span>{user.email}</span>
-        </Text>
-        <Text className={styles["profile-item"]}>
-          <span>ID:</span> <span>{user.id}</span>
-        </Text>
-        <Text className={styles["profile-item"]}>
-          Telefon: <span>{user.phone}</span>
-        </Text>
-        <Text className={styles["profile-item"]}>
-          Rola: <span>{user.role}</span>
-        </Text>
-        <div className={styles.buttons}>
-          <Button
-            onClick={handleLogout}
-            colorScheme="teal"
-            variant="outline"
-            mr={3}
-          >
-            Wyloguj się
-          </Button>
-          <Button colorScheme="red" variant="outline" onClick={onOpen}>
-            Usuń konto
-          </Button>
-        </div>
-        <Modal isOpen={isOpen} onClose={onClose}>
-          <ModalOverlay />
-          <ModalContent>
-            <ModalHeader>Usuwanie konta</ModalHeader>
-            <ModalCloseButton />
-            <ModalBody>Czy na pewno chcesz usunąć konto?</ModalBody>
-            <ModalFooter>
-              <Button colorScheme="red" onClick={handleDeleteAccount} mr={3}>
-                Usuń konto
-              </Button>
-              <Button colorScheme="green" onClick={onClose}>
-                Anuluj
-              </Button>
-            </ModalFooter>
-          </ModalContent>
-        </Modal>
-      </main>
-    </>
+    <Flex bg="white" flexDir="column" className={styles["profile-container"]}>
+      <Heading as="h3" size="lg" mb={5}>
+        {t("pages.my_profile.my_profile")}
+      </Heading>
+      <Text fontSize={18} mb={2}>
+        {t("pages.my_profile.user_data")}:
+      </Text>
+      <Text className={styles["profile-item"]}>
+        {t("pages.my_profile.username")}: <span>{user.name}</span>
+      </Text>
+      <Text className={styles["profile-item"]}>
+        E-mail: <span>{user.email}</span>
+      </Text>
+      <Text className={styles["profile-item"]}>
+        <span>ID:</span> <span>{user.id}</span>
+      </Text>
+      <Text className={styles["profile-item"]}>
+        {t("pages.my_profile.phone")}: <span>{user.phone}</span>
+      </Text>
+      <Text className={styles["profile-item"]}>
+        {t("pages.my_profile.role")}: <span>{user.role}</span>
+      </Text>
+      <div className={styles.buttons}>
+        <Button
+          onClick={handleLogout}
+          colorScheme="teal"
+          variant="outline"
+          mr={3}
+        >
+          {t("pages.my_profile.logout")}
+        </Button>
+        <Button colorScheme="red" variant="outline" onClick={onOpen}>
+          {t("pages.my_profile.delete_account")}
+        </Button>
+      </div>
+      <Modal isOpen={isOpen} onClose={onClose}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>{t("pages.my_profile.account_deletion")}</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>{t("pages.my_profile.are_you_sure")}</ModalBody>
+          <ModalFooter>
+            <Button colorScheme="red" onClick={handleDeleteAccount} mr={3}>
+              {t("pages.my_profile.delete_account")}
+            </Button>
+            <Button colorScheme="green" onClick={onClose}>
+              {t("buttons.cancel")}
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
+    </Flex>
   );
 };

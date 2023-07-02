@@ -64,6 +64,8 @@ export const CalculationCreator = ({
 
   const [transportCost, setTransportCost] = useState(0);
 
+  const [otherCosts, setOtherCosts] = useState(0); // always in pln
+
   const [transportCostCurrency, setTransportCostCurrency] = useState("EUR");
 
   const [defaultSaturationCost, setDefaultSaturationCost] = useState({
@@ -119,10 +121,10 @@ export const CalculationCreator = ({
         boxShadow="0px 4px 4px rgba(0, 0, 0, 0.15)"
       >
         <Flex alignItems="center" gap="10px">
-          <Link as={NextLink} href={`/orders/${orderId}`} w="32px">
+          <Link as={NextLink} href={`/loads/${orderId}`} w="32px">
             <IconButton
               icon={<ArrowBackIcon w="32px" h="32px" />}
-              aria-label="go back to order"
+              aria-label="go back to load"
               w="32px"
               bg="white"
             />
@@ -138,8 +140,10 @@ export const CalculationCreator = ({
         {currentProduct === 0 && (
           <TransportCost
             transportCost={transportCost}
+            otherCosts={otherCosts}
             handleRateChange={handleRateChange}
             setTransportCost={setTransportCost}
+            setOtherCosts={setOtherCosts}
             handleNextStep={handleNextStep}
             setTransportCostCurrency={setTransportCostCurrency}
             transportCostCurrency={transportCostCurrency}
@@ -173,6 +177,7 @@ export const CalculationCreator = ({
             orderId={orderId}
             transportCostCurrency={transportCostCurrency}
             transportCost={transportCost}
+            otherCosts={otherCosts}
             expansesList={expansesList}
             handleRateChange={handleRateChange}
             handlePrevStep={handlePrevStep}

@@ -1,20 +1,21 @@
 import React, { useRef } from "react";
 import { Text, Tr, Td, useDisclosure, IconButton } from "@chakra-ui/react";
 import styles from "./StorageRow.module.scss";
-import { AddIcon, EditIcon } from "@chakra-ui/icons";
+import { AddIcon, EditIcon, StarIcon } from "@chakra-ui/icons";
 import { ProductInfo } from "../../../../lib/types";
 import { useContent } from "../../../../lib/hooks/useContent";
 import { useIsMobile } from "../../../../lib/hooks/useIsMobile";
 import { ProductEditModal } from "./ProductEditModal/ProductEditModal";
 import { ProductDeleteModal } from "./ProductDeleteModal/ProductDeleteModal";
 import { ProductStockAddModal } from "./ProductStockAddModal/ProductStockAddModal";
+import { ProductVariantTransferModal } from "./ProductVariantTransferModal/ProductVariantTransferModal";
 
 interface StorageRowProps {
   product: ProductInfo;
 }
 
 export const StorageRow = ({ product }: StorageRowProps) => {
-  const m3 = product.volumePerPackage * product.stock;
+  const m3 = Number(product.volumePerPackage) * product.stock;
 
   const pieces = product.itemsPerPackage * product.stock;
 
@@ -42,18 +43,26 @@ export const StorageRow = ({ product }: StorageRowProps) => {
     onClose: onStockAddClose,
   } = useDisclosure();
 
+  const {
+    isOpen: isVariantTransferOpen,
+    onOpen: onVariantTransferOpen,
+    onClose: onVariantTransferClose,
+  } = useDisclosure();
+
   return (
     <>
       <Tr className={styles["commodity-table-row"]} key={product.id}>
-        <Td>
+        <Td
+          display="flex"
+          alignItems="center"
+          className={styles["commodity-table-first-cell"]}
+        >
           <Text
-            mt="5px"
-            as="span"
             bg={product.category.color}
             color="white"
             p="3px 6px"
+            ml="10px"
             borderRadius="6px"
-            textAlign="center"
           >
             {product.category.name}
           </Text>
@@ -84,6 +93,14 @@ export const StorageRow = ({ product }: StorageRowProps) => {
             w="32px"
             color={product.category.color}
           ></IconButton>
+          <IconButton
+            icon={<StarIcon w="28px" h="28px" />}
+            aria-label="Variant transfer"
+            bg="white"
+            onClick={onVariantTransferOpen}
+            w="32px"
+            color={product.category.color}
+          ></IconButton>
         </Td>
       </Tr>
       <ProductEditModal
@@ -100,6 +117,11 @@ export const StorageRow = ({ product }: StorageRowProps) => {
       <ProductStockAddModal
         isStockAddOpen={isStockAddOpen}
         onStockAddClose={onStockAddClose}
+        product={product}
+      />
+      <ProductVariantTransferModal
+        isVariantTransferOpen={isVariantTransferOpen}
+        onVariantTransferClose={onVariantTransferClose}
         product={product}
       />
     </>

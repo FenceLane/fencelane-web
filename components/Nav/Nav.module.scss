@@ -14,6 +14,7 @@
   overflow-y: auto;
 }
 .nav-item {
+  position: relative;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -22,6 +23,7 @@
   color: var(--unactive);
   height: 50px;
   width: auto;
+  box-sizing: border-box;
 }
 .nav-item:hover {
   color: white;
@@ -41,5 +43,15 @@
   }
   .nav img {
     width: 16px;
+  }
+  .nav-item.active::before {
+    content: "";
+    position: absolute;
+    border-radius: 0 10px 10px 0;
+    width: 6px;
+    height: 100%;
+    left: -25px;
+    top: 0;
+    background-color: white;
   }
 }
