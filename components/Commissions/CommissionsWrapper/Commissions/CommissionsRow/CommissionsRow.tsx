@@ -1,5 +1,17 @@
 import React, { useState } from "react";
-import { Box, Flex, Text, Button } from "@chakra-ui/react";
+import {
+  Box,
+  Flex,
+  Text,
+  Button,
+  Td,
+  Table,
+  Tr,
+  Th,
+  Thead,
+  Tbody,
+  Heading,
+} from "@chakra-ui/react";
 import { CommissionInfo } from "../../../../../lib/types";
 import { useContent } from "../../../../../lib/hooks/useContent";
 import styles from "./CommissionsRow.module.scss";
@@ -10,6 +22,7 @@ import { useIsMobile } from "../../../../../lib/hooks/useIsMobile";
 import { ActionsButtons } from "./ActionsButtons/ActionsButtons";
 import { useUpdateCommissionProducts } from "../../../../../lib/api/hooks/commissions";
 import { mapAxiosErrorToLabel } from "../../../../../lib/server/BackendError/BackendError";
+import { sumQuantityByCategory } from "../../../../../lib/util/commissionsUtils";
 
 interface CommissionRowProps {
   commissionData: CommissionInfo;
@@ -19,6 +32,10 @@ export const CommissionsRow = ({ commissionData }: CommissionRowProps) => {
   const { t } = useContent();
 
   const isMobile = useIsMobile();
+
+  const quantityByCategory = Object.entries(
+    sumQuantityByCategory(commissionData)
+  );
 
   const {
     mutate: updateCommission,
@@ -138,47 +155,71 @@ export const CommissionsRow = ({ commissionData }: CommissionRowProps) => {
       </Flex>
 
       {showProducts && (
-        <Box>
-          {commissionData.products
-            .sort((a, b) => {
-              const idA = a.id.toUpperCase();
-              const idB = b.id.toUpperCase();
-              if (idA < idB) {
-                return -1;
-              }
-              if (idA > idB) {
-                return 1;
-              }
+        <>
+          <Box>
+            {commissionData.products
+              .sort((a, b) => {
+                const idA = a.id.toUpperCase();
+                const idB = b.id.toUpperCase();
+                if (idA < idB) {
+                  return -1;
+                }
+                if (idA > idB) {
+                  return 1;
+                }
 
-              return 0;
-            })
-            .map((product, id) => (
-              <Flex key={id} className={styles["product-table"]}>
-                <Flex className={styles["product-table-item"]} textAlign="left">
-                  {product.product.category.name}
-                  <br />[
-                  {t(`pages.storage.variants.${product.product.variant}`)}]
+                return 0;
+              })
+              .map((product, id) => (
+                <Flex key={id} className={styles["product-table"]}>
+                  <Flex
+                    className={styles["product-table-item"]}
+                    textAlign="left"
+                  >
+                    {product.product.category.name}
+                    <br />[
+                    {t(`pages.storage.variants.${product.product.variant}`)}]
+                  </Flex>
+                  <Flex className={styles["product-table-item"]}>
+                    {product.product.dimensions}
+                  </Flex>
+                  <Flex className={styles["product-table-item"]}>
+                    {product.quantity} p.
+                  </Flex>
+                  <Flex
+                    display="flex"
+                    className={styles["product-table-item"]}
+                    justifyContent="flex-end"
+                    gap="10px"
+                  >
+                    <ActionsButtons
+                      product={product}
+                      commissionId={commissionData.id}
+                    />
+                  </Flex>
                 </Flex>
-                <Flex className={styles["product-table-item"]}>
-                  {product.product.dimensions}
-                </Flex>
-                <Flex className={styles["product-table-item"]}>
-                  {product.quantity} p.
-                </Flex>
-                <Flex
-                  display="flex"
-                  className={styles["product-table-item"]}
-                  justifyContent="flex-end"
-                  gap="10px"
-                >
-                  <ActionsButtons
-                    product={product}
-                    commissionId={commissionData.id}
-                  />
-                </Flex>
-              </Flex>
-            ))}
-        </Box>
+              ))}
+          </Box>
+          <Table>
+            <Thead>
+              <Heading ml="10px" mb="10px" size="sm" fontWeight="600">
+                {t("pages.orders.order.summary")}
+              </Heading>
+              <Tr>
+                <Th>{t("main.product")}</Th>
+                <Th>{t("main.quantity")}</Th>
+              </Tr>
+            </Thead>
+            <Tbody>
+              {quantityByCategory.map((item) => (
+                <Tr key={item[0]}>
+                  <Td>{item[0]}</Td>
+                  <Td>{item[1]} p.</Td>
+                </Tr>
+              ))}
+            </Tbody>
+          </Table>
+        </>
       )}
       {isUpdateCommissionError &&
         t(

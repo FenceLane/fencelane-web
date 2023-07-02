@@ -11,11 +11,11 @@ export interface ProductInfo {
   dimensions: string;
   variant: PRODUCT_VARIANT;
   itemsPerPackage: number;
-  volumePerPackage: number; // z bazy dostaje string, troche dziwne
+  volumePerPackage: String;
   categoryId: string;
   stock: number;
-  createdAt: Date | string;
-  updatedAt: Date | string; //wyskakiwał błąd typu
+  createdAt: string;
+  updatedAt: string;
   category: CategoryInfo;
 }
 
