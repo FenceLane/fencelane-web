@@ -26,8 +26,8 @@ interface ActionButtonsProps {
     commissionId: number;
     productId: string;
     quantity: number;
-    createdAt: Date;
-    updatedAt: Date;
+    createdAt: string;
+    updatedAt: string;
     product: ProductInfo;
   };
 }
