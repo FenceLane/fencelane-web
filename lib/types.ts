@@ -11,10 +11,11 @@ export interface ProductInfo {
   dimensions: string;
   variant: PRODUCT_VARIANT;
   itemsPerPackage: number;
-  volumePerPackage: number;
+  volumePerPackage: String;
+  categoryId: string;
   stock: number;
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt: string;
+  updatedAt: string;
   category: CategoryInfo;
 }
 
@@ -44,8 +45,8 @@ export interface OrderProductInfo {
   productId: string;
   quantity: number;
   price: string;
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt: string;
+  updatedAt: string;
   currency: CURRENCY;
   product: {
     id: string;
@@ -55,8 +56,8 @@ export interface OrderProductInfo {
     volumePerPackage: string;
     categoryId: string;
     stock: number;
-    createdAt: Date;
-    updatedAt: Date;
+    createdAt: string;
+    updatedAt: string;
     category: {
       id: string;
       name: string;
@@ -105,6 +106,7 @@ export interface OrderInfo {
 }
 
 export interface OrderPostInfo {
+  parentOrderId: string;
   destinationId: string;
   products: {
     productId: string;
@@ -119,8 +121,8 @@ export interface TransportInfo {
   price: string;
   currency: string;
   orderId: number;
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt: string;
+  updatedAt: string;
 }
 
 export interface ExpansesInfo {
@@ -171,6 +173,32 @@ export interface ClientPostInfo {
 export interface DestinationPostInfo {
   id: string;
   data: { country: string; address: string; postalCode: string; city: string };
+}
+
+export interface CommissionInfo {
+  id: number;
+  orderId: number | null;
+  date: Date | string;
+  products: {
+    id: string;
+    commissionId: number;
+    productId: string;
+    quantity: number;
+    createdAt: string;
+    updatedAt: string;
+    product: ProductInfo;
+  }[];
+  order: {
+    id: number;
+    destinationId: string;
+    date: Date;
+    creatorId: string;
+    profit: number | null;
+    createdAt: string;
+    updatedAt: string;
+    parentOrderId: string;
+    commissionId: string;
+  };
 }
 
 export enum USER_ROLE {

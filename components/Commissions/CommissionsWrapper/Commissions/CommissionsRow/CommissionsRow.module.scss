@@ -1,0 +1,96 @@
+.commission-container {
+  width: 100%;
+  background-color: white;
+  margin-bottom: 10px;
+  padding: 10px;
+  line-height: 1.2;
+  font-size: 15px;
+  flex-direction: row;
+  gap: 20px;
+  box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.15);
+  position: relative;
+  flex-direction: column;
+}
+.product-table {
+  border-top: 2px solid var(--light-content);
+}
+.product-table-item {
+  align-items: center;
+  height: 60px;
+  padding: 5px;
+  border-bottom: 1px solid rgb(189, 181, 181);
+}
+.product-table-item:first-child {
+  flex: 2;
+  font-weight: 500;
+}
+.product-table-item:nth-child(2),
+.product-table-item:nth-child(3),
+.product-table-item:nth-child(4) {
+  flex: 1;
+}
+.product-table-item:nth-last-child(-n + 4) {
+  border-bottom: none;
+}
+.text-box {
+  margin-bottom: 10px;
+}
+.commission-header {
+  color: var(--font-gray);
+}
+.commission-text {
+  font-weight: 500;
+  display: inline-block;
+  flex: 1;
+}
+.commission-top {
+  align-items: center;
+  flex-direction: column;
+}
+.commission-top-item {
+  justify-content: space-between;
+  width: 100%;
+  gap: 10px;
+  align-items: center;
+}
+
+.more-button {
+  padding: 0;
+}
+.action-button {
+  display: none !important;
+}
+
+@media only screen and (min-width: 768px) {
+  .commission-top {
+    justify-content: space-evenly;
+    align-items: center;
+    flex-direction: row;
+  }
+  .commission-top div:first-child {
+    width: 40%;
+  }
+  .commission-top div:nth-child(2) {
+    width: 60%;
+  }
+  .commission-container {
+    padding: 10px 20px;
+  }
+  .product-table {
+    font-size: 100%;
+  }
+}
+@media only screen and (min-width: 1124px) {
+  .commission-info {
+    gap: 10px;
+    padding: 20px 30px;
+  }
+  .commission-actions {
+    justify-content: flex-end;
+    padding: 0px 30px 20px 0px;
+    gap: 20px;
+  }
+  .commission-actions > div {
+    gap: 20px;
+  }
+}

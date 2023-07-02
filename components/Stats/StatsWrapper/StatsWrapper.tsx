@@ -37,7 +37,7 @@ export const StatsWrapper = () => {
   if (isOrdersLoading || isProductsLoading || isCategoriesLoading)
     return (
       <Flex justifyContent="center" alignItems="center" height="100%">
-        <LoadingAnimation></LoadingAnimation>
+        <LoadingAnimation />
       </Flex>
     );
 

@@ -13,7 +13,7 @@ export const CalculationsWrapper = () => {
   if (isLoading)
     return (
       <Flex justifyContent="center" alignItems="center" height="100%">
-        <LoadingAnimation></LoadingAnimation>
+        <LoadingAnimation />
       </Flex>
     );
 

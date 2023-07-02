@@ -140,7 +140,7 @@ export const Calculation = ({
       isDeleteTransportCostSuccess &&
       isUpdateOrderSuccess
     ) {
-      router.push(`/orders/${orderId}`);
+      router.push(`/loads/${orderId}`);
     }
   }, [
     isDeleteExpansesSuccess,
@@ -239,7 +239,7 @@ export const Calculation = ({
                       <br />
                       {row.dimensions}
                     </Td>
-                    <Td>{row.quantity}</Td>
+                    <Td>{row.quantity.toFixed(2).replace(/\.00$/, "")}</Td>
                     <Td>
                       {(row.totalProfitOfProduct / row.quantity)
                         .toFixed(2)

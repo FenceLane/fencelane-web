@@ -1,6 +1,10 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { apiClient } from "../apiClient";
-import { QUERY_KEY, invalidateQueriesWithWebsocket } from "../queryClient";
+import {
+  QUERY_KEY,
+  invalidateQueriesWithWebsocket,
+  queryClient,
+} from "../queryClient";
 
 export const useGetProducts = () => {
   const mutation = useQuery({
@@ -38,6 +42,18 @@ export const useEditProduct = (onSuccess: () => void) => {
     onSuccess: () => {
       onSuccess();
       invalidateQueriesWithWebsocket({ queryKey: [QUERY_KEY.PRODUCTS] });
+    },
+  });
+
+  return mutation;
+};
+
+export const useTransferVariant = (onSuccess: () => void) => {
+  const mutation = useMutation({
+    mutationFn: apiClient.products.transferVariant,
+    onSuccess: () => {
+      onSuccess();
+      queryClient.invalidateQueries({ queryKey: [QUERY_KEY.PRODUCTS] });
     },
   });
 

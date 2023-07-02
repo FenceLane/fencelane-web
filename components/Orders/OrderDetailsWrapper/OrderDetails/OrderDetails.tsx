@@ -333,9 +333,9 @@ export const OrderDetails = ({
   }; // aktualizowanie ilosci i cen produktow
 
   return (
-    <Flex flexDir="column" alignItems="center" minHeight="100vh">
+    <Flex flexDir="column" alignItems="center">
       <Flex className={styles.container} flexDir="column">
-        <Link as={NextLink} href="/orders" w="32px">
+        <Link as={NextLink} href="/loads" w="32px">
           <IconButton
             icon={<ArrowBackIcon w="32px" h="32px" />}
             aria-label="go back to orders"
@@ -353,6 +353,14 @@ export const OrderDetails = ({
             </Box>
             <Box className={styles["text-box"]}>
               <Text className={styles["order-header"]}>
+                {t("pages.orders.order.parent_order_id")}
+              </Text>
+              <Text className={styles["order-text"]}>
+                {orderData.parentOrderId}
+              </Text>
+            </Box>
+            <Box className={styles["text-box"]}>
+              <Text className={styles["order-header"]}>
                 {t("pages.orders.order.status")}
               </Text>
               <Text
@@ -361,14 +369,6 @@ export const OrderDetails = ({
                 color={statusColor(currentStatus)}
               >
                 {t(`pages.orders.status.${currentStatus}`)}
-              </Text>
-            </Box>
-            <Box className={styles["text-box"]}>
-              <Text className={styles["order-header"]}>
-                {t("pages.orders.order.client")}
-              </Text>
-              <Text className={styles["order-text"]}>
-                {orderData.destination.client.name}
               </Text>
             </Box>
           </Flex>
@@ -383,6 +383,14 @@ export const OrderDetails = ({
             </Box>
             <Box className={styles["text-box"]}>
               <Text className={styles["order-header"]}>
+                {t("pages.orders.order.client")}
+              </Text>
+              <Text className={styles["order-text"]}>
+                {orderData.destination.client.name}
+              </Text>
+            </Box>
+            <Flex className={styles["text-box"]} flexDirection="column">
+              <Text className={styles["order-header"]}>
                 {t("pages.orders.order.destination")}
               </Text>
               <Text className={styles["order-text"]}>
@@ -391,15 +399,17 @@ export const OrderDetails = ({
               <Text className={styles["order-text"]}>
                 {orderData.destination.country}
               </Text>
-            </Box>
+            </Flex>
           </Flex>
+          <Box className={styles["right-bottom"]}>
+            {profit && (
+              <Text className={styles["profit"]}>
+                {Number(profit).toFixed(2).replace(/\.00$/, "")}€
+              </Text>
+            )}
+          </Box>
         </Flex>
-        {profit && (
-          <Text className={styles["profit"]}>
-            {t("pages.orders.order.profit")}: +{profit}€
-          </Text>
-        )}
-        <Flex className={styles["history-container"]} flexDir="row">
+        <Flex className={styles["history-container"]} flexDir="row" gap="20px">
           <Flex flexDir="column" className={styles["order-history"]}>
             <Heading size="sm" mb="10px">
               {t("main.history")}
@@ -500,7 +510,20 @@ export const OrderDetails = ({
             </Tbody>
           </Table>
         </Box>
-        <Flex justifyContent="space-around" mt="10px">
+        {isUpdateOrderProductsError && (
+          <Text color="red">
+            {t(mapAxiosErrorToLabel(updateOrderProductsError))}
+          </Text>
+        )}
+        {isUpdateOrderError && (
+          <Text color="red">{t(mapAxiosErrorToLabel(updateOrderError))}</Text>
+        )}
+        <Flex
+          justifyContent="flex-end"
+          gap="20px"
+          p="20px"
+          borderBottom="5px solid var(--light-content)"
+        >
           <Button
             color="white"
             bg="var(--button-orange)"
@@ -516,36 +539,29 @@ export const OrderDetails = ({
             </Button>
           </Link>
         </Flex>
-        {isUpdateOrderProductsError && (
-          <Text color="red">
-            {t(mapAxiosErrorToLabel(updateOrderProductsError))}
-          </Text>
-        )}
-        {isUpdateOrderError && (
-          <Text color="red">{t(mapAxiosErrorToLabel(updateOrderError))}</Text>
-        )}
-        <Flex m="40px 0px" justifyContent="space-between" alignItems="center">
-          <Heading size="sm" mb="10px" ml="40px">
-            {t("pages.orders.order.documents")}
-          </Heading>
-          <Button
-            color="white"
-            bg="var(--button-dark-orange)"
-            fontWeight="400"
-            mr="40px"
-          >
+        <Flex
+          flexDir="column"
+          gap="10px"
+          className={styles["documents-container"]}
+        >
+          <Flex alignItems="center">
+            <Heading size="sm" mb="10px">
+              {t("pages.orders.order.documents")}
+            </Heading>
+          </Flex>
+          <Table className={styles["file-table"]}>
+            <Thead>
+              <Tr>
+                <Th>{t("pages.orders.order.file")}</Th>
+                <Th>{t("pages.orders.order.download")}</Th>
+              </Tr>
+            </Thead>
+          </Table>
+        </Flex>
+        <Flex justifyContent="flex-end" m="20px " gap="20px">
+          <Button color="white" bg="var(--button-dark-orange)" fontWeight="400">
             {t("buttons.add")}
           </Button>
-        </Flex>
-        <Table className={styles["file-table"]}>
-          <Thead>
-            <Tr>
-              <Th>{t("pages.orders.order.file")}</Th>
-              <Th>{t("pages.orders.order.download")}</Th>
-            </Tr>
-          </Thead>
-        </Table>
-        <Flex mr="20px" justifyContent="flex-end" m="20px 20px 20px 0px">
           <Button bg="var(--button-green)" color="white" fontWeight="400">
             {t("pages.orders.order.download-all")}
           </Button>

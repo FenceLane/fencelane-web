@@ -52,13 +52,17 @@ export const ProductStockAddModal = ({
       volumePerPackage,
     } = product;
 
+    const stockAdd = newStock;
+
+    setNewStock(0);
+
     editProduct({
       id: product.id,
       data: {
         dimensions,
         itemsPerPackage: Number(itemsPerPackage),
         categoryId: category.id,
-        stock: Number(stock) + newStock,
+        stock: Number(stock) + stockAdd,
         variant: variant,
         volumePerPackage: Number(volumePerPackage),
       },
@@ -69,16 +73,19 @@ export const ProductStockAddModal = ({
     <Modal isOpen={isStockAddOpen} onClose={handleProductStockAddModalClose}>
       <ModalOverlay />
       <ModalContent>
-        <ModalHeader>Dodawanie towaru</ModalHeader>
+        <ModalHeader>
+          {t("pages.storage.modals.commodity_modifying")}
+        </ModalHeader>
         <ModalCloseButton />
         <ModalBody>
           <Text fontWeight="600">{product.category.name}</Text>
           <Text fontWeight="600">{product.dimensions}</Text>
-          <Text fontWeight="600">
+          <Text fontWeight="600" mb="20px">
             {t(`pages.storage.variants.${product.variant}`)}
           </Text>
-          <label>Wprowadź ilość dodawanego towaru</label>
+          <label>{t("pages.storage.modals.insert_product_quantity")}</label>
           <Input
+            mb="10px"
             name="stock"
             type="number"
             placeholder="Ilość"
@@ -98,7 +105,7 @@ export const ProductStockAddModal = ({
               mr={3}
               isLoading={isEditLoading}
             >
-              Dodaj
+              {t("buttons.add")}
             </Button>
             <Button
               colorScheme="gray"

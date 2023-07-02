@@ -18,7 +18,7 @@ export const DestinationCreateWrapper = () => {
   if (isClientsLoading)
     return (
       <Flex justifyContent="center" alignItems="center" height="100%">
-        <LoadingAnimation></LoadingAnimation>
+        <LoadingAnimation />
       </Flex>
     );
 

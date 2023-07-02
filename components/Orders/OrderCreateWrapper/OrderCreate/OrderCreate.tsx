@@ -15,6 +15,7 @@ import { usePostOrder } from "../../../../lib/api/hooks/orders";
 import { useContent } from "../../../../lib/hooks/useContent";
 import { mapAxiosErrorToLabel } from "../../../../lib/server/BackendError/BackendError";
 import { CURRENCY, ProductInfo } from "../../../../lib/types";
+import { sortProducts } from "../../../../lib/util/commissionsUtils";
 
 const initialNewProductsData = {
   productId: "",
@@ -65,6 +66,8 @@ export const OrderCreate = ({ clients, products }: OrderCreateProps) => {
     isError,
     isLoading,
   } = usePostOrder();
+
+  const [newParentOrder, setNewParentOrder] = useState("");
 
   const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const { name, options } = e.target;
@@ -120,6 +123,7 @@ export const OrderCreate = ({ clients, products }: OrderCreateProps) => {
       price: String(product.price),
     }));
     postOrder({
+      parentOrderId: newParentOrder,
       destinationId: orderData.destinationId as string,
       products: numberedProducts,
     });
@@ -127,7 +131,7 @@ export const OrderCreate = ({ clients, products }: OrderCreateProps) => {
 
   useEffect(() => {
     if (isSuccess) {
-      router.push("/orders");
+      router.push("/loads");
     }
   }, [router, isSuccess]);
 
@@ -137,13 +141,22 @@ export const OrderCreate = ({ clients, products }: OrderCreateProps) => {
         {t("pages.orders.order-creator.order-creator")}
       </Text>
       <Flex gap="20px" mb="20px">
-        <Link href="/orders/create-client">
+        <Link href="/loads/create-client">
           <Button colorScheme="blue">Dodaj klienta</Button>
         </Link>
-        <Link href="/orders/create-destination">
+        <Link href="/loads/create-destination">
           <Button colorScheme="gray">Dodaj destynację</Button>
         </Link>
       </Flex>
+      <label>{t("pages.orders.order-creator.parent_order_id")}</label>
+      <Input
+        required
+        value={newParentOrder}
+        bg="white"
+        mb="20px"
+        placeholder={t("pages.orders.order-creator.parent_order_id")}
+        onChange={(e) => setNewParentOrder(e.target.value)}
+      />
       <label>{t("main.client")}</label>
       <Select
         required
@@ -166,6 +179,7 @@ export const OrderCreate = ({ clients, products }: OrderCreateProps) => {
         mb="20px"
         name="destinationId"
         onChange={handleChange}
+        placeholder={t("main.destination")}
       >
         {orderData.clientId !== "" ? (
           currentClient &&
@@ -201,13 +215,15 @@ export const OrderCreate = ({ clients, products }: OrderCreateProps) => {
             defaultValue={newProducts[index].productId}
           >
             {products &&
-              products.map((product) => (
+              products.sort(sortProducts).map((product) => (
                 <option
                   data-key={product.id}
                   key={product.id}
                   value={product.id}
                 >
-                  {product.category.name + " " + product.dimensions}
+                  {`${product.category.name}  ${product.dimensions} [${t(
+                    `pages.storage.variants.${product.variant}`
+                  ).toLowerCase()}]`}
                 </option>
               ))}
           </Select>
@@ -246,7 +262,7 @@ export const OrderCreate = ({ clients, products }: OrderCreateProps) => {
           >
             {t("buttons.confirm")}
           </Button>
-          <Link href="/orders">
+          <Link href="/loads">
             <Button colorScheme="red">{t("buttons.cancel")}</Button>
           </Link>
         </Box>

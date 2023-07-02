@@ -11,4 +11,7 @@
   .employees-table th {
     padding: 10px 20px;
   }
+  .employees-table tr {
+    border-bottom: 5px solid var(--light-content);
+  }
 }

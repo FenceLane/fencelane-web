@@ -22,9 +22,9 @@ export const CalculationWrapper = ({ orderId }: CalculationWrapperProps) => {
   const { t } = useContent("errors.backendErrorLabel");
 
   const {
-    isError: isOrdersError,
-    error: ordersError,
-    isLoading: isOrdersLoading,
+    isError: isLoadsError,
+    error: loadsError,
+    isLoading: isLoadsLoading,
     data: orderData,
   } = useGetOrder(orderId);
 
@@ -49,10 +49,10 @@ export const CalculationWrapper = ({ orderId }: CalculationWrapperProps) => {
     data: rate,
   } = useGetEurRate();
 
-  if (isExpansesLoading || isOrdersLoading || isRateLoading)
+  if (isExpansesLoading || isLoadsLoading || isRateLoading)
     return (
       <Flex justifyContent="center" alignItems="center" height="100%">
-        <LoadingAnimation></LoadingAnimation>
+        <LoadingAnimation />
       </Flex>
     );
 
@@ -61,7 +61,7 @@ export const CalculationWrapper = ({ orderId }: CalculationWrapperProps) => {
       mapAxiosErrorToLabel(transportCostError) ===
         BackendErrorLabel.TRAVEL_COST_DOES_NOT_EXIST) ||
       Object.keys(expanses).length === 0) &&
-    !isOrdersError
+    !isLoadsError
   ) {
     return (
       <CalculationCreator orderId={orderId} orderData={orderData} rate={rate} />

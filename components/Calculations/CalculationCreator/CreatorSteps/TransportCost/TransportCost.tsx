@@ -6,6 +6,8 @@ import { useContent } from "../../../../../lib/hooks/useContent";
 interface TransportCostProps {
   setTransportCost: Function;
   transportCost: number | string;
+  setOtherCosts: Function;
+  otherCosts: number;
   handleNextStep: React.MouseEventHandler<HTMLButtonElement>;
   handleRateChange: React.ChangeEventHandler<HTMLInputElement>;
   setTransportCostCurrency: Function;
@@ -17,6 +19,8 @@ interface TransportCostProps {
 export const TransportCost = ({
   setTransportCost,
   transportCost,
+  setOtherCosts,
+  otherCosts,
   handleNextStep,
   handleRateChange,
   setTransportCostCurrency,
@@ -34,12 +38,17 @@ export const TransportCost = ({
     setTransportCost(e.target.value.replace(/,/g, "."));
   };
 
+  const handleChangeOtherCosts = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setOtherCosts(e.target.value.replace(/,/g, "."));
+  };
+
   const handleNext = (e: React.MouseEvent<HTMLButtonElement>) => {
     if (transportCost === 0 || transportCost === "") {
       return;
     }
     handleNextStep(e);
   };
+
   return (
     <Flex flexDir="column" justifyContent="center">
       <Flex
@@ -98,6 +107,22 @@ export const TransportCost = ({
               <option value={CURRENCY.EUR}>EUR</option>
               <option value={CURRENCY.PLN}>PLN</option>
             </Select>
+          </Flex>
+          <Flex flexDir="row" justifyContent="space-between" mt="20px">
+            <Input
+              defaultValue={otherCosts == 0 ? "" : otherCosts}
+              width="150px"
+              placeholder={t("pages.orders.order.other-costs")}
+              type="number"
+              onInput={handleChangeOtherCosts}
+            />
+            <Input
+              width="80px"
+              value="PLN"
+              sx={{ _disabled: { opacity: 1 } }}
+              color="black"
+              disabled
+            />
           </Flex>
         </Box>
         <Flex justifyContent="flex-end">

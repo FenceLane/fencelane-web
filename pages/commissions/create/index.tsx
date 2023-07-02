@@ -1,20 +1,20 @@
+import { CommissionCreateWrapper } from "../../../components/Commissions/CommissionsWrapper/Commissions/CommissionCreate/CommissionCreateWrapper/CommissionCreateWrapper";
 import { Layout } from "../../../components/Layout/Layout";
 import { withServerSideAuth } from "../../../lib/server/middlewares/withServerSideAuth";
 import { withTranslationProps } from "../../../lib/server/middlewares/withTranslationProps";
 import { InferGetServerSidePropsType } from "next";
-import { OrderCreateWrapper } from "../../../components/Orders/OrderCreateWrapper/OrderCreateWrapper";
 
-const OrderCreatePage = ({
+const CommissionCreatePage = ({
   user,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   return (
     <Layout user={user}>
-      <OrderCreateWrapper />
+      <CommissionCreateWrapper />
     </Layout>
   );
 };
 
-export default OrderCreatePage;
+export default CommissionCreatePage;
 
 export const getServerSideProps = withTranslationProps(
   withServerSideAuth(async (ctx) => {
