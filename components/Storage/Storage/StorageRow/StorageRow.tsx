@@ -15,7 +15,7 @@ interface StorageRowProps {
 }
 
 export const StorageRow = ({ product }: StorageRowProps) => {
-  const m3 = product.volumePerPackage * product.stock;
+  const m3 = Number(product.volumePerPackage) * product.stock;
 
   const pieces = product.itemsPerPackage * product.stock;
 
