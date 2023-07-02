@@ -10,28 +10,36 @@ interface CommissionsProps {
   commissions: CommissionInfo[];
 }
 
+const enum FILTER {
+  ALL = "all",
+  ORDERS_ONLY = "orders-only",
+  NON_ORDERS_ONLY = "non-orders-only",
+}
+
 export const Commissions = ({ commissions }: CommissionsProps) => {
   const { t } = useContent();
 
-  const [orderFilter, setOrderFilter] = useState("all");
+  const [orderFilter, setOrderFilter] = useState(FILTER.ALL);
 
   return (
     <>
       <Text color="var(--dark)" fontSize="20px" fontWeight="500" m="10px">
-        Zlecenia
+        {t("main.commissions")}
       </Text>
       <Flex justifyContent="space-between" mb="20px">
         <Select
-          onChange={(e) => setOrderFilter(e.target.value)}
+          onChange={(e) => setOrderFilter(e.target.value as FILTER)}
           defaultValue="all"
           bg="white"
           width="auto"
         >
-          <option value="all">{t("pages.commissions.filters.all")}</option>
-          <option value="orders-only">
+          <option value={FILTER.ALL}>
+            {t("pages.commissions.filters.all")}
+          </option>
+          <option value={FILTER.ORDERS_ONLY}>
             {t("pages.commissions.filters.orders-only")}
           </option>
-          <option value="non-orders-only">
+          <option value={FILTER.NON_ORDERS_ONLY}>
             {t("pages.commissions.filters.non-orders-only")}
           </option>
         </Select>
@@ -50,9 +58,9 @@ export const Commissions = ({ commissions }: CommissionsProps) => {
       </Flex>
       {commissions.map((commission) => {
         if (
-          orderFilter === "all" ||
-          (orderFilter === "orders-only" && commission.orderId) ||
-          (orderFilter === "non-orders-only" && !commission.orderId)
+          orderFilter === FILTER.ALL ||
+          (orderFilter === FILTER.ORDERS_ONLY && commission.orderId) ||
+          (orderFilter === FILTER.NON_ORDERS_ONLY && !commission.orderId)
         ) {
           return (
             <CommissionsRow key={commission.id} commissionData={commission} />

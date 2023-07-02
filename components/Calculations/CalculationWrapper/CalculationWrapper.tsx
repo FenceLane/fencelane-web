@@ -52,7 +52,7 @@ export const CalculationWrapper = ({ orderId }: CalculationWrapperProps) => {
   if (isExpansesLoading || isLoadsLoading || isRateLoading)
     return (
       <Flex justifyContent="center" alignItems="center" height="100%">
-        <LoadingAnimation></LoadingAnimation>
+        <LoadingAnimation />
       </Flex>
     );
 

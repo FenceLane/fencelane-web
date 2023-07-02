@@ -15,6 +15,7 @@ import { usePostOrder } from "../../../../lib/api/hooks/orders";
 import { useContent } from "../../../../lib/hooks/useContent";
 import { mapAxiosErrorToLabel } from "../../../../lib/server/BackendError/BackendError";
 import { CURRENCY, ProductInfo } from "../../../../lib/types";
+import { sortProducts } from "../../../../lib/util/commissionsUtils";
 
 const initialNewProductsData = {
   productId: "",
@@ -215,25 +216,7 @@ export const OrderCreate = ({ clients, products }: OrderCreateProps) => {
           >
             {products &&
               products
-                .sort((a, b) => {
-                  if (a.category.name < b.category.name) {
-                    return -1;
-                  }
-                  if (a.category.name > b.category.name) {
-                    return 1;
-                  }
-                  if (a.dimensions < b.dimensions) {
-                    return -1;
-                  }
-                  if (a.dimensions > b.dimensions) {
-                    return 1;
-                  }
-                  if (a.variant > b.variant) {
-                    return -1;
-                  } else {
-                    return 1;
-                  }
-                })
+                .sort((a, b) => sortProducts(a, b))
                 .map((product) => (
                   <option
                     data-key={product.id}

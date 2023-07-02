@@ -94,18 +94,17 @@ export const CommissionsRow = ({ commissionData }: CommissionRowProps) => {
                   flexGrow="1"
                   width="10%"
                 >
-                  {t("main.order").slice(0, 5) +
-                    " " +
-                    commissionData.orderId.toString().padStart(4, "0")}
+                  {`${t("main.order").slice(0, 5)}  ${commissionData.orderId
+                    .toString()
+                    .padStart(4, "0")}`}
                 </Text>
                 <Text
                   className={styles["commission-text"]}
                   flexGrow="1"
                   width="10%"
                 >
-                  {t("main.load").slice(0, 5) +
-                    " " +
-                    commissionData.order.parentOrderId}
+                  {`${t("main.load").slice(0, 5)}  
+                    ${commissionData.order.parentOrderId}`}
                 </Text>
               </>
             ) : (
@@ -115,16 +114,16 @@ export const CommissionsRow = ({ commissionData }: CommissionRowProps) => {
                   flexGrow="1"
                   width="10%"
                 >
-                  {t("main.order") +
-                    " " +
-                    commissionData.orderId.toString().padStart(4, "0")}
+                  {`${t("main.order")}  ${commissionData.orderId
+                    .toString()
+                    .padStart(4, "0")}`}
                 </Text>
                 <Text
                   className={styles["commission-text"]}
                   flexGrow="1"
                   width="10%"
                 >
-                  {t("main.load") + " " + commissionData.order.parentOrderId}
+                  {`${t("main.load")}  ${commissionData.order.parentOrderId}`}
                 </Text>
               </>
             )

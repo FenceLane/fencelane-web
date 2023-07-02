@@ -45,8 +45,8 @@ export interface OrderProductInfo {
   productId: string;
   quantity: number;
   price: string;
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt: string;
+  updatedAt: string;
   currency: CURRENCY;
   product: {
     id: string;
@@ -56,8 +56,8 @@ export interface OrderProductInfo {
     volumePerPackage: string;
     categoryId: string;
     stock: number;
-    createdAt: Date;
-    updatedAt: Date;
+    createdAt: string;
+    updatedAt: string;
     category: {
       id: string;
       name: string;
@@ -121,8 +121,8 @@ export interface TransportInfo {
   price: string;
   currency: string;
   orderId: number;
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt: string;
+  updatedAt: string;
 }
 
 export interface ExpansesInfo {
@@ -184,8 +184,8 @@ export interface CommissionInfo {
     commissionId: number;
     productId: string;
     quantity: number;
-    createdAt: Date;
-    updatedAt: Date;
+    createdAt: string;
+    updatedAt: string;
     product: ProductInfo;
   }[];
   order: {
@@ -194,8 +194,8 @@ export interface CommissionInfo {
     date: Date;
     creatorId: string;
     profit: number | null;
-    createdAt: Date;
-    updatedAt: Date;
+    createdAt: string;
+    updatedAt: string;
     parentOrderId: string;
     commissionId: string;
   };
