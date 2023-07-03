@@ -73,9 +73,7 @@ export const ProductStockAddModal = ({
     <Modal isOpen={isStockAddOpen} onClose={handleProductStockAddModalClose}>
       <ModalOverlay />
       <ModalContent>
-        <ModalHeader>
-          {t("pages.storage.modals.commodity_modifying")}
-        </ModalHeader>
+        <ModalHeader>{t("pages.storage.modals.commodity_adding")}</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
           <Text fontWeight="600">{product.category.name}</Text>

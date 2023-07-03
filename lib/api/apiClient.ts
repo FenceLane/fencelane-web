@@ -154,7 +154,7 @@ const getOrders = async (options?: {
 
 const getOrdersByParentOrderId = async (options?: {
   authCookie: string;
-}): Promise<OrderInfo[]> => {
+}): Promise<{ [ParentOrderId: string]: OrderInfo[] }> => {
   const {
     data: { data },
   } = await axiosInstance.get(apiPath(`orders?groupBy=parentOrderId`), {
