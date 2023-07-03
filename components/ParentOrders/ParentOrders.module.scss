@@ -1,0 +1,20 @@
+.wrapper {
+  max-width: 1920px;
+}
+.orders-table td,
+.orders-table th {
+  padding: 10px;
+}
+@media only screen and (min-width: 768px) {
+  .orders-table td,
+  .orders-table th {
+    padding: 20px 20px;
+  }
+}
+
+@media only screen and (min-width: 1024px) {
+  .orders-table td,
+  .orders-table th {
+    padding: 30px 40px;
+  }
+}

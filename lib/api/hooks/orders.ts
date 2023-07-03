@@ -13,6 +13,15 @@ export const useGetOrders = () => {
   return mutation;
 };
 
+export const useGetOrdersByParentOrderId = () => {
+  const mutation = useQuery({
+    queryFn: () => apiClient.orders.getOrdersByParentOrderId(),
+    queryKey: [QUERY_KEY.ORDERS, QUERY_KEY.ORDERS_BY_PARENT_ORDER_ID],
+  });
+
+  return mutation;
+};
+
 export const useGetOrder = (id: number) => {
   const mutation = useQuery({
     queryFn: () => apiClient.orders.getOrder(id),

@@ -198,7 +198,10 @@
         "modify": "Modyfikuj",
         "modify_commodity": "Modyfikuj towar",
         "delete": "Usuń",
-        "cancel": "Anuluj"
+        "cancel": "Anuluj",
+        "variant-transfer": "Wariant",
+        "commodity-add": "Dodawanie",
+        "commodity-management": "Zarządzanie"
       }
     },
     "orders": {
