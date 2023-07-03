@@ -147,7 +147,7 @@ export default withApiMethods({
   ),
 
   GET: withApiAuth(async (req, res) => {
-    const { parentOrderId } = req.query;
+    const { parentOrderId, groupBy } = req.query;
 
     const orders = await prismaClient.order.findMany({
       include: {
@@ -159,14 +159,35 @@ export default withApiMethods({
       where: typeof parentOrderId === "string" ? { parentOrderId } : undefined,
     });
 
-    return res.status(BackendResponseStatusCode.SUCCESS).send({
-      data: orders.map((order) => ({
-        ...order,
-        products: order.products.map(({ id, ...product }) => ({
-          ...product,
-          productOrderId: id,
-        })),
+    const returnData = orders.map((order) => ({
+      ...order,
+      products: order.products.map(({ id, ...product }) => ({
+        ...product,
+        productOrderId: id,
       })),
+    }));
+
+    if (groupBy === "parentOrderId") {
+      const groupedOrders = returnData.reduce<
+        Record<string, typeof returnData>
+      >((acc, order) => {
+        if (order.parentOrderId) {
+          acc[order.parentOrderId] = acc[order.parentOrderId]
+            ? [...acc[order.parentOrderId], order]
+            : [order];
+        } else {
+          acc.other = acc.other ? [...acc.other, order] : [order];
+        }
+        return acc;
+      }, {});
+
+      return res.status(BackendResponseStatusCode.SUCCESS).send({
+        data: groupedOrders,
+      });
+    }
+
+    return res.status(BackendResponseStatusCode.SUCCESS).send({
+      data: returnData,
     });
   }),
 });
