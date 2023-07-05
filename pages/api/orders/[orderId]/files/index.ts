@@ -28,7 +28,7 @@ export default withApiMethods({
 
       try {
         const uploadedFiles = await Promise.all(
-          req.formData.files.map(uploadFile)
+          req.formData.files.map((file) => uploadFile(file))
         );
 
         await prismaClient.orderFile.createMany({

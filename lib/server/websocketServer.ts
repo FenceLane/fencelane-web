@@ -42,7 +42,6 @@ export const createWebSocketServer = (server: HttpsServer) => {
 
     ws.onmessage = (event) => {
       webSocketServer.clients.forEach((client) => {
-        console.log({ ws, client }, ws === client);
         if (client !== ws && client.readyState === WebSocket.OPEN) {
           client.send(event.data);
         }

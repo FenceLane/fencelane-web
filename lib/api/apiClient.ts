@@ -252,6 +252,16 @@ const updateOrderProducts = async ({
   return axiosInstance.patch(apiPath(`orders/${id}/products`), data);
 };
 
+const postOrderFile = async ({ id, data }: { id: number; data: FormData }) => {
+  return axiosInstance.post(apiPath(`orders/${id}/files`), data, {
+    headers: { "Content-Type": "multipart/form-data" },
+  });
+};
+
+const deleteOrderFile = async ({ id, key }: { id: number; key: string }) => {
+  return axiosInstance.delete(apiPath(`orders/${id}/files/${key}`));
+};
+
 const postClient = async ({ data }: ClientPostInfo) => {
   return axiosInstance.post(apiPath(`clients`), data);
 };
@@ -365,6 +375,8 @@ export const apiClient = {
     postClient,
     postDestination,
     getOrdersByParentOrderId,
+    postOrderFile,
+    deleteOrderFile,
   },
   calcs: {
     getEurRate,
