@@ -44,6 +44,7 @@ import { constructOrderDate } from "../../../../lib/util/dateUtils";
 import { InvalidValueModalText } from "./InvalidValueModalText/InvalidValueModalText";
 import { OrderFileUploadButton } from "./OrderFileActionButtons/OrderFileUploadButton";
 import { OrderFileActionButtons } from "./OrderFileActionButtons/OrderFileActionButtons";
+import { OrderDownloadAllFilesButton } from "./OrderFileActionButtons/OrderDownloadAllFilesButton";
 
 interface OrderDetailsProps {
   orderData: OrderInfo;
@@ -575,9 +576,10 @@ export const OrderDetails = ({
         </Flex>
         <Flex justifyContent="flex-end" m="20px " gap="20px">
           <OrderFileUploadButton orderId={orderData.id} />
-          <Button bg="var(--button-green)" color="white" fontWeight="400">
-            {t("pages.orders.order.download-all")}
-          </Button>
+          <OrderDownloadAllFilesButton
+            orderId={orderData.id}
+            files={orderData.files}
+          />
         </Flex>
         <ChangeStatusModal
           id={orderData.id}

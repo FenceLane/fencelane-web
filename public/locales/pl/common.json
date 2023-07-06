@@ -225,6 +225,7 @@
         "download": "Pobierz",
         "actions": "Akcje",
         "download-all": "Pobierz wszystkie",
+        "files-download-error": "Wystąpił błąd podczas pobierania plików!",
         "status-change": "Zmiana statusu",
         "profit": "Zysk",
         "bad-quantity": {
