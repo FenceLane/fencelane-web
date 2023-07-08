@@ -1,44 +1,50 @@
-import AWS from "aws-sdk";
 import { File } from "formidable";
 import fs from "fs";
 
 const initAWSBucket = () => {
-  const client = new AWS.S3({
-    accessKeyId: process.env.AWS_S3_ACCESS_KEY_ID,
-    secretAccessKey: process.env.AWS_S3_SECRET_ACCESS_KEY,
-  });
-
+  const accessKeyId = process.env.AWS_S3_ACCESS_KEY_ID;
+  const secretAccessKey = process.env.AWS_S3_SECRET_ACCESS_KEY;
   const bucketName = process.env.AWS_S3_BUCKET_NAME;
 
-  if (!bucketName) {
-    throw Error("AWS_S3_BUCKET_NAME env variable was not provided.");
+  if (!accessKeyId || !secretAccessKey || !bucketName) {
+    throw new Error("AWS config env variables not provided.");
   }
+  const client = new S3Client({
+    credentials: {
+      accessKeyId,
+      secretAccessKey,
+    },
+  });
 
   return { client, bucketName };
 };
 
-const { client: s3, bucketName } = initAWSBucket();
+const { client: s3Client, bucketName } = initAWSBucket();
+
+import {
+  DeleteObjectCommand,
+  PutObjectCommand,
+  S3Client,
+} from "@aws-sdk/client-s3";
 
 export const uploadFile = async (file: File) => {
   const filePath = file.filepath;
   const fileBlob = fs.readFileSync(filePath);
 
-  const uploadedImage = await s3
-    .upload({
-      Bucket: bucketName,
-      Key: file.originalFilename || file.newFilename,
-      Body: fileBlob,
-    })
-    .promise();
+  const command = new PutObjectCommand({
+    Bucket: bucketName,
+    Key: file.originalFilename || file.newFilename,
+    Body: fileBlob,
+  });
 
-  return uploadedImage;
+  return s3Client.send(command);
 };
 
 export const deleteFile = async (key: string) => {
-  return s3
-    .deleteObject({
-      Bucket: bucketName,
-      Key: key,
-    })
-    .promise();
+  const command = new DeleteObjectCommand({
+    Bucket: bucketName,
+    Key: key,
+  });
+
+  return s3Client.send(command);
 };
