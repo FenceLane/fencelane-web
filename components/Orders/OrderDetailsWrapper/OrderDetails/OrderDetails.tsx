@@ -42,6 +42,9 @@ import {
 import { mapAxiosErrorToLabel } from "../../../../lib/server/BackendError/BackendError";
 import { constructOrderDate } from "../../../../lib/util/dateUtils";
 import { InvalidValueModalText } from "./InvalidValueModalText/InvalidValueModalText";
+import { OrderFileUploadButton } from "./OrderFileActionButtons/OrderFileUploadButton";
+import { OrderFileActionButtons } from "./OrderFileActionButtons/OrderFileActionButtons";
+import { OrderDownloadAllFilesButton } from "./OrderFileActionButtons/OrderDownloadAllFilesButton";
 
 interface OrderDetailsProps {
   orderData: OrderInfo;
@@ -553,18 +556,30 @@ export const OrderDetails = ({
             <Thead>
               <Tr>
                 <Th>{t("pages.orders.order.file")}</Th>
-                <Th>{t("pages.orders.order.download")}</Th>
+                <Th>{t("pages.orders.order.actions")}</Th>
               </Tr>
             </Thead>
+            {orderData.files.map((file) => (
+              <Tbody key={file.key}>
+                <Tr>
+                  <Td>{file.key}</Td>
+                  <Td>
+                    <OrderFileActionButtons
+                      file={file}
+                      orderId={orderData.id}
+                    />
+                  </Td>
+                </Tr>
+              </Tbody>
+            ))}
           </Table>
         </Flex>
         <Flex justifyContent="flex-end" m="20px " gap="20px">
-          <Button color="white" bg="var(--button-dark-orange)" fontWeight="400">
-            {t("buttons.add")}
-          </Button>
-          <Button bg="var(--button-green)" color="white" fontWeight="400">
-            {t("pages.orders.order.download-all")}
-          </Button>
+          <OrderFileUploadButton orderId={orderData.id} />
+          <OrderDownloadAllFilesButton
+            orderId={orderData.id}
+            files={orderData.files}
+          />
         </Flex>
         <ChangeStatusModal
           id={orderData.id}

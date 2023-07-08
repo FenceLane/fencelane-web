@@ -154,6 +154,7 @@ export default withApiMethods({
         destination: { include: { client: true } },
         statusHistory: { include: { creator: true } },
         products: { include: { product: { include: { category: true } } } },
+        files: true,
       },
       orderBy: { createdAt: "desc" },
       where: typeof parentOrderId === "string" ? { parentOrderId } : undefined,

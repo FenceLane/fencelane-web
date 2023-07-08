@@ -25,6 +25,7 @@ export default withApiMethods({
         destination: { include: { client: true } },
         products: { include: { product: { include: { category: true } } } },
         statusHistory: { include: { creator: true } },
+        files: true,
       },
     });
 

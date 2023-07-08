@@ -66,6 +66,11 @@ export interface OrderProductInfo {
   };
 }
 
+export interface FileInfo {
+  key: string;
+  url: string;
+}
+
 export interface OrderInfo {
   id: number;
   destinationId: string;
@@ -74,7 +79,7 @@ export interface OrderInfo {
   profit: number | null;
   createdAt: Date;
   updatedAt: Date;
-  files: string[];
+  files: FileInfo[];
   parentOrderId: string;
   destination: {
     id: string;

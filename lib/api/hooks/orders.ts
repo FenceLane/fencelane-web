@@ -138,3 +138,38 @@ export const usePostDestination = () => {
 
   return mutation;
 };
+
+export const usePostOrderFile = (orderId: number) => {
+  const mutation = useMutation({
+    mutationFn: (data: FormData) =>
+      apiClient.orders.postOrderFile({ id: orderId, data }),
+    onSuccess: () => {
+      return Promise.all([
+        invalidateQueriesWithWebsocket({
+          queryKey: [QUERY_KEY.ORDER, orderId],
+        }),
+        invalidateQueriesWithWebsocket({ queryKey: [QUERY_KEY.ORDERS] }),
+        invalidateQueriesWithWebsocket({ queryKey: [QUERY_KEY.COMMISSIONS] }),
+      ]);
+    },
+  });
+
+  return mutation;
+};
+
+export const useDeleteOrderFile = (orderId: number, key: string) => {
+  const mutation = useMutation({
+    mutationFn: () => apiClient.orders.deleteOrderFile({ id: orderId, key }),
+    onSuccess: () => {
+      return Promise.all([
+        invalidateQueriesWithWebsocket({
+          queryKey: [QUERY_KEY.ORDER, orderId],
+        }),
+        invalidateQueriesWithWebsocket({ queryKey: [QUERY_KEY.ORDERS] }),
+        invalidateQueriesWithWebsocket({ queryKey: [QUERY_KEY.COMMISSIONS] }),
+      ]);
+    },
+  });
+
+  return mutation;
+};
