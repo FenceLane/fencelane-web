@@ -1,9 +1,9 @@
 import { Button } from "@chakra-ui/react";
-import { downloadAllFiles } from "../../../../../lib/util/fileUtils";
 import { FileInfo } from "../../../../../lib/types";
 import { toastError } from "../../../../../lib/util/toasts";
 import { useContent } from "../../../../../lib/hooks/useContent";
 import { useState } from "react";
+import { downloadAllFiles } from "../../../../../lib/util/fileUtils";
 
 interface OrderDownloadAllFilesButtonProps {
   orderId: number;

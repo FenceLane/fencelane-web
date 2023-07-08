@@ -32,22 +32,17 @@ export default withApiMethods({
         );
 
         await prismaClient.orderFile.createMany({
-          data: uploadedFiles.map((file) => ({
+          data: uploadedFiles.map(({ key, url }) => ({
             orderId: Number(orderId),
-            key: file.Key,
-            url: file.Location,
+            key,
+            url,
           })),
           skipDuplicates: true, //if file already exists (based on key field), skip it
         });
 
-        const responseData = uploadedFiles.map((file) => ({
-          key: file.Key,
-          url: file.Location,
-        }));
-
         return res
           .status(BackendResponseStatusCode.SUCCESS)
-          .send({ data: responseData });
+          .send({ data: uploadedFiles });
       } catch (error) {
         if (error instanceof PrismaClientKnownRequestError) {
           if (error.code === PrismaErrorCode.FOREIGN_KEY_NOT_FOUND) {

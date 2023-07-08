@@ -1,7 +1,7 @@
 import { Button } from "@chakra-ui/react";
 import { FileInfo } from "../../../../../lib/types";
-import { downloadFile } from "../../../../../lib/util/fileUtils";
 import { useContent } from "../../../../../lib/hooks/useContent";
+import { downloadFile } from "../../../../../lib/util/fileUtils";
 
 interface FileDownloadButtonProps {
   file: FileInfo;
