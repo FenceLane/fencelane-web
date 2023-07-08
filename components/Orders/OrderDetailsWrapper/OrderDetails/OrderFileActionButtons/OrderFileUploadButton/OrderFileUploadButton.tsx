@@ -1,13 +1,8 @@
-import {
-  FormLabel,
-  Input,
-  VisuallyHidden,
-  Spinner,
-  Text,
-} from "@chakra-ui/react";
-import { useContent } from "../../../../../lib/hooks/useContent";
-import { usePostOrderFile } from "../../../../../lib/api/hooks/orders";
-import { mapAxiosErrorToLabel } from "../../../../../lib/server/BackendError/BackendError";
+import { FormLabel, Input, Spinner, Text } from "@chakra-ui/react";
+import { useContent } from "../../../../../../lib/hooks/useContent";
+import { usePostOrderFile } from "../../../../../../lib/api/hooks/orders";
+import { mapAxiosErrorToLabel } from "../../../../../../lib/server/BackendError/BackendError";
+import styles from "./OrderFileUploadButton.module.scss";
 
 interface FileUploadButtonProps {
   orderId: number;
@@ -62,14 +57,14 @@ export const OrderFileUploadButton = ({ orderId }: FileUploadButtonProps) => {
         justifyContent="center"
       >
         {isLoading ? <Spinner /> : <span>{t("buttons.add")}</span>}
-        <VisuallyHidden>
+        <span className={styles.visuallyHidden}>
           <Input
             disabled={isLoading}
             type="file"
             multiple={true}
             onChange={handleFileInputChange}
           />
-        </VisuallyHidden>
+        </span>
       </FormLabel>
     </>
   );

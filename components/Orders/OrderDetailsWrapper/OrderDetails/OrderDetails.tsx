@@ -42,7 +42,7 @@ import {
 import { mapAxiosErrorToLabel } from "../../../../lib/server/BackendError/BackendError";
 import { constructOrderDate } from "../../../../lib/util/dateUtils";
 import { InvalidValueModalText } from "./InvalidValueModalText/InvalidValueModalText";
-import { OrderFileUploadButton } from "./OrderFileActionButtons/OrderFileUploadButton";
+import { OrderFileUploadButton } from "./OrderFileActionButtons/OrderFileUploadButton/OrderFileUploadButton";
 import { OrderFileActionButtons } from "./OrderFileActionButtons/OrderFileActionButtons";
 import { OrderDownloadAllFilesButton } from "./OrderFileActionButtons/OrderDownloadAllFilesButton";
 
