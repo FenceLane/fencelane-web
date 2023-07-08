@@ -1,7 +1,6 @@
 import React, { useRef } from "react";
-import { Text, Tr, Td, useDisclosure, IconButton } from "@chakra-ui/react";
+import { Text, Tr, Td, useDisclosure, Button } from "@chakra-ui/react";
 import styles from "./StorageRow.module.scss";
-import { AddIcon, EditIcon, StarIcon } from "@chakra-ui/icons";
 import { ProductInfo } from "../../../../lib/types";
 import { useContent } from "../../../../lib/hooks/useContent";
 import { useIsMobile } from "../../../../lib/hooks/useIsMobile";
@@ -71,36 +70,40 @@ export const StorageRow = ({ product }: StorageRowProps) => {
           </Text>
         </Td>
         {!isMobile && <Td>{product.dimensions}</Td>}
-        <Td>{String(product.stock)}</Td>
+        <Td>{String(product.stock < 0 ? 0 : product.stock)}</Td>
         <Td>{t(`pages.storage.variants.${String(product.variant)}`)}</Td>
         <Td>{String(product.itemsPerPackage)}</Td>
-        <Td>{String(m3.toFixed(3).replace(/\.000$/, ""))}</Td>
-        <Td>{String(pieces)}</Td>
+        <Td>{String(m3 < 0 ? 0 : m3.toFixed(3).replace(/\.000$/, ""))}</Td>
+        <Td>{String(pieces < 0 ? 0 : pieces)}</Td>
         <Td>
-          <IconButton
-            icon={<EditIcon w="32px" h="32px" />}
+          <Button
             aria-label="Edit product"
-            bg="white"
             onClick={onEditOpen}
-            w="32px"
-            color={product.category.color}
-          ></IconButton>
-          <IconButton
-            icon={<AddIcon w="28px" h="28px" />}
+            colorScheme={"red"}
+            variant="outline"
+            mr="10px"
+          >
+            {t("pages.storage.buttons.commodity-management")}
+          </Button>
+          <Button
             aria-label="Add to product"
-            bg="white"
             onClick={onStockAddOpen}
-            w="32px"
             color={product.category.color}
-          ></IconButton>
-          <IconButton
-            icon={<StarIcon w="28px" h="28px" />}
+            variant="outline"
+            borderColor={product.category.color}
+            mr="10px"
+          >
+            {t("pages.storage.buttons.commodity-add")}
+          </Button>
+          <Button
             aria-label="Variant transfer"
-            bg="white"
             onClick={onVariantTransferOpen}
-            w="32px"
-            color={product.category.color}
-          ></IconButton>
+            color={"white"}
+            backgroundColor={product.category.color}
+            borderColor={product.category.color}
+          >
+            {t("pages.storage.buttons.variant-transfer")}
+          </Button>
         </Td>
       </Tr>
       <ProductEditModal

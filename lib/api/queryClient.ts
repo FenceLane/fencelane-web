@@ -32,6 +32,7 @@ export const QUERY_KEY = {
   PRODUCTS_CATEGORIES: "products/categories",
   ORDERS: "orders",
   ORDER: "order",
+  ORDERS_BY_PARENT_ORDER_ID: "orders/parentOrderId",
   CLIENTS: "clients",
   DESTINATIONS: "destinations",
   STATUS: "status",
