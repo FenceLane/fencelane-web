@@ -33,8 +33,6 @@ export const OrderFileActionButtons = ({
       <OrderFileDeleteButton
         onDeleteClick={handleFileDelete}
         isLoading={isLoading}
-        file={file}
-        orderId={orderId}
       />
       {!!error && (
         <Text fontSize="sm" mt={4} color="red">

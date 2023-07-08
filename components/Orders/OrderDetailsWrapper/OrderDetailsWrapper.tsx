@@ -2,7 +2,10 @@ import React from "react";
 import { Flex } from "@chakra-ui/react";
 import { useGetOrder } from "../../../lib/api/hooks/orders";
 import { useContent } from "../../../lib/hooks/useContent";
-import { mapAxiosErrorToLabel } from "../../../lib/server/BackendError/BackendError";
+import {
+  BackendErrorLabel,
+  mapAxiosErrorToLabel,
+} from "../../../lib/server/BackendError/BackendError";
 import { LoadingAnimation } from "../../LoadingAnimation/LoadingAnimation";
 import { OrderDetails } from "./OrderDetails/OrderDetails";
 import {
@@ -48,7 +51,7 @@ export const OrderDetailsWrapper = ({ id }: OrderDetailsWrapperProps) => {
   if (
     ((isTransportCostError &&
       mapAxiosErrorToLabel(transportCostError) ===
-        "travel-cost-does-not-exist") ||
+        BackendErrorLabel.TRAVEL_COST_DOES_NOT_EXIST) ||
       Object.keys(expanses).length === 0) &&
     !isOrderError
   ) {

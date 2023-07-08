@@ -1,17 +1,12 @@
 import { Button } from "@chakra-ui/react";
-import { FileInfo } from "../../../../../lib/types";
 import { useContent } from "../../../../../lib/hooks/useContent";
 
 interface FileDeleteButtonProps {
-  orderId: number;
-  file: FileInfo;
   onDeleteClick: (e: React.MouseEvent<HTMLButtonElement>) => void;
   isLoading: boolean;
 }
 
 export const OrderFileDeleteButton = ({
-  orderId,
-  file,
   onDeleteClick,
   isLoading,
 }: FileDeleteButtonProps) => {
@@ -20,6 +15,7 @@ export const OrderFileDeleteButton = ({
   return (
     <>
       <Button
+        mb="10px"
         onClick={onDeleteClick}
         mx={2}
         bg="var(--button-orange)"

@@ -15,6 +15,7 @@ export const OrderFileDownloadButton = ({ file }: FileDownloadButtonProps) => {
       color="white"
       fontWeight="400"
       mx={2}
+      mb="10px"
       onClick={(e) => {
         e.preventDefault();
         downloadFile(file.url, file.key);
