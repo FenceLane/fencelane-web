@@ -130,12 +130,12 @@ export const ActionsButtons = ({
 
       {!isMobile && (
         <>
-          <Button colorScheme="blue" variant="outline">
+          <Button colorScheme="blue" variant="outline" onClick={onOpen}>
             {t("buttons.complete_part")}
           </Button>
           <Button
             colorScheme="blue"
-            onClick={onOpen}
+            onClick={handleCompleteProduct}
             isLoading={isUpdateCommissionLoading}
           >
             {t("buttons.complete")}
