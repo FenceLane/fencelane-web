@@ -3,6 +3,7 @@ import { withServerSideAuth } from "../../../lib/server/middlewares/withServerSi
 import { withTranslationProps } from "../../../lib/server/middlewares/withTranslationProps";
 import { InferGetServerSidePropsType } from "next";
 import { ClientCreate } from "../../../components/Orders/OrderCreateWrapper/OrderCreate/ClientCreate/ClientCreate";
+import { USER_ROLE } from "../../../lib/types";
 
 const CreateClientPage = ({
   user,
@@ -17,7 +18,7 @@ const CreateClientPage = ({
 export default CreateClientPage;
 
 export const getServerSideProps = withTranslationProps(
-  withServerSideAuth(async (ctx) => {
+  withServerSideAuth([USER_ROLE.ADMIN])(async (ctx) => {
     const { user } = ctx.session;
 
     return {

@@ -3,6 +3,7 @@ import { withServerSideAuth } from "../../lib/server/middlewares/withServerSideA
 import { withTranslationProps } from "../../lib/server/middlewares/withTranslationProps";
 import { InferGetServerSidePropsType } from "next";
 import { EmployeesWrapper } from "../../components/Employees/EmployeesWrapper/EmployeesWrapper";
+import { USER_ROLE } from "../../lib/types";
 
 const EmployeesPage = ({
   user,
@@ -17,7 +18,7 @@ const EmployeesPage = ({
 export default EmployeesPage;
 
 export const getServerSideProps = withTranslationProps(
-  withServerSideAuth(async (ctx) => {
+  withServerSideAuth([USER_ROLE.ADMIN])(async (ctx) => {
     const { user } = ctx.session;
 
     return {

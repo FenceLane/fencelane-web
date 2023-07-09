@@ -4,6 +4,7 @@ import { withTranslationProps } from "../../../lib/server/middlewares/withTransl
 import { InferGetServerSidePropsType } from "next";
 import { useRouter } from "next/router";
 import { CalculationWrapper } from "../../../components/Calculations/CalculationWrapper/CalculationWrapper";
+import { USER_ROLE } from "../../../lib/types";
 
 const OrderDetailsPage = ({
   user,
@@ -23,7 +24,7 @@ const OrderDetailsPage = ({
 export default OrderDetailsPage;
 
 export const getServerSideProps = withTranslationProps(
-  withServerSideAuth(async (ctx) => {
+  withServerSideAuth([USER_ROLE.ADMIN])(async (ctx) => {
     const { user } = ctx.session;
 
     return {

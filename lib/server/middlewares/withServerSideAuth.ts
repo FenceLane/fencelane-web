@@ -1,7 +1,7 @@
 import { Session } from "@prisma/client";
 import { GetServerSidePropsContext, GetServerSidePropsResult } from "next";
 import { prismaClient } from "../../prisma/prismaClient";
-import { UserInfo } from "../../types";
+import { USER_ROLE, UserInfo } from "../../types";
 import {
   getDeleteSessionCookie,
   getSessionCookie,
@@ -17,7 +17,13 @@ const loginPageRedirect = {
   destination: "/login",
 };
 
+const defaultRedirect = {
+  permanent: false,
+  destination: "/",
+};
+
 export const withServerSideAuth =
+  (allowedRoles?: USER_ROLE[]) =>
   <C extends GetServerSidePropsContext, P>(
     handler: (
       ctx: C & AuthContextExtend
@@ -78,6 +84,12 @@ export const withServerSideAuth =
       }
 
       (ctx as C & AuthContextExtend).session = session;
+
+      if (allowedRoles && !allowedRoles.includes(session.user.role)) {
+        return {
+          redirect: defaultRedirect,
+        };
+      }
 
       return await handler(ctx as C & AuthContextExtend);
     } catch {

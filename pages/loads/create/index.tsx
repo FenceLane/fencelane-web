@@ -3,6 +3,7 @@ import { withServerSideAuth } from "../../../lib/server/middlewares/withServerSi
 import { withTranslationProps } from "../../../lib/server/middlewares/withTranslationProps";
 import { InferGetServerSidePropsType } from "next";
 import { OrderCreateWrapper } from "../../../components/Orders/OrderCreateWrapper/OrderCreateWrapper";
+import { USER_ROLE } from "../../../lib/types";
 
 const LoadCreatePage = ({
   user,
@@ -17,7 +18,7 @@ const LoadCreatePage = ({
 export default LoadCreatePage;
 
 export const getServerSideProps = withTranslationProps(
-  withServerSideAuth(async (ctx) => {
+  withServerSideAuth([USER_ROLE.ADMIN])(async (ctx) => {
     const { user } = ctx.session;
 
     return {

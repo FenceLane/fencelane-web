@@ -4,6 +4,7 @@ import { withTranslationProps } from "../../lib/server/middlewares/withTranslati
 import { useContent } from "../../lib/hooks/useContent";
 import { MyProfile } from "../../components/MyProfile/MyProfile";
 import { InferGetServerSidePropsType } from "next";
+import { USER_ROLE } from "../../lib/types";
 
 const MyProfilePage = ({
   user,
@@ -20,7 +21,7 @@ const MyProfilePage = ({
 export default MyProfilePage;
 
 export const getServerSideProps = withTranslationProps(
-  withServerSideAuth(async (ctx) => {
+  withServerSideAuth([USER_ROLE.ADMIN])(async (ctx) => {
     const { user, ...session } = ctx.session;
     const { id, createdAt, updatedAt, expiresAt } = session;
     return {

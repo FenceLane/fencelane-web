@@ -4,6 +4,7 @@ import { withTranslationProps } from "../../lib/server/middlewares/withTranslati
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import { InferGetServerSidePropsType } from "next";
 import { EventsWrapper } from "../../components/Events/EventsWrapper/EventsWrapper";
+import { USER_ROLE } from "../../lib/types";
 
 const StoragePage = ({
   user,
@@ -18,7 +19,7 @@ const StoragePage = ({
 export default StoragePage;
 
 export const getServerSideProps = withTranslationProps(
-  withServerSideAuth(async (ctx) => {
+  withServerSideAuth([USER_ROLE.ADMIN])(async (ctx) => {
     const { user } = ctx.session;
 
     return {

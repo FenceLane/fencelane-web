@@ -72,7 +72,7 @@ export default function Home({
 }
 
 export const getServerSideProps = withTranslationProps(
-  withServerSideAuth(async (ctx) => {
+  withServerSideAuth()(async (ctx) => {
     return {
       props: { user: ctx.session.user },
     };

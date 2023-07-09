@@ -3,6 +3,7 @@ import { withServerSideAuth } from "../../lib/server/middlewares/withServerSideA
 import { withTranslationProps } from "../../lib/server/middlewares/withTranslationProps";
 import { InferGetServerSidePropsType } from "next";
 import { StorageWrapper } from "../../components/Storage/StorageWrapper/StorageWrapper";
+import { USER_ROLE } from "../../lib/types";
 
 const StoragePage = ({
   user,
@@ -17,7 +18,7 @@ const StoragePage = ({
 export default StoragePage;
 
 export const getServerSideProps = withTranslationProps(
-  withServerSideAuth(async (ctx) => {
+  withServerSideAuth([USER_ROLE.ADMIN])(async (ctx) => {
     const { user } = ctx.session;
 
     return {
