@@ -65,7 +65,7 @@ export const Nav = ({
               ))}
             </Box>
             <Box>
-              <Link
+              {/* <Link
                 as={NextLink}
                 href=""
                 _hover={{
@@ -86,7 +86,7 @@ export const Nav = ({
                     {t(`layout.sidebar.menu.settings.label`)}
                   </Text>
                 </Box>
-              </Link>
+              </Link> */}
               <Link
                 as={NextLink}
                 href=""

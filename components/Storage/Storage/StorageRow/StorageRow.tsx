@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React from "react";
 import { Text, Tr, Td, useDisclosure, Button } from "@chakra-ui/react";
 import styles from "./StorageRow.module.scss";
 import { ProductInfo } from "../../../../lib/types";
@@ -8,6 +8,8 @@ import { ProductEditModal } from "./ProductEditModal/ProductEditModal";
 import { ProductDeleteModal } from "./ProductDeleteModal/ProductDeleteModal";
 import { ProductStockAddModal } from "./ProductStockAddModal/ProductStockAddModal";
 import { ProductVariantTransferModal } from "./ProductVariantTransferModal/ProductVariantTransferModal";
+import { userFeatures } from "../../../../lib/util/userRoles";
+import { useUser } from "../../../../lib/hooks/UserContext";
 
 interface StorageRowProps {
   product: ProductInfo;
@@ -22,7 +24,7 @@ export const StorageRow = ({ product }: StorageRowProps) => {
 
   const isMobile = useIsMobile();
 
-  const ref = useRef<HTMLDivElement | null>(null);
+  const { user } = useUser();
 
   const {
     isOpen: isDeleteOpen,
@@ -76,15 +78,17 @@ export const StorageRow = ({ product }: StorageRowProps) => {
         <Td>{String(m3 < 0 ? 0 : m3.toFixed(3).replace(/\.000$/, ""))}</Td>
         <Td>{String(pieces < 0 ? 0 : pieces)}</Td>
         <Td>
-          <Button
-            aria-label="Edit product"
-            onClick={onEditOpen}
-            colorScheme={"red"}
-            variant="outline"
-            mr="10px"
-          >
-            {t("pages.storage.buttons.commodity-management")}
-          </Button>
+          {userFeatures.storage.isManageProductButtonAllowed(user.role) && (
+            <Button
+              aria-label="Edit product"
+              onClick={onEditOpen}
+              colorScheme={"red"}
+              variant="outline"
+              mr="10px"
+            >
+              {t("pages.storage.buttons.commodity-management")}
+            </Button>
+          )}
           <Button
             aria-label="Add to product"
             onClick={onStockAddOpen}

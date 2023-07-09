@@ -9,6 +9,7 @@ import { LoadingProvider } from "../lib/hooks/loadingContext";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { UserInfo } from "../lib/types";
 import { useReactQueryWebsocketSocketSubscription } from "../lib/hooks/useReactQuerySubscription";
+import { UserProvider } from "../lib/hooks/UserContext";
 
 const theme = extendTheme({
   fonts: {
@@ -25,10 +26,12 @@ function App({ Component, pageProps }: AppProps<{ user?: UserInfo }>) {
     <QueryClientProvider client={queryClient}>
       <ReactQueryDevtools initialIsOpen={false} />
       <ChakraProvider theme={theme}>
-        <LoadingProvider>
-          <ToastContainer position="bottom-right" />
-          <Component {...pageProps} />
-        </LoadingProvider>
+        <UserProvider>
+          <LoadingProvider>
+            <ToastContainer position="bottom-right" />
+            <Component {...pageProps} />
+          </LoadingProvider>
+        </UserProvider>
       </ChakraProvider>
     </QueryClientProvider>
   );

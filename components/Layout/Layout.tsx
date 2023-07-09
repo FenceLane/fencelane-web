@@ -1,6 +1,6 @@
 import { Box, Flex } from "@chakra-ui/react";
 import Head from "next/head";
-import React, { ReactNode, useState } from "react";
+import React, { ReactNode, useEffect, useState } from "react";
 import { useContent } from "../../lib/hooks/useContent";
 import "react-toastify/dist/ReactToastify.css";
 import { UserInfo } from "../../lib/types";
@@ -10,6 +10,7 @@ import { Header } from "../Header/Header";
 import { Nav } from "../Nav/Nav";
 import { Footer } from "../Footer/Footer";
 import ReactDiv100 from "react-div-100vh";
+import { useUser } from "../../lib/hooks/UserContext";
 
 export interface LayoutProps {
   children: ReactNode;
@@ -56,12 +57,19 @@ const menuItems = [
 export const Layout = ({
   children,
   title,
-  user,
+  user: initialUser,
   hideSidebar = false,
 }: LayoutProps) => {
   const { t } = useContent("general");
   const [isMenuActive, setMenuActive] = useState(false);
   const isMobile = useIsMobile();
+  const { setUser } = useUser();
+
+  useEffect(() => {
+    if (initialUser) {
+      setUser(initialUser);
+    }
+  }, [initialUser, setUser]);
 
   return (
     <>
@@ -73,7 +81,7 @@ export const Layout = ({
           {!hideSidebar && (
             <Header
               isMobile={isMobile}
-              user={user}
+              user={initialUser}
               isMenuActive={isMenuActive}
               setMenuActive={setMenuActive}
             ></Header>
@@ -89,13 +97,13 @@ export const Layout = ({
             <Box
               color="black"
               className={styles.content}
-              pl={user && !isMobile ? 220 : 2.5}
+              pl={initialUser && !isMobile ? 220 : 2.5}
               bg={hideSidebar ? "white" : "var(--light-content)"}
             >
               {children}
             </Box>
           </Flex>
-          <Footer user={user} isMobile={isMobile}></Footer>
+          <Footer user={initialUser} isMobile={isMobile}></Footer>
         </Flex>
       </ReactDiv100>
     </>
