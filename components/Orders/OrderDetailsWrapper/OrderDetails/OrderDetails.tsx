@@ -148,8 +148,6 @@ export const OrderDetails = ({
     }
   }); // zawartosc spec table
 
-  console.log(specTableContent);
-  console.log(specType);
   const handleQuantityTypeChange = (quantityType: QUANTITY_TYPE) => {
     setSpecType(quantityType);
     setNewProductDetails(
