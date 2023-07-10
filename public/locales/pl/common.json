@@ -32,6 +32,7 @@
       "invalid-credentials": "Niepoprawne dane!",
       "user-does-not-exist": "Użytkownik z tym adresem e-mail nie istnieje!",
       "user-already-exists": "Użytkownik z tym adresem e-mail już istnieje!",
+      "invalid-register-token": "Kod rejestracyjny nie istnieje lub wygasł, poproś administratora o nowy kod.",
       "invalid-request-content-type": "Niepoprawny format danych!",
       "invalid-request-body": "Niepoprawny format danych!",
       "unexpected-error": "Wystąpił błąd, spróbuj ponownie później lub skontaktuj się z administratorem.",

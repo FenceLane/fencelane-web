@@ -4,6 +4,7 @@ import { NextApiResponse } from "next";
 export const BackendErrorLabel = {
   USER_DOES_NOT_EXIST: "user-does-not-exist",
   USER_ALREADY_EXISTS: "user-already-exists",
+  INVALID_REGISTER_TOKEN: "invalid-register-token",
   INVALID_REQUEST_CONTENT_TYPE: "invalid-request-content-type",
   INVALID_REQUEST_BODY: "invalid-request-body",
   UNEXPECTED_ERROR: "unexpected-error",

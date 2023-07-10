@@ -7,6 +7,7 @@ export const RegisterFormDataSchema = z.object({
   role: z.number().optional(),
   email: z.string().email(),
   password: z.string(),
+  registerToken: z.string(),
 });
 
 export type RegisterFormData = z.infer<typeof RegisterFormDataSchema>;

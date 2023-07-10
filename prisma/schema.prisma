@@ -44,6 +44,14 @@ model PasswordResetToken {
   userId    String
 }
 
+model RegisterToken {
+  id        String   @id @default(uuid())
+  token String @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  expiresAt DateTime
+}
+
 //domain
 model Client {
   id String  @id @default(uuid())
