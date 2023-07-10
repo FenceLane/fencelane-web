@@ -10,8 +10,6 @@ interface ParentOrdersRowProps {
 
 export const ParentOrdersRow = ({ orderData }: ParentOrdersRowProps) => {
   const { t } = useContent();
-  console.log(orderData[0]);
-  console.log(orderData[1]);
   if (
     orderData[1].reduce((acc, parent) => (acc += parent.products.length), 0) ===
     1
