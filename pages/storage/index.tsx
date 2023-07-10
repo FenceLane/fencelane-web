@@ -18,7 +18,13 @@ const StoragePage = ({
 export default StoragePage;
 
 export const getServerSideProps = withTranslationProps(
-  withServerSideAuth([USER_ROLE.ADMIN])(async (ctx) => {
+  withServerSideAuth([
+    USER_ROLE.ADMIN,
+    USER_ROLE.BOSS,
+    USER_ROLE.VICE_BOSS,
+    USER_ROLE.MARKETER,
+    USER_ROLE.SATURATOR,
+  ])(async (ctx) => {
     const { user } = ctx.session;
 
     return {

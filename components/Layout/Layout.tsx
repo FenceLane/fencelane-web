@@ -3,7 +3,7 @@ import Head from "next/head";
 import React, { ReactNode, useEffect, useState } from "react";
 import { useContent } from "../../lib/hooks/useContent";
 import "react-toastify/dist/ReactToastify.css";
-import { UserInfo } from "../../lib/types";
+import { PAGES, UserInfo } from "../../lib/types";
 import styles from "./Layout.module.scss";
 import { useIsMobile } from "../../lib/hooks/useIsMobile";
 import { Header } from "../Header/Header";
@@ -21,35 +21,35 @@ export interface LayoutProps {
 
 const menuItems = [
   {
-    name: "stats",
+    name: PAGES.STATS,
     icon: "statystyki",
   },
   {
-    name: "storage",
+    name: PAGES.STORAGE,
     icon: "magazyn",
   },
   {
-    name: "loads",
+    name: PAGES.LOADS,
     icon: "załadunki",
   },
   {
-    name: "orders",
+    name: PAGES.ORDERS,
     icon: "zamówienia",
   },
   {
-    name: "commissions",
+    name: PAGES.COMMISSIONS,
     icon: "zlecenia",
   },
   {
-    name: "schedule",
+    name: PAGES.SCHEDULE,
     icon: "harmonogram",
   },
   {
-    name: "calculations",
+    name: PAGES.CALCULATIONS,
     icon: "kalkulacje",
   },
   {
-    name: "employees",
+    name: PAGES.EMPLOYEES,
     icon: "pracownicy",
   },
 ];
@@ -93,6 +93,7 @@ export const Layout = ({
               isMenuActive={isMenuActive}
               isMobile={isMobile}
               menuItems={menuItems}
+              user={initialUser}
             />
             <Box
               color="black"

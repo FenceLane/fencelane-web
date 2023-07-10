@@ -6,6 +6,8 @@ import { useContent } from "../../../lib/hooks/useContent";
 import { OrderInfo } from "../../../lib/types";
 import styles from "./OrdersRow.module.scss";
 import { constructOrderDate } from "../../../lib/util/dateUtils";
+import { userFeatures } from "../../../lib/util/userRoles";
+import { useUser } from "../../../lib/hooks/UserContext";
 
 interface OrderDataProps {
   orderData: OrderInfo;
@@ -22,6 +24,8 @@ const statusColor = (status: string) => {
 
 export const OrdersRow = ({ orderData }: OrderDataProps) => {
   const { t } = useContent();
+
+  const { user } = useUser();
 
   const profit = orderData.profit;
 
@@ -90,7 +94,7 @@ export const OrdersRow = ({ orderData }: OrderDataProps) => {
         </Box>
       </Flex>
       <Box className={styles["right-bottom"]}>
-        {profit && (
+        {profit && userFeatures.loads.isProfitAllowed(user.role) && (
           <Text className={styles["price"]}>
             {Number(profit).toFixed(2).replace(/\.00$/, "")}€
           </Text>

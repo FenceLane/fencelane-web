@@ -384,6 +384,10 @@
         "change_role": "Zmiana roli",
         "change_role_button": "Zmień rolę"
       }
+    },
+    "support": {
+      "support": "Pomoc",
+      "admin_contact": "Kontakt do administratora"
     }
   },
 

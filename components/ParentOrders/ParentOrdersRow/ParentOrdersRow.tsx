@@ -10,17 +10,87 @@ interface ParentOrdersRowProps {
 
 export const ParentOrdersRow = ({ orderData }: ParentOrdersRowProps) => {
   const { t } = useContent();
-  return (
-    <>
+  console.log(orderData[0]);
+  console.log(orderData[1]);
+  if (
+    orderData[1].reduce((acc, parent) => (acc += parent.products.length), 0) ===
+    1
+  ) {
+    return (
       <Tbody borderBottom="5px solid var(--light-content)">
-        <Tr>
-          <Td fontWeight={500} rowSpan={orderData[1].length + 1}>
+        <Tr bg="white">
+          <Td
+            bg="white"
+            fontWeight={500}
+            rowSpan={
+              orderData[1].reduce(
+                (acc, parent) => (acc += parent.products.length),
+                0
+              ) +
+              orderData[1].length +
+              1
+            }
+          >
             {orderData[0]}
+            <br />
+            {orderData[1][0].destination.client.name}
+            <br />
+            {orderData[1][0].destination.city}
           </Td>
+          {orderData[1].map((parent, index) => (
+            <>
+              <Td rowSpan={parent.products.length + 1} bg="white">
+                <ChakraLink
+                  as={Link}
+                  href={`/loads/${parent.products[0].orderId}`}
+                >
+                  {parent.products[0].orderId}
+                </ChakraLink>
+              </Td>
+              {parent.products.map((product, index) => (
+                <>
+                  <Td bg="white">
+                    {`${product.product.category.name}
+         ${product.product.dimensions} [${t(
+                      `pages.storage.variants.${product.product.variant}`
+                    )}]`}
+                  </Td>
+                  <Td bg="white">{product.quantity} p.</Td>
+                </>
+              ))}
+            </>
+          ))}
         </Tr>
-        {orderData[1].map((parent, index) => (
-          <Tr key={index}>
-            <Td borderBottom="none">
+      </Tbody>
+    );
+  }
+
+  return (
+    <Tbody borderBottom="5px solid var(--light-content)">
+      <Tr bg="white">
+        <Td
+          bg="white"
+          fontWeight={500}
+          rowSpan={
+            orderData[1].reduce(
+              (acc, parent) => (acc += parent.products.length),
+              0
+            ) +
+            orderData[1].length +
+            1
+          }
+        >
+          {orderData[0]}
+          <br />
+          {orderData[1][0].destination.client.name}
+          <br />
+          {orderData[1][0].destination.city}
+        </Td>
+      </Tr>
+      {orderData[1].map((parent, index) => (
+        <>
+          <Tr bg="white" key={index}>
+            <Td rowSpan={parent.products.length + 1} bg="white">
               <ChakraLink
                 as={Link}
                 href={`/loads/${parent.products[0].orderId}`}
@@ -28,17 +98,28 @@ export const ParentOrdersRow = ({ orderData }: ParentOrdersRowProps) => {
                 {parent.products[0].orderId}
               </ChakraLink>
             </Td>
-
-            <Td>
-              {`${parent.products[0].product.category.name}
-               ${parent.products[0].product.dimensions} [${t(
-                `pages.storage.variants.${parent.products[0].product.variant}`
-              )}]`}
-            </Td>
-            <Td>{parent.products[0].quantity} p.</Td>
           </Tr>
-        ))}
-      </Tbody>
-    </>
+          {parent.products.map((product, index) => (
+            <Tr
+              bg="white"
+              key={index}
+              borderBottom={
+                index === parent.products.length - 1
+                  ? "2px solid #DDD"
+                  : "1px solid gray"
+              }
+            >
+              <Td bg="white">
+                {`${product.product.category.name}
+               ${product.product.dimensions} [${t(
+                  `pages.storage.variants.${product.product.variant}`
+                )}]`}
+              </Td>
+              <Td bg="white">{product.quantity} p.</Td>
+            </Tr>
+          ))}
+        </>
+      ))}
+    </Tbody>
   );
 };

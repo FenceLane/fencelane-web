@@ -264,3 +264,14 @@ export enum EVENT_VISIBILITY {
   PUBLIC = "public",
   PRIVATE = "private",
 }
+
+export enum PAGES {
+  STATS = "stats",
+  STORAGE = "storage",
+  LOADS = "loads",
+  ORDERS = "orders",
+  COMMISSIONS = "commissions",
+  SCHEDULE = "schedule",
+  CALCULATIONS = "calculations",
+  EMPLOYEES = "employees",
+}

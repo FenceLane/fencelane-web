@@ -18,7 +18,12 @@ const CreateDestinationPage = ({
 export default CreateDestinationPage;
 
 export const getServerSideProps = withTranslationProps(
-  withServerSideAuth([USER_ROLE.ADMIN])(async (ctx) => {
+  withServerSideAuth([
+    USER_ROLE.ADMIN,
+    USER_ROLE.BOSS,
+    USER_ROLE.VICE_BOSS,
+    USER_ROLE.MARKETER,
+  ])(async (ctx) => {
     const { user } = ctx.session;
 
     return {

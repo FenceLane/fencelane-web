@@ -33,9 +33,11 @@ export const ParentOrders = ({ ordersData }: ParentOrdersProps) => {
             <Th>{t("main.quantity")}</Th>
           </Tr>
         </Thead>
-        {Object.entries(ordersData).map((value) => (
-          <ParentOrdersRow key={value[0]} orderData={value} />
-        ))}
+        {Object.entries(ordersData).map((value) => {
+          if (value[0] !== "other") {
+            return <ParentOrdersRow key={value[0]} orderData={value} />;
+          }
+        })}
       </Table>
     </Flex>
   );

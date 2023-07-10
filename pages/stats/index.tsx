@@ -17,13 +17,15 @@ const StatsPage = ({
 export default StatsPage;
 
 export const getServerSideProps = withTranslationProps(
-  withServerSideAuth([USER_ROLE.ADMIN])(async (ctx) => {
-    const { user } = ctx.session;
+  withServerSideAuth([USER_ROLE.ADMIN, USER_ROLE.BOSS, USER_ROLE.VICE_BOSS])(
+    async (ctx) => {
+      const { user } = ctx.session;
 
-    return {
-      props: {
-        user,
-      },
-    };
-  })
+      return {
+        props: {
+          user,
+        },
+      };
+    }
+  )
 );

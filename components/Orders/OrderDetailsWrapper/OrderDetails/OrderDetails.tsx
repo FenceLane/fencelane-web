@@ -45,6 +45,8 @@ import { InvalidValueModalText } from "./InvalidValueModalText/InvalidValueModal
 import { OrderFileUploadButton } from "./OrderFileActionButtons/OrderFileUploadButton/OrderFileUploadButton";
 import { OrderFileActionButtons } from "./OrderFileActionButtons/OrderFileActionButtons";
 import { OrderDownloadAllFilesButton } from "./OrderFileActionButtons/OrderDownloadAllFilesButton";
+import { userFeatures } from "../../../../lib/util/userRoles";
+import { useUser } from "../../../../lib/hooks/UserContext";
 
 interface OrderDetailsProps {
   orderData: OrderInfo;
@@ -81,6 +83,8 @@ export const OrderDetails = ({
   } = useUpdateOrder(orderData.id); // aktualizowanie ordera (profitu)
 
   const cancelRef = React.useRef(null);
+
+  const { user } = useUser();
 
   const { t } = useContent();
 
@@ -144,6 +148,8 @@ export const OrderDetails = ({
     }
   }); // zawartosc spec table
 
+  console.log(specTableContent);
+  console.log(specType);
   const handleQuantityTypeChange = (quantityType: QUANTITY_TYPE) => {
     setSpecType(quantityType);
     setNewProductDetails(
@@ -405,7 +411,7 @@ export const OrderDetails = ({
             </Flex>
           </Flex>
           <Box className={styles["right-bottom"]}>
-            {profit && (
+            {profit && userFeatures.loads.isProfitAllowed(user.role) && (
               <Text className={styles["profit"]}>
                 {Number(profit).toFixed(2).replace(/\.00$/, "")}€
               </Text>
@@ -474,7 +480,7 @@ export const OrderDetails = ({
             <Tbody>
               {specTableContent.map((row, key) => (
                 <Tr
-                  key={`${row.productName} ${row.productDimensions} ${row.productQuantity}`}
+                  key={`${row.productName} ${row.productDimensions} ${row.productQuantity} ${row.productVariant} ${row.productQuantity}`}
                 >
                   <Td fontWeight={500}>
                     {row.productName}
@@ -527,20 +533,24 @@ export const OrderDetails = ({
           p="20px"
           borderBottom="5px solid var(--light-content)"
         >
-          <Button
-            color="white"
-            bg="var(--button-orange)"
-            fontWeight="400"
-            onClick={handleUpdateProductDetails}
-            isLoading={isUpdateOrderProductsLoading}
-          >
-            {t("buttons.edit")}
-          </Button>
-          <Link href={`/calculations/${orderData.id}`}>
-            <Button color="white" bg="var(--button-blue)">
-              {t("pages.orders.order.calculation")}
+          {userFeatures.loads.isEditProductsButtonAllowed(user.role) && (
+            <Button
+              color="white"
+              bg="var(--button-orange)"
+              fontWeight="400"
+              onClick={handleUpdateProductDetails}
+              isLoading={isUpdateOrderProductsLoading}
+            >
+              {t("buttons.edit")}
             </Button>
-          </Link>
+          )}
+          {userFeatures.loads.isCalculationButtonAllowed(user.role) && (
+            <Link href={`/calculations/${orderData.id}`}>
+              <Button color="white" bg="var(--button-blue)">
+                {t("pages.orders.order.calculation")}
+              </Button>
+            </Link>
+          )}
         </Flex>
         <Flex
           flexDir="column"

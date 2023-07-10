@@ -1,29 +1,22 @@
-import { CommissionsWrapper } from "../../components/Commissions/CommissionsWrapper/CommissionsWrapper";
 import { Layout } from "../../components/Layout/Layout";
+import { Support } from "../../components/Support/Support";
 import { withServerSideAuth } from "../../lib/server/middlewares/withServerSideAuth";
 import { withTranslationProps } from "../../lib/server/middlewares/withTranslationProps";
 import { InferGetServerSidePropsType } from "next";
-import { USER_ROLE } from "../../lib/types";
-
-const CommissionsPage = ({
+const SupportPage = ({
   user,
 }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   return (
     <Layout user={user}>
-      <CommissionsWrapper />
+      <Support />
     </Layout>
   );
 };
 
-export default CommissionsPage;
+export default SupportPage;
 
 export const getServerSideProps = withTranslationProps(
-  withServerSideAuth([
-    USER_ROLE.ADMIN,
-    USER_ROLE.BOSS,
-    USER_ROLE.VICE_BOSS,
-    USER_ROLE.MARKETER,
-  ])(async (ctx) => {
+  withServerSideAuth()(async (ctx) => {
     const { user } = ctx.session;
 
     return {

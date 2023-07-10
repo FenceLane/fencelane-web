@@ -20,6 +20,8 @@ import { PRODUCT_VARIANT, ProductInfo } from "../../../lib/types";
 import { useIsMobile } from "../../../lib/hooks/useIsMobile";
 import { ProductAddModal } from "./ProductAddModal/ProductAddModal";
 import { sortProducts } from "../../../lib/util/commissionsUtils";
+import { useUser } from "../../../lib/hooks/UserContext";
+import { userFeatures } from "../../../lib/util/userRoles";
 
 interface StorageProps {
   products: ProductInfo[];
@@ -34,6 +36,8 @@ const initialVariantFilters = {
 export const Storage = ({ products }: StorageProps) => {
   const { t } = useContent();
   const isMobile = useIsMobile();
+
+  const { user } = useUser();
 
   const [variantFilters, setVariantFilters] = useState(initialVariantFilters);
 
@@ -50,20 +54,22 @@ export const Storage = ({ products }: StorageProps) => {
   return (
     <Box position="relative">
       <Flex className={styles["buttons"]}>
-        <Flex className={styles["add-button"]}>
-          <Button
-            rightIcon={<AddIcon />}
-            colorScheme="teal"
-            variant="solid"
-            mb="10px"
-            bg="var(--dark)"
-            fontSize="15px"
-            fontWeight={500}
-            onClick={onAddOpen}
-          >
-            {t("pages.storage.buttons.add_commodity")}
-          </Button>
-        </Flex>
+        {userFeatures.storage.isAddNewProductButtonAllowed(user.role) && (
+          <Flex className={styles["add-button"]}>
+            <Button
+              rightIcon={<AddIcon />}
+              colorScheme="teal"
+              variant="solid"
+              mb="10px"
+              bg="var(--dark)"
+              fontSize="15px"
+              fontWeight={500}
+              onClick={onAddOpen}
+            >
+              {t("pages.storage.buttons.add_commodity")}
+            </Button>
+          </Flex>
+        )}
         <Flex mb="10px" gap="10px" className={styles["variant-filters"]}>
           <Button
             onClick={() => handleVariantFilterChange(PRODUCT_VARIANT.WHITE_DRY)}

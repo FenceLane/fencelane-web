@@ -5,15 +5,18 @@ import styles from "./Nav.module.scss";
 import NextLink from "next/link";
 import { useContent } from "../../lib/hooks/useContent";
 import { useRouter } from "next/router";
+import { userFeatures } from "../../lib/util/userRoles";
+import { PAGES, UserInfo } from "../../lib/types";
 
 export interface NavProps {
   hideSidebar: boolean;
   isMenuActive: boolean;
   isMobile: boolean;
   menuItems: Array<menuItem>;
+  user?: UserInfo;
 }
 interface menuItem {
-  name: string;
+  name: PAGES;
   icon: string;
 }
 export const Nav = ({
@@ -21,6 +24,7 @@ export const Nav = ({
   isMenuActive,
   isMobile,
   menuItems,
+  user,
 }: NavProps) => {
   const { t } = useContent("general");
   const router = useRouter();
@@ -36,33 +40,41 @@ export const Nav = ({
             h="100%"
           >
             <Box>
-              {menuItems.map((item) => (
-                <Link
-                  as={NextLink}
-                  key={item.name}
-                  href={`/${item.name}`}
-                  _hover={{
-                    textDecoration: "none",
-                  }}
-                >
-                  <Box
-                    className={`${styles[`nav-item`]} ${
-                      page == item.name ? styles["active"] : ""
-                    }`}
-                    color={page == item.name ? "white" : "var(--unactive)"}
-                  >
-                    <Image
-                      filter={
-                        page == item.name ? "brightness(0) invert(1)" : "none"
-                      }
-                      width="20px"
-                      src={`/images/navicons/${item.icon}.svg`}
-                      alt=""
-                    />
-                    <Text>{t(`layout.sidebar.menu.${item.name}.label`)}</Text>
-                  </Box>
-                </Link>
-              ))}
+              {menuItems.map((item) => {
+                if (user && userFeatures.menu[item.name](user.role)) {
+                  return (
+                    <Link
+                      as={NextLink}
+                      key={item.name}
+                      href={`/${item.name}`}
+                      _hover={{
+                        textDecoration: "none",
+                      }}
+                    >
+                      <Box
+                        className={`${styles[`nav-item`]} ${
+                          page == item.name ? styles["active"] : ""
+                        }`}
+                        color={page == item.name ? "white" : "var(--unactive)"}
+                      >
+                        <Image
+                          filter={
+                            page == item.name
+                              ? "brightness(0) invert(1)"
+                              : "none"
+                          }
+                          width="20px"
+                          src={`/images/navicons/${item.icon}.svg`}
+                          alt=""
+                        />
+                        <Text>
+                          {t(`layout.sidebar.menu.${item.name}.label`)}
+                        </Text>
+                      </Box>
+                    </Link>
+                  );
+                }
+              })}
             </Box>
             <Box>
               {/* <Link
@@ -89,7 +101,7 @@ export const Nav = ({
               </Link> */}
               <Link
                 as={NextLink}
-                href=""
+                href="/support"
                 _hover={{
                   textDecoration: "none",
                 }}

@@ -1,39 +1,14 @@
 import React from "react";
-import { USER_ROLE, UserInfo } from "../../../../../lib/types";
+import { UserInfo } from "../../../../../lib/types";
 import { Button, Tr, Td, useDisclosure } from "@chakra-ui/react";
 import { useIsMobile } from "../../../../../lib/hooks/useIsMobile";
 import { ChangeRoleModal } from "./ChangeRoleModal/ChangeRoleModal";
 import { useContent } from "../../../../../lib/hooks/useContent";
+import { getRoleByNumber } from "../../../../../lib/util/userRoles";
 
 interface EmployeesRowProps {
   employee: UserInfo;
 }
-
-const getRoleByNumber = (role: USER_ROLE) => {
-  switch (role) {
-    case 0:
-      return "admin";
-      break;
-    case 1:
-      return "user";
-      break;
-    case 2:
-      return "boss";
-      break;
-    case 3:
-      return "vice_boss";
-      break;
-    case 4:
-      return "saturator";
-      break;
-    case 5:
-      return "marketer";
-      break;
-    default:
-      return "other";
-      break;
-  }
-};
 
 export const EmployeesRow = ({ employee }: EmployeesRowProps) => {
   const { t } = useContent();

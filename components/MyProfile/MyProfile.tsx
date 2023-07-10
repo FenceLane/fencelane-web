@@ -20,6 +20,7 @@ import { mapAxiosErrorToLabel } from "../../lib/server/BackendError/BackendError
 import { toastError, toastInfo } from "../../lib/util/toasts";
 import { UserInfo } from "../../lib/types";
 import styles from "./MyProfile.module.scss";
+import { getRoleByNumber } from "../../lib/util/userRoles";
 
 export interface MyProfileProps {
   user: UserInfo;
@@ -79,7 +80,8 @@ export const MyProfile = ({ user }: MyProfileProps) => {
         {t("pages.my_profile.phone")}: <span>{user.phone}</span>
       </Text>
       <Text className={styles["profile-item"]}>
-        {t("pages.my_profile.role")}: <span>{user.role}</span>
+        {t("pages.my_profile.role")}:{" "}
+        <span>{t(`pages.employees.roles.${getRoleByNumber(user.role)}`)}</span>
       </Text>
       <div className={styles.buttons}>
         <Button
