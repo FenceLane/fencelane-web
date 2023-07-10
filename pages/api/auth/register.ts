@@ -13,7 +13,29 @@ import { withApiMethods } from "../../../lib/server/middlewares/withApiMethods";
 export default withApiMethods({
   POST: withValidatedJSONRequestBody(RegisterFormDataSchema)(
     async (req, res) => {
-      const { email, password, name, phone, role } = req.parsedBody;
+      const { email, password, name, phone, role, registerToken } =
+        req.parsedBody;
+
+      const foundRegisterToken = await prismaClient.registerToken.findFirst({
+        where: { token: registerToken },
+      });
+
+      //if token does not exist - throw
+      if (!foundRegisterToken) {
+        return sendBackendError(res, {
+          code: BackendResponseStatusCode.UNAUTHORIZED,
+          label: BackendErrorLabel.INVALID_REGISTER_TOKEN,
+        });
+      }
+
+      //if token exists but is expired, throw and delete token
+      if (foundRegisterToken.expiresAt < new Date()) {
+        await prismaClient.registerToken.deleteMany();
+        return sendBackendError(res, {
+          code: BackendResponseStatusCode.UNAUTHORIZED,
+          label: BackendErrorLabel.INVALID_REGISTER_TOKEN,
+        });
+      }
 
       const existingUser = await prismaClient.user.findFirst({
         where: { email },

@@ -6,10 +6,15 @@ import { ServerConfig } from "../../AppConfig/ServerConfig";
 export const SET_COOKIE_HEADER = "Set-Cookie";
 
 const EXPIRE_SESSION_AFTER = 1000 * 60 * 60 * 24 * 4; //4 days in ms
+const EXPIRE_REGISTER_TOKEN_AFTER = 1000 * 60 * 60 * 24 * 4; //4 days in ms
 const REFRESH_SESSION_AFTER = 1000 * 60 * 60 * 24; // 1 day in ms
 
 export const getSessionExpirationDate = () => {
   return new Date(Date.now() + EXPIRE_SESSION_AFTER);
+};
+
+export const getRegisterTokenExpirationDate = () => {
+  return new Date(Date.now() + EXPIRE_REGISTER_TOKEN_AFTER);
 };
 
 export const getSessionCookie = ({
