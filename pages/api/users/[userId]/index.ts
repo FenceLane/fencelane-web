@@ -47,8 +47,12 @@ export default withApiMethods({
         throw Error('"userId" was not passed in dynamic api path.');
       }
 
-      //only admin can update other users (including their role)
-      if (selfUser.role !== USER_ROLE.ADMIN) {
+      //only admin, boss and vice boss can update other users (including their role)
+      if (
+        ![USER_ROLE.ADMIN, USER_ROLE.BOSS, USER_ROLE.VICE_BOSS].includes(
+          selfUser.role
+        )
+      ) {
         return sendBackendError(res, {
           code: BackendResponseStatusCode.FORBIDDEN,
           label: BackendErrorLabel.FORBIDDEN_ADMIN_ONLY,
