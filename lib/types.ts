@@ -206,6 +206,14 @@ export interface CommissionInfo {
   };
 }
 
+export interface RegisterTokenInfo {
+  id: string;
+  token: string;
+  createdAt: string;
+  updatedAt: string;
+  expiresAt: string;
+}
+
 export enum USER_ROLE {
   ADMIN = 0,
   USER = 1,
@@ -274,4 +282,5 @@ export enum PAGES {
   SCHEDULE = "schedule",
   CALCULATIONS = "calculations",
   EMPLOYEES = "employees",
+  ADMIN = "admin",
 }
