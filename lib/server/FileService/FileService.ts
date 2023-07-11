@@ -17,10 +17,10 @@ const getUrlFromBucket = (
 };
 
 const initAWSBucket = () => {
-  const accessKeyId = process.env.AWS_S3_ACCESS_KEY_ID;
-  const secretAccessKey = process.env.AWS_S3_SECRET_ACCESS_KEY;
-  const bucketName = process.env.AWS_S3_BUCKET_NAME;
-  const bucketRegion = process.env.AWS_S3_BUCKET_REGION;
+  const accessKeyId = process.env.CONFIG_AWS_S3_ACCESS_KEY_ID;
+  const secretAccessKey = process.env.CONFIG_AWS_S3_SECRET_ACCESS_KEY;
+  const bucketName = process.env.CONFIG_AWS_S3_BUCKET_NAME;
+  const bucketRegion = process.env.CONFIG_AWS_S3_BUCKET_REGION;
 
   if (!accessKeyId || !secretAccessKey || !bucketName || !bucketRegion) {
     throw new Error("AWS config env variables not provided.");
