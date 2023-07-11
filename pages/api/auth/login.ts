@@ -14,6 +14,7 @@ export default withApiMethods({
   POST: withValidatedJSONRequestBody(LoginFormDataSchema)(async (req, res) => {
     const { email, password } = req.parsedBody;
 
+    // Check if user exists
     const existingUser = await prismaClient.user.findFirst({
       where: { email },
     });
