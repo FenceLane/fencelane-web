@@ -85,6 +85,11 @@ export const userFeatures = {
       USER_ROLE.BOSS,
       USER_ROLE.VICE_BOSS,
     ]),
+    admin: isRoleAllowed([
+      USER_ROLE.ADMIN,
+      USER_ROLE.BOSS,
+      USER_ROLE.VICE_BOSS,
+    ]),
   },
 } as const;
 

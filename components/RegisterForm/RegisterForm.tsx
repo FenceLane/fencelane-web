@@ -25,6 +25,7 @@ const registerInitialValues = {
   phone: "",
   password: "",
   confirmPassword: "",
+  registerToken: "",
 };
 
 export const RegisterForm = () => {
@@ -119,6 +120,7 @@ export const RegisterForm = () => {
               <FormErrorMessage>{errors.password}</FormErrorMessage>
             </FormControl>
             <FormControl
+              mb="15px"
               isInvalid={!!errors.confirmPassword && touched.confirmPassword}
             >
               <FormLabel htmlFor="confirmPassword">
@@ -137,6 +139,24 @@ export const RegisterForm = () => {
                 }
               />
               <FormErrorMessage>{errors.confirmPassword}</FormErrorMessage>
+            </FormControl>
+
+            <FormControl
+              isInvalid={!!errors.registerToken && touched.registerToken}
+              mb="15px"
+            >
+              <FormLabel htmlFor="phone">
+                {t("pages.register.form.fields.registerToken.label")}
+              </FormLabel>
+              <Field
+                as={Input}
+                id="token"
+                name="registerToken"
+                placeholder={t(
+                  "pages.register.form.fields.registerToken.placeholder"
+                )}
+              />
+              <FormErrorMessage>{errors.registerToken}</FormErrorMessage>
             </FormControl>
 
             <FormControl isInvalid={touched && !!error} mb="15px">

@@ -11,6 +11,7 @@ import {
   OrderProductInfo,
   PRODUCT_VARIANT,
   ProductInfo,
+  RegisterTokenInfo,
   TransportPostInfo,
 } from "../types";
 import { EventInfo, USER_ROLE } from "../types";
@@ -49,12 +50,14 @@ const postRegister = async ({
   phone,
   role = USER_ROLE.USER,
   password,
+  registerToken,
 }: {
   name: string;
   email: string;
   phone: string;
   password: string;
   role?: USER_ROLE;
+  registerToken: string;
 }) => {
   return axiosInstance.post(apiPath("auth/register"), {
     name,
@@ -62,6 +65,7 @@ const postRegister = async ({
     phone,
     role,
     password,
+    registerToken,
   });
 };
 
@@ -341,6 +345,26 @@ const postCommission = async (data: {
   return axiosInstance.post(apiPath("commissions"), data);
 };
 
+const getRegisterToken = async (options?: {
+  authCookie: string;
+}): Promise<RegisterTokenInfo> => {
+  const {
+    data: { data },
+  } = await axiosInstance.get(apiPath("auth/register-token"), {
+    headers: { cookie: options?.authCookie },
+  });
+
+  return data;
+};
+
+const deleteRegisterToken = async () => {
+  return axiosInstance.delete(apiPath("auth/register-token"));
+};
+
+const postRegisterToken = async () => {
+  return axiosInstance.post(apiPath("auth/register-token"));
+};
+
 export const apiClient = {
   socket: {
     listen: initialiseWebSocketClient,
@@ -401,5 +425,10 @@ export const apiClient = {
     getCommissions,
     updateCommissionProducts,
     postCommission,
+  },
+  register_token: {
+    getRegisterToken,
+    deleteRegisterToken,
+    postRegisterToken,
   },
 };
