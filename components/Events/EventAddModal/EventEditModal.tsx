@@ -163,7 +163,7 @@ export const EventEditModal = ({
               type="datetime-local"
               value={formattedStartDate}
               name="startDate"
-              onChange={handleChange}
+              onChange={handleDateChange}
             />
             <label
               id="add-event-modal-endDate"
