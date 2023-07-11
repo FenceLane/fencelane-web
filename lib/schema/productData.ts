@@ -4,7 +4,7 @@ import { ProductOrderDataSchema } from "./productOrderData";
 
 export const ProductDataSchema = z.object({
   dimensions: z.string().min(1),
-  stock: z.number().min(0),
+  stock: z.number(),
   variant: z.nativeEnum(PRODUCT_VARIANT),
   itemsPerPackage: z.number().min(1),
   volumePerPackage: z.number().min(0),
