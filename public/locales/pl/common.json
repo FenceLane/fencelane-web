@@ -17,6 +17,7 @@
           "calculations": { "label": "Kalkulacje" },
           "chat": { "label": "Chat" },
           "employees": { "label": "Pracownicy" },
+          "admin": { "label": "Admin" },
           "settings": { "label": "Ustawienia" },
           "help": { "label": "Pomoc" }
         }
@@ -93,6 +94,11 @@
             "label": "Potwierdź hasło",
             "placeholder": "Powtórz hasło",
             "error": "Podane hasła nie są takie same"
+          },
+          "registerToken": {
+            "label": "Token",
+            "placeholder": "Wprowadź token",
+            "error": "Nieprawidłowy token"
           }
         },
         "submit": "Zarejestruj się!"
@@ -389,6 +395,15 @@
     "support": {
       "support": "Pomoc",
       "admin_contact": "Kontakt do administratora"
+    },
+    "admin_panel": {
+      "admin_panel": "Panel administracyjny",
+      "register_token": "Token rejestracyjny [kliknij aby skopiować]",
+      "expire_date": "Data wygaśnięcia",
+      "no_register_token": "Brak tokenu rejestracyjnego",
+      "click_generate": "Naciśnik przycisk WYGENERUJ aby wygenerować nowy.",
+      "generate": "Wygeneruj",
+      "delete_token": "Usuń token"
     }
   },
 

@@ -41,4 +41,5 @@ export const QUERY_KEY = {
   EVENTS: "events",
   EMPLOYEES: "employees",
   COMMISSIONS: "commissions",
+  REGISTER_TOKEN: "register/token",
 };

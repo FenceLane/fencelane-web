@@ -52,6 +52,10 @@ const menuItems = [
     name: PAGES.EMPLOYEES,
     icon: "pracownicy",
   },
+  {
+    name: PAGES.ADMIN,
+    icon: "admin",
+  },
 ];
 
 export const Layout = ({
