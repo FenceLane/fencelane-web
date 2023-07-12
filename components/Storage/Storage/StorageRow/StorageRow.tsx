@@ -57,6 +57,7 @@ export const StorageRow = ({ product }: StorageRowProps) => {
           display="flex"
           alignItems="center"
           className={styles["commodity-table-first-cell"]}
+          borderBottom="none"
         >
           <Text
             bg={product.category.color}
