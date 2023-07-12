@@ -24,7 +24,9 @@ export const initialiseWebSocketClient = ({
     throw new Error("NEXT_PUBLIC_BASE_URL_WSS is not defined in .env.local");
   }
 
-  rwsClient = new ReconnectingWebSocket(socketUrl);
+  rwsClient = new ReconnectingWebSocket(socketUrl, undefined, {
+    debug: true,
+  });
   rwsClient.onopen = onOpen;
   rwsClient.onmessage = onMessage;
   rwsClient.onclose = onClose;

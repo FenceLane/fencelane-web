@@ -6,11 +6,10 @@ import { parse } from "url";
 import next from "next";
 import fs from "fs";
 import { createWebSocketServer } from "./lib/server/websocketServer";
-
 // Load environment variables from .env, .env.local, etc. This explicit call
 // into `@next/env` allows using environment variables before next() is called.
 // More info: https://nextjs.org/docs/basic-features/environment-variables
-const { loadEnvConfig } = require("@next/env");
+import { loadEnvConfig } from "@next/env";
 loadEnvConfig("./", process.env.NODE_ENV !== "production");
 
 const dev = process.env.NODE_ENV !== "production";
@@ -40,6 +39,7 @@ app.prepare().then(() => {
     }
   });
 
+  console.log("patryk create server");
   createWebSocketServer(server); // Initialize the WebSocket server
 
   server.listen(port, () => {
