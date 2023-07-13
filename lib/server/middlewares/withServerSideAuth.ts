@@ -35,6 +35,7 @@ export const withServerSideAuth =
     try {
       const sessionId = req.cookies.authorization;
 
+      console.log("patryk index page, session:", sessionId);
       if (!sessionId) {
         return {
           redirect: loginPageRedirect,
