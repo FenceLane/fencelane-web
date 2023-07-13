@@ -9,6 +9,7 @@ type Data = {
 
 export default withApiMethods({
   GET: withApiAuth(async (req: NextApiRequest, res: NextApiResponse<Data>) => {
+    console.log("patryk server log hello");
     res.status(200).json({ name: "John Doe" });
   }),
 });
