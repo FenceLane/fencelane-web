@@ -62,7 +62,7 @@ export const Stats = ({ orders, products, categories }: StatsProps) => {
         flex="1"
       >
         <BarChart month={selectedMonth} selectedDate={date} orders={orders} />
-        <Box bgColor={"#fcfcfc"} borderRadius={"10px"} p={6}>
+        <Box bgColor={"#fcfcfc"} borderRadius={"10px"} p={6} minWidth="300px">
           <Text fontWeight={500} color={"#333333"} fontSize="20px" mb="20px">
             {t("pages.stats.last_loadings")}
           </Text>

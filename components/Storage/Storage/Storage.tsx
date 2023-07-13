@@ -52,7 +52,7 @@ export const Storage = ({ products }: StorageProps) => {
   };
 
   return (
-    <Box position="relative">
+    <Box position="relative" marginBottom="20px">
       <Flex className={styles["buttons"]}>
         {userFeatures.storage.isAddNewProductButtonAllowed(user.role) && (
           <Flex className={styles["add-button"]}>
@@ -94,7 +94,11 @@ export const Storage = ({ products }: StorageProps) => {
           </Button>
         </Flex>
       </Flex>
-      <TableContainer className={styles.container}>
+      <TableContainer
+        borderRadius="5px"
+        className={styles.container}
+        boxShadow="0px 4px 4px rgba(0, 0, 0, 0.15)"
+      >
         <Table
           variant="simple"
           bg="white"

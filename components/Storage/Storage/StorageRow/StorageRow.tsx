@@ -73,11 +73,17 @@ export const StorageRow = ({ product }: StorageRowProps) => {
           </Text>
         </Td>
         {!isMobile && <Td>{product.dimensions}</Td>}
-        <Td>{String(product.stock < 0 ? 0 : product.stock)}</Td>
+        <Td textDecoration={product.stock < 0 ? "underline" : "none"}>
+          {String(product.stock < 0 ? 0 : product.stock)}
+        </Td>
         <Td>{t(`pages.storage.variants.${String(product.variant)}`)}</Td>
         <Td>{String(product.itemsPerPackage)}</Td>
-        <Td>{String(m3 < 0 ? 0 : m3.toFixed(3).replace(/\.000$/, ""))}</Td>
-        <Td>{String(pieces < 0 ? 0 : pieces)}</Td>
+        <Td textDecoration={m3 < 0 ? "underline" : "none"}>
+          {String(m3 < 0 ? 0 : m3.toFixed(3).replace(/\.000$/, ""))}
+        </Td>
+        <Td textDecoration={pieces < 0 ? "underline" : "none"}>
+          {String(pieces < 0 ? 0 : pieces)}
+        </Td>
         <Td>
           {userFeatures.storage.isManageProductButtonAllowed(user.role) && (
             <Button

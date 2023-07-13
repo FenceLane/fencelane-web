@@ -60,7 +60,7 @@ export const CommissionsRow = ({ commissionData }: CommissionRowProps) => {
   };
 
   return (
-    <Flex className={styles["commission-container"]}>
+    <Flex className={styles["commission-container"]} borderRadius="5px">
       <Flex
         className={styles["commission-top"]}
         justifyContent="space-between"

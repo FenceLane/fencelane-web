@@ -20,6 +20,9 @@
   padding: 15px 10px;
   align-items: center;
 }
+.calc-table tbody:last-child {
+  border-bottom: none;
+}
 
 @media only screen and (min-width: 1024px) {
   .calc-table tr td:last-child {

@@ -17,6 +17,7 @@ import {
 import { useTransferVariant } from "../../../../../lib/api/hooks/products";
 import { ProductInfo, PRODUCT_VARIANT } from "../../../../../lib/types";
 import { useContent } from "../../../../../lib/hooks/useContent";
+import { toastInfo } from "../../../../../lib/util/toasts";
 
 interface ProductVariantTransferModalProps {
   isVariantTransferOpen: boolean;
@@ -42,6 +43,16 @@ export const ProductVariantTransferModal = ({
     });
   };
 
+  const handleSuccess = () => {
+    handleVariantTransferClose();
+
+    toastInfo(
+      `${t("pages.storage.toasts.change_variant_success1")} ${quantity} ${t(
+        "pages.storage.toasts.change_variant_success2"
+      )}: ${t(`pages.storage.variants.${newVariant}`)}`
+    );
+  };
+
   const handleVariantTransferClose = () => {
     setNewVariant(product.variant);
     setQuantity(0);
@@ -52,7 +63,7 @@ export const ProductVariantTransferModal = ({
     mutate: transferVariant,
     error: transferVariantError,
     isLoading: isTransferVariantLoading,
-  } = useTransferVariant(handleVariantTransferClose);
+  } = useTransferVariant(handleSuccess);
 
   const handleVariantChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setNewVariant(e.target.value as PRODUCT_VARIANT);

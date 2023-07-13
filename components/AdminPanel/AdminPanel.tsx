@@ -29,7 +29,13 @@ export const AdminPanel = ({ registerToken }: AdminPanelProps) => {
   } = usePostRegisterToken(() => {});
 
   return (
-    <Flex flexDirection="column" bg="white" padding="20px">
+    <Flex
+      flexDirection="column"
+      bg="white"
+      padding="20px"
+      boxShadow="0px 4px 4px rgba(0, 0, 0, 0.15)"
+      borderRadius="5px"
+    >
       <Text color="var(--dark)" fontSize="20px" fontWeight="500" mb="20px">
         {t("pages.admin_panel.admin_panel")}
       </Text>
