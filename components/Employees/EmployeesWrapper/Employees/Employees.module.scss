@@ -14,4 +14,7 @@
   .employees-table tr {
     border-bottom: 5px solid var(--light-content);
   }
+  .employees-table tr:last-child {
+    border-bottom: none;
+  }
 }

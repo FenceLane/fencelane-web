@@ -1,9 +1,13 @@
 .wrapper {
   max-width: 1920px;
+  margin-bottom: 20px;
 }
 .orders-table td,
 .orders-table th {
   padding: 10px;
+}
+.orders-table tbody:last-child {
+  border-bottom: none;
 }
 @media only screen and (min-width: 768px) {
   .orders-table td,
