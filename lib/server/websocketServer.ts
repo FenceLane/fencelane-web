@@ -18,11 +18,9 @@ const hardClose = (socket: WebSocket) => {
 };
 
 export const createWebSocketServer = (server: HttpsServer) => {
-  console.log("patryk ws server");
   const webSocketServer = new WebSocket.Server({ noServer: true });
 
   webSocketServer.on("connection", async function connection(ws, req) {
-    console.log("patryk ws server connection");
     const cookies = parseCookieHeader(req.headers.cookie || "");
     const sessionId = cookies.authorization;
     if (!sessionId) {

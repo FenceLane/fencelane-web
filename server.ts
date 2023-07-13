@@ -39,7 +39,6 @@ app.prepare().then(() => {
     }
   });
 
-  console.log("patryk create server");
   createWebSocketServer(server); // Initialize the WebSocket server
 
   server.listen(port, () => {
