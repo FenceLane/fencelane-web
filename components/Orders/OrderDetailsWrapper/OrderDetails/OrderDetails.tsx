@@ -341,7 +341,7 @@ export const OrderDetails = ({
 
   return (
     <Flex flexDir="column" alignItems="center">
-      <Flex className={styles.container} flexDir="column">
+      <Flex className={styles.container} flexDir="column" borderRadius="5px">
         <Link as={NextLink} href="/loads" w="32px">
           <IconButton
             icon={<ArrowBackIcon w="32px" h="32px" />}

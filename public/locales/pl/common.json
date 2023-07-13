@@ -209,6 +209,12 @@
         "variant-transfer": "Wariant",
         "commodity-add": "Dodawanie",
         "commodity-management": "Zarządzanie"
+      },
+      "toasts": {
+        "add_commodity_success1": "Pomyślnie dodano",
+        "add_commodity_success2": "pakietów",
+        "change_variant_success1": "Pomyślnie zmieniono",
+        "change_variant_success2": "pakietom wariant na"
       }
     },
     "orders": {

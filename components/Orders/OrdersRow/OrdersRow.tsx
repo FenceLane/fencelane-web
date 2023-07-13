@@ -35,7 +35,7 @@ export const OrdersRow = ({ orderData }: OrderDataProps) => {
     orderData.statusHistory[orderData.statusHistory.length - 1].status;
 
   return (
-    <Flex className={styles["order-container"]}>
+    <Flex className={styles["order-container"]} borderRadius="5px">
       <Flex className={styles["left"]}>
         <Box className={styles["text-box"]}>
           <Text className={styles["order-header"]}>

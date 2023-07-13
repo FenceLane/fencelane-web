@@ -17,6 +17,8 @@ import { useEditProduct } from "../../../../../lib/api/hooks/products";
 import { ProductInfo } from "../../../../../lib/types";
 import { useContent } from "../../../../../lib/hooks/useContent";
 
+import { toastInfo } from "../../../../../lib/util/toasts";
+
 interface ProductEditModalProps {
   isStockAddOpen: boolean;
   onStockAddClose: Function;
@@ -32,6 +34,15 @@ export const ProductStockAddModal = ({
 
   const [newStock, setNewStock] = useState(0);
 
+  const handleSuccess = () => {
+    handleProductStockAddModalClose();
+    toastInfo(
+      `${t("pages.storage.toasts.add_commodity_success1")} ${newStock} ${t(
+        "pages.storage.toasts.add_commodity_success2"
+      )}`
+    );
+  };
+
   const handleProductStockAddModalClose = () => {
     onStockAddClose();
   };
@@ -40,7 +51,7 @@ export const ProductStockAddModal = ({
     mutate: editProduct,
     error: editError,
     isLoading: isEditLoading,
-  } = useEditProduct(handleProductStockAddModalClose);
+  } = useEditProduct(handleSuccess);
 
   const handleEditProduct = async () => {
     const {

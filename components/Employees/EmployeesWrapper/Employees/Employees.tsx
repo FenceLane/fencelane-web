@@ -21,6 +21,7 @@ export const Employees = ({ employees }: EmployeesProps) => {
       className={styles["employees-table"]}
       wordBreak="break-word"
       borderRadius="3px"
+      boxShadow="0px 4px 4px rgba(0, 0, 0, 0.15)"
     >
       <Thead>
         {!isMobile && (

@@ -15,9 +15,14 @@ export const ParentOrders = ({ ordersData }: ParentOrdersProps) => {
   const { t } = useContent();
 
   return (
-    <Flex bg="white" className={styles["wrapper"]}>
+    <Flex
+      bg="white"
+      className={styles["wrapper"]}
+      boxShadow="0px 4px 4px rgba(0, 0, 0, 0.15)"
+      borderRadius="5px"
+    >
       <Table className={styles["orders-table"]}>
-        <Thead borderBottom="3px solid var(--light-content)">
+        <Thead borderBottom="5px solid var(--light-content)">
           <Tr>
             <Th>
               {isMobile
