@@ -26,6 +26,7 @@
     "@types/node": "18.11.9",
     "@types/react": "18.0.25",
     "@types/react-dom": "18.0.9",
+    "ably": "1.2.41",
     "apexcharts": "3.37.1",
     "axios": "1.2.1",
     "clsx": "1.2.1",

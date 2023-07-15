@@ -19,11 +19,8 @@ import https from "https";
 import { ProductDataCreate, ProductDataUpdate } from "../schema/productData";
 import { OrderStatusData } from "../schema/orderStatusData";
 import { EventDataCreate, EventDataUpdate } from "../schema/eventData";
-import {
-  closeWebSocketClient,
-  initialiseWebSocketClient,
-  sendWebsocketMessage,
-} from "./websocketClient";
+import { realTimeClient } from "./realtimeClient";
+import { QueryKey } from "@tanstack/react-query";
 
 const axiosInstance = axios.create({
   httpsAgent: new https.Agent({
@@ -365,11 +362,31 @@ const postRegisterToken = async () => {
   return axiosInstance.post(apiPath("auth/register-token"));
 };
 
+export const ABLY_QUERY_KEYS_CHANNEL = "queryKeysChannel";
+export const ABLY_QUERY_KEYS_EVENT = "queryKeys";
+
 export const apiClient = {
-  socket: {
-    listen: initialiseWebSocketClient,
-    close: closeWebSocketClient,
-    send: sendWebsocketMessage,
+  queryKeys: {
+    listen: ({
+      onQueryKeyArrived,
+      onConnected,
+    }: {
+      onQueryKeyArrived: (queryKey: QueryKey) => void;
+      onConnected: () => void;
+    }) =>
+      realTimeClient.listen({
+        channelName: ABLY_QUERY_KEYS_CHANNEL,
+        eventName: ABLY_QUERY_KEYS_EVENT,
+        onMessage: onQueryKeyArrived,
+        onConnected,
+      }),
+    close: realTimeClient.close,
+    send: (queryKey: QueryKey) =>
+      realTimeClient.sendMessage({
+        channelName: ABLY_QUERY_KEYS_CHANNEL,
+        eventName: ABLY_QUERY_KEYS_EVENT,
+        message: queryKey,
+      }),
   },
   auth: {
     postLogin,
