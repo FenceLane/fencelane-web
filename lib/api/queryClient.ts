@@ -21,8 +21,7 @@ export const invalidateQueriesWithWebsocket = ({
   queryKey: QueryKey;
 }) => {
   try {
-    const data = JSON.stringify(queryKey);
-    apiClient.socket.send(data);
+    apiClient.queryKeys.send(queryKey);
   } catch {}
   return queryClient.invalidateQueries(queryKey);
 };
