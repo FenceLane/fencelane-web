@@ -5,7 +5,6 @@ import { createServer } from "https";
 import { parse } from "url";
 import next from "next";
 import fs from "fs";
-import { createWebSocketServer } from "./lib/server/websocketServer";
 // Load environment variables from .env, .env.local, etc. This explicit call
 // into `@next/env` allows using environment variables before next() is called.
 // More info: https://nextjs.org/docs/basic-features/environment-variables
@@ -38,8 +37,6 @@ app.prepare().then(() => {
       res.end("internal server error");
     }
   });
-
-  createWebSocketServer(server); // Initialize the WebSocket server
 
   server.listen(port, () => {
     console.log(`> FenceLane Server ready on ${hostname}`);
