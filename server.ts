@@ -24,9 +24,6 @@ const httpsOptions = {
 };
 
 app.prepare().then(() => {
-  setInterval(() => {
-    console.log("patryk custom server log interval");
-  }, 5000);
   const server = createServer(httpsOptions, async (req, res) => {
     try {
       const { url } = req;

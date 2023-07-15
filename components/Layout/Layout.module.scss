@@ -1,12 +1,12 @@
 .content {
   font-size: 13px;
-  min-height: calc(100vh - 80px);
   padding: 10px;
   box-sizing: border-box;
   background-color: var(--light-content);
   flex: 1;
   overflow: auto;
   padding-bottom: 30px;
+  height: 100%;
 }
 
 @media only screen and (min-width: 768px) {
