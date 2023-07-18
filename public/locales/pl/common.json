@@ -446,7 +446,8 @@
     "dateTo": "Do",
     "dateAllDay": "Cały dzień",
     "createdBy": "Utworzone przez",
-    "event": "Wydarzenie"
+    "event": "Wydarzenie",
+    "hello": "Witaj"
   },
   "days": {
     "monday": "Poniedziałek",

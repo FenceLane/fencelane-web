@@ -79,13 +79,12 @@
 .spec-table td,
 .file-table th,
 .file-table td {
-  text-align: center;
   font-size: 12px;
   padding: 10px 5px;
 }
 .history-container {
   justify-content: space-between;
-  padding: 30px;
+  padding: 30px 20px 30px 30px;
   border-bottom: 5px solid var(--light-content);
   border-top: 5px solid var(--light-content);
 }
@@ -94,6 +93,10 @@
 }
 .documents-container {
   padding: 30px 30px 10px 30px;
+}
+.spec-table tr th:first-child,
+.spec-table tr td:first-child {
+  padding-left: 20px;
 }
 
 @media only screen and (min-width: 768px) {
@@ -117,12 +120,11 @@
   .spec-table td,
   .file-table th,
   .file-table td {
-    text-align: center;
     font-size: 15px;
   }
   .history-container {
     justify-content: space-between;
-    padding: 30px 40px;
+    padding: 30px 20px 30px 40px;
   }
   .change-status-button {
     width: 120px;
@@ -135,6 +137,11 @@
 
   .documents-container {
     padding: 30px 40px 10px 40px;
+  }
+
+  .spec-table tr th:first-child,
+  .spec-table tr td:first-child {
+    padding-left: 40px;
   }
 }
 @media only screen and (min-width: 1024px) {

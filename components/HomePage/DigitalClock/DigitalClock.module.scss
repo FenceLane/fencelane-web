@@ -1,0 +1,30 @@
+.clock-box {
+  text-align: center;
+  border-radius: 10px;
+  max-width: 500px;
+  width: auto;
+}
+
+.time {
+  font-family: DigitalFont;
+  font-size: 80px;
+  margin: 0;
+}
+.date {
+  font-size: 25px;
+}
+
+@media only screen and (min-width: 768px) {
+  .clock-box {
+    text-align: center;
+    border-radius: 10px;
+    max-width: 500px;
+    width: 400px;
+  }
+  .time {
+    font-size: 110px;
+  }
+  .date {
+    font-size: 35px;
+  }
+}
