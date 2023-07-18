@@ -469,10 +469,16 @@ export const OrderDetails = ({
           <Table className={styles["spec-table"]}>
             <Thead>
               <Tr>
-                <Th>{t("pages.orders.spec-table.type")}</Th>
-                <Th>{t("pages.orders.spec-table.dimensions")}</Th>
-                <Th>{t("pages.orders.spec-table.quantity")}</Th>
-                <Th>{t("pages.orders.spec-table.price")} [€]</Th>
+                <Th textAlign="left">{t("pages.orders.spec-table.type")}</Th>
+                <Th textAlign="center">
+                  {t("pages.orders.spec-table.dimensions")}
+                </Th>
+                <Th textAlign="center">
+                  {t("pages.orders.spec-table.quantity")}
+                </Th>
+                <Th textAlign="center">
+                  {t("pages.orders.spec-table.price")} [€]
+                </Th>
               </Tr>
             </Thead>
             <Tbody>
@@ -480,13 +486,13 @@ export const OrderDetails = ({
                 <Tr
                   key={`${row.productName} ${row.productDimensions} ${row.productQuantity} ${row.productVariant} ${row.productQuantity}`}
                 >
-                  <Td fontWeight={500}>
+                  <Td fontWeight={500} textAlign="left">
                     {row.productName}
                     <br />
                     {t(`pages.storage.variants.${String(row.productVariant)}`)}
                   </Td>
-                  <Td>{row.productDimensions}</Td>
-                  <Td>
+                  <Td textAlign="center">{row.productDimensions}</Td>
+                  <Td textAlign="center">
                     <Input
                       fontSize="15px"
                       padding="0"
@@ -499,7 +505,7 @@ export const OrderDetails = ({
                         .replace(/\.00$/, "")}
                     />
                   </Td>
-                  <Td>
+                  <Td textAlign="center">
                     <Input
                       fontSize="15px"
                       padding="0"
