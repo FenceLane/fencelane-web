@@ -33,7 +33,9 @@ export const HomePage = ({ user }: HomePageProps) => {
           </Text>
         </Box>
       </Flex>
-      <Box>{typeof window !== "undefined" && <DigitalClock />}</Box>
+      <Box>
+        <DigitalClock />
+      </Box>
     </Flex>
   );
 };
