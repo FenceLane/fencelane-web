@@ -435,7 +435,7 @@ export const OrderDetails = ({
             <Button
               className={styles["change-status-button"]}
               color="white"
-              bg="var(--button-grey)"
+              bg="var(--details-status-button-color)"
               fontWeight="400"
               onClick={onStatusChangeOpen}
             >
@@ -534,7 +534,7 @@ export const OrderDetails = ({
           {userFeatures.loads.isEditProductsButtonAllowed(user.role) && (
             <Button
               color="white"
-              bg="var(--button-orange)"
+              bg="var(--details-edit-button-color)"
               fontWeight="400"
               onClick={handleUpdateProductDetails}
               isLoading={isUpdateOrderProductsLoading}
@@ -544,7 +544,11 @@ export const OrderDetails = ({
           )}
           {userFeatures.loads.isCalculationButtonAllowed(user.role) && (
             <Link href={`/calculations/${orderData.id}`}>
-              <Button color="white" bg="var(--button-blue)">
+              <Button
+                fontWeight="400"
+                color="white"
+                bg="var(--details-calcs-button-color)"
+              >
                 {t("pages.orders.order.calculation")}
               </Button>
             </Link>

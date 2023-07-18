@@ -45,7 +45,7 @@ export const OrderFileUploadButton = ({ orderId }: FileUploadButtonProps) => {
       <FormLabel
         cursor="pointer"
         color="white"
-        bg={isLoading ? "var(--grey)" : "var(--button-dark-orange)"}
+        bg={isLoading ? "var(--grey)" : "var(--details-add-button-color)"}
         fontWeight="400"
         borderRadius="md"
         w={100}
