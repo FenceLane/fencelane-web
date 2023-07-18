@@ -3,6 +3,7 @@ import Head from "next/head";
 import { Layout } from "../components/Layout/Layout";
 import { withServerSideAuth } from "../lib/server/middlewares/withServerSideAuth";
 import { withTranslationProps } from "../lib/server/middlewares/withTranslationProps";
+import { HomePage } from "../components/HomePage/HomePage";
 
 export default function Home({
   user,
@@ -15,57 +16,7 @@ export default function Home({
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Layout user={user}>
-        <div>
-          <h1>FenceLane</h1>
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-          fasd
-        </div>
+        <HomePage user={user} />
       </Layout>
     </>
   );
