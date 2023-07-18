@@ -1,0 +1,38 @@
+.container {
+  // background-color: white;
+  padding: 10px;
+  border-radius: 5px;
+  // box-shadow: 6px 6px 14px -2px rgba(66, 68, 90, 1);
+  flex-direction: column;
+  justify-content: space-between;
+  max-width: 1200px;
+  flex-wrap: wrap;
+  gap: 200px;
+  color: var(--dark);
+}
+.fencelane {
+  font-weight: 500;
+  font-size: 60px;
+  text-align: center;
+}
+.hello {
+  font-size: 35px;
+  text-align: center;
+}
+
+@media only screen and (min-width: 768px) {
+  .container {
+    padding: 10px 30px;
+    flex-direction: row;
+    gap: 30px;
+  }
+  .fencelane {
+    font-weight: 500;
+    font-size: 80px;
+    text-align: left;
+  }
+  .hello {
+    font-size: 45px;
+    text-align: left;
+  }
+}

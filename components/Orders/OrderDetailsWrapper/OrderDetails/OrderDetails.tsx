@@ -435,7 +435,7 @@ export const OrderDetails = ({
             <Button
               className={styles["change-status-button"]}
               color="white"
-              bg="var(--button-grey)"
+              bg="var(--details-status-button-color)"
               fontWeight="400"
               onClick={onStatusChangeOpen}
             >
@@ -469,10 +469,16 @@ export const OrderDetails = ({
           <Table className={styles["spec-table"]}>
             <Thead>
               <Tr>
-                <Th>{t("pages.orders.spec-table.type")}</Th>
-                <Th>{t("pages.orders.spec-table.dimensions")}</Th>
-                <Th>{t("pages.orders.spec-table.quantity")}</Th>
-                <Th>{t("pages.orders.spec-table.price")} [€]</Th>
+                <Th textAlign="left">{t("pages.orders.spec-table.type")}</Th>
+                <Th textAlign="center">
+                  {t("pages.orders.spec-table.dimensions")}
+                </Th>
+                <Th textAlign="center">
+                  {t("pages.orders.spec-table.quantity")}
+                </Th>
+                <Th textAlign="center">
+                  {t("pages.orders.spec-table.price")} [€]
+                </Th>
               </Tr>
             </Thead>
             <Tbody>
@@ -480,13 +486,13 @@ export const OrderDetails = ({
                 <Tr
                   key={`${row.productName} ${row.productDimensions} ${row.productQuantity} ${row.productVariant} ${row.productQuantity}`}
                 >
-                  <Td fontWeight={500}>
+                  <Td fontWeight={500} textAlign="left">
                     {row.productName}
                     <br />
                     {t(`pages.storage.variants.${String(row.productVariant)}`)}
                   </Td>
-                  <Td>{row.productDimensions}</Td>
-                  <Td>
+                  <Td textAlign="center">{row.productDimensions}</Td>
+                  <Td textAlign="center">
                     <Input
                       fontSize="15px"
                       padding="0"
@@ -499,7 +505,7 @@ export const OrderDetails = ({
                         .replace(/\.00$/, "")}
                     />
                   </Td>
-                  <Td>
+                  <Td textAlign="center">
                     <Input
                       fontSize="15px"
                       padding="0"
@@ -534,7 +540,7 @@ export const OrderDetails = ({
           {userFeatures.loads.isEditProductsButtonAllowed(user.role) && (
             <Button
               color="white"
-              bg="var(--button-orange)"
+              bg="var(--details-edit-button-color)"
               fontWeight="400"
               onClick={handleUpdateProductDetails}
               isLoading={isUpdateOrderProductsLoading}
@@ -544,7 +550,11 @@ export const OrderDetails = ({
           )}
           {userFeatures.loads.isCalculationButtonAllowed(user.role) && (
             <Link href={`/calculations/${orderData.id}`}>
-              <Button color="white" bg="var(--button-blue)">
+              <Button
+                fontWeight="400"
+                color="white"
+                bg="var(--details-calcs-button-color)"
+              >
                 {t("pages.orders.order.calculation")}
               </Button>
             </Link>
